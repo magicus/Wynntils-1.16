@@ -125,7 +125,7 @@ public class GuildWorldMapUI extends WorldMapUI {
 
             Point drawingOrigin = ScreenRenderer.drawingOrigin();
 
-            GlStateManager.pushMatrix();
+            GlStateManager._pushMatrix();
             GlStateManager.translate(drawingOrigin.x + playerPositionX, drawingOrigin.y + playerPositionZ, 0);
             GlStateManager.rotate(180 + MathHelper.fastFloor(mc.player.rotationYaw), 0, 0, 1);
             GlStateManager.translate(-drawingOrigin.x - playerPositionX, -drawingOrigin.y - playerPositionZ, 0);
@@ -137,7 +137,7 @@ public class GuildWorldMapUI extends WorldMapUI {
             renderer.drawRectF(Textures.Map.map_pointers, playerPositionX - type.dWidth * 1.5f, playerPositionZ - type.dHeight * 1.5f, playerPositionX + type.dWidth * 1.5f, playerPositionZ + type.dHeight * 1.5f, 0, type.yStart, type.width, type.yStart + type.height);
             GlStateManager.color(1, 1, 1, 1);
 
-            GlStateManager.popMatrix();
+            GlStateManager._popMatrix();
         }
 
         if (showTradeRoutes) generateTradeRoutes();
@@ -167,35 +167,35 @@ public class GuildWorldMapUI extends WorldMapUI {
     }
 
     protected void drawTradeRoute(MapTerritory origin, MapTerritory destination) {
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
         {
             GlStateManager.disableTexture2D();
             GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
             Tessellator tess = Tessellator.getInstance();
-            BufferBuilder buffer = tess.getBuffer();
+            BufferBuilder buffer = tess.getBuilder();
 
             // outline
             GlStateManager.glLineWidth(4f);
             {
                 buffer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-                buffer.pos(destination.getCenterX(), destination.getCenterY(), 0).color(0f, 0f, 0f, .5f).endVertex();
-                buffer.pos(origin.getCenterX(), origin.getCenterY(), 0).color(0f, 0f, 0f, .5f).endVertex();
+                buffer.vertex(destination.getCenterX(), destination.getCenterY(), 0).color(0f, 0f, 0f, .5f).endVertex();
+                buffer.vertex(origin.getCenterX(), origin.getCenterY(), 0).color(0f, 0f, 0f, .5f).endVertex();
             }
-            tess.draw();
+            tess.end();
 
             // line
             GlStateManager.glLineWidth(1.5f);
             {
                 buffer.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-                buffer.pos(destination.getCenterX(), destination.getCenterY(), 0).color(1f, 1f, 1f, .5f).endVertex();
-                buffer.pos(origin.getCenterX(), origin.getCenterY(), 0).color(1f, 1f, 1f, .5f).endVertex();
+                buffer.vertex(destination.getCenterX(), destination.getCenterY(), 0).color(1f, 1f, 1f, .5f).endVertex();
+                buffer.vertex(origin.getCenterX(), origin.getCenterY(), 0).color(1f, 1f, 1f, .5f).endVertex();
             }
-            tess.draw();
+            tess.end();
 
             GlStateManager.enableTexture2D();
         }
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
     }
 
     private static boolean isHoldingMapKey() {

@@ -12,7 +12,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.network.play.client.CPacketClientSettings;
@@ -43,7 +43,7 @@ public enum ReflectionFields {
     CPacketClientSettings_chatVisibility(CPacketClientSettings.class, "chatVisibility", "field_149529_c"),
     ModelRenderer_compiled(ModelRenderer.class, "compiled", "field_78812_q"),
     Minecraft_renderItem(Minecraft.class, "renderItem", "field_175621_X"),
-    RenderItem_itemModelMesher(RenderItem.class, "itemModelMesher", "field_175059_m");
+    RenderItem_itemModelMesher(ItemRenderer.class, "itemModelMesher", "field_175059_m");
 
     static {
         GuiPlayerTabOverlay_ENTRY_ORDERING.removeFinal();

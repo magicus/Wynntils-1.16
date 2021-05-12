@@ -236,7 +236,7 @@ public class QuestBookPage extends Screen {
     protected void renderHoveredText(int mouseX, int mouseY) {
         ScreenRenderer.beginGL(0, 0);
         {
-            GlStateManager.disableLighting();
+            GlStateManager._disableLighting();
             if (hoveredText != null) drawHoveringText(hoveredText, mouseX, mouseY);
         }
         ScreenRenderer.endGL();

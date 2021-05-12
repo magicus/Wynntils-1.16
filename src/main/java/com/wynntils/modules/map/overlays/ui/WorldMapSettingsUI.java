@@ -92,13 +92,13 @@ public class WorldMapSettingsUI extends Screen {
         this.font.drawString(TextFormatting.WHITE + "Map Icon Textures:", (this.width - 349) / 2, this.height-60, 0xffFFFFFF);
 
         // Draw labels rotated 45 degrees
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
         GlStateManager.translate((this.width-399) / 2.0f + 286, 29f, 0f);
         GlStateManager.rotate(-45, 0, 0, 1);
         this.font.drawString("Main map", 0, 0, 0xFFFFFFFF);
         GlStateManager.translate(11 / MathHelper.SQRT_2, 17 / MathHelper.SQRT_2, 0f);
         this.font.drawString("Minimap", 0, 0, 0xFFFFFFFF);
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
 
         ScreenRenderer.beginGL(0, 0);
         super.drawScreen(mouseX, mouseY, partialTicks);

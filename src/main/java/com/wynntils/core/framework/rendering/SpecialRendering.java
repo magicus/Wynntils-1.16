@@ -36,17 +36,17 @@ public class SpecialRendering {
         Random rand = new Random(142L);
 
         boolean isRainbow = color == CommonColors.RAINBOW;
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
         {
             { // gl setting
-                GlStateManager.translate(x, y, z);
-                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-                GlStateManager.enableBlend();
-                GlStateManager.disableAlpha();
-                GlStateManager.disableCull();
-                GlStateManager.disableTexture2D();
-                GlStateManager.shadeModel(GL11.GL_SMOOTH);
-                GlStateManager.depthMask(false);
+                GlStateManager._translate(x, y, z);
+                GlStateManager._blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                GlStateManager._enableBlend();
+                GlStateManager._disableAlpha();
+                GlStateManager._disableCull();
+                GlStateManager._disableTexture2D();
+                GlStateManager._shadeModel(GL11.GL_SMOOTH);
+                GlStateManager._depthMask(false);
             }
 
             Matrix4f matrix = new Matrix4f();
@@ -91,28 +91,28 @@ public class SpecialRendering {
                 }
 
                 Tessellator tess = Tessellator.getInstance();
-                BufferBuilder builder = tess.getBuffer();
+                BufferBuilder builder = tess.getBuilder();
                 {
                     builder.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                    builder.pos(size, size, size).color(red, green, blue, 0.9F).endVertex();
-                    builder.pos(a.x * size, a.y * size, a.z * size).color(red, green, blue, 0.01F).endVertex();
-                    builder.pos(c.x * size, c.y * size, c.z * size).color(red, green, blue, 0.01F).endVertex();
-                    builder.pos(b.x * size, b.y * size, b.z * size).color(red, green, blue, 0.01F).endVertex();
+                    builder.vertex(size, size, size).color(red, green, blue, 0.9F).endVertex();
+                    builder.vertex(a.x * size, a.y * size, a.z * size).color(red, green, blue, 0.01F).endVertex();
+                    builder.vertex(c.x * size, c.y * size, c.z * size).color(red, green, blue, 0.01F).endVertex();
+                    builder.vertex(b.x * size, b.y * size, b.z * size).color(red, green, blue, 0.01F).endVertex();
                 }
-                tess.draw();
+                tess.end();
             }
 
             { // gl resetting
-                GlStateManager.enableTexture2D();
-                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager.enableBlend();
-                GlStateManager.depthMask(true);
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                GlStateManager.enableAlpha();
+                GlStateManager._enableTexture2D();
+                GlStateManager._blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GlStateManager._enableBlend();
+                GlStateManager._depthMask(true);
+                GlStateManager._color(1.0F, 1.0F, 1.0F, 1.0F);
+                GlStateManager._enableAlpha();
             }
 
         }
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
 
     }
 

@@ -47,7 +47,7 @@ public class ChatOverlay extends GuiNewChat {
     private WynncraftLanguage currentLanguage = WynncraftLanguage.NORMAL;
 
     public ChatOverlay() {
-        super(Minecraft.getMinecraft());
+        super(Minecraft.getInstance());
 
         clearChatMessages(true);
 
@@ -66,7 +66,7 @@ public class ChatOverlay extends GuiNewChat {
 
             float chatScale = getChatScale();
             int extraY = MathHelper.ceil((float)getChatWidth() / chatScale) + 4;
-            GlStateManager.pushMatrix();
+            GlStateManager._pushMatrix();
             GlStateManager.translate(2.0F, 0.0F, 0.0F);
             GlStateManager.scale(chatScale, chatScale, 1.0F);
             int l = 0;
@@ -98,10 +98,10 @@ public class ChatOverlay extends GuiNewChat {
                                 drawRect(-2, j2 - 9, extraY, j2, l1 / 2 << 24);
                             }
                             String s = ChatManager.renderMessage(chatline.getChatComponent()).getFormattedText();
-                            GlStateManager.enableBlend();
+                            GlStateManager._enableBlend();
                             mc.font.drawStringWithShadow(s, 0.0F, (float)(j2 - 8), 16777215 + (l1 << 24));
                             GlStateManager.disableAlpha();
-                            GlStateManager.disableBlend();
+                            GlStateManager._disableBlend();
                         }
                     }
                 }
@@ -126,7 +126,7 @@ public class ChatOverlay extends GuiNewChat {
                 }
             }
 
-            GlStateManager.popMatrix();
+            GlStateManager._popMatrix();
         }
     }
 

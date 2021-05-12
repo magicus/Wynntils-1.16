@@ -57,8 +57,8 @@ public class EntitySnowFlake extends FakeEntity {
 
         { // setting up
             translate(0, -25 * percentage, 0);
-            depthMask(false);
-            enableBlend();
+            _depthMask(false);
+            _enableBlend();
             enableAlpha();
             //disableTexture2D();
             color(1f, 1f, 1f, alpha);
@@ -72,22 +72,22 @@ public class EntitySnowFlake extends FakeEntity {
         Textures.Particles.snow.bind();
 
         Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buffer = tes.getBuffer();
+        BufferBuilder buffer = tes.getBuilder();
         { // drawing
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
-            buffer.pos(-.5,  .5, 0).tex(0, 1).color(color, color, color, alpha).endVertex();
-            buffer.pos( .5,  .5, 0).tex(1, 1).color(color, color, color, alpha).endVertex();
-            buffer.pos( .5, -.5, 0).tex(1, 0).color(color, color, color, alpha).endVertex();
-            buffer.pos(-.5, -.5, 0).tex(0, 0).color(color, color, color, alpha).endVertex();
+            buffer.vertex(-.5,  .5, 0).tex(0, 1).color(color, color, color, alpha).endVertex();
+            buffer.vertex( .5,  .5, 0).tex(1, 1).color(color, color, color, alpha).endVertex();
+            buffer.vertex( .5, -.5, 0).tex(1, 0).color(color, color, color, alpha).endVertex();
+            buffer.vertex(-.5, -.5, 0).tex(0, 0).color(color, color, color, alpha).endVertex();
 
-            tes.draw();
+            tes.end();
         }
 
         { // reset to default
-            disableBlend();
+            _disableBlend();
             enableTexture2D();
-            depthMask(true);
+            _depthMask(true);
             color(1f, 1f, 1f, 1f);
         }
     }

@@ -34,35 +34,35 @@ public class LowHealthVignetteOverlay extends Overlay {
             return;
         }
 
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
         {
             ScreenRenderer.transformationOrigin(0, 0);
             GlStateManager.color(1, 0, 0, value);
             GlStateManager.disableDepth();
-            GlStateManager.enableBlend();
-            GlStateManager.depthMask(false);
+            GlStateManager._enableBlend();
+            GlStateManager._depthMask(false);
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.disableAlpha();
 
             Textures.Masks.vignette.bind();
 
             Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferbuilder = tessellator.getBuffer();
+            BufferBuilder bufferbuilder = tessellator.getBuilder();
             {
                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-                bufferbuilder.pos(0.0D, ScreenRenderer.screen.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-                bufferbuilder.pos(ScreenRenderer.screen.getScaledWidth(), ScreenRenderer.screen.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-                bufferbuilder.pos(ScreenRenderer.screen.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
-                bufferbuilder.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
+                bufferbuilder.vertex(0.0D, ScreenRenderer.screen.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
+                bufferbuilder.vertex(ScreenRenderer.screen.getScaledWidth(), ScreenRenderer.screen.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
+                bufferbuilder.vertex(ScreenRenderer.screen.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+                bufferbuilder.vertex(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
             }
-            tessellator.draw();
+            tessellator.end();
 
-            GlStateManager.depthMask(true);
+            GlStateManager._depthMask(true);
             GlStateManager.enableDepth();
             GlStateManager.enableAlpha();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
     }
 
     @Override

@@ -53,8 +53,8 @@ public class EntityFlame extends FakeEntity {
 
         { // setting up rotation
             translate(0, 10 * percentage * (10 * percentage), 0);
-            depthMask(false);
-            enableBlend();
+            _depthMask(false);
+            _enableBlend();
             enableAlpha();
             //disableTexture2D();
             color(1f, 1f, 1f, alpha);
@@ -68,22 +68,22 @@ public class EntityFlame extends FakeEntity {
         Textures.Particles.flame.bind();
 
         Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buffer = tes.getBuffer();
+        BufferBuilder buffer = tes.getBuilder();
         { // initial cube
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
-            buffer.pos(-.5,  3, 0).tex(0, 1).color(1f, 1f, 1f, alpha).endVertex();
-            buffer.pos( .5,  3, 0).tex(1, 1).color(1f, 1f, 1f, alpha).endVertex();
-            buffer.pos( .5, -.0, 0).tex(1, 0).color(1f, 1f, 1f, alpha).endVertex();
-            buffer.pos(-.5, -.0, 0).tex(0, 0).color(1f, 1f, 1f, alpha).endVertex();
+            buffer.vertex(-.5,  3, 0).tex(0, 1).color(1f, 1f, 1f, alpha).endVertex();
+            buffer.vertex( .5,  3, 0).tex(1, 1).color(1f, 1f, 1f, alpha).endVertex();
+            buffer.vertex( .5, -.0, 0).tex(1, 0).color(1f, 1f, 1f, alpha).endVertex();
+            buffer.vertex(-.5, -.0, 0).tex(0, 0).color(1f, 1f, 1f, alpha).endVertex();
 
-            tes.draw();
+            tes.end();
         }
 
         { // reset to default
-            disableBlend();
+            _disableBlend();
             enableTexture2D();
-            depthMask(true);
+            _depthMask(true);
             color(1f, 1f, 1f, 1f);
         }
     }

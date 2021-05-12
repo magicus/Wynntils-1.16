@@ -140,7 +140,7 @@ public class ServerIcon {
         lastIcon = currentIcon;
 
         if (currentIcon == null) {
-            Minecraft.getInstance().getTextureManager().deleteTexture(serverIcon);
+            Minecraft.getInstance().getTextureManager().release(serverIcon);
             icon = null;
             onDone();
             return null;

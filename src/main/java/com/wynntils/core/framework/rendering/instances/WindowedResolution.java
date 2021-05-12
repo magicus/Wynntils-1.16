@@ -24,7 +24,7 @@ public class WindowedResolution {
             return;
         }
 
-        int minecraftScale = new ScaledResolution(Minecraft.getMinecraft()).getScaleFactor();
+        int minecraftScale = new ScaledResolution(Minecraft.getInstance()).getScaleFactor();
         while (minWidth * scaleFactor < width / 2f && minHeight * scaleFactor < height/2f)  {
             scaleFactor += 0.1f;
         }

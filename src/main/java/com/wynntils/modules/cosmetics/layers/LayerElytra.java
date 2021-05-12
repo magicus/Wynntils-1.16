@@ -65,13 +65,13 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
 
         color(1.0F, 1.0F, 1.0F, 1.0F);
         enableAlpha();
-        enableBlend();
+        _enableBlend();
         blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
         renderPlayer.bind(elytra);
 
         // rendering
-        { pushMatrix();
+        { _pushMatrix();
             translate(0.0F, 0.0F, 0.125F);
 
             double d0 = player.prevChasingPosX + (player.chasingPosX - player.prevChasingPosX) * (double) partialTicks - (player.prevPosX + (player.posX - player.prevPosX) * (double) partialTicks);
@@ -109,8 +109,8 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
             modelElytra.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, player);
             modelElytra.render(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-            disableBlend();
-        } popMatrix();
+            _disableBlend();
+        } _popMatrix();
     }
 
     public boolean shouldCombineTextures() {

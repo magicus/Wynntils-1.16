@@ -84,9 +84,9 @@ public class MapPlayerIcon extends MapIcon {
     @Override
     public void renderAt(ScreenRenderer renderer, float centreX, float centreZ, float sizeMultiplier, float blockScale) {
         enableAlpha();
-        disableBlend();
+        _disableBlend();
 
-        { pushMatrix();
+        { _pushMatrix();
             float sizeX = getSizeX() * sizeMultiplier;
             float sizeZ = getSizeZ() * sizeMultiplier;
 
@@ -120,9 +120,9 @@ public class MapPlayerIcon extends MapIcon {
             if (profile.hasHat())
                 drawScaledCustomSizeModalRect(-sizeX, -sizeZ, 40.0F, 8, 8, 8, sizeX * 2f, sizeZ * 2f, 64.0F, 64.0F);
 
-        } popMatrix();
+        } _popMatrix();
 
-        enableBlend();
+        _enableBlend();
     }
 
     @Override
@@ -139,13 +139,13 @@ public class MapPlayerIcon extends MapIcon {
         float f = 1.0F / tileWidth;
         float f1 = 1.0F / tileHeight;
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(x, y + height, 0.0D).tex(u * f, (v + vHeight) * f1).endVertex();
-        bufferbuilder.pos(x + width, y + height, 0.0D).tex((u + uWidth) * f, (v + vHeight) * f1).endVertex();
-        bufferbuilder.pos(x + width, y, 0.0D).tex((u + uWidth) * f, v * f1).endVertex();
-        bufferbuilder.pos(x, y, 0.0D).tex(u * f, v * f1).endVertex();
-        tessellator.draw();
+        bufferbuilder.vertex(x, y + height, 0.0D).tex(u * f, (v + vHeight) * f1).endVertex();
+        bufferbuilder.vertex(x + width, y + height, 0.0D).tex((u + uWidth) * f, (v + vHeight) * f1).endVertex();
+        bufferbuilder.vertex(x + width, y, 0.0D).tex((u + uWidth) * f, v * f1).endVertex();
+        bufferbuilder.vertex(x, y, 0.0D).tex(u * f, v * f1).endVertex();
+        tessellator.end();
     }
 
     private ResourceLocation cachedResource;

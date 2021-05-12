@@ -274,15 +274,15 @@ public class WorldMapUI extends GuiMovementScreen {
 
             Tessellator tessellator = Tessellator.getInstance();
 
-            BufferBuilder bufferbuilder = tessellator.getBuffer();
+            BufferBuilder bufferbuilder = tessellator.getBuilder();
             {
                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
 
-                bufferbuilder.pos(0, height, 0).tex(minX, maxZ).endVertex();
-                bufferbuilder.pos(width, height, 0).tex(maxX, maxZ).endVertex();
-                bufferbuilder.pos(width, 0, 0).tex(maxX, minZ).endVertex();
-                bufferbuilder.pos(0, 0, 0).tex(minX, minZ).endVertex();
-                tessellator.draw();
+                bufferbuilder.vertex(0, height, 0).tex(minX, maxZ).endVertex();
+                bufferbuilder.vertex(width, height, 0).tex(maxX, maxZ).endVertex();
+                bufferbuilder.vertex(width, 0, 0).tex(maxX, minZ).endVertex();
+                bufferbuilder.vertex(0, 0, 0).tex(minX, minZ).endVertex();
+                tessellator.end();
             }
 
         } catch (Exception ignored) {}
@@ -301,7 +301,7 @@ public class WorldMapUI extends GuiMovementScreen {
         float scale = getScaleFactor();
         // draw map icons
         boolean[] needToReset = { false };
-        enableBlend();
+        _enableBlend();
         forEachIcon(i -> {
             if (i.getInfo().hasDynamicLocation()) resetIcon(i);
             if (!i.getInfo().isEnabled(false)) {
@@ -322,7 +322,7 @@ public class WorldMapUI extends GuiMovementScreen {
 
             Point drawingOrigin = ScreenRenderer.drawingOrigin();
 
-            pushMatrix();
+            _pushMatrix();
             translate(drawingOrigin.x + playerPositionX, drawingOrigin.y + playerPositionZ, 0);
             rotate(180 + MathHelper.fastFloor(mc.player.rotationYaw), 0, 0, 1);
             translate(-drawingOrigin.x - playerPositionX, -drawingOrigin.y - playerPositionZ, 0);
@@ -334,7 +334,7 @@ public class WorldMapUI extends GuiMovementScreen {
             renderer.drawRectF(Textures.Map.map_pointers, playerPositionX - type.dWidth * 1.5f, playerPositionZ - type.dHeight * 1.5f, playerPositionX + type.dWidth * 1.5f, playerPositionZ + type.dHeight * 1.5f, 0, type.yStart, type.width, type.yStart + type.height);
             color(1, 1, 1, 1);
 
-            popMatrix();
+            _popMatrix();
         }
 
         if (MapConfig.WorldMap.INSTANCE.keepTerritoryVisible || Keyboard.isKeyDown(GLFW.GLFW_KEY_LCONTROL) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RCONTROL)) {
@@ -400,7 +400,7 @@ public class WorldMapUI extends GuiMovementScreen {
         OUTSIDE_MAP_COLOR_1.setA(outsideTextOpacity);
         OUTSIDE_MAP_COLOR_2.setA(outsideTextOpacity);
 
-        pushMatrix();
+        _pushMatrix();
         {
             translate(width / 2, height / 2, 0);
             scale(2, 2, 2);
@@ -412,7 +412,7 @@ public class WorldMapUI extends GuiMovementScreen {
                     SmartFontRenderer.TextAlignment.MIDDLE, SmartFontRenderer.TextShadow.NORMAL
             );
         }
-        popMatrix();
+        _popMatrix();
     }
 
     private void zoomBy(int by) {

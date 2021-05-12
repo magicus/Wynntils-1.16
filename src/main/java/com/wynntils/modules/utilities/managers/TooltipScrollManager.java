@@ -101,7 +101,7 @@ public class TooltipScrollManager {
             float offscreenHeight = maxScroll * ((float) scrollAmount / maxScroll);
             float scaleFactor = (lastGuiScreen.height + offscreenHeight) / tooltipHeight;
             int xOffset = e.getX() - 4;
-            GlStateManager.pushMatrix();
+            GlStateManager._pushMatrix();
             GlStateManager.translate(+xOffset, +lastGuiScreen.height, 0);
             GlStateManager.scale(scaleFactor, scaleFactor, 0);
             if (UtilitiesConfig.INSTANCE.renderTooltipsFromTop) {
@@ -127,7 +127,7 @@ public class TooltipScrollManager {
 
         if (UtilitiesConfig.INSTANCE.renderTooltipsScaled) {
             if (maxScroll == 0 || (scrollAmount == maxScroll && !UtilitiesConfig.INSTANCE.renderTooltipsFromTop)) return;
-            GlStateManager.popMatrix();
+            GlStateManager._popMatrix();
             return;
         }
 

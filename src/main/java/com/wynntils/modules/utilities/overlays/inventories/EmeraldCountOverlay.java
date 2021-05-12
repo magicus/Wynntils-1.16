@@ -32,7 +32,7 @@ import org.lwjgl.glfw.GLFW;
 import java.text.DecimalFormat;
 
 import static com.mojang.blaze3d.platform.GlStateManager.color;
-import static com.mojang.blaze3d.platform.GlStateManager.disableLighting;
+import static com.mojang.blaze3d.platform.GlStateManager._disableLighting;
 
 public class EmeraldCountOverlay implements Listener {
 
@@ -97,7 +97,7 @@ public class EmeraldCountOverlay implements Listener {
      */
     private static void drawTextMoneyAmount(int x, int y, int moneyAmount, ScreenRenderer renderer, CustomColor color) {
         // rendering setup
-        disableLighting();
+        _disableLighting();
         color(1F, 1F, 1F, 1F);
 
         // generating text
@@ -182,18 +182,18 @@ public class EmeraldCountOverlay implements Listener {
         int textWidth = ScreenRenderer.font.getStringWidth(text);
         renderer.drawItemStack(new ItemStack(i), x + 4, y + 4, textWidth > 18 ? "" : text);
         if (textWidth <= 18) return;
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
         {
             GlStateManager.translate(x + 4 + 17, y + 4 + 18, 0);
             GlStateManager.scale(18f / textWidth, 18f / textWidth, 1);
-            GlStateManager.disableLighting();
+            GlStateManager._disableLighting();
             GlStateManager.disableDepth();
-            GlStateManager.disableBlend();
+            GlStateManager._disableBlend();
             ScreenRenderer.font.drawStringWithShadow(text, -textWidth, -ScreenRenderer.font.FONT_HEIGHT, 0xFFFFFFFF);
             GlStateManager.enableDepth();
-            GlStateManager.enableBlend();
+            GlStateManager._enableBlend();
         }
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
     }
 
     private static String formatAmount(int value) {

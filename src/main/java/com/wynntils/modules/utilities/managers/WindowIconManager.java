@@ -22,7 +22,7 @@ public class WindowIconManager {
     private static boolean serverIconInvalid = false;
 
     private static void deleteIcon() {
-        Minecraft.getInstance().submit(() -> ReflectionMethods.Minecraft$setWindowIcon.invoke(Minecraft.getMinecraft()));
+        Minecraft.getInstance().submit(() -> ReflectionMethods.Minecraft$setWindowIcon.invoke(Minecraft.getInstance()));
         setToServerIcon = false;
         serverIconInvalid = false;
     }

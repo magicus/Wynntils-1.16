@@ -59,7 +59,7 @@ public class LootRunNote {
     }
 
     private static void drawNametag(String input, CustomColor color, float x, float y, float z, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal) {
-        pushMatrix();
+        _pushMatrix();
         {
             ScreenRenderer.beginGL(0, 0); // we set to 0 because we don't want the ScreenRender to handle this thing
             {
@@ -69,7 +69,7 @@ public class LootRunNote {
                 rotate(-viewerYaw, 0.0F, 1.0F, 0.0F);
                 rotate((float) (isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
                 scale(-0.025F, -0.025F, 0.025F);
-                disableLighting();
+                _disableLighting();
 
                 int middlePos = (int) renderer.getStringWidth(input) / 2;
 
@@ -82,13 +82,13 @@ public class LootRunNote {
 
                 // returns back to normal
                 enableDepth();
-                enableLighting();
-                disableBlend();
+                _enableLighting();
+                _disableBlend();
                 color(1.0f, 1.0f, 1.0f, 1.0f);
             }
             ScreenRenderer.endGL();
         }
-        popMatrix();
+        _popMatrix();
     }
 
 }

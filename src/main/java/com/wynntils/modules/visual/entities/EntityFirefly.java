@@ -103,8 +103,8 @@ public class EntityFirefly extends FakeEntity {
         boolean threeDimensions = VisualConfig.Fireflies.INSTANCE.threeDimensions;
 
         { // setting up
-            depthMask(false);
-            enableBlend();
+            _depthMask(false);
+            _enableBlend();
             enableAlpha();
             disableTexture2D();
             color(1f, 1f, 1f, alpha);
@@ -122,67 +122,67 @@ public class EntityFirefly extends FakeEntity {
         Textures.World.solid_color.bind();
 
         Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buffer = tes.getBuffer();
+        BufferBuilder buffer = tes.getBuilder();
         { // drawing
             buffer.begin(threeDimensions ? GL11.GL_TRIANGLE_STRIP : GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 
             // vertexes
             if (!threeDimensions) {
-                buffer.pos(-.5, .5, 0).tex(0, 1f).color(r, g, b, alpha).lightmap(0, 15728880).endVertex();
-                buffer.pos(.5, .5, 0).tex(1f, 1f).color(r, g, b, alpha).lightmap(0, 15728880).endVertex();
-                buffer.pos(.5, -.5, 0).tex(1f, 0f).color(r, g, b, alpha).lightmap(0, 15728880).endVertex();
-                buffer.pos(-.5, -.5, 0).tex(0, 0f).color(r, g, b, alpha).lightmap(0, 15728880).endVertex();
+                buffer.vertex(-.5, .5, 0).tex(0, 1f).color(r, g, b, alpha).lightmap(0, 15728880).endVertex();
+                buffer.vertex(.5, .5, 0).tex(1f, 1f).color(r, g, b, alpha).lightmap(0, 15728880).endVertex();
+                buffer.vertex(.5, -.5, 0).tex(1f, 0f).color(r, g, b, alpha).lightmap(0, 15728880).endVertex();
+                buffer.vertex(-.5, -.5, 0).tex(0, 0f).color(r, g, b, alpha).lightmap(0, 15728880).endVertex();
             } else generateVertexBox(buffer, -.5, -.5, -.5, .5, .5, .5, r, g, b, alpha);
 
-            tes.draw();
+            tes.end();
         }
 
         { // reset to default
-            disableBlend();
+            _disableBlend();
             enableTexture2D();
-            depthMask(true);
+            _depthMask(true);
             color(1f, 1f, 1f, 1f);
         }
     }
 
     private void generateVertexBox(BufferBuilder builder, double x1, double y1, double z1, double x2, double y2, double z2, float red, float green, float blue, float alpha) {
-        builder.pos(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y1, z2).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y1, z2).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
 
-        builder.pos(x1, y2, z1).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y2, z2).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y2, z2).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y1, z2).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y2, z1).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y2, z2).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y2, z2).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y1, z2).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
 
-        builder.pos(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y1, z2).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y1, z2).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y1, z1).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y1, z2).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y1, z2).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y1, z1).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
 
-        builder.pos(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y2, z1).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y2, z1).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y1, z1).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y2, z1).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y2, z1).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y1, z1).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
 
-        builder.pos(x1, y2, z1).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y1, z1).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y2, z1).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y1, z1).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y1, z1).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
 
-        builder.pos(x1, y1, z2).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y1, z2).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y1, z2).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y2, z1).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y1, z2).tex(0f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y1, z2).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y1, z2).tex(1f, 0f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y2, z1).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
 
-        builder.pos(x1, y2, z1).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x1, y2, z2).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y2, z1).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y2, z1).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x1, y2, z2).tex(0f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y2, z1).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
 
-        builder.pos(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
-        builder.pos(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
+        builder.vertex(x2, y2, z2).tex(1f, 1f).color(red, green, blue, alpha).lightmap(0, 15728880).endVertex();
     }
 
     @Override

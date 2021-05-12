@@ -45,7 +45,7 @@ public class AssetsTexture extends Texture {
     public ActionResult unload() {
         if (!loaded) return ActionResult.ISSUE;
 
-        Minecraft.getInstance().getTextureManager().deleteTexture(resourceLocation);
+        Minecraft.getInstance().getTextureManager().release(resourceLocation);
         loaded = false;
         return ActionResult.SUCCESS;
     }

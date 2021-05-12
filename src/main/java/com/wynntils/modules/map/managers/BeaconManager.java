@@ -67,39 +67,39 @@ public class BeaconManager {
             double d2 = -1f + offset;
             double d3 = 256.0F * alpha + d2;
 
-            disableLighting();
+            _disableLighting();
             enableDepth();
             disableCull();
-            enableBlend();
+            _enableBlend();
             tryBlendFuncSeparate(770, 771, 1, 0);
             color(1f, 1f, 1f, 1f);
 
             // drawing
-            tessellator.getBuffer().begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-            BufferBuilder builder = tessellator.getBuffer();
+            tessellator.getBuilder().begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
+            BufferBuilder builder = tessellator.getBuilder();
             {
-                builder.pos(x + .2d, y + d1, z + .2d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .2d, y, z + .2d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .8d, y, z + .2d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .8d, y + d1, z + .2d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .8d, y + d1, z + .8d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .8d, y, z + .8d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .2d, y, z + .8d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .2d, y + d1, z + .8d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .8d, y + d1, z + .2d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .8d, y, z + .2d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .8d, y, z + .8d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .8d, y + d1, z + .8d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .2d, y + d1, z + .8d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .2d, y, z + .8d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .2d, y, z + .2d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.pos(x + .2d, y + d1, z + .2d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y + d1, z + .2d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y, z + .2d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y, z + .2d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y + d1, z + .2d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y + d1, z + .8d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y, z + .8d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y, z + .8d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y + d1, z + .8d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y + d1, z + .2d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y, z + .2d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y, z + .8d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y + d1, z + .8d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y + d1, z + .8d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y, z + .8d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y, z + .2d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y + d1, z + .2d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
             }
-            tessellator.draw();
+            tessellator.end();
 
             // resetting
             color(1f, 1f, 1f, 1f);
-            disableBlend();
+            _disableBlend();
             enableCull();
         }
         popAttrib();

@@ -49,7 +49,7 @@ public class ExternalTexture extends Texture {
     public ActionResult unload() {
         if (!loaded) return ActionResult.ISSUE;
 
-        TextureUtil.deleteTexture(glID);
+        TextureUtil.release(glID);
         loaded = false;
         return ActionResult.SUCCESS;
     }

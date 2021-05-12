@@ -130,7 +130,7 @@ public abstract class UI extends Screen {
     @Override
     protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {  // fix for alpha problems after doing default background
         super.drawGradientRect(left, top, right, bottom, startColor, endColor);
-        GlStateManager.enableBlend();
+        GlStateManager._enableBlend();
     }
 
     public static void setupUI(UI ui) {

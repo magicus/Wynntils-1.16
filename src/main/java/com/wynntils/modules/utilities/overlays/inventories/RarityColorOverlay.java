@@ -204,24 +204,24 @@ public class RarityColorOverlay implements Listener {
     	int x = guiContainer.getGuiLeft() + s.xPos;
         int y = guiContainer.getGuiTop() + s.yPos;
 
-        GlStateManager.disableLighting();
+        GlStateManager._disableLighting();
         GlStateManager.disableDepth();
         GlStateManager.disableTexture2D();
         GlStateManager.disableAlpha();
-        GlStateManager.enableBlend();
+        GlStateManager._enableBlend();
         GlStateManager.glLineWidth(4.0f);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        BufferBuilder bufferbuilder = tessellator.getBuilder();
         int arcColor = MathHelper.hsvToRGB(Math.max(0.0F, durability) / 3.0F, 1.0F, 1.0F);
         int radius = (UtilitiesConfig.Items.INSTANCE.itemLevelArc) ? 7 : 8;
         drawArc(bufferbuilder, x, y, durability, radius, arcColor >> 16 & 255, arcColor >> 8 & 255, arcColor & 255, 160);
 
-        GlStateManager.disableBlend();
+        GlStateManager._disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
         GlStateManager.enableDepth();
-        GlStateManager.enableLighting();
+        GlStateManager._enableLighting();
     }
 
     private static void drawArc(BufferBuilder renderer, int x, int y, float fill, int radius, int red, int green, int blue, int alpha) {
@@ -241,23 +241,23 @@ public class RarityColorOverlay implements Listener {
         int x = guiContainer.getGuiLeft() + s.xPos;
         int y = guiContainer.getGuiTop() + s.yPos;
 
-        GlStateManager.disableLighting();
+        GlStateManager._disableLighting();
         GlStateManager.disableDepth();
         GlStateManager.disableTexture2D();
         GlStateManager.disableAlpha();
-        GlStateManager.enableBlend();
+        GlStateManager._enableBlend();
         GlStateManager.glLineWidth(4.0f);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+        BufferBuilder bufferbuilder = tessellator.getBuilder();
         float arcFill = (level.getAverage() / MAX_LEVEL);
         drawArc(bufferbuilder, x, y, arcFill, 8, 0, 0, 0, 120);
 
-        GlStateManager.disableBlend();
+        GlStateManager._disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
         GlStateManager.enableDepth();
-        GlStateManager.enableLighting();
+        GlStateManager._enableLighting();
     }
 
     private static void drawHighlightColor(GuiContainer guiContainer, Slot s, CustomColor colour) {

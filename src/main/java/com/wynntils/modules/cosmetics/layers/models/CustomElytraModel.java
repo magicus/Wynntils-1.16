@@ -50,12 +50,12 @@ public class CustomElytraModel extends ModelBase {
         GlStateManager.disableCull();
 
         if (entityIn instanceof EntityLivingBase && ((EntityLivingBase)entityIn).isChild()) {
-            GlStateManager.pushMatrix();
+            GlStateManager._pushMatrix();
             GlStateManager.scale(0.5F, 0.5F, 0.5F);
             GlStateManager.translate(0.0F, 1.5F, -0.1F);
             this.leftWing.render(scale);
             this.rightWing.render(scale);
-            GlStateManager.popMatrix();
+            GlStateManager._popMatrix();
         }
         else {
             this.leftWing.render(scale);

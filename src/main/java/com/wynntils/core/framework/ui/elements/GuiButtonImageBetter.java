@@ -74,14 +74,14 @@ public class GuiButtonImageBetter extends GuiButtonImage {
         setColour(this.highlight && mouseX >= scaledStartX && mouseY >= scaledStartY && mouseX < scaledEndX && mouseY < scaledEndY, this.enabled);
 
         if (scaleFactor != 1f) {
-            GlStateManager.pushMatrix();
+            GlStateManager._pushMatrix();
             GlStateManager.translate(-scaleFromX, -scaleFromY, 0);
             GlStateManager.scale(scaleFactor, scaleFactor, 1);
             GlStateManager.translate(scaleFromX, scaleFromY, 0);
         }
         super.drawButton(mc, mouseX, mouseY, partialTicks);
         if (scaleFactor != 1f) {
-            GlStateManager.popMatrix();
+            GlStateManager._popMatrix();
         }
 
         setColour(false, true);

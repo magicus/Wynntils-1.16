@@ -91,7 +91,7 @@ public class CharacterSelectorUI extends Screen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         Tessellator tes = Tessellator.getInstance();
-        BufferBuilder builder = tes.getBuffer();
+        BufferBuilder builder = tes.getBuilder();
 
         this.mouseX = (int) (mouseX / scale);
         this.mouseY = (int) (mouseY / scale);
@@ -429,7 +429,7 @@ public class CharacterSelectorUI extends Screen {
     private void drawPlayer(int middleX) {
         {
             enableAlpha();
-            enableBlend();
+            _enableBlend();
         }
 
         InventoryScreen.drawEntityOnScreen(middleX, 210, 60, 0, 0, Minecraft.getInstance().player);
@@ -528,7 +528,7 @@ public class CharacterSelectorUI extends Screen {
 
     private void drawBackground(BufferBuilder builder, Tessellator tes) {
         {
-            enableBlend();
+            _enableBlend();
             color(1f, 1f, 1f, 1f);
         }
 
@@ -538,16 +538,16 @@ public class CharacterSelectorUI extends Screen {
             // original
             builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
             {
-                builder.pos(0, height, 0).tex(0, 1).endVertex();
-                builder.pos(width, height, 0).tex(1, 1).endVertex();
-                builder.pos(width, 0, 0).tex(1, 0).endVertex();
-                builder.pos(0, 0, 0).tex(0, 0).endVertex();
+                builder.vertex(0, height, 0).tex(0, 1).endVertex();
+                builder.vertex(width, height, 0).tex(1, 1).endVertex();
+                builder.vertex(width, 0, 0).tex(1, 0).endVertex();
+                builder.vertex(0, 0, 0).tex(0, 0).endVertex();
             }
-            tes.draw();
+            tes.end();
         }
 
         {
-            disableBlend();
+            _disableBlend();
             color(1f, 1f, 1f, 1f);
         }
     }

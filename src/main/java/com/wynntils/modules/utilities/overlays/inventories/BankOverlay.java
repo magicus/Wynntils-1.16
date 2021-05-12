@@ -130,17 +130,17 @@ public class BankOverlay implements Listener {
             s.putStack(new ItemStack(Blocks.SNOW_LAYER));
             ModCore.mc().getTextureManager().bind(COLUMN_ARROW);
 
-            GlStateManager.pushMatrix();
+            GlStateManager._pushMatrix();
             {
                 { // gl setting
                     GlStateManager.scale(1.1f, 1.1f, 1.1f);
                     GlStateManager.color(1f, 1f, 1f);
-                    GlStateManager.disableLighting();
+                    GlStateManager._disableLighting();
                 }
 
                 AbstractGui.drawModalRectWithCustomSizedTexture((int) ((e.getGui().getGuiLeft() + s.xPos - 8) / 1.1f) - 1, (int) ((e.getGui().getGuiTop() + s.yPos - 8) / 1.1f) - 1, 0, 0, 32, 32, 32, 32);
             }
-            GlStateManager.popMatrix();
+            GlStateManager._popMatrix();
         }
     }
 

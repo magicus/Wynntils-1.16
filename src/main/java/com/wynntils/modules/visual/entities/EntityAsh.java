@@ -88,8 +88,8 @@ public class EntityAsh extends FakeEntity {
         boolean thirdPerson = render.options.thirdPersonView == 2;
 
         { // setting up
-            depthMask(false);
-            enableBlend();
+            _depthMask(false);
+            _enableBlend();
             enableAlpha();
             disableTexture2D();
             color(1f, 1f, 1f, alpha);
@@ -105,22 +105,22 @@ public class EntityAsh extends FakeEntity {
         Textures.World.solid_color.bind();
 
         Tessellator tes = Tessellator.getInstance();
-        BufferBuilder buffer = tes.getBuffer();
+        BufferBuilder buffer = tes.getBuilder();
         { // drawing
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 
-            buffer.pos(-.5, .5, 0).tex(0, 1f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
-            buffer.pos(.5, .5, 0).tex(1f, 1f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
-            buffer.pos(.5, -.5, 0).tex(1f, 0f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
-            buffer.pos(-.5, -.5, 0).tex(0, 0f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
+            buffer.vertex(-.5, .5, 0).tex(0, 1f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
+            buffer.vertex(.5, .5, 0).tex(1f, 1f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
+            buffer.vertex(.5, -.5, 0).tex(1f, 0f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
+            buffer.vertex(-.5, -.5, 0).tex(0, 0f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
 
-            tes.draw();
+            tes.end();
         }
 
         { // reset to default
-            disableBlend();
+            _disableBlend();
             enableTexture2D();
-            depthMask(true);
+            _depthMask(true);
             color(1f, 1f, 1f, 1f);
         }
     }

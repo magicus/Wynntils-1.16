@@ -284,7 +284,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
             drawIcons(mouseX, mouseY, partialTicks);
         } else {
             createMask();
-            GlStateManager.enableBlend();
+            GlStateManager._enableBlend();
             wmIcon.drawScreen(mouseX, mouseY, partialTicks, getScaleFactor(), renderer);
             clearMask();
         }

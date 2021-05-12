@@ -68,7 +68,7 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
         playerRenderer.bind(rl);
 
         // rendering
-        { pushMatrix();
+        { _pushMatrix();
             this.playerRenderer.getMainModel().bipedBody.postRender(scale);
             translate(0.0F, 0.0F, 0.125F);
             if (player.isSneaking()) {
@@ -102,15 +102,15 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
             rotate(180.0F, 0.0F, 1.0F, 0.0F);
 
             enableAlpha();
-            enableBlend();
+            _enableBlend();
 
             // Find out size of cape
             int frameCount = info.getCosmetics().getImage().getHeight() / (info.getCosmetics().getImage().getWidth() / 2);
             renderModel(player, playerRenderer.getMainModel(), 0.0625f, frameCount);
 
-            disableBlend();
+            _disableBlend();
             disableAlpha();
-        } popMatrix();
+        } _popMatrix();
     }
 
     public boolean shouldCombineTextures() {

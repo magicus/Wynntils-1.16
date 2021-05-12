@@ -51,7 +51,7 @@ public class SmartFontRenderer extends FontRenderer {
             default:
                 GlStateManager.enableTexture2D();
                 GlStateManager.enableAlpha();
-                GlStateManager.enableBlend();
+                GlStateManager._enableBlend();
                 int colour = customColor.toInt();
                 posX = x;
                 posY = y;

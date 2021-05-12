@@ -134,19 +134,19 @@ public class LootRunPage extends QuestBookPage {
 
                         glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-                        enableBlend();
+                        _enableBlend();
                         enableTexture2D();
                         Tessellator tessellator = Tessellator.getInstance();
-                        BufferBuilder bufferbuilder = tessellator.getBuffer();
+                        BufferBuilder bufferbuilder = tessellator.getBuilder();
                         {
                             bufferbuilder.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_TEX);
 
-                            bufferbuilder.pos(mapX, mapY + mapHeight, 0).tex(minX, maxZ).endVertex();
-                            bufferbuilder.pos(mapX + mapWidth, mapY + mapHeight, 0).tex(maxX, maxZ).endVertex();
-                            bufferbuilder.pos(mapX + mapWidth, mapY, 0).tex(maxX, minZ).endVertex();
-                            bufferbuilder.pos(mapX, mapY, 0).tex(minX, minZ).endVertex();
+                            bufferbuilder.vertex(mapX, mapY + mapHeight, 0).tex(minX, maxZ).endVertex();
+                            bufferbuilder.vertex(mapX + mapWidth, mapY + mapHeight, 0).tex(maxX, maxZ).endVertex();
+                            bufferbuilder.vertex(mapX + mapWidth, mapY, 0).tex(maxX, minZ).endVertex();
+                            bufferbuilder.vertex(mapX, mapY, 0).tex(minX, minZ).endVertex();
 
-                            tessellator.draw();
+                            tessellator.end();
                         }
 
                         //render the line on the map
@@ -166,7 +166,7 @@ public class LootRunPage extends QuestBookPage {
 
                     //reset settings
                     disableAlpha();
-                    disableBlend();
+                    _disableBlend();
                     ScreenRenderer.disableScissorTest();
                     ScreenRenderer.clearMask();
                 }
@@ -232,7 +232,7 @@ public class LootRunPage extends QuestBookPage {
                             render.drawRectF(background_2, x + 9, y - 96 + currentY, x + 146, y - 87 + currentY);
                         }
 
-                        disableLighting();
+                        _disableLighting();
 
                         if (LootRunManager.getActivePathName() != null && LootRunManager.getActivePathName().equals(currentName)) {
                             hoveredText = Arrays.asList(TextFormatting.BOLD + names.get(i), TextFormatting.YELLOW + "Loaded", TextFormatting.GOLD + "Middle click to open lootrun in folder",  TextFormatting.GREEN + "Left click to unload this lootrun");

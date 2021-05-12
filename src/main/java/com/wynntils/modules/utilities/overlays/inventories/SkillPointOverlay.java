@@ -160,10 +160,10 @@ public class SkillPointOverlay implements Listener {
         if (!Utils.isCharacterInfoPage(e.getGui())) return;
 
         // draw name field
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
         GlStateManager.translate(0, 0, 500);
         if (nameField != null) nameField.drawTextBox();
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

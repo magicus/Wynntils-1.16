@@ -107,17 +107,17 @@ public class MainMenuButtons {
 
             boolean hasUpdate = hasUpdate();
 
-            GlStateManager.pushMatrix();
+            GlStateManager._pushMatrix();
 
             GlStateManager.translate(x + 2, y + 2, 0);
             GlStateManager.scale(0.5f, 0.5f, 0);
-            GlStateManager.enableBlend();
+            GlStateManager._enableBlend();
             drawModalRectWithCustomSizedTexture(0, 0, 0.0F, 0.0F, 32, 32, 32.0F, 32.0F);
             if (!hasUpdate) {
-                GlStateManager.disableBlend();
+                GlStateManager._disableBlend();
             }
 
-            GlStateManager.popMatrix();
+            GlStateManager._popMatrix();
 
             if (hasUpdate) {
                 Textures.UIs.main_menu.bind();
@@ -125,7 +125,7 @@ public class MainMenuButtons {
                 drawTexturedModalRect(x, y, 0, 0, 20, 20);
             }
 
-            GlStateManager.disableBlend();
+            GlStateManager._disableBlend();
         }
 
     }
@@ -141,7 +141,7 @@ public class MainMenuButtons {
         }
 
         private static void doAction() {
-            clickedWynncraftButton(Minecraft.getInstance(), getWynncraftServerData(Minecraft.getMinecraft()), null);
+            clickedWynncraftButton(Minecraft.getInstance(), getWynncraftServerData(Minecraft.getInstance()), null);
         }
     }
 

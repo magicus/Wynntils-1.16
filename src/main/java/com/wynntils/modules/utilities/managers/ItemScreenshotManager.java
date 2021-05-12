@@ -91,14 +91,14 @@ public class ItemScreenshotManager {
         float scalew = (float) gui.width/width;
 
         // draw tooltip to framebuffer, create image from it
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
         Framebuffer fb = new Framebuffer((int) (gui.width*(1/scalew)*2), (int) (gui.height*(1/scaleh)*2), true);
         fb.bindFramebuffer(false);
         GlStateManager.scale(scalew, scaleh, 1);
         drawTooltip(tooltip, gui.width/2, fr);
         BufferedImage bi = createScreenshot(width*2, height*2);
         fb.unbindFramebuffer();
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
 
         // copy to clipboard
         ClipboardImage ci = new ClipboardImage(bi);
@@ -124,7 +124,7 @@ public class ItemScreenshotManager {
     private static void drawTooltip(List<String> textLines, int maxTextWidth, FontRenderer font) {
         GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableLighting();
+        GlStateManager._disableLighting();
         GlStateManager.disableDepth();
         GlStateManager.color(1f, 1f, 1f, 1f);
         int tooltipTextWidth = 0;
@@ -200,7 +200,7 @@ public class ItemScreenshotManager {
             tooltipY += 10;
         }
 
-        GlStateManager.enableLighting();
+        GlStateManager._enableLighting();
         GlStateManager.enableDepth();
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableRescaleNormal();
@@ -217,22 +217,22 @@ public class ItemScreenshotManager {
         float endBlue    = (float)(endColor         & 255) / 255.0F;
 
         GlStateManager.disableTexture2D();
-        GlStateManager.enableBlend();
+        GlStateManager._enableBlend();
         GlStateManager.disableAlpha();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
 
         Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder buffer = tessellator.getBuffer();
+        BufferBuilder buffer = tessellator.getBuilder();
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        buffer.pos(right,    top, zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();
-        buffer.pos( left,    top, zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();
-        buffer.pos( left, bottom, zLevel).color(  endRed,   endGreen,   endBlue,   endAlpha).endVertex();
-        buffer.pos(right, bottom, zLevel).color(  endRed,   endGreen,   endBlue,   endAlpha).endVertex();
-        tessellator.draw();
+        buffer.vertex(right,    top, zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();
+        buffer.vertex( left,    top, zLevel).color(startRed, startGreen, startBlue, startAlpha).endVertex();
+        buffer.vertex( left, bottom, zLevel).color(  endRed,   endGreen,   endBlue,   endAlpha).endVertex();
+        buffer.vertex(right, bottom, zLevel).color(  endRed,   endGreen,   endBlue,   endAlpha).endVertex();
+        tessellator.end();
 
         GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager.disableBlend();
+        GlStateManager._disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
     }

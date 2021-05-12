@@ -86,7 +86,7 @@ public class UserManager {
                 }
 
                 // removes the texture from the texture registry as well
-                mc.getTextureManager().deleteTexture(next.getValue().getCosmetics().getLocation());
+                mc.getTextureManager().release(next.getValue().getCosmetics().getLocation());
 
                 it.remove();
             }

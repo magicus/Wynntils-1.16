@@ -38,8 +38,8 @@ public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
         float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;
 
 
-        pushMatrix();
-        enableBlend();
+        _pushMatrix();
+        _enableBlend();
         {
             rotate(f, 0.0F, 1.0F, 0.0F);
             rotate(f1, 1.0F, 0.0F, 0.0F);
@@ -51,11 +51,11 @@ public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
 
             renderModelR(player, playerRenderer.getMainModel(), 0.0625f);
         }
-        disableBlend();
-        popMatrix();
+        _disableBlend();
+        _popMatrix();
 
-        pushMatrix();
-        enableBlend();
+        _pushMatrix();
+        _enableBlend();
         {
             rotate(f, 0.0F, 1.0F, 0.0F);
             rotate(f1, 1.0F, 0.0F, 0.0F);
@@ -66,8 +66,8 @@ public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
 
             renderModelL(player, playerRenderer.getMainModel(), 0.0625f);
         }
-        disableBlend();
-        popMatrix();
+        _disableBlend();
+        _popMatrix();
     }
 
     public void renderModelL(AbstractClientPlayer player, ModelBase model, float scale) {

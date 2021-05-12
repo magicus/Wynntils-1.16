@@ -10,19 +10,19 @@ import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
 
-public class WynnRenderItem extends RenderItem {
+public class WynnRenderItem extends ItemRenderer {
 
     private static WynnRenderItem instance = null;
 
     public static void inject() {
         if (instance != null) throw new IllegalStateException("Wynntils item renderer has already been installed!");
         Minecraft mc = Minecraft.getInstance();
-        instance = new WynnRenderItem(mc.getRenderItem(), mc.renderEngine, mc.getItemColors());
+        instance = new WynnRenderItem(mc.getItemRenderer(), mc.renderEngine, mc.getItemColors());
         // the resource manager reload listener for the item renderer merely invalidates the cache of the held item model mesher
         // since we're inheriting the one from the original item renderer and also not unregistering it as a reload listener, we don't need to register our own renderer as a listener
         ReflectionFields.Minecraft_renderItem.setValue(mc, instance);
@@ -35,7 +35,7 @@ public class WynnRenderItem extends RenderItem {
 
     private static final int GUI_OVERLAY_WIDTH_THRESH = 16;
 
-    private WynnRenderItem(RenderItem parent, TextureManager texMan, ItemColors itemCols) {
+    private WynnRenderItem(ItemRenderer parent, TextureManager texMan, ItemColors itemCols) {
         super(texMan, parent.getItemModelMesher().getModelManager(), itemCols);
         ReflectionFields.RenderItem_itemModelMesher.setValue(this, ReflectionFields.RenderItem_itemModelMesher.getValue(parent));
     }
@@ -50,10 +50,10 @@ public class WynnRenderItem extends RenderItem {
         }
 
         super.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, "");
-        GlStateManager.disableLighting();
+        GlStateManager._disableLighting();
         GlStateManager.disableDepth();
-        GlStateManager.disableBlend();
-        GlStateManager.pushMatrix();
+        GlStateManager._disableBlend();
+        GlStateManager._pushMatrix();
 
         int width = ScreenRenderer.font.getStringWidth(event.getOverlayText());
         GlStateManager.translate(xPosition + 17f, yPosition + 9f, 0f);
@@ -66,10 +66,10 @@ public class WynnRenderItem extends RenderItem {
         ScreenRenderer.font.drawString(event.getOverlayText(), 0, 0, event.getOverlayTextColor(),
                 SmartFontRenderer.TextAlignment.RIGHT_LEFT, SmartFontRenderer.TextShadow.NORMAL);
 
-        GlStateManager.popMatrix();
-        GlStateManager.enableLighting();
+        GlStateManager._popMatrix();
+        GlStateManager._enableLighting();
         GlStateManager.enableDepth();
-        GlStateManager.enableBlend();
+        GlStateManager._enableBlend();
     }
 
 }

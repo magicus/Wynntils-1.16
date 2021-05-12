@@ -107,19 +107,19 @@ public class MiniMapOverlay extends Overlay {
             int option = MapConfig.INSTANCE.renderUsingLinear ? GL11.GL_LINEAR : GL11.GL_NEAREST;
             GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, option);
 
-            GlStateManager.enableBlend();
+            GlStateManager._enableBlend();
             GlStateManager.enableTexture2D();
             Tessellator tessellator = Tessellator.getInstance();
-            BufferBuilder bufferbuilder = tessellator.getBuffer();
+            BufferBuilder bufferbuilder = tessellator.getBuilder();
             {
                 bufferbuilder.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_TEX);
 
-                bufferbuilder.pos(position.getDrawingX() - extraSize, position.getDrawingY() + mapSize + extraSize, 0).tex(minX, maxZ).endVertex();
-                bufferbuilder.pos(position.getDrawingX() + mapSize + extraSize, position.getDrawingY() + mapSize + extraSize, 0).tex(maxX, maxZ).endVertex();
-                bufferbuilder.pos(position.getDrawingX() + mapSize + extraSize, position.getDrawingY() - extraSize, 0).tex(maxX, minZ).endVertex();
-                bufferbuilder.pos(position.getDrawingX() - extraSize, position.getDrawingY() - extraSize, 0).tex(minX, minZ).endVertex();
+                bufferbuilder.vertex(position.getDrawingX() - extraSize, position.getDrawingY() + mapSize + extraSize, 0).tex(minX, maxZ).endVertex();
+                bufferbuilder.vertex(position.getDrawingX() + mapSize + extraSize, position.getDrawingY() + mapSize + extraSize, 0).tex(maxX, maxZ).endVertex();
+                bufferbuilder.vertex(position.getDrawingX() + mapSize + extraSize, position.getDrawingY() - extraSize, 0).tex(maxX, minZ).endVertex();
+                bufferbuilder.vertex(position.getDrawingX() - extraSize, position.getDrawingY() - extraSize, 0).tex(minX, minZ).endVertex();
 
-                tessellator.draw();
+                tessellator.end();
             }
 
 
@@ -165,7 +165,7 @@ public class MiniMapOverlay extends Overlay {
                     if (MapConfig.INSTANCE.followPlayerRotation) {
                         // Rotate dx and dz
                         if (followRotation = c.followRotation()) {
-                            GlStateManager.pushMatrix();
+                            GlStateManager._pushMatrix();
                             Point drawingOrigin = MiniMapOverlay.drawingOrigin();
                             GlStateManager.translate(drawingOrigin.x + halfMapSize, drawingOrigin.y + halfMapSize, 0);
                             GlStateManager.rotate(180 - mc.player.rotationYaw, 0, 0, 1);
@@ -179,7 +179,7 @@ public class MiniMapOverlay extends Overlay {
 
                     c.renderAt(this, dx + halfMapSize, dz + halfMapSize, sizeMultiplier, scaleFactor);
                     if (followRotation) {
-                        GlStateManager.popMatrix();
+                        GlStateManager._popMatrix();
                     }
                 };
 
@@ -241,14 +241,14 @@ public class MiniMapOverlay extends Overlay {
 
                         Point drawingOrigin = MiniMapOverlay.drawingOrigin();
 
-                        GlStateManager.pushMatrix();
+                        GlStateManager._pushMatrix();
                         GlStateManager.translate(drawingOrigin.x + dx, drawingOrigin.y + dz, 0);
                         GlStateManager.rotate(angle, 0, 0, 1);
                         GlStateManager.translate(-drawingOrigin.x - dx, -drawingOrigin.y - dz, 0);
 
                         MapCompassIcon.pointer.renderAt(this, dx, dz, sizeMultiplier, 1f);
 
-                        GlStateManager.popMatrix();
+                        GlStateManager._popMatrix();
 
                         if (MapConfig.INSTANCE.compassDistanceType == MapConfig.DistanceMarkerType.ALWAYS ||
                                 MapConfig.INSTANCE.compassDistanceType == MapConfig.DistanceMarkerType.OFF_MAP)
@@ -263,7 +263,7 @@ public class MiniMapOverlay extends Overlay {
             }
 
             GlStateManager.disableAlpha();
-            GlStateManager.disableBlend();
+            GlStateManager._disableBlend();
             disableScissorTest();
             clearMask();
 

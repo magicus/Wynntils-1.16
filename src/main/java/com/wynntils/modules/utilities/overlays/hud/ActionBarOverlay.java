@@ -136,12 +136,12 @@ public class ActionBarOverlay extends Overlay {
             }
 
             if (k > 0) {
-                GlStateManager.pushMatrix();
-                GlStateManager.enableBlend();
+                GlStateManager._pushMatrix();
+                GlStateManager._enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 ScreenRenderer.mc.font.drawStringWithShadow(s, (float) i, (float) j, 16777215 + (k << 24));
-                GlStateManager.disableBlend();
-                GlStateManager.popMatrix();
+                GlStateManager._disableBlend();
+                GlStateManager._popMatrix();
                 return true;
             }
         }

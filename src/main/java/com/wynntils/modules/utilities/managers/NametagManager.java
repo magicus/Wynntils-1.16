@@ -182,7 +182,7 @@ public class NametagManager {
     }
 
     private static void drawBadge(ProfessionType profession, int tier, float x, float y, float z, double horizontalShift, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal, boolean isSneaking) {
-        pushMatrix();
+        _pushMatrix();
         {
             ScreenRenderer.beginGL(0, 0);
             {
@@ -191,8 +191,8 @@ public class NametagManager {
                 rotate(-viewerYaw, 0f, 1f, 0f);
                 rotate((float) (isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
                 scale(-0.025F, -0.025F, 0.025F);
-                disableLighting();
-                depthMask(true);
+                _disableLighting();
+                _depthMask(true);
                 color(1.0f, 1.0f, 1.0f, 1.0f);
 
                 AssetsTexture texture = Textures.World.leaderboard_badges;
@@ -204,22 +204,22 @@ public class NametagManager {
                 // draws the box
                 texture.bind();
                 Tessellator tesselator = Tessellator.getInstance();
-                BufferBuilder vertexBuffer = tesselator.getBuffer();
+                BufferBuilder vertexBuffer = tesselator.getBuilder();
                 {
                     vertexBuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-                    vertexBuffer.pos(-9.5 - horizontalShift, -8.5 + verticalShift, 0).tex(texMinX, texMinY).endVertex();
-                    vertexBuffer.pos(-9.5 - horizontalShift, +8.5 + verticalShift, 0).tex(texMinX, texMaxY).endVertex();
-                    vertexBuffer.pos(+9.5 - horizontalShift, +8.5 + verticalShift, 0).tex(texMaxX, texMaxY).endVertex();
-                    vertexBuffer.pos(+9.5 - horizontalShift, -8.5 + verticalShift, 0).tex(texMaxX, texMinY).endVertex();
+                    vertexBuffer.vertex(-9.5 - horizontalShift, -8.5 + verticalShift, 0).tex(texMinX, texMinY).endVertex();
+                    vertexBuffer.vertex(-9.5 - horizontalShift, +8.5 + verticalShift, 0).tex(texMinX, texMaxY).endVertex();
+                    vertexBuffer.vertex(+9.5 - horizontalShift, +8.5 + verticalShift, 0).tex(texMaxX, texMaxY).endVertex();
+                    vertexBuffer.vertex(+9.5 - horizontalShift, -8.5 + verticalShift, 0).tex(texMaxX, texMinY).endVertex();
                 }
                 tesselator.draw();
 
                 enableDepth();
-                enableLighting();
-                disableBlend();
+                _enableLighting();
+                _disableBlend();
             }
         }
-        popMatrix();
+        _popMatrix();
     }
 
     /**
@@ -228,7 +228,7 @@ public class NametagManager {
     private static void drawNametag(String input, CustomColor color, float x, float y, float z, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal, boolean isSneaking, float scale) {
         FontRenderer font = Minecraft.getInstance().font;  // since our fontrender ignores bold or italic texts we need to use the mc one
 
-        pushMatrix();
+        _pushMatrix();
         {
             if (scale != 1) scale(scale, scale, scale);
             verticalShift = (int)(verticalShift/scale);
@@ -241,8 +241,8 @@ public class NametagManager {
                 rotate(-viewerYaw, 0.0F, 1.0F, 0.0F);
                 rotate((float) (isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
                 scale(-0.025F, -0.025F, 0.025F);
-                disableLighting();
-                depthMask(false);
+                _disableLighting();
+                _depthMask(false);
 
                 // disable depth == will be visible through walls
                 if (!isSneaking && !UtilitiesConfig.INSTANCE.hideNametags) {
@@ -253,7 +253,7 @@ public class NametagManager {
 
                 // Nametag Box
                 if (!UtilitiesConfig.INSTANCE.hideNametagBox) {
-                    enableBlend();
+                    _enableBlend();
                     tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                     disableTexture2D();
                     Tessellator tesselator = Tessellator.getInstance();
@@ -263,19 +263,19 @@ public class NametagManager {
                     float b = color == null ? 0 : color.b;  // blue
 
                     // draws the box
-                    BufferBuilder vertexBuffer = tesselator.getBuffer();
+                    BufferBuilder vertexBuffer = tesselator.getBuilder();
                     {
                         vertexBuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-                        vertexBuffer.pos(-middlePos - 1, -1 + verticalShift, 0.0D).color(r, g, b, 0.25F).endVertex();
-                        vertexBuffer.pos(-middlePos - 1, 8 + verticalShift, 0.0D).color(r, g, b, 0.25F).endVertex();
-                        vertexBuffer.pos(middlePos + 1, 8 + verticalShift, 0.0D).color(r, g, b, 0.25F).endVertex();
-                        vertexBuffer.pos(middlePos + 1, -1 + verticalShift, 0.0D).color(r, g, b, 0.25F).endVertex();
+                        vertexBuffer.vertex(-middlePos - 1, -1 + verticalShift, 0.0D).color(r, g, b, 0.25F).endVertex();
+                        vertexBuffer.vertex(-middlePos - 1, 8 + verticalShift, 0.0D).color(r, g, b, 0.25F).endVertex();
+                        vertexBuffer.vertex(middlePos + 1, 8 + verticalShift, 0.0D).color(r, g, b, 0.25F).endVertex();
+                        vertexBuffer.vertex(middlePos + 1, -1 + verticalShift, 0.0D).color(r, g, b, 0.25F).endVertex();
                     }
                     tesselator.draw();
                     enableTexture2D();
                 }
 
-                depthMask(true);
+                _depthMask(true);
 
                 // draws the label
                 if (!isSneaking && color != null) {
@@ -296,13 +296,13 @@ public class NametagManager {
 
                 // returns back to normal
                 enableDepth();
-                enableLighting();
-                disableBlend();
+                _enableLighting();
+                _disableBlend();
                 color(1.0f, 1.0f, 1.0f, 1.0f);
             }
             ScreenRenderer.endGL();
         }
-        popMatrix();
+        _popMatrix();
     }
 
     /**

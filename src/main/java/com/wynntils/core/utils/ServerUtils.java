@@ -111,7 +111,7 @@ public class ServerUtils {
     }
 
     public static ServerData getWynncraftServerData(boolean addNew) {
-        return getWynncraftServerData(new ServerList(Minecraft.getMinecraft()), addNew, Reference.ServerIPS.GAME);
+        return getWynncraftServerData(new ServerList(Minecraft.getInstance()), addNew, Reference.ServerIPS.GAME);
     }
 
     public static ServerData getWynncraftServerData(ServerList serverList, boolean addNew) {
@@ -147,7 +147,7 @@ public class ServerUtils {
     }
 
     public static ServerData changeServerIP(ServerData serverData, String newIp, String defaultName) {
-        return changeServerIP(new ServerList(Minecraft.getMinecraft()), serverData, newIp, defaultName);
+        return changeServerIP(new ServerList(Minecraft.getInstance()), serverData, newIp, defaultName);
     }
 
     /**

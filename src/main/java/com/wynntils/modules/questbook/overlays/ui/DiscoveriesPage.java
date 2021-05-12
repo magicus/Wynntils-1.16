@@ -212,7 +212,7 @@ public class DiscoveriesPage extends QuestBookPage {
 
                         overDiscovery = selected;
                         hoveredText = lore;
-                        GlStateManager.disableLighting();
+                        GlStateManager._disableLighting();
                     } else {
                         if (this.selected == i) {
                             animationCompleted = false;

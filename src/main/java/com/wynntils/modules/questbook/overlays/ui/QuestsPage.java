@@ -137,7 +137,7 @@ public class QuestsPage extends QuestBookPage {
 
                         overQuest = selected;
                         hoveredText = lore;
-                        GlStateManager.disableLighting();
+                        GlStateManager._disableLighting();
                     } else {
                         if (this.selected == i) {
                             animationCompleted = false;

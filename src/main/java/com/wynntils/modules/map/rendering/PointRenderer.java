@@ -50,7 +50,7 @@ public class PointRenderer {
         }
 
         GlStateManager.disableCull();
-        GlStateManager.enableBlend();
+        GlStateManager._enableBlend();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
         texture.bind();
@@ -183,13 +183,13 @@ public class PointRenderer {
         }
 
         GlStateManager.enableCull();
-        GlStateManager.disableBlend();
+        GlStateManager._disableBlend();
         GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
     public static void drawTexturedLine(Texture texture, Point3d start, Point3d end, CommonColors color, float width) {
         GlStateManager.disableCull();
-        GlStateManager.enableBlend();
+        GlStateManager._enableBlend();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
         color.applyColor();
 
@@ -198,7 +198,7 @@ public class PointRenderer {
         drawTexturedLine(start, end, width);
 
         GlStateManager.enableCull();
-        GlStateManager.disableBlend();
+        GlStateManager._disableBlend();
         GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
@@ -231,20 +231,20 @@ public class PointRenderer {
         Vec3d p4 = endVec.subtract(scaled);
 
         Tessellator tess = Tessellator.getInstance();
-        BufferBuilder buffer = tess.getBuffer();
+        BufferBuilder buffer = tess.getBuilder();
 
         { buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_TEX);
 
-            buffer.pos(p1.x - renderManager.viewerPosX, p1.y - renderManager.viewerPosY, p1.z - renderManager.viewerPosZ)
+            buffer.vertex(p1.x - renderManager.viewerPosX, p1.y - renderManager.viewerPosY, p1.z - renderManager.viewerPosZ)
                     .tex(0f, 0f).endVertex();
-            buffer.pos(p3.x - renderManager.viewerPosX, p3.y - renderManager.viewerPosY, p3.z - renderManager.viewerPosZ)
+            buffer.vertex(p3.x - renderManager.viewerPosX, p3.y - renderManager.viewerPosY, p3.z - renderManager.viewerPosZ)
                     .tex(1f, 0f).endVertex();
-            buffer.pos(p4.x - renderManager.viewerPosX, p4.y - renderManager.viewerPosY, p4.z - renderManager.viewerPosZ)
+            buffer.vertex(p4.x - renderManager.viewerPosX, p4.y - renderManager.viewerPosY, p4.z - renderManager.viewerPosZ)
                     .tex(1f, 1f).endVertex();
-            buffer.pos(p2.x - renderManager.viewerPosX, p2.y - renderManager.viewerPosY, p2.z - renderManager.viewerPosZ)
+            buffer.vertex(p2.x - renderManager.viewerPosX, p2.y - renderManager.viewerPosY, p2.z - renderManager.viewerPosZ)
                     .tex(0f, 1f).endVertex();
 
-        } tess.draw();
+        } tess.end();
     }
 
     public static void drawLines(Long2ObjectMap<List<List<LootRunPath.LootRunPathLocation>>> locations, CustomColor color) {
@@ -264,15 +264,15 @@ public class PointRenderer {
         RenderManager renderManager = Minecraft.getInstance().getRenderManager();
 
         GlStateManager.glLineWidth(3f);
-        GlStateManager.depthMask(false);
-        GlStateManager.enableBlend();
+        GlStateManager._depthMask(false);
+        GlStateManager._enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
         Tessellator tess = Tessellator.getInstance();
-        BufferBuilder buffer = tess.getBuffer();
+        BufferBuilder buffer = tess.getBuilder();
 
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
         GlStateManager.translate(-renderManager.viewerPosX, -renderManager.viewerPosY, -renderManager.viewerPosZ);
 
         {
@@ -319,7 +319,7 @@ public class PointRenderer {
                                     for (LootRunPath.LootRunPathLocation location : toRender) {
                                         Location rawLocation = location.getLocation();
                                         CustomColor locationColor = color == CommonColors.RAINBOW ? location.getColor() : color;
-                                        buffer.pos(rawLocation.x, rawLocation.y, rawLocation.z).color(locationColor.r, locationColor.g, locationColor.b, 1f).endVertex();
+                                        buffer.vertex(rawLocation.x, rawLocation.y, rawLocation.z).color(locationColor.r, locationColor.g, locationColor.b, 1f).endVertex();
                                     }
                                     toRender.clear();
                                 } else if (barrier) {
@@ -347,9 +347,9 @@ public class PointRenderer {
                                 }
                                 Location rawLocation = loc.getLocation();
                                 CustomColor locationColor = color == CommonColors.RAINBOW ? loc.getColor() : color;
-                                buffer.pos(rawLocation.x, rawLocation.y, rawLocation.z).color(locationColor.r, locationColor.g, locationColor.b, 1f).endVertex();
+                                buffer.vertex(rawLocation.x, rawLocation.y, rawLocation.z).color(locationColor.r, locationColor.g, locationColor.b, 1f).endVertex();
                             } else if (!disabled) {
-                                tess.draw();
+                                tess.end();
                                 disabled = true;
                             }
                         }
@@ -357,20 +357,20 @@ public class PointRenderer {
                             for (LootRunPath.LootRunPathLocation location : toRender) {
                                 Location rawLocation = location.getLocation();
                                 CustomColor locationColor = color == CommonColors.RAINBOW ? location.getColor() : color;
-                                buffer.pos(rawLocation.x, rawLocation.y, rawLocation.z).color(locationColor.r, locationColor.g, locationColor.b, 1f).endVertex();
+                                buffer.vertex(rawLocation.x, rawLocation.y, rawLocation.z).color(locationColor.r, locationColor.g, locationColor.b, 1f).endVertex();
                             }
-                            tess.draw();
+                            tess.end();
                         }
                     }
                 }
             }
         }
 
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
 
-        GlStateManager.disableBlend();
+        GlStateManager._disableBlend();
         GlStateManager.enableTexture2D();
-        GlStateManager.depthMask(true);
+        GlStateManager._depthMask(true);
         GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
@@ -385,21 +385,21 @@ public class PointRenderer {
             point.getZ() - renderManager.viewerPosZ
         );
 
-        GlStateManager.pushMatrix();
+        GlStateManager._pushMatrix();
 
         GlStateManager.glLineWidth(3f);
-        GlStateManager.depthMask(false);
-        GlStateManager.enableBlend();
+        GlStateManager._depthMask(false);
+        GlStateManager._enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
         WorldRenderer.drawBoundingBox(c.x, c.y, c.z, c.x + 1, c.y + 1, c.z + 1, color.r, color.g, color.b, color.a);
 
-        GlStateManager.disableBlend();
+        GlStateManager._disableBlend();
         GlStateManager.enableTexture2D();
-        GlStateManager.depthMask(true);
+        GlStateManager._depthMask(true);
 
-        GlStateManager.popMatrix();
+        GlStateManager._popMatrix();
     }
 
 }
