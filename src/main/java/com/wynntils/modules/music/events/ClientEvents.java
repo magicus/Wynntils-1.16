@@ -110,7 +110,7 @@ public class ClientEvents implements Listener {
                 !chest.getLowerInv().getName().contains("Daily Rewards") &&
                 !chest.getLowerInv().getName().contains("Objective Rewards")) return;
 
-        int size = Math.min(chest.getLowerInv().getSizeInventory(), e.getPacket().getItemStacks().size());
+        int size = Math.min(chest.getLowerInv().getContainerSize(), e.getPacket().getItemStacks().size());
         for (int i = 0; i < size; i++) {
             ItemStack stack = e.getPacket().getItemStacks().get(i);
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;

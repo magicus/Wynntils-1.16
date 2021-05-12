@@ -13,10 +13,10 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
@@ -30,22 +30,22 @@ public class ItemUtils {
     private static final Pattern LEVEL_PATTERN = Pattern.compile("(?:Combat|Crafting|Mining|Woodcutting|Farming|Fishing) Lv\\. Min: ([0-9]+)");
     private static final Pattern LEVEL_RANGE_PATTERN = Pattern.compile("Lv\\. Range: " + TextFormatting.WHITE.toString() + "([0-9]+)-([0-9]+)");
 
-    public static final NBTTagCompound UNBREAKABLE = new NBTTagCompound();
+    public static final CompoundNBT UNBREAKABLE = new CompoundNBT();
 
     /**
      * Get the lore NBT tag from an item
      */
-    public static NBTTagList getLoreTag(ItemStack item) {
+    public static ListNBT getLoreTag(ItemStack item) {
         if (item.isEmpty()) return null;
-        NBTTagCompound display = item.getSubCompound("display");
-        if (display == null || !display.hasKey("Lore")) return null;
+        CompoundNBT display = item.getTagElement("display");
+        if (display == null || !display.contains("Lore")) return null;
 
-        NBTBase loreBase = display.getTag("Lore");
-        NBTTagList lore;
+        INBT loreBase = display.get("Lore");
+        ListNBT lore;
         if (loreBase.getId() != 9) return null;
 
-        lore = (NBTTagList) loreBase;
-        if (lore.getTagType() != 8) return null;
+        lore = (ListNBT) loreBase;
+        if (lore.getType() != ListNBT.TYPE) return null;
 
         return lore;
     }
@@ -56,13 +56,13 @@ public class ItemUtils {
      * @return an {@link List} containing all item lore
      */
     public static List<String> getLore(ItemStack item) {
-        NBTTagList loreTag = getLoreTag(item);
+        ListNBT loreTag = getLoreTag(item);
 
         List<String> lore = new ArrayList<>();
         if (loreTag == null) return lore;
 
-        for (int i = 0; i < loreTag.tagCount(); ++i) {
-            lore.add(loreTag.getStringTagAt(i));
+        for (int i = 0; i < loreTag.size(); ++i) {
+            lore.add(loreTag.getString(i));
         }
 
         return lore;
@@ -75,13 +75,13 @@ public class ItemUtils {
      * @param lore
      */
     public static void replaceLore(ItemStack stack, List<String> lore) {
-        NBTTagCompound nbt = stack.getTagCompound();
-        NBTTagCompound display = nbt.getCompoundTag("display");
-        NBTTagList tag = new NBTTagList();
-        lore.forEach(s -> tag.appendTag(new NBTTagString(s)));
-        display.setTag("Lore", tag);
-        nbt.setTag("display", display);
-        stack.setTagCompound(nbt);
+        CompoundNBT nbt = stack.getTag();
+        CompoundNBT display = nbt.getCompound("display");
+        ListNBT tag = new ListNBT();
+        lore.forEach(s -> tag.add(StringNBT.valueOf(s)));
+        display.put("Lore", tag);
+        nbt.put("display", display);
+        stack.setTag(nbt);
     }
 
     /**
@@ -91,13 +91,13 @@ public class ItemUtils {
      * @return A List containing all item lore without formatting codes
      */
     public static List<String> getUnformattedLore(ItemStack item) {
-        NBTTagList loreTag = getLoreTag(item);
+        ListNBT loreTag = getLoreTag(item);
 
         List<String> lore = new ArrayList<>();
         if (loreTag == null) return lore;
 
-        for (int i = 0; i < loreTag.tagCount(); ++i) {
-            lore.add(TextFormatting.getTextWithoutFormattingCodes(loreTag.getStringTagAt(i)));
+        for (int i = 0; i < loreTag.size(); ++i) {
+            lore.add(TextFormatting.getTextWithoutFormattingCodes(loreTag.getString(i)));
         }
 
         return lore;
@@ -148,8 +148,8 @@ public class ItemUtils {
 
         int money = 0;
 
-        for (int i = 0, len = inv.getSizeInventory(); i < len; i++) {
-            ItemStack it = inv.getStackInSlot(i);
+        for (int i = 0, len = inv.getContainerSize(); i < len; i++) {
+            ItemStack it = inv.getItem(i);
             if (it.isEmpty()) continue;
 
             if (it.getItem() == Items.EMERALD && it.getDisplayName().equals(TextFormatting.GREEN + "Emerald")) {

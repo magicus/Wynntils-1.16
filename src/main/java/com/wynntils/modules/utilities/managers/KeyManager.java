@@ -79,7 +79,7 @@ public class KeyManager {
             ClientPlayerEntity player = Minecraft.getInstance().player;
             player.connection.sendPacket(new CPacketClickWindow(
                     player.inventoryContainer.windowId,
-                    13, 0, ClickType.PICKUP, player.inventory.getStackInSlot(13),
+                    13, 0, ClickType.PICKUP, player.inventory.getItem(13),
                     player.inventoryContainer.getNextTransactionID(player.inventory)
             ));
         });

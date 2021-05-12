@@ -49,8 +49,8 @@ import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.network.play.server.SPacketEntityMetadata;
@@ -390,12 +390,12 @@ public class ClientEvents implements Listener {
         ItemStack stack = slot.getStack();
         if (stack.getItem() == Item.getItemFromBlock(Blocks.SNOW_LAYER) || stack.getItem() == Items.CLOCK) {
             // There's no chest, create a clock with timer as lore
-            NBTTagCompound nbt = new NBTTagCompound();
+            CompoundNBT nbt = new CompoundNBT();
             ItemStack newStack = new ItemStack(Items.CLOCK);
-            NBTTagCompound display = nbt.getCompoundTag("display");
-            display.setTag("Name", new NBTTagString("" + TextFormatting.GREEN + "Daily Reward Countdown"));
-            nbt.setTag("display", display);
-            newStack.setTagCompound(nbt);
+            CompoundNBT display = nbt.getCompound("display");
+            display.put("Name", StringNBT.valueOf("" + TextFormatting.GREEN + "Daily Reward Countdown"));
+            nbt.put("display", display);
+            newStack.setTag(nbt);
 
             List<String> lore = new LinkedList<>();
             lore.add("");
@@ -429,7 +429,7 @@ public class ClientEvents implements Listener {
             }
 
             PlayerStatsProfile profile = WebManager.getPlayerProfile();
-            PlayerStatsProfile.PlayerTag playerRank = profile != null ? profile.getTag() : PlayerStatsProfile.PlayerTag.NONE;
+            PlayerStatsProfile.PlayerTag playerRank = profile != null ? profile.get() : PlayerStatsProfile.PlayerTag.NONE;
 
             newLore.add("");
             newLore.add(TextFormatting.GOLD + "Daily Objective");
@@ -495,8 +495,8 @@ public class ClientEvents implements Listener {
                 if (inv.getDisplayName().getUnformattedText().contains("Loot Chest") ||
                         inv.getDisplayName().getUnformattedText().contains("Daily Rewards") ||
                         inv.getDisplayName().getUnformattedText().contains("Objective Rewards")) {
-                    for (int i = 0; i < inv.getSizeInventory(); i++) {
-                        ItemStack stack = inv.getStackInSlot(i);
+                    for (int i = 0; i < inv.getContainerSize(); i++) {
+                        ItemStack stack = inv.getItem(i);
                         if (!stack.hasCustomHoverName() ||
                             !stack.getDisplayName().startsWith(TextFormatting.DARK_PURPLE.toString()) ||
                             !ItemUtils.getStringLore(stack).toLowerCase().contains("mythic")) continue;
@@ -661,10 +661,10 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void clickOnChest(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getSlotIn() != null) {
-            if (e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() >= 0 && e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() < 27) {
-                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() + 9, Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
+            if (e.getSlotId() - e.getGui().getLowerInv().getContainerSize() >= 0 && e.getSlotId() - e.getGui().getLowerInv().getContainerSize() < 27) {
+                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() + 9, Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
             } else {
-                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() - 27, Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
+                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() - 27, Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
             }
         }
 
@@ -751,7 +751,7 @@ public class ClientEvents implements Listener {
         if (e.getPacket().getSlot() != Minecraft.getInstance().player.inventory.currentItem + 36) return;
 
         InventoryPlayer inventory = Minecraft.getInstance().player.inventory;
-        ItemStack oldStack = inventory.getStackInSlot(e.getPacket().getSlot() - 36);
+        ItemStack oldStack = inventory.getItem(e.getPacket().getSlot() - 36);
         ItemStack newStack = e.getPacket().getStack();
 
         if (lastWasDrop) {

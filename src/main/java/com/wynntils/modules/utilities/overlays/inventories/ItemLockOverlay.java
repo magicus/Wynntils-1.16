@@ -36,7 +36,7 @@ public class ItemLockOverlay implements Listener {
         if (!Reference.onWorld) return;
 
         for (Slot s : e.getGui().inventorySlots.inventorySlots) {
-            if (s.slotNumber < e.getGui().getLowerInv().getSizeInventory()) continue;
+            if (s.slotNumber < e.getGui().getLowerInv().getContainerSize()) continue;
 
             renderItemLock(s, e.getGui().getGuiLeft(), e.getGui().getGuiTop());
         }
@@ -47,7 +47,7 @@ public class ItemLockOverlay implements Listener {
         if (!Reference.onWorld) return;
 
         for (Slot s : e.getGui().inventorySlots.inventorySlots) {
-            if (s.slotNumber < e.getGui().getUpperInv().getSizeInventory()) continue; // it's upper in horse!
+            if (s.slotNumber < e.getGui().getUpperInv().getContainerSize()) continue; // it's upper in horse!
 
             renderItemLock(s, e.getGui().getGuiLeft(), e.getGui().getGuiTop());
         }

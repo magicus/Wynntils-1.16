@@ -135,7 +135,7 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void updateQuestBook(TickEvent.ClientTickEvent e) {
         if (e.phase == TickEvent.Phase.START || !Reference.onWorld || Reference.onNether || Reference.onWars || Minecraft.getInstance().player.inventory == null) return;
-        if (Minecraft.getInstance().player.inventory.getStackInSlot(7).isEmpty() || Minecraft.getInstance().player.inventory.getStackInSlot(7).getItem() != Items.WRITTEN_BOOK) return;
+        if (Minecraft.getInstance().player.inventory.getItem(7).isEmpty() || Minecraft.getInstance().player.inventory.getItem(7).getItem() != Items.WRITTEN_BOOK) return;
 
         if (!openQuestBook) return;
         openQuestBook = false;

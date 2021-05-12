@@ -48,7 +48,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
         this.parent = parent;
         this.spMenu = spMenu;
         this.inventory = inventory;
-        this.inventoryRows = inventory.getSizeInventory() / 9;
+        this.inventoryRows = inventory.getContainerSize() / 9;
         this.ySize = this.inventoryRows * 18;
     }
 

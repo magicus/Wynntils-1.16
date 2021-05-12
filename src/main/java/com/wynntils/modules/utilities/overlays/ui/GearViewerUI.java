@@ -340,8 +340,8 @@ public class GearViewerUI extends FakeGuiContainer {
 
     private void copyInventory(InventoryPlayer destination, InventoryPlayer source) {
         // create deep copy of inventory
-        for (int i = 0; i < source.getSizeInventory(); i++) {
-            destination.setInventorySlotContents(i, source.getStackInSlot(i).copy());
+        for (int i = 0; i < source.getContainerSize(); i++) {
+            destination.setInventorySlotContents(i, source.getItem(i).copy());
         }
     }
 

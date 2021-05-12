@@ -121,13 +121,13 @@ public class OverlayEvents implements Listener {
                 if (tickcounter % (int) (OverlayConfig.GameUpdate.GameUpdateInventoryMessages.INSTANCE.inventoryUpdateRate * 20f) == 0) {
                     IInventory inv = Minecraft.getInstance().player.inventory;
                     int itemCounter = 0;
-                    for (int i = 0; i < inv.getSizeInventory(); i++) {
-                        if (!inv.getStackInSlot(i).isEmpty()) {
+                    for (int i = 0; i < inv.getContainerSize(); i++) {
+                        if (!inv.getItem(i).isEmpty()) {
                             itemCounter++;
                         }
                     }
 
-                    if (itemCounter == inv.getSizeInventory() - 1) {
+                    if (itemCounter == inv.getContainerSize() - 1) {
                         GameUpdateOverlay.queueMessage(OverlayConfig.GameUpdate.GameUpdateInventoryMessages.INSTANCE.inventoryMessageFormat);
                     }
 

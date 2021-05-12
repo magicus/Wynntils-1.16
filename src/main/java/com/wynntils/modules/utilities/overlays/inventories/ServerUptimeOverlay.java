@@ -11,9 +11,9 @@ import com.wynntils.core.utils.ItemUtils;
 import com.wynntils.modules.utilities.managers.ServerListManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -28,20 +28,20 @@ public class ServerUptimeOverlay implements Listener {
 
         ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
         if (!ItemUtils.getStringLore(stack).contains("Click to join") || stack.getItem() == Items.CLOCK) return;
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt.hasKey("wynntils")) return;
+        CompoundNBT nbt = stack.getTag();
+        if (nbt.contains("wynntils")) return;
 
         String world = "WC" + stack.getCount();
 
         List<String> newLore = ItemUtils.getLore(stack);
         newLore.add(TextFormatting.DARK_GREEN + "Uptime: " + TextFormatting.GREEN + ServerListManager.getUptime(world));
 
-        NBTTagCompound compound = nbt.getCompoundTag("display");
-        NBTTagList list = new NBTTagList();
+        CompoundNBT compound = nbt.getCompound("display");
+        ListNBT list = new ListNBT();
 
-        newLore.forEach(c -> list.appendTag(new NBTTagString(c)));
+        newLore.forEach(c -> list.add(StringNBT.valueOf(c)));
 
-        compound.setTag("Lore", list);
+        compound.put("Lore", list);
         nbt.setBoolean("wynntils", true);
     }
 

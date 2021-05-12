@@ -33,7 +33,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
@@ -304,10 +304,10 @@ public class ItemPage extends QuestBookPage {
                 ItemType.NECKLACE, ItemType.RING, ItemType.BRACELET);
 
         static {
-            relikIcon.setTagCompound(ItemType.RELIK.getNBT());
-            ringsIcon.setTagCompound(ItemType.RING.getNBT());
-            necklaceIcon.setTagCompound(ItemType.NECKLACE.getNBT());
-            braceletsIcon.setTagCompound(ItemType.BRACELET.getNBT());
+            relikIcon.setTag(ItemType.RELIK.getNBT());
+            ringsIcon.setTag(ItemType.RING.getNBT());
+            necklaceIcon.setTag(ItemType.NECKLACE.getNBT());
+            braceletsIcon.setTag(ItemType.BRACELET.getNBT());
         }
 
         private final Set<ItemType> allowedTypes = EnumSet.allOf(ItemType.class);
@@ -763,18 +763,18 @@ public class ItemPage extends QuestBookPage {
 
         static {
             SCROLL_STACK.setItemDamage(42);
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
             tag.setBoolean("Unbreakable", true);
             tag.setInteger("HideFlags", 6);
-            SCROLL_STACK.setTagCompound(tag);
+            SCROLL_STACK.setTag(tag);
 
-            tag = new NBTTagCompound();
+            tag = new CompoundNBT();
             tag.setInteger("CustomPotionColor", 0xff0000);
-            RED_POTION_STACK.setTagCompound(tag);
+            RED_POTION_STACK.setTag(tag);
 
-            tag = new NBTTagCompound();
+            tag = new CompoundNBT();
             tag.setInteger("CustomPotionColor", 0x0000ff);
-            BLUE_POTION_STACK.setTagCompound(tag);
+            BLUE_POTION_STACK.setTag(tag);
         }
 
         private AdvancedSearchHandler() {}

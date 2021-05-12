@@ -17,9 +17,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
@@ -35,8 +35,8 @@ public class ServerSelectorOverlay implements Listener {
         if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
 
         ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt.hasKey("wynntilsServerIgnore")) return;
+        CompoundNBT nbt = stack.getTag();
+        if (nbt.contains("wynntilsServerIgnore")) return;
         String itemName = StringUtils.normalizeBadString(TextFormatting.getTextWithoutFormattingCodes(stack.getDisplayName()));
 
         if (itemName.startsWith("World") && Reference.onBeta) {
@@ -45,20 +45,20 @@ public class ServerSelectorOverlay implements Listener {
                 nbt.setBoolean("wynntilsBlock", true);
                 List<String> lore = ItemUtils.getLore(stack);
                 lore.add("" + TextFormatting.RED + TextFormatting.BOLD + "Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Try switching to Cutting Edge, or removing Wynntils while on the Hero Beta until support is added.");
-                NBTTagCompound compound = nbt.getCompoundTag("display");
-                NBTTagList list = new NBTTagList();
-                lore.forEach(c -> list.appendTag(new NBTTagString(c)));
-                compound.setTag("Lore", list);
-                nbt.setTag("display", compound);
+                CompoundNBT compound = nbt.getCompound("display");
+                ListNBT list = new ListNBT();
+                lore.forEach(c -> list.add(StringNBT.valueOf(c)));
+                compound.put("Lore", list);
+                nbt.put("display", compound);
             } else if (CoreDBConfig.INSTANCE.updateStream == UpdateStream.CUTTING_EDGE && WebManager.blockHeroBetaCuttingEdge()) {
                 nbt.setBoolean("wynntilsBlock", true);
                 List<String> lore = ItemUtils.getLore(stack);
                 lore.add("" + TextFormatting.RED + TextFormatting.BOLD + "Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Try removing Wynntils until support is added.");
-                NBTTagCompound compound = nbt.getCompoundTag("display");
-                NBTTagList list = new NBTTagList();
-                lore.forEach(c -> list.appendTag(new NBTTagString(c)));
-                compound.setTag("Lore", list);
-                nbt.setTag("display", compound);
+                CompoundNBT compound = nbt.getCompound("display");
+                ListNBT list = new ListNBT();
+                lore.forEach(c -> list.add(StringNBT.valueOf(c)));
+                compound.put("Lore", list);
+                nbt.put("display", compound);
             } else if (CoreDBConfig.INSTANCE.updateStream == UpdateStream.STABLE && WebManager.warnHeroBetaStable()) {
                 addWarningToStack(stack, nbt);
             } else if (CoreDBConfig.INSTANCE.updateStream == UpdateStream.CUTTING_EDGE && WebManager.warnHeroBetaCuttingEdge()) {
@@ -67,16 +67,16 @@ public class ServerSelectorOverlay implements Listener {
         }
     }
 
-    private void addWarningToStack(ItemStack stack, NBTTagCompound nbt) {
+    private void addWarningToStack(ItemStack stack, CompoundNBT nbt) {
         nbt.setBoolean("wynntilsWarn", true);
         List<String> lore = ItemUtils.getLore(stack);
         lore.add("" + TextFormatting.RED + TextFormatting.BOLD + "Your version of Wynntils is currently unstable on the Hero Beta. Expect frequent crashes and bugs!");
         lore.add("" + TextFormatting.GREEN + "Please report any issues you do experience on the Wynntils discord (" + WebManager.getApiUrl("DiscordInvite") + ")");
-        NBTTagCompound compound = nbt.getCompoundTag("display");
-        NBTTagList list = new NBTTagList();
-        lore.forEach(c -> list.appendTag(new NBTTagString(c)));
-        compound.setTag("Lore", list);
-        nbt.setTag("display", compound);
+        CompoundNBT compound = nbt.getCompound("display");
+        ListNBT list = new ListNBT();
+        lore.forEach(c -> list.add(StringNBT.valueOf(c)));
+        compound.put("Lore", list);
+        nbt.put("display", compound);
     }
 
     @SubscribeEvent
@@ -84,15 +84,15 @@ public class ServerSelectorOverlay implements Listener {
         if (!Utils.isServerSelector(e.getGui())) return;
         if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
         ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt.hasKey("wynntilsBlock")) {
+        CompoundNBT nbt = stack.getTag();
+        if (nbt.contains("wynntilsBlock")) {
             TextComponentString text = new TextComponentString("Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Trying changing update stream to cutting edge, or removing Wynntils while on the Hero Beta until support is added.");
             text.getStyle().setColor(TextFormatting.RED);
             Minecraft.getInstance().player.sendMessage(text);
             Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
 
             e.setCanceled(true);
-        } else if (nbt.hasKey("wynntilsWarn")) {
+        } else if (nbt.contains("wynntilsWarn")) {
             TextComponentString text = new TextComponentString("Your version of Wynntils is currently unstable on the Hero Beta. Expect frequent crashes and bugs!");
             text.getStyle().setColor(TextFormatting.RED);
             text.getStyle().setBold(true);

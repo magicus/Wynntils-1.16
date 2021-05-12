@@ -13,7 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
@@ -88,17 +88,17 @@ public class InventoryData extends PlayerData {
         int maximum = -1;
         int amount = 0;
 
-        for (int i = 0, len = player.inventory.getSizeInventory(); i < len; i++) {
-            ItemStack it = player.inventory.getStackInSlot(i);
+        for (int i = 0, len = player.inventory.getContainerSize(); i < len; i++) {
+            ItemStack it = player.inventory.getItem(i);
             if (it.isEmpty()) continue;
 
             Matcher nameMatcher = UNPROCESSED_NAME_REGEX.matcher(it.getDisplayName());
             if (!nameMatcher.matches()) continue;
 
-            NBTTagList lore = ItemUtils.getLoreTag(it);
-            if (lore == null || lore.tagCount() == 0) continue;
+            ListNBT lore = ItemUtils.getLoreTag(it);
+            if (lore == null || lore.size() == 0) continue;
 
-            Matcher loreMatcher = UNPROCESSED_LORE_REGEX.matcher(lore.getStringTagAt(0));
+            Matcher loreMatcher = UNPROCESSED_LORE_REGEX.matcher(lore.getString(0));
             if (!loreMatcher.matches()) continue;
 
             // Found an unprocessed item

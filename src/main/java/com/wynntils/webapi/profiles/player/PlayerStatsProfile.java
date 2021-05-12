@@ -154,7 +154,7 @@ public class PlayerStatsProfile {
         return displayTag;
     }
 
-    public PlayerTag getTag() {
+    public PlayerTag get() {
         return tag;
     }
 

@@ -16,9 +16,9 @@ import com.wynntils.webapi.profiles.item.objects.ItemInfoContainer;
 import com.wynntils.webapi.profiles.item.objects.ItemRequirementsContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -274,22 +274,22 @@ public class ItemProfile {
 
         // updating lore and name
         {
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
 
-            NBTTagCompound display = new NBTTagCompound();
-            NBTTagList loreList = new NBTTagList();
-            itemLore.forEach(c -> loreList.appendTag(new NBTTagString(c)));
+            CompoundNBT display = new CompoundNBT();
+            ListNBT loreList = new ListNBT();
+            itemLore.forEach(c -> loreList.add(StringNBT.valueOf(c)));
 
-            display.setTag("Lore", loreList);
+            display.put("Lore", loreList);
             display.setString("Name", tier.getTextColor() + displayName);  // item display name
 
             // armor color
             if (itemInfo.isArmorColorValid()) display.setInteger("color", itemInfo.getArmorColorAsInt());
 
-            tag.setTag("display", display);
+            tag.put("display", display);
             tag.setBoolean("Unbreakable", true);  // this allow items like reliks to have damage
 
-            stack.setTagCompound(tag);
+            stack.setTag(tag);
         }
 
         return guideStack = stack;

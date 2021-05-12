@@ -15,7 +15,7 @@ public class ContainerBuilds extends Container {
 
     public ContainerBuilds(IInventory inventory, PlayerEntity player) {
         this.inventory = inventory;
-        int numRows = inventory.getSizeInventory() / 9;
+        int numRows = inventory.getContainerSize() / 9;
         inventory.openInventory(player);
 
         for (int i = 0; i < numRows; ++i) {

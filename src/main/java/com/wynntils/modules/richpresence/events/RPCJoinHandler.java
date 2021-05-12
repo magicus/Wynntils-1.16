@@ -53,7 +53,7 @@ public class RPCJoinHandler implements IDiscordActivityEvents.on_activity_join_c
 
     public void apply(Pointer eventData, String joinSecret) {
         lastSecret = new SecretContainer(joinSecret);
-        if (lastSecret.getOwner().isEmpty() || lastSecret.getRandomHash().isEmpty() || lastSecret.getWorldType().equals("HB") && WebManager.getPlayerProfile() != null && WebManager.getPlayerProfile().getTag() != PlayerTag.HERO)
+        if (lastSecret.getOwner().isEmpty() || lastSecret.getRandomHash().isEmpty() || lastSecret.getWorldType().equals("HB") && WebManager.getPlayerProfile() != null && WebManager.getPlayerProfile().get() != PlayerTag.HERO)
             return;
 
         RichPresenceModule.getModule().getRichPresence().setJoinSecret(lastSecret);

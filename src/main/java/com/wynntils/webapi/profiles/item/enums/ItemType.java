@@ -7,7 +7,7 @@ package com.wynntils.webapi.profiles.item.enums;
 import com.wynntils.core.utils.ItemUtils;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 import java.util.Locale;
 
@@ -30,11 +30,11 @@ public enum ItemType {
 
     Item defaultItem;
     int meta;
-    NBTTagCompound nbt;
+    CompoundNBT nbt;
     int textureX;
     int textureY;
 
-    ItemType(Item defaultItem, int meta, NBTTagCompound nbt, int textureX, int textureY) {
+    ItemType(Item defaultItem, int meta, CompoundNBT nbt, int textureX, int textureY) {
         this.defaultItem = defaultItem;
         this.meta = meta;
         this.nbt = nbt;
@@ -51,7 +51,7 @@ public enum ItemType {
         return meta;
     }
 
-    public NBTTagCompound getNBT() {
+    public CompoundNBT getNBT() {
         return nbt;
     }
 

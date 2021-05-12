@@ -111,8 +111,8 @@ public class SkillPointOverlay implements Listener {
             allocateSkillPoints(e.getGui());
         }
 
-        for (int i = 0; i < e.getGui().getLowerInv().getSizeInventory(); i++) {
-            ItemStack stack = e.getGui().getLowerInv().getStackInSlot(i);
+        for (int i = 0; i < e.getGui().getLowerInv().getContainerSize(); i++) {
+            ItemStack stack = e.getGui().getLowerInv().getItem(i);
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue; // display name also checks for tag compound
 
             String lore = TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack));
@@ -275,11 +275,11 @@ public class SkillPointOverlay implements Listener {
     }
 
     public void addManaTables(ChestReplacer gui) {
-        ItemStack stack = gui.getLowerInv().getStackInSlot(11);
+        ItemStack stack = gui.getLowerInv().getItem(11);
         if (stack.isEmpty() || !stack.hasCustomHoverName()) return; // display name also checks for tag compound
 
         int intelligencePoints = getIntelligencePoints(stack);
-        if (stack.getTagCompound().hasKey("wynntilsAnalyzed")) return;
+        if (stack.getTag().contains("wynntilsAnalyzed")) return;
 
         int closestUpgradeLevel = Integer.MAX_VALUE;
         int level = PlayerInfo.get(CharacterData.class).getLevel();
@@ -317,14 +317,14 @@ public class SkillPointOverlay implements Listener {
         loreTag.addAll(newLore);
 
         ItemUtils.replaceLore(stack, loreTag);
-        stack.getTagCompound().setBoolean("wynntilsAnalyzed", true);
+        stack.getTag().setBoolean("wynntilsAnalyzed", true);
     }
 
     private SkillPointAllocation getSkillPoints(ChestReplacer gui) {
         int[] sp = new int[5];
 
         for (int i = 0; i < 5; i++) {
-            ItemStack stack = gui.getLowerInv().getStackInSlot(i + 9); // sp indicators start at 9
+            ItemStack stack = gui.getLowerInv().getItem(i + 9); // sp indicators start at 9
             Matcher m = SKILLPOINT_PATTERN.matcher(TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack)));
             if (!m.find()) continue;
 
@@ -332,7 +332,7 @@ public class SkillPointOverlay implements Listener {
         }
 
         // following code subtracts gear sp from total sp to find player-allocated sp
-        ItemStack info = gui.getLowerInv().getStackInSlot(6); // player info slot
+        ItemStack info = gui.getLowerInv().getItem(6); // player info slot
         for (String line : ItemUtils.getLore(info)) {
             String unformattedLine = TextFormatting.getTextWithoutFormattingCodes(line);
             for (int i = 0; i < 5; i++) {

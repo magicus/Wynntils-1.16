@@ -63,13 +63,13 @@ public class EmeraldCountOverlay implements Listener {
             if (UtilitiesConfig.Items.INSTANCE.emeraldCountInventory)
                 drawTextMoneyAmount(170, -10, ItemUtils.countMoney(lowerInv), renderer, CommonColors.WHITE);
             if (UtilitiesConfig.Items.INSTANCE.emeraldCountChest)
-                drawTextMoneyAmount(170, 2 * (lowerInv.getSizeInventory() + 10), ItemUtils.countMoney(upperInv), renderer, textColor);
+                drawTextMoneyAmount(170, 2 * (lowerInv.getContainerSize() + 10), ItemUtils.countMoney(upperInv), renderer, textColor);
             return;
         }
         if (UtilitiesConfig.Items.INSTANCE.emeraldCountInventory)
             drawIconsMoneyAmount(178, 0, ItemUtils.countMoney(lowerInv), renderer);
         if (UtilitiesConfig.Items.INSTANCE.emeraldCountChest)
-            drawIconsMoneyAmount(178, 2 * (lowerInv.getSizeInventory() + 10), ItemUtils.countMoney(upperInv), renderer);
+            drawIconsMoneyAmount(178, 2 * (lowerInv.getContainerSize() + 10), ItemUtils.countMoney(upperInv), renderer);
     }
 
     @SubscribeEvent
