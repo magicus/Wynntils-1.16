@@ -40,7 +40,7 @@ import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.network.play.server.SPacketSpawnPosition;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -241,7 +241,7 @@ public class ServerEvents implements Listener {
     public void onJoinServer(WynncraftServerEvent.Login e) {
         if (WebManager.isAthenaOnline()) return;
 
-        TextComponentString msg = new TextComponentString("The Wynntils servers are currently down! You can still use Wynntils, but some features may not work. Our servers should be back soon.");
+        StringTextComponent msg = new StringTextComponent("The Wynntils servers are currently down! You can still use Wynntils, but some features may not work. Our servers should be back soon.");
         msg.getStyle().setColor(TextFormatting.RED);
         msg.getStyle().setBold(true);
         new Delay(() -> Minecraft.getInstance().player.sendMessage(msg), 30); // delay so the player actually loads in

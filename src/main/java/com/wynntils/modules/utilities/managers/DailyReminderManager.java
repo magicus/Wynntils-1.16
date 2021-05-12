@@ -13,7 +13,7 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.GuiScreenEvent;
 
@@ -23,20 +23,20 @@ public class DailyReminderManager {
         if (!UtilitiesConfig.INSTANCE.dailyReminder || !Reference.onWorld) return;
 
         if (System.currentTimeMillis() > UtilitiesConfig.Data.INSTANCE.dailyReminder) {
-            TextComponentString text = new TextComponentString("");
+            StringTextComponent text = new StringTextComponent("");
             text.getStyle().setColor(TextFormatting.GRAY);
 
-            TextComponentString openingBracket = new TextComponentString("[");
+            StringTextComponent openingBracket = new StringTextComponent("[");
             openingBracket.getStyle().setColor(TextFormatting.DARK_GRAY);
             text.appendSibling(openingBracket);
 
             text.appendText("!");
 
-            TextComponentString closingBracket = new TextComponentString("] ");
+            StringTextComponent closingBracket = new StringTextComponent("] ");
             closingBracket.getStyle().setColor(TextFormatting.DARK_GRAY);
             text.appendSibling(closingBracket);
 
-            TextComponentString dailyRewards = new TextComponentString("Daily rewards ");
+            StringTextComponent dailyRewards = new StringTextComponent("Daily rewards ");
             dailyRewards.getStyle().setColor(TextFormatting.WHITE);
             text.appendSibling(dailyRewards);
 

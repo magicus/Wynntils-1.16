@@ -33,7 +33,7 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import java.io.IOException;
@@ -517,7 +517,7 @@ public class DiscoveriesPage extends QuestBookPage {
 
         handler.addAndDispatch(query.handleJsonObject(jsonOutput -> {
             if (jsonOutput.has("error")) { // Returns error if page does not exist
-                Minecraft.getInstance().player.sendMessage(new TextComponentString(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki page not found)"));
+                Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki page not found)"));
                 return true;
             }
 
@@ -536,12 +536,12 @@ public class DiscoveriesPage extends QuestBookPage {
                 x = Integer.parseInt(xlocation.substring(12, xend));
                 z = Integer.parseInt(zlocation.substring(12, zend));
             } catch (NumberFormatException e) {
-                Minecraft.getInstance().player.sendMessage(new TextComponentString(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki template not located)"));
+                Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki template not located)"));
                 return true;
             }
 
             if (x == 0 && z == 0) {
-                Minecraft.getInstance().player.sendMessage(new TextComponentString(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki coordinates not located)"));
+                Minecraft.getInstance().player.sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki coordinates not located)"));
                 return true;
             }
 

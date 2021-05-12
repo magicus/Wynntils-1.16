@@ -15,7 +15,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.client.IClientCommand;
@@ -97,9 +97,9 @@ public class CommandServer extends CommandBase implements IClientCommand {
             }
         }
 
-        TextComponentString text;
+        StringTextComponent text;
         if (options.contains("help")) {
-            text = new TextComponentString(
+            text = new StringTextComponent(
                     "Usage: /s list [type] [options]\n order of types and options does not matter\nDefault: print all servers oldest to new\n\ntypes:\n");
             for (String type : serverTypes) {
                 text.appendText(String.format("  %s\n", type));
@@ -114,7 +114,7 @@ public class CommandServer extends CommandBase implements IClientCommand {
         }
 
         int messageId = Utils.getRandom().nextInt(Integer.MAX_VALUE);
-        ChatOverlay.getChat().printUnloggedChatMessage(new TextComponentString(TextFormatting.GRAY + "Calculating Servers..."), messageId);
+        ChatOverlay.getChat().printUnloggedChatMessage(new StringTextComponent(TextFormatting.GRAY + "Calculating Servers..."), messageId);
 
         String finalSelectedType = selectedType;
         Utils.runAsync(() -> {
@@ -122,7 +122,7 @@ public class CommandServer extends CommandBase implements IClientCommand {
                 Map<String, List<String>> onlinePlayers = WebManager.getOnlinePlayers();
 
                 if (options.contains("group") && finalSelectedType == null) {
-                    TextComponentString toEdit = new TextComponentString("Available servers" +
+                    StringTextComponent toEdit = new StringTextComponent("Available servers" +
                             (options.contains("count") ? String.format(" (%d)", onlinePlayers.size()): "") + ":\n");
 
                     for (String type : serverTypes.subList(0, serverTypes.size() - 1)) {
@@ -147,11 +147,11 @@ public class CommandServer extends CommandBase implements IClientCommand {
                 );  // updates the message
             } catch (Exception ex) {
                 ChatOverlay.getChat().printUnloggedChatMessage(
-                        new TextComponentString(
+                        new StringTextComponent(
                                 TextFormatting.RED +
                                 "An error occurred while trying to get the servers!"
                         ).setStyle(new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                new TextComponentString(TextFormatting.RED + ex.getMessage())
+                                new StringTextComponent(TextFormatting.RED + ex.getMessage())
                                 ))),
                         messageId
                 );
@@ -164,23 +164,23 @@ public class CommandServer extends CommandBase implements IClientCommand {
     private static void serverInfo(MinecraftServer server, ICommandSender sender, String[] args) {
         int messageId = Utils.getRandom().nextInt(Integer.MAX_VALUE);
         ChatOverlay.getChat().printUnloggedChatMessage(
-                new TextComponentString(TextFormatting.GRAY + "Calculating Server Information..."
+                new StringTextComponent(TextFormatting.GRAY + "Calculating Server Information..."
                 ), messageId);
 
         Utils.runAsync(() -> {
             if (args.length == 0) {
                 ChatOverlay.getChat().printUnloggedChatMessage(
-                        new TextComponentString("Usage: /s info <serverID>"), messageId);
+                        new StringTextComponent("Usage: /s info <serverID>"), messageId);
                 return;
             }
             if (args.length > 1) {
                 ChatOverlay.getChat().printUnloggedChatMessage(
-                        new TextComponentString("Too many arguments\nUsage: /s info <serverID>"), messageId);
+                        new StringTextComponent("Too many arguments\nUsage: /s info <serverID>"), messageId);
                 return;
             }
             if (args[0].equalsIgnoreCase("help")) {
                 ChatOverlay.getChat().printUnloggedChatMessage(
-                        new TextComponentString("Usage: /s info <serverID>"), messageId);
+                        new StringTextComponent("Usage: /s info <serverID>"), messageId);
                 return;
             }
             // args.length == 1 and no help
@@ -188,8 +188,8 @@ public class CommandServer extends CommandBase implements IClientCommand {
                 Map<String, List<String>> onlinePlayers = WebManager.getOnlinePlayers();
                 for (String serverName : onlinePlayers.keySet()) {
                     if (args[0].equalsIgnoreCase(serverName)) {
-                        TextComponentString text = new TextComponentString(String.format("%s: ", serverName));
-                        TextComponentString playerText = new TextComponentString("");
+                        StringTextComponent text = new StringTextComponent(String.format("%s: ", serverName));
+                        StringTextComponent playerText = new StringTextComponent("");
 
                         List<String> players = onlinePlayers.get(serverName);
 
@@ -203,7 +203,7 @@ public class CommandServer extends CommandBase implements IClientCommand {
                         }
 
                         text.appendText("\nTotal online players: ");
-                        TextComponentString playerCountText = new TextComponentString(Integer.toString(players.size()));
+                        StringTextComponent playerCountText = new StringTextComponent(Integer.toString(players.size()));
                         playerCountText.getStyle().setColor(TextFormatting.GRAY);
                         text.appendSibling(playerCountText);
 
@@ -212,15 +212,15 @@ public class CommandServer extends CommandBase implements IClientCommand {
                     }
                 }
                 ChatOverlay.getChat().printUnloggedChatMessage(
-                        new TextComponentString(String.format("Unknown server ID: %s", args[0])), messageId);
+                        new StringTextComponent(String.format("Unknown server ID: %s", args[0])), messageId);
 
             } catch (Exception e) {
                 ChatOverlay.getChat().printUnloggedChatMessage(
-                        new TextComponentString(
+                        new StringTextComponent(
                                 TextFormatting.RED +
                                         "An error occurred while trying to get the servers!"
                         ).setStyle(new Style().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                new TextComponentString(TextFormatting.RED + e.getMessage())
+                                new StringTextComponent(TextFormatting.RED + e.getMessage())
                         ))),
                         messageId
                 );
@@ -230,16 +230,16 @@ public class CommandServer extends CommandBase implements IClientCommand {
         });
     }
 
-    private static TextComponentString getFilteredServerList(Map<String, List<String>> onlinePlayers,
+    private static StringTextComponent getFilteredServerList(Map<String, List<String>> onlinePlayers,
                                                        String filter,
                                                        List<String> options) {
-        TextComponentString text = new TextComponentString("");
-        TextComponentString serverListText = new TextComponentString("");
+        StringTextComponent text = new StringTextComponent("");
+        StringTextComponent serverListText = new StringTextComponent("");
 
         int serverCount = 0;
         for (String serverName : options.contains("sort") ? new TreeSet<>(onlinePlayers.keySet()) : onlinePlayers.keySet()) {
             if (serverName.toLowerCase().contains(filter.toLowerCase())) {
-                TextComponentString serverText = new TextComponentString(String.format("%s ", serverName));
+                StringTextComponent serverText = new StringTextComponent(String.format("%s ", serverName));
                 if (onlinePlayers.get(serverName).size() >= 48) {serverText.getStyle().setColor(TextFormatting.RED);}
                 else {serverText.getStyle().setColor(TextFormatting.GREEN);}
                 serverListText.appendSibling(serverText);

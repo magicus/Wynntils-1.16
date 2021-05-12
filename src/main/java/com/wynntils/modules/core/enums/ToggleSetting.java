@@ -7,7 +7,7 @@ package com.wynntils.modules.core.enums;
 import com.wynntils.core.utils.helpers.CommandResponse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentBase;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
@@ -71,37 +71,37 @@ public enum ToggleSetting {
         String function = value ? "enabled" : "disabled";
         String callback = value ? "disable" : "enable";
 
-        TextComponentString base = new TextComponentString(
+        StringTextComponent base = new StringTextComponent(
                 "Wynntils automatically "
         );
         base.getStyle().setColor(TextFormatting.GRAY);
 
-        TextComponentString status = new TextComponentString(function);
+        StringTextComponent status = new StringTextComponent(function);
         status.getStyle().setColor(TextFormatting.WHITE);
         base.appendSibling(status);
 
-        TextComponentString continuation = new TextComponentString(" Wynncraft toggle option ");
+        StringTextComponent continuation = new StringTextComponent(" Wynncraft toggle option ");
         continuation.getStyle().setColor(TextFormatting.GRAY);
         base.appendSibling(continuation);
 
-        TextComponentString toggle = new TextComponentString(name);
+        StringTextComponent toggle = new StringTextComponent(name);
         toggle.getStyle().setColor(TextFormatting.WHITE);
         base.appendSibling(toggle);
 
-        TextComponentString back = new TextComponentString(" (mostly likely for conflict issues).\nTo " + callback + " it again type ");
+        StringTextComponent back = new StringTextComponent(" (mostly likely for conflict issues).\nTo " + callback + " it again type ");
         back.getStyle().setColor(TextFormatting.GRAY);
         base.appendSibling(back);
 
-        TextComponentString backCommand = new TextComponentString("/toggle " + name);
+        StringTextComponent backCommand = new StringTextComponent("/toggle " + name);
         backCommand.getStyle().setColor(TextFormatting.WHITE);
         backCommand.getStyle().setUnderlined(true);
         backCommand.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/toggle " + name));
         backCommand.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                new TextComponentString("Click to run /toggle " + name))
+                new StringTextComponent("Click to run /toggle " + name))
         );
         base.appendSibling(backCommand);
 
-        TextComponentString end = new TextComponentString(".\n");
+        StringTextComponent end = new StringTextComponent(".\n");
         end.getStyle().setColor(TextFormatting.GRAY);
         base.appendSibling(end);
 

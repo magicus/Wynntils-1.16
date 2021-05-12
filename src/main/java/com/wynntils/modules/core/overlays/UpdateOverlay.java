@@ -17,7 +17,7 @@ import com.wynntils.modules.core.enums.UpdateStream;
 import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.downloader.DownloaderManager;
 import com.wynntils.webapi.downloader.enums.DownloadAction;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.TickEvent;
@@ -132,7 +132,7 @@ public class UpdateOverlay extends Overlay {
                             String message = TextFormatting.DARK_AQUA + "An update to Wynntils (";
                             message += CoreDBConfig.INSTANCE.updateStream == UpdateStream.STABLE ? "Version " + jarName.split("_")[0].split("-")[1] : "Build " + jarName.split("_")[1].replace(".jar", "");
                             message += ") has been downloaded, and will be applied when the game is restarted.";
-                            ModCore.mc().player.sendMessage(new TextComponentString(message));
+                            ModCore.mc().player.sendMessage(new StringTextComponent(message));
                             scheduleCopyUpdateAtShutdown(jarName);
                         } catch (Exception ex) {
                             ex.printStackTrace();

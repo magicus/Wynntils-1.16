@@ -37,7 +37,7 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketClickWindow;
 import net.minecraft.network.play.server.SPacketCustomSound;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -349,7 +349,7 @@ public class SkillPointOverlay implements Listener {
 
     public void loadBuild(SkillPointAllocation build) {
         if (build.getTotalSkillPoints() > skillPointsRemaining) {
-            TextComponentString text = new TextComponentString("Not enough free skill points!");
+            StringTextComponent text = new StringTextComponent("Not enough free skill points!");
             text.getStyle().setColor(TextFormatting.RED);
 
             ModCore.mc().player.sendMessage(text);

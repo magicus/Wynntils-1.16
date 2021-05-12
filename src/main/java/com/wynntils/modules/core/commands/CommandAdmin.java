@@ -11,7 +11,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.IClientCommand;
 
@@ -38,11 +38,11 @@ public class CommandAdmin extends CommandBase implements IClientCommand {
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (!UserManager.isAccountType(Minecraft.getInstance().player.getUniqueID(), AccountType.MODERATOR)) return;
 
-        TextComponentString output;
+        StringTextComponent output;
 
         if (args.length >= 1 && args[0].equalsIgnoreCase("broadcast")) {
             if (args.length < 3) {
-                output = new TextComponentString("Use: /wadmin broadcast <TITLE/MESSAGE> <message>");
+                output = new StringTextComponent("Use: /wadmin broadcast <TITLE/MESSAGE> <message>");
                 output.getStyle().setColor(TextFormatting.RED);
 
                 sender.sendMessage(output);
@@ -60,7 +60,7 @@ public class CommandAdmin extends CommandBase implements IClientCommand {
             return;
         }
 
-        output = new TextComponentString("Use: /wadmin broadcast");
+        output = new StringTextComponent("Use: /wadmin broadcast");
         output.getStyle().setColor(TextFormatting.RED);
 
         sender.sendMessage(output);

@@ -75,7 +75,7 @@ public class ChatManager {
 
         // Reorganizing
         if (!in.getUnformattedComponentText().isEmpty()) {
-            ITextComponent newMessage = new TextComponentString("");
+            ITextComponent newMessage = new StringTextComponent("");
             for (ITextComponent component : in) {
                 component = component.createCopy();
                 component.getSiblings().clear();
@@ -102,19 +102,19 @@ public class ChatManager {
             }
 
             List<ITextComponent> timeStamp = new ArrayList<>();
-            ITextComponent startBracket = new TextComponentString("[");
+            ITextComponent startBracket = new StringTextComponent("[");
             startBracket.getStyle().setColor(TextFormatting.DARK_GRAY);
             timeStamp.add(startBracket);
             ITextComponent time;
             if (validDateFormat) {
-                time = new TextComponentString(dateFormat.format(new Date()));
+                time = new StringTextComponent(dateFormat.format(new Date()));
                 time.getStyle().setColor(TextFormatting.GRAY);
             } else {
-                time = new TextComponentString("Invalid Format");
+                time = new StringTextComponent("Invalid Format");
                 time.getStyle().setColor(TextFormatting.RED);
             }
             timeStamp.add(time);
-            ITextComponent endBracket = new TextComponentString("] ");
+            ITextComponent endBracket = new StringTextComponent("] ");
             endBracket.getStyle().setColor(TextFormatting.DARK_GRAY);
             timeStamp.add(endBracket);
             in.getSiblings().addAll(0, timeStamp);
@@ -133,7 +133,7 @@ public class ChatManager {
             boolean foundEndTimestamp = !ChatConfig.INSTANCE.addTimestampsToChat;
             boolean previousTranslated = false;
             boolean translateIntoHover = !ChatConfig.INSTANCE.translateIntoChat;
-            ITextComponent currentTranslatedComponents = new TextComponentString("");
+            ITextComponent currentTranslatedComponents = new StringTextComponent("");
             List<ITextComponent> currentOldComponents = new ArrayList<>();
             if (foundEndTimestamp && !in.getSiblings().get(ChatConfig.INSTANCE.addTimestampsToChat ? 3 : 0).getUnformattedText().contains("/") && !isGuildOrParty) {
                 foundStart = true;
@@ -152,7 +152,7 @@ public class ChatManager {
                             oldText.append(currentNonTranslated);
                         } else {
                             if (translateIntoHover) {
-                                ITextComponent newComponent = new TextComponentString(oldText.toString());
+                                ITextComponent newComponent = new StringTextComponent(oldText.toString());
                                 newComponent.setStyle(component.getStyle().createDeepCopy());
                                 newTextComponents.add(newComponent);
                                 oldText = new StringBuilder();
@@ -181,7 +181,7 @@ public class ChatManager {
                                 currentNonTranslated = "";
                             } else {
                                 if (translateIntoHover) {
-                                    ITextComponent newComponent = new TextComponentString(oldText.toString());
+                                    ITextComponent newComponent = new StringTextComponent(oldText.toString());
                                     newComponent.setStyle(component.getStyle().createDeepCopy());
                                     newTextComponents.add(newComponent);
                                     oldText = new StringBuilder();
@@ -212,7 +212,7 @@ public class ChatManager {
                                 currentNonTranslated = "";
                             } else {
                                 if (translateIntoHover) {
-                                    ITextComponent newComponent = new TextComponentString(oldText.toString());
+                                    ITextComponent newComponent = new StringTextComponent(oldText.toString());
                                     newComponent.setStyle(component.getStyle().createDeepCopy());
                                     newTextComponents.add(newComponent);
                                     oldText = new StringBuilder();
@@ -247,9 +247,9 @@ public class ChatManager {
                             if (previousTranslated) {
                                 previousTranslated = false;
                                 if (translateIntoHover) {
-                                    ITextComponent oldComponent = new TextComponentString(oldText.toString());
+                                    ITextComponent oldComponent = new StringTextComponent(oldText.toString());
                                     oldComponent.setStyle(component.getStyle().createDeepCopy());
-                                    ITextComponent newComponent = new TextComponentString(toAdd);
+                                    ITextComponent newComponent = new StringTextComponent(toAdd);
                                     newComponent.setStyle(component.getStyle().createDeepCopy());
 
                                     newTextComponents.add(oldComponent);
@@ -260,7 +260,7 @@ public class ChatManager {
                                     }
 
                                     currentOldComponents.clear();
-                                    currentTranslatedComponents = new TextComponentString("");
+                                    currentTranslatedComponents = new StringTextComponent("");
 
                                     oldText = new StringBuilder(currentNonTranslated);
                                 } else {
@@ -286,11 +286,11 @@ public class ChatManager {
                     }
                 }
 
-                ITextComponent oldComponent = new TextComponentString(oldText.toString());
+                ITextComponent oldComponent = new StringTextComponent(oldText.toString());
                 oldComponent.setStyle(component.getStyle().createDeepCopy());
                 newTextComponents.add(oldComponent);
                 if (previousTranslated && translateIntoHover) {
-                    ITextComponent newComponent = new TextComponentString(toAdd);
+                    ITextComponent newComponent = new StringTextComponent(toAdd);
                     newComponent.setStyle(component.getStyle().createDeepCopy());
 
                     currentTranslatedComponents.appendSibling(newComponent);
@@ -322,7 +322,7 @@ public class ChatManager {
                 }
             }
 
-            in = new TextComponentString("");
+            in = new StringTextComponent("");
             for (ITextComponent component : newTextComponents) {
                 component.getSiblings().clear();
                 in.appendSibling(component);
@@ -337,7 +337,7 @@ public class ChatManager {
                     textComponent.getStyle()
                             .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command))
                             .setUnderlined(true)
-                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Join!")));
+                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent("Join!")));
                 }
             }
         }
@@ -350,7 +350,7 @@ public class ChatManager {
                     textComponent.getStyle()
                             .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command))
                             .setUnderlined(true)
-                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Trade!")));
+                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent("Trade!")));
                 }
             }
         }
@@ -363,7 +363,7 @@ public class ChatManager {
                     textComponent.getStyle()
                             .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command))
                             .setUnderlined(true)
-                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Duel!")));
+                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent("Duel!")));
                 }
             }
         }
@@ -371,11 +371,11 @@ public class ChatManager {
         // clickable coordinates
         if (ChatConfig.INSTANCE.clickableCoordinates && coordinateReg.matcher(in.getUnformattedText()).find()) {
 
-            ITextComponent temp = new TextComponentString("");
+            ITextComponent temp = new StringTextComponent("");
             for (ITextComponent texts : in) {
                 Matcher m = coordinateReg.matcher(texts.getUnformattedComponentText());
                 if (!m.find()) {
-                    ITextComponent newComponent = new TextComponentString(texts.getUnformattedComponentText());
+                    ITextComponent newComponent = new StringTextComponent(texts.getUnformattedComponentText());
                     newComponent.setStyle(texts.getStyle().createShallowCopy());
                     temp.appendSibling(newComponent);
                     continue;
@@ -391,24 +391,24 @@ public class ChatManager {
                 List<ITextComponent> crdMsg = new ArrayList<>();
 
                 // Pre-text
-                ITextComponent preText = new TextComponentString(crdText.substring(0, m.start()));
+                ITextComponent preText = new StringTextComponent(crdText.substring(0, m.start()));
                 preText.setStyle(style.createShallowCopy());
                 crdMsg.add(preText);
 
                 // Coordinates:
                 command += crdText.substring(m.start(1), m.end(1)).replaceAll("[ ,]", "") + " ";
                 command += crdText.substring(m.start(3), m.end(3)).replaceAll("[ ,]", "");
-                ITextComponent clickableText = new TextComponentString(crdText.substring(m.start(), m.end()));
+                ITextComponent clickableText = new StringTextComponent(crdText.substring(m.start(), m.end()));
                 clickableText.setStyle(style.createShallowCopy());
                 clickableText.getStyle()
                         .setColor(TextFormatting.DARK_AQUA)
                         .setUnderlined(true)
                         .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command))
-                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(command)));
+                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent(command)));
                 crdMsg.add(clickableText);
 
                 // Post-text
-                ITextComponent postText = new TextComponentString(crdText.substring(m.end()));
+                ITextComponent postText = new StringTextComponent(crdText.substring(m.end()));
                 postText.setStyle(style.createShallowCopy());
                 crdMsg.add(postText);
 
@@ -421,24 +421,24 @@ public class ChatManager {
         if (ChatConfig.INSTANCE.customPowderManual && in.getUnformattedText().equals("                         Powder Manual")) {
             List<ITextComponent> chapterSelect = new ArrayList<ITextComponent>();
 
-            ITextComponent offset = new TextComponentString("\n               "); //to center chapter select
-            ITextComponent spacer = new TextComponentString("   "); //space between chapters
+            ITextComponent offset = new StringTextComponent("\n               "); //to center chapter select
+            ITextComponent spacer = new StringTextComponent("   "); //space between chapters
 
             chapterSelect.add(offset);
 
             for (int i = 1; i <= 3; i++) {
-                ITextComponent chapter = new TextComponentString("Chapter " + i);
+                ITextComponent chapter = new StringTextComponent("Chapter " + i);
                 chapter.getStyle()
                         .setColor(TextFormatting.GOLD)
                         .setUnderlined(true)
-                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Click to read Chapter " + i)));
+                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent("Click to read Chapter " + i)));
                 chapter = TextAction.withDynamicEvent(chapter, new ChapterReader(i));
 
                 chapterSelect.add(chapter);
                 chapterSelect.add(spacer);
             }
 
-            chapterSelect.add(new TextComponentString("\n"));
+            chapterSelect.add(new StringTextComponent("\n"));
             in.getSiblings().addAll(chapterSelect);
 
         }
@@ -485,7 +485,7 @@ public class ChatManager {
                 // ignore
             }
             Minecraft.getInstance().submit(() ->
-                    ChatOverlay.getChat().printChatMessage(new TextComponentString(TranslationManager.TRANSLATED_PREFIX + prefix + translatedMsg + suffix)));
+                    ChatOverlay.getChat().printChatMessage(new StringTextComponent(TranslationManager.TRANSLATED_PREFIX + prefix + translatedMsg + suffix)));
         });
     }
 
@@ -514,7 +514,7 @@ public class ChatManager {
 
                     if (!foundEndTimestamp) {
                         foundEndTimestamp = text.contains("]");
-                        ITextComponent newComponent = new TextComponentString(text);
+                        ITextComponent newComponent = new StringTextComponent(text);
                         newComponent.setStyle(component.getStyle());
                         components.add(newComponent);
                         continue;
@@ -522,7 +522,7 @@ public class ChatManager {
 
                     if (!foundStart) {
                         foundStart = text.contains((isGuildOrParty ? "]" : ":")); // Party and guild messages end in ']' while normal chat end in ':'
-                        ITextComponent newComponent = new TextComponentString(text);
+                        ITextComponent newComponent = new StringTextComponent(text);
                         newComponent.setStyle(component.getStyle());
                         components.add(newComponent);
                         continue;
@@ -540,10 +540,10 @@ public class ChatManager {
 
                         nextStart = matcher.end();
 
-                        ITextComponent beforeComponent = new TextComponentString(before);
+                        ITextComponent beforeComponent = new StringTextComponent(before);
                         beforeComponent.setStyle(component.getStyle().createShallowCopy());
 
-                        ITextComponent nameComponent = new TextComponentString(name);
+                        ITextComponent nameComponent = new StringTextComponent(name);
                         nameComponent.setStyle(component.getStyle().createShallowCopy());
                         nameComponent.getStyle().setColor(TextFormatting.YELLOW);
 
@@ -551,7 +551,7 @@ public class ChatManager {
                         components.add(nameComponent);
                     }
 
-                    ITextComponent afterComponent = new TextComponentString(text.substring(nextStart));
+                    ITextComponent afterComponent = new StringTextComponent(text.substring(nextStart));
                     afterComponent.setStyle(component.getStyle().createShallowCopy());
 
                     components.add(afterComponent);
@@ -837,13 +837,13 @@ public class ChatManager {
             }
 
             if (newMessageCount > 0) {
-                ITextComponent message = new TextComponentString(newMessageCount + " delayed message" + (newMessageCount > 1 ? "s" : ""));
+                ITextComponent message = new StringTextComponent(newMessageCount + " delayed message" + (newMessageCount > 1 ? "s" : ""));
                 message.getStyle().setColor(TextFormatting.GRAY);
                 ChatOverlay.getChat().printChatMessageWithOptionalDeletion(message, WYNN_DIALOGUE_NEW_MESSAGES_ID);
             }
             lastChat = chat;
 
-            ITextComponent newComponent = new TextComponentString("");
+            ITextComponent newComponent = new StringTextComponent("");
             newComponent.getSiblings().addAll(dialogue);
             last = new ArrayList<>(dialogue);
             return new Pair<>(true, newComponent);
@@ -880,13 +880,13 @@ public class ChatManager {
                 default: text = "";
             }
 
-            chapterText = new TextComponentString(text);
+            chapterText = new StringTextComponent(text);
 
         }
 
         @Override
         public void run() {
-            Minecraft.getInstance().player.sendMessage(chapterText);
+            Minecraft.getInstance().player.sendMessage(chapterText, null);
         }
 
     }

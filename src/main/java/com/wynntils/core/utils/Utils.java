@@ -22,7 +22,7 @@ import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -311,10 +311,10 @@ public class Utils {
         }
 
         Utils.copyToClipboard(url);
-        TextComponentString text = new TextComponentString("Error opening link, it has been copied to your clipboard\n");
+        StringTextComponent text = new StringTextComponent("Error opening link, it has been copied to your clipboard\n");
         text.getStyle().setColor(TextFormatting.DARK_RED);
 
-        TextComponentString urlComponent = new TextComponentString(url);
+        StringTextComponent urlComponent = new StringTextComponent(url);
         urlComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
         urlComponent.getStyle().setColor(TextFormatting.DARK_AQUA);
         urlComponent.getStyle().setUnderlined(true);

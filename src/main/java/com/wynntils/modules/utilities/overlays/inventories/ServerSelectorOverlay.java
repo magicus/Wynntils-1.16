@@ -20,7 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -86,23 +86,23 @@ public class ServerSelectorOverlay implements Listener {
         ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
         CompoundNBT nbt = stack.getTag();
         if (nbt.contains("wynntilsBlock")) {
-            TextComponentString text = new TextComponentString("Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Trying changing update stream to cutting edge, or removing Wynntils while on the Hero Beta until support is added.");
+            StringTextComponent text = new StringTextComponent("Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Trying changing update stream to cutting edge, or removing Wynntils while on the Hero Beta until support is added.");
             text.getStyle().setColor(TextFormatting.RED);
             Minecraft.getInstance().player.sendMessage(text);
             Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
 
             e.setCanceled(true);
         } else if (nbt.contains("wynntilsWarn")) {
-            TextComponentString text = new TextComponentString("Your version of Wynntils is currently unstable on the Hero Beta. Expect frequent crashes and bugs!");
+            StringTextComponent text = new StringTextComponent("Your version of Wynntils is currently unstable on the Hero Beta. Expect frequent crashes and bugs!");
             text.getStyle().setColor(TextFormatting.RED);
             text.getStyle().setBold(true);
             Minecraft.getInstance().player.sendMessage(text);
 
-            text = new TextComponentString("Please report any issues you do experience on the Wynntils discord ");
+            text = new StringTextComponent("Please report any issues you do experience on the Wynntils discord ");
             text.getStyle().setColor(TextFormatting.GREEN);
             String discordInvite = WebManager.getApiUrl("DiscordInvite");
             if (discordInvite != null) {
-                TextComponentString linkText = new TextComponentString("(" + discordInvite + ")");
+                StringTextComponent linkText = new StringTextComponent("(" + discordInvite + ")");
                 linkText.getStyle().setColor(TextFormatting.GREEN);
                 linkText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, discordInvite));
                 text.appendSibling(linkText);

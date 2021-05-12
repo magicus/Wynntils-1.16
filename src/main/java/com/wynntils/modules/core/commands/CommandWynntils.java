@@ -23,7 +23,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
@@ -63,20 +63,20 @@ public class CommandWynntils extends CommandBase implements IClientCommand {
 
         switch (String.join("", args).toLowerCase()) {
             case "donate":
-                TextComponentString c = new TextComponentString("You can donate to Wynntils at: ");
+                StringTextComponent c = new StringTextComponent("You can donate to Wynntils at: ");
                 c.getStyle().setColor(TextFormatting.AQUA);
-                TextComponentString url = new TextComponentString("https://www.patreon.com/Wynntils");
+                StringTextComponent url = new StringTextComponent("https://www.patreon.com/Wynntils");
                 url.getStyle()
                         .setColor(TextFormatting.LIGHT_PURPLE)
                         .setUnderlined(true)
                         .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.patreon.com/Wynntils"))
-                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Click here to open in your browser.")));
+                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent("Click here to open in your browser.")));
 
                 sender.sendMessage(c.appendSibling(url));
                 break;
             case "help":
             case "help1":
-                TextComponentString text = new TextComponentString("");
+                StringTextComponent text = new StringTextComponent("");
                 text.getStyle().setColor(TextFormatting.GOLD);
                 text.appendText("Wynntils' command list: ");
                 text.appendText("\n");
@@ -98,15 +98,15 @@ public class CommandWynntils extends CommandBase implements IClientCommand {
                 text.appendText("\n");
                 addCommandDescription(text, "-", "territory", "This makes your compass point towards a specified territory.");
                 text.appendText("\n")
-                        .appendSibling(new TextComponentString("Page 1 (out of 2) "))
-                        .appendSibling(new TextComponentString(">>>").setStyle(new Style()
+                        .appendSibling(new StringTextComponent("Page 1 (out of 2) "))
+                        .appendSibling(new StringTextComponent(">>>").setStyle(new Style()
                                 .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wynntils help 2"))
-                                .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Go to the next page")))));
+                                .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent("Go to the next page")))));
                 sender.sendMessage(text);
                 break;
                 /*Since we combine all arguments, to get the second page of help the case could be "help2" for "/wynntils help 2".*/
             case "help2":
-                TextComponentString text1 = new TextComponentString("");
+                StringTextComponent text1 = new StringTextComponent("");
                 text1.getStyle().setColor(TextFormatting.GOLD);
                 text1.appendText("Wynntils' command list: ");
                 text1.appendText("\n");
@@ -118,22 +118,22 @@ public class CommandWynntils extends CommandBase implements IClientCommand {
                 text1.appendText("\n");
                 addCommandDescription(text1, "-", "forceupdate", "This downloads and installs the latest successful build.");
                 text1.appendText("\n")
-                        .appendSibling(new TextComponentString("<<<").setStyle(new Style()
+                        .appendSibling(new StringTextComponent("<<<").setStyle(new Style()
                                 .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/wynntils help 1"))
-                                .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Go to the next page")))))
-                        .appendSibling(new TextComponentString(" Page 2 (out of 2)"));
+                                .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent("Go to the next page")))))
+                        .appendSibling(new StringTextComponent(" Page 2 (out of 2)"));
                 sender.sendMessage(text1);
                 break;
             case "discord":
-                TextComponentString msg = new TextComponentString("You're welcome to join our Discord server at:\n");
+                StringTextComponent msg = new StringTextComponent("You're welcome to join our Discord server at:\n");
                 msg.getStyle().setColor(TextFormatting.GOLD);
                 String discordInvite = WebManager.getApiUrls() == null ? null : WebManager.getApiUrls().get("DiscordInvite");
-                TextComponentString link = new TextComponentString(discordInvite == null ? "<Wynntils servers are down>" : discordInvite);
+                StringTextComponent link = new StringTextComponent(discordInvite == null ? "<Wynntils servers are down>" : discordInvite);
                 link.getStyle().setColor(TextFormatting.DARK_AQUA);
                 if (discordInvite != null) {
                     link.getStyle()
                         .setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, discordInvite))
-                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString("Click here to join our Discord server.")));
+                        .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new StringTextComponent("Click here to join our Discord server.")));
 
                     RichProfile.OverlayManager o = RichPresenceModule.getModule().getRichPresence().getOverlayManager();
                     if (o != null) {
@@ -161,7 +161,7 @@ public class CommandWynntils extends CommandBase implements IClientCommand {
                 break;
             case "debug":
                 if (!Reference.developmentEnvironment) {
-                    ITextComponent message = new TextComponentString(TextFormatting.RED + "You can't use this command outside a development environment");
+                    ITextComponent message = new StringTextComponent(TextFormatting.RED + "You can't use this command outside a development environment");
 
                     Minecraft.getInstance().player.sendMessage(message);
                     return;
@@ -175,58 +175,58 @@ public class CommandWynntils extends CommandBase implements IClientCommand {
     }
 
     private static void addCommandDescription(ITextComponent text, String prefix, String name, String description) {
-        TextComponentString prefixText = new TextComponentString(prefix);
+        StringTextComponent prefixText = new StringTextComponent(prefix);
         prefixText.getStyle().setColor(TextFormatting.DARK_GRAY);
         text.appendSibling(prefixText);
 
-        TextComponentString nameText = new TextComponentString(name);
+        StringTextComponent nameText = new StringTextComponent(name);
         nameText.getStyle().setColor(TextFormatting.RED);
         text.appendSibling(nameText);
 
         text.appendText(" ");
 
-        TextComponentString descriptionText = new TextComponentString(description);
+        StringTextComponent descriptionText = new StringTextComponent(description);
         descriptionText.getStyle().setColor(TextFormatting.GRAY);
         text.appendSibling(descriptionText);
     }
 
     private static void handleModVersion(ICommandSender sender) {
         if (Reference.developmentEnvironment) {
-            TextComponentString text = new TextComponentString("Wynntils is running in a development environment.");
+            StringTextComponent text = new StringTextComponent("Wynntils is running in a development environment.");
             text.getStyle().setColor(TextFormatting.GOLD);
             sender.sendMessage(text);
             return;
         }
 
-        TextComponentString releaseStreamText;
-        TextComponentString buildText;
+        StringTextComponent releaseStreamText;
+        StringTextComponent buildText;
         if (CoreDBConfig.INSTANCE.updateStream == UpdateStream.STABLE) {
-            releaseStreamText = new TextComponentString("You are using Stable release stream: ");
-            buildText = new TextComponentString("Version " + Reference.VERSION);
+            releaseStreamText = new StringTextComponent("You are using Stable release stream: ");
+            buildText = new StringTextComponent("Version " + Reference.VERSION);
         } else {
-            releaseStreamText = new TextComponentString("You are using Cutting Edge release stream: ");
+            releaseStreamText = new StringTextComponent("You are using Cutting Edge release stream: ");
             if (Reference.BUILD_NUMBER == -1) {
-                buildText = new TextComponentString("Unknown Build");
+                buildText = new StringTextComponent("Unknown Build");
             } else {
-                buildText = new TextComponentString("Build " + Reference.BUILD_NUMBER);
+                buildText = new StringTextComponent("Build " + Reference.BUILD_NUMBER);
             }
         }
         releaseStreamText.getStyle().setColor(TextFormatting.GOLD);
         buildText.getStyle().setColor(TextFormatting.YELLOW);
-        TextComponentString versionText = new TextComponentString("");
+        StringTextComponent versionText = new StringTextComponent("");
         versionText.appendSibling(releaseStreamText);
         versionText.appendSibling(buildText);
 
-        TextComponentString updateCheckText;
+        StringTextComponent updateCheckText;
         TextFormatting color;
         if (WebManager.getUpdate().updateCheckFailed()) {
-            updateCheckText = new TextComponentString("Wynntils failed to check for updates. Press " + KeyManager.getCheckForUpdatesKey().getKeyBinding().getDisplayName() + " to try again.");
+            updateCheckText = new StringTextComponent("Wynntils failed to check for updates. Press " + KeyManager.getCheckForUpdatesKey().getKeyBinding().getDisplayName() + " to try again.");
             color = TextFormatting.DARK_RED;
         } else if (WebManager.getUpdate().hasUpdate()) {
-            updateCheckText = new TextComponentString("Wynntils is currently outdated. Press " + KeyManager.getCheckForUpdatesKey().getKeyBinding().getDisplayName() + " to update now.");
+            updateCheckText = new StringTextComponent("Wynntils is currently outdated. Press " + KeyManager.getCheckForUpdatesKey().getKeyBinding().getDisplayName() + " to update now.");
             color = TextFormatting.DARK_RED;
         } else {
-            updateCheckText = new TextComponentString("Wynntils was up-to-date when last checked. Press " + KeyManager.getCheckForUpdatesKey().getKeyBinding().getDisplayName() + " to check for updates.");
+            updateCheckText = new StringTextComponent("Wynntils was up-to-date when last checked. Press " + KeyManager.getCheckForUpdatesKey().getKeyBinding().getDisplayName() + " to check for updates.");
             color = TextFormatting.DARK_GREEN;
         }
         updateCheckText.getStyle().setColor(color);

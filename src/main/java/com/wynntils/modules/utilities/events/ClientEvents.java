@@ -58,7 +58,7 @@ import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -178,7 +178,7 @@ public class ClientEvents implements Listener {
                         GameUpdateOverlay.queueMessage("AFK Protection enabled");
                     } else {
                         Minecraft.getInstance().submit(() ->
-                                ChatOverlay.getChat().printChatMessage(new TextComponentString(TextFormatting.GRAY + "AFK Protection enabled due to lack of movement")));
+                                ChatOverlay.getChat().printChatMessage(new StringTextComponent(TextFormatting.GRAY + "AFK Protection enabled due to lack of movement")));
                     }
                     afkProtectionEnabled = true;
                 }
@@ -188,7 +188,7 @@ public class ClientEvents implements Listener {
                     // We're taking damage; activate AFK protection and go to class screen
                     afkProtectionActivated = true;
                     Minecraft.getInstance().submit(() ->
-                            ChatOverlay.getChat().printChatMessage(new TextComponentString(TextFormatting.GRAY + "AFK Protection activated due to player taking damage")));
+                            ChatOverlay.getChat().printChatMessage(new StringTextComponent(TextFormatting.GRAY + "AFK Protection activated due to player taking damage")));
                     Minecraft.getInstance().player.chat("/class");
                 }
                 if (timeSinceActivity < longAfkThresholdMillis) {
@@ -196,7 +196,7 @@ public class ClientEvents implements Listener {
                         GameUpdateOverlay.queueMessage("AFK Protection disabled");
                     } else {
                         Minecraft.getInstance().submit(() ->
-                                ChatOverlay.getChat().printChatMessage(new TextComponentString(TextFormatting.GRAY + "AFK Protection disabled")));
+                                ChatOverlay.getChat().printChatMessage(new StringTextComponent(TextFormatting.GRAY + "AFK Protection disabled")));
                     }
                     afkProtectionEnabled = false;
                 }
@@ -501,7 +501,7 @@ public class ClientEvents implements Listener {
                             !stack.getDisplayName().startsWith(TextFormatting.DARK_PURPLE.toString()) ||
                             !ItemUtils.getStringLore(stack).toLowerCase().contains("mythic")) continue;
 
-                        TextComponentString text = new TextComponentString("You cannot close this loot chest while there is a mythic in it!");
+                        StringTextComponent text = new StringTextComponent("You cannot close this loot chest while there is a mythic in it!");
                         text.getStyle().setColor(TextFormatting.RED);
 
                         Minecraft.getInstance().player.sendMessage(text);
@@ -738,7 +738,7 @@ public class ClientEvents implements Listener {
             return;
 
         lastWasDrop = true;
-        if (UtilitiesConfig.INSTANCE.locked_slots.get(PlayerInfo.get(CharacterData.class).getClassId()).contains(Minecraft.getInstance().player.inventory.currentItem))
+        if (UtilitiesConfig.INSTANCE.locked_slots.get(PlayerInfo.get(CharacterData.class).getClassId()).contains(Minecraft.getInstance().player.inventory.selected))
             e.setCanceled(true);
     }
 
@@ -748,7 +748,7 @@ public class ClientEvents implements Listener {
 
         // the reason of the +36, is because in the client the hotbar is handled between 0-8
         // the hotbar in the packet starts in 36, counting from up to down
-        if (e.getPacket().getSlot() != Minecraft.getInstance().player.inventory.currentItem + 36) return;
+        if (e.getPacket().getSlot() != Minecraft.getInstance().player.inventory.selected + 36) return;
 
         InventoryPlayer inventory = Minecraft.getInstance().player.inventory;
         ItemStack oldStack = inventory.getItem(e.getPacket().getSlot() - 36);

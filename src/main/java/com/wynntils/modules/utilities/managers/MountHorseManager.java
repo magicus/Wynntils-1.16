@@ -79,11 +79,11 @@ public class MountHorseManager {
             return;
         }
 
-        int prev = mc.player.inventory.currentItem;
+        int prev = mc.player.inventory.selected;
         new Delay(() -> {
-            mc.player.inventory.currentItem = horse.getInventorySlot();
+            mc.player.inventory.selected = horse.getInventorySlot();
             mc.gameMode.processRightClick(mc.player, mc.player.level, EnumHand.MAIN_HAND);
-            mc.player.inventory.currentItem = prev;
+            mc.player.inventory.selected = prev;
 
             if (findHorseInRadius(mc) != null) {
                 ClientEvents.isAwaitingHorseMount = true;
@@ -114,7 +114,7 @@ public class MountHorseManager {
 
         Entity playersHorse = findHorseInRadius(mc);
 
-        int prev = player.inventory.currentItem;
+        int prev = player.inventory.selected;
         boolean far = false;
         if (playersHorse != null) {
             double maxDistance = player.canEntityBeSeen(playersHorse) ? 36.0D : 9.0D;
@@ -126,9 +126,9 @@ public class MountHorseManager {
                 return MountHorseStatus.NO_HORSE;
             }
 
-            player.inventory.currentItem = horse.getInventorySlot();
+            player.inventory.selected = horse.getInventorySlot();
             gameMode.processRightClick(player, player.level, EnumHand.MAIN_HAND);
-            player.inventory.currentItem = prev;
+            player.inventory.selected = prev;
             if (far) {
                 tryDelayedSpawnMount(mc, horse, spawnAttempts);
                 return MountHorseStatus.SPAWNING;
@@ -142,9 +142,9 @@ public class MountHorseManager {
 
         }
 
-        player.inventory.currentItem = 8; // swap to soul points to avoid any right-click conflicts
+        player.inventory.selected = 8; // swap to soul points to avoid any right-click conflicts
         gameMode.interactWithEntity(player, playersHorse, EnumHand.MAIN_HAND);
-        player.inventory.currentItem = prev;
+        player.inventory.selected = prev;
         return MountHorseStatus.SUCCESS;
     }
 

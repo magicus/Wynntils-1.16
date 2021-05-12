@@ -22,7 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 import static com.wynntils.core.framework.instances.data.SpellData.SPELL_LEFT;
@@ -89,7 +89,7 @@ public class QuickCastManager {
         }
 
         if (PlayerInfo.get(CharacterData.class).getLevel() < spellUnlock[spell - 1]) {
-            Minecraft.getInstance().player.sendMessage(new TextComponentString(
+            Minecraft.getInstance().player.sendMessage(new StringTextComponent(
                     TextFormatting.GRAY + "You have not yet unlocked this spell! You need to be level " + spellUnlock[spell - 1]
             ));
             return false;

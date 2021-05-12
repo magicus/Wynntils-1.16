@@ -106,7 +106,7 @@ public class ClientEvents implements Listener {
     public void clickOnQuestBookItem(PacketEvent<CPacketPlayerTryUseItem> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
-                || Minecraft.getInstance().player.inventory.currentItem != 7) return;
+                || Minecraft.getInstance().player.inventory.selected != 7) return;
 
         openQuestBook = true;
         e.setCanceled(true);
@@ -116,7 +116,7 @@ public class ClientEvents implements Listener {
     public void clickOnQuestBookItemOnBlock(PacketEvent<CPacketPlayerTryUseItemOnBlock> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
-                || Minecraft.getInstance().player.inventory.currentItem != 7) return;
+                || Minecraft.getInstance().player.inventory.selected != 7) return;
 
         openQuestBook = true;
         e.setCanceled(true);
@@ -126,7 +126,7 @@ public class ClientEvents implements Listener {
     public void clickOnQuestBookEntity(PacketEvent<CPacketUseEntity> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
-                || Minecraft.getInstance().player.inventory.currentItem != 7) return;
+                || Minecraft.getInstance().player.inventory.selected != 7) return;
 
         openQuestBook = true;
         e.setCanceled(true);

@@ -15,7 +15,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.IClientCommand;
 
@@ -84,7 +84,7 @@ public class CommandCompass extends CommandBase implements IClientCommand {
             if (CompassManager.getCompassLocation() != null) {
                 CompassManager.reset();
 
-                TextComponentString text = new TextComponentString("The beacon and icon of your desired coordinates have been cleared.");
+                StringTextComponent text = new StringTextComponent("The beacon and icon of your desired coordinates have been cleared.");
                 text.getStyle().setColor(TextFormatting.GREEN);
                 sender.sendMessage(text);
                 return;
@@ -137,7 +137,7 @@ public class CommandCompass extends CommandBase implements IClientCommand {
                     break;
                 default:
                     if (newPos[1] == 0) {
-                        TextComponentString text = new TextComponentString("That wasn't supposed to happen!");
+                        StringTextComponent text = new StringTextComponent("That wasn't supposed to happen!");
                         text.getStyle().setColor(TextFormatting.DARK_RED);
                         sender.sendMessage(text);
                     }
@@ -180,11 +180,11 @@ public class CommandCompass extends CommandBase implements IClientCommand {
             }
 
             dir = dir.substring(0, 1).toUpperCase() + dir.substring(1);
-            TextComponentString text = new TextComponentString("");
+            StringTextComponent text = new StringTextComponent("");
             text.getStyle().setColor(TextFormatting.GREEN);
             text.appendText("Compass is now pointing towards ");
 
-            TextComponentString directionText = new TextComponentString(dir);
+            StringTextComponent directionText = new StringTextComponent(dir);
             directionText.getStyle().setColor(TextFormatting.DARK_GREEN);
             text.appendSibling(directionText);
 
@@ -254,17 +254,17 @@ public class CommandCompass extends CommandBase implements IClientCommand {
 
                 CompassManager.setCompassLocation(new Location(x, 0, z));
 
-                TextComponentString text = new TextComponentString("");
+                StringTextComponent text = new StringTextComponent("");
                 text.getStyle().setColor(TextFormatting.GREEN);
                 text.appendText("Compass is now pointing towards (");
 
-                TextComponentString xCoordinateText = new TextComponentString(Integer.toString(x));
+                StringTextComponent xCoordinateText = new StringTextComponent(Integer.toString(x));
                 xCoordinateText.getStyle().setColor(TextFormatting.DARK_GREEN);
                 text.appendSibling(xCoordinateText);
 
                 text.appendText(", ");
 
-                TextComponentString zCoordinateText = new TextComponentString(Integer.toString(z));
+                StringTextComponent zCoordinateText = new StringTextComponent(Integer.toString(z));
                 zCoordinateText.getStyle().setColor(TextFormatting.DARK_GREEN);
                 text.appendSibling(zCoordinateText);
 

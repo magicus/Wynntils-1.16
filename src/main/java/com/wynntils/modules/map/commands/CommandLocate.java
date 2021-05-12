@@ -15,7 +15,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.IClientCommand;
 
 import java.util.*;
@@ -101,7 +101,7 @@ public class CommandLocate extends CommandBase implements IClientCommand {
             double distance = entry.getKey();
             LocationProfile mmp = entry.getValue();
 
-            ITextComponent startingPointMsg = new TextComponentString(mmp.getTranslatedName() + " is located at [" +
+            ITextComponent startingPointMsg = new StringTextComponent(mmp.getTranslatedName() + " is located at [" +
                     mmp.getX() + ", " + mmp.getZ() + "] (" + (int) distance + " blocks)");
             startingPointMsg.getStyle().setColor(GRAY);
             sender.sendMessage(startingPointMsg);

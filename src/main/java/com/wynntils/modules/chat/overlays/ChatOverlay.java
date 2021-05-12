@@ -20,7 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -224,7 +224,7 @@ public class ChatOverlay extends GuiNewChat {
                         // Add a new set of lines (reusing the same id, since it is no longer used)
                         ITextComponent chatWithCounter = displayedMessage.createCopy();
 
-                        ITextComponent counter = new TextComponentString(" [" + (tab.getLastAmount()) + "x]");
+                        ITextComponent counter = new StringTextComponent(" [" + (tab.getLastAmount()) + "x]");
                         counter.getStyle().setColor(TextFormatting.GRAY);
                         chatWithCounter.appendSibling(counter);
 
@@ -336,8 +336,8 @@ public class ChatOverlay extends GuiNewChat {
                         int j1 = 0;
 
                         for (ITextComponent itextcomponent : chatline.getChatComponent()) {
-                            if (itextcomponent instanceof TextComponentString) {
-                                j1 += mc.font.width(GuiUtilRenderComponents.removeTextColorsIfConfigured(((TextComponentString) itextcomponent).getText(), false));
+                            if (itextcomponent instanceof StringTextComponent) {
+                                j1 += mc.font.width(GuiUtilRenderComponents.removeTextColorsIfConfigured(((StringTextComponent) itextcomponent).getText(), false));
 
                                 if (j1 > j) {
                                     return itextcomponent;

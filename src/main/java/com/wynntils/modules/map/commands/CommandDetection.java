@@ -13,7 +13,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.client.IClientCommand;
 
 import java.io.FileNotFoundException;
@@ -107,9 +107,9 @@ public class CommandDetection extends CommandBase implements IClientCommand {
                 otherCount++;
             }
 
-            sender.sendMessage(new TextComponentString("Wrote " + bakedCount + " baked types, " + serviceCount + " services and " + otherCount + " other to " + filename));
+            sender.sendMessage(new StringTextComponent("Wrote " + bakedCount + " baked types, " + serviceCount + " services and " + otherCount + " other to " + filename));
         } catch (FileNotFoundException e) {
-            sender.sendMessage(new TextComponentString("Invalid filename"));
+            sender.sendMessage(new StringTextComponent("Invalid filename"));
             e.printStackTrace();
         }
     }

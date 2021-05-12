@@ -154,7 +154,7 @@ public class TotemTracker {
     public void onTotemSpellCast(SpellEvent.Cast e) {
         if (e.getSpell().equals("Totem") || e.getSpell().equals("Sky Emblem")) {
             totemCastTimestamp = System.currentTimeMillis();
-            heldWeaponSlot =  Minecraft.getInstance().player.inventory.currentItem;
+            heldWeaponSlot =  Minecraft.getInstance().player.inventory.selected;
             checkTotemSummoned();
         } else if (e.getSpell().equals("Uproot") || e.getSpell().equals("Gale Funnel")) {
             totemCastTimestamp = System.currentTimeMillis();

@@ -30,13 +30,13 @@ public class InventoryOpenByItem implements IInventoryOpenAction {
         Minecraft mc = ModCore.mc();
 
         PacketQueue.queueComplexPacket(rightClick, SPacketOpenWindow.class).setSender((conn, pack) -> {
-            if (mc.player.inventory.currentItem != inputSlot) {
+            if (mc.player.inventory.selected != inputSlot) {
                 conn.sendPacket(new CPacketHeldItemChange(inputSlot));
             }
 
             conn.sendPacket(pack);
-            if (mc.player.inventory.currentItem != inputSlot) {
-                conn.sendPacket(new CPacketHeldItemChange(mc.player.inventory.currentItem));
+            if (mc.player.inventory.selected != inputSlot) {
+                conn.sendPacket(new CPacketHeldItemChange(mc.player.inventory.selected));
             }
         }).onDrop(onDrop);
     }

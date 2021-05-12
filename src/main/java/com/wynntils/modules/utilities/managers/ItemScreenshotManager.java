@@ -36,7 +36,7 @@ import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class ItemScreenshotManager {
@@ -104,7 +104,7 @@ public class ItemScreenshotManager {
         ClipboardImage ci = new ClipboardImage(bi);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ci, null);
 
-        ModCore.mc().player.sendMessage(new TextComponentString(TextFormatting.GREEN + "Copied " + stack.getDisplayName() + TextFormatting.GREEN + " to the clipboard!"));
+        ModCore.mc().player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Copied " + stack.getDisplayName() + TextFormatting.GREEN + " to the clipboard!"));
     }
 
     private static void removeItemLore(List<String> tooltip) {

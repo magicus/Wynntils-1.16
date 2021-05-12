@@ -26,7 +26,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -466,7 +466,7 @@ public class QuestManager {
     private static void sendMessage(String msg) {
         // Can be called from nio thread by FakeInventory
         Minecraft.getInstance().submit(() ->
-            ChatOverlay.getChat().printChatMessageWithOptionalDeletion(new TextComponentString(msg), MESSAGE_ID)
+            ChatOverlay.getChat().printChatMessageWithOptionalDeletion(new StringTextComponent(msg), MESSAGE_ID)
         );
     }
 
