@@ -19,7 +19,7 @@ public class UIETextBox extends UIEClickZone {
 
     public UIETextBox(float anchorX, float anchorY, int offsetX, int offsetY, int width, boolean active, String text, boolean textDisappearsOnNextClick, BiConsumer<UI, String> onTextChanged) {
         super(anchorX, anchorY, offsetX, offsetY, width, SmartFontRenderer.CHAR_HEIGHT, active, null);
-        this.textField = new GuiTextField(this.getId(), ScreenRenderer.fontRenderer, this.position.getDrawingX(), this.position.getDrawingY(), width, 20);
+        this.textField = new GuiTextField(this.getId(), ScreenRenderer.font, this.position.getDrawingX(), this.position.getDrawingY(), width, 20);
         this.textField.setText(text);
         this.textDisappearsOnNextClick = textDisappearsOnNextClick;
         this.onTextChanged = onTextChanged;

@@ -12,9 +12,9 @@ import com.wynntils.modules.core.overlays.inventories.IngameMenuReplacer;
 import com.wynntils.modules.questbook.enums.QuestBookPages;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class MenuButtonsOverlay implements Listener {
         }
         if (numButtonRows == 0) return;
 
-        List<GuiButton> buttonList = e.getButtonList();
+        List<Button> buttonList = e.getButtonList();
         IngameMenuReplacer gui = e.getGui();
         removeDefaultButtons(buttonList);
 
@@ -47,20 +47,20 @@ public class MenuButtonsOverlay implements Listener {
         }
 
         if (UtilitiesConfig.INSTANCE.addOptionsProfileButtons) {
-            buttonList.add(new GuiButton(756, gui.width / 2 + 2, gui.height / 4 + yOffset + -16, 98, 20, "Wynntils Menu"));
+            buttonList.add(new Button(756, gui.width / 2 + 2, gui.height / 4 + yOffset + -16, 98, 20, "Wynntils Menu"));
         }
     }
 
-    private static void addButtonPair(List<GuiButton> buttonList, IngameMenuReplacer gui, int yOffset, int buttonId1, String buttonText1, int buttonId2, String buttonText2) {
-        buttonList.add(new GuiButton(buttonId1, gui.width / 2 - 100, gui.height / 4 + yOffset + -16, 98, 20, buttonText1));
-        buttonList.add(new GuiButton(buttonId2, gui.width / 2 + 2, gui.height / 4 + yOffset + -16, 98, 20, buttonText2));
+    private static void addButtonPair(List<Button> buttonList, IngameMenuReplacer gui, int yOffset, int buttonId1, String buttonText1, int buttonId2, String buttonText2) {
+        buttonList.add(new Button(buttonId1, gui.width / 2 - 100, gui.height / 4 + yOffset + -16, 98, 20, buttonText1));
+        buttonList.add(new Button(buttonId2, gui.width / 2 + 2, gui.height / 4 + yOffset + -16, 98, 20, buttonText2));
     }
 
     /**
      * Moves the www.wynncraft.com button to the right of the territory map button and when not showing the class selection and hub buttons moves the territory map and return to game buttons down and when not on beta moves the return to game button down
      */
-    private static void moveButtons(List<GuiButton> buttonList, IngameMenuReplacer gui) {
-        for (GuiButton button : buttonList) {
+    private static void moveButtons(List<Button> buttonList, IngameMenuReplacer gui) {
+        for (Button button : buttonList) {
             if (button.id == 7) {
                 button.y = gui.height / 4 + 48 - 16;
                 button.width = 98;
@@ -78,7 +78,7 @@ public class MenuButtonsOverlay implements Listener {
      * On Beta removes the Statistics button and the www.wynncraft.com button if the menu button is enabled and when not on beta removes the "Advancements", "Statistics" and "Open to LAN" buttons.
      * Also makes "Options..." and "Mod Options..." grey and "Disconnect" red.
      */
-    private static void removeDefaultButtons(List<GuiButton> buttonList) {
+    private static void removeDefaultButtons(List<Button> buttonList) {
         buttonList.removeIf(b -> {
             if (UtilitiesConfig.INSTANCE.addOptionsProfileButtons && b.id == 7) return true;
             if (b.id == 6) return true;
@@ -96,13 +96,13 @@ public class MenuButtonsOverlay implements Listener {
         int id = e.getButton().id;
         switch (id) {
             case 753:
-                Minecraft.getMinecraft().player.sendChatMessage("/class");
+                Minecraft.getInstance().player.sendChatMessage("/class");
                 break;
             case 754:
-                Minecraft.getMinecraft().player.sendChatMessage("/hub");
+                Minecraft.getInstance().player.sendChatMessage("/hub");
                 break;
             case 755:
-                Minecraft.getMinecraft().displayGuiScreen(SettingsUI.getInstance(Minecraft.getMinecraft().currentScreen));
+                Minecraft.getInstance().displayGuiScreen(SettingsUI.getInstance(Minecraft.getInstance().screen));
                 break;
             case 756:
                 QuestBookPages.MAIN.getPage().open(true);

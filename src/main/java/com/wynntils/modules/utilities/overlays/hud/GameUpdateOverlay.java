@@ -100,7 +100,7 @@ public class GameUpdateOverlay extends Overlay {
 
         String processedMessage = message;
         LogManager.getFormatterLogger("GameTicker").info("Message Queued: " + processedMessage);
-        ModCore.mc().addScheduledTask(() -> {
+        ModCore.mc().submit(() -> {
             messageQueue.add(new MessageContainer(processedMessage));
 
             if (OverlayConfig.GameUpdate.INSTANCE.overrideNewMessages && messageQueue.size() > OverlayConfig.GameUpdate.INSTANCE.messageLimit)
@@ -109,7 +109,7 @@ public class GameUpdateOverlay extends Overlay {
     }
 
     public static void resetMessages() {
-        ModCore.mc().addScheduledTask(() -> messageQueue.clear());
+        ModCore.mc().submit(() -> messageQueue.clear());
     }
 
 

@@ -15,21 +15,21 @@ import com.wynntils.modules.map.instances.PathWaypointProfile;
 import com.wynntils.modules.map.instances.PathWaypointProfile.PathPoint;
 import com.wynntils.modules.map.overlays.objects.MapPathWaypointIcon;
 import com.wynntils.modules.map.overlays.objects.WorldMapIcon;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiCheckBox;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
 import java.util.function.Consumer;
 
 public class PathWaypointCreationUI extends WorldMapUI {
-    private GuiButton saveButton;
-    private GuiButton cancelButton;
-    private GuiButton resetButton;
-    private GuiButton clearButton;
+    private Button saveButton;
+    private Button cancelButton;
+    private Button resetButton;
+    private Button clearButton;
 
     private GuiLabel nameFieldLabel;
     private GuiTextField nameField;
@@ -76,17 +76,17 @@ public class PathWaypointCreationUI extends WorldMapUI {
 
         super.initGui();
 
-        buttonList.add(saveButton = new GuiButton(1, 22, 23, 60, 18, "Save"));
-        buttonList.add(cancelButton = new GuiButton(3, 22, 46, 60, 18, "Cancel"));
-        buttonList.add(resetButton = new GuiButton(3, 22, 69, 60, 18, "Reset"));
-        buttonList.add(clearButton = new GuiButton(4, 22, 92, 60, 18, "Clear"));
+        buttonList.add(saveButton = new Button(1, 22, 23, 60, 18, "Save"));
+        buttonList.add(cancelButton = new Button(3, 22, 46, 60, 18, "Cancel"));
+        buttonList.add(resetButton = new Button(3, 22, 69, 60, 18, "Reset"));
+        buttonList.add(clearButton = new Button(4, 22, 92, 60, 18, "Clear"));
 
         boolean returning = nameField != null;
         String name = returning ? nameField.getText() : profile.name;
 
-        nameField = new GuiTextField(0, mc.fontRenderer, this.width - 183, 23, 160, 20);
+        nameField = new GuiTextField(0, mc.font, this.width - 183, 23, 160, 20);
         nameField.setText(name);
-        nameFieldLabel = new GuiLabel(mc.fontRenderer, 0, this.width - 218, 30, 40, 10, 0xFFFFFF);
+        nameFieldLabel = new GuiLabel(mc.font, 0, this.width - 218, 30, 40, 10, 0xFFFFFF);
         nameFieldLabel.addLine("Name");
 
         if (!returning) {
@@ -97,7 +97,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
         buttonList.add(hiddenBox = new GuiCheckBox(5, this.width - 143,  72, "Hidden", hidden));  // TODO: check align
         buttonList.add(circularBox = new GuiCheckBox(6, this.width - 83, 72, "Circular", profile.isCircular));
 
-        helpText = new GuiLabel(mc.fontRenderer, 1, 22, this.height - 36, 120, 10, 0xFFFFFF);
+        helpText = new GuiLabel(mc.font, 1, 22, this.height - 36, 120, 10, 0xFFFFFF);
         helpText.addLine("Shift + drag to pan");
         helpText.addLine("Right click to remove points");
 
@@ -175,7 +175,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
     private boolean handleMouse(int mouseX, int mouseY, int mouseButton) {
         if (isShiftKeyDown() || nameField.isFocused()) return false;
 
-        for (GuiButton button : buttonList) {
+        for (Button button : buttonList) {
             if (button.isMouseOver()) {
                 return false;
             }
@@ -252,9 +252,9 @@ public class PathWaypointCreationUI extends WorldMapUI {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (keyCode == Keyboard.KEY_TAB) {
+        if (keyCode == GLFW.GLFW_KEY_TAB) {
             Utils.tab(
-                Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? -1 : +1,
+                Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1,
                 nameField, colorWheel.textBox.textField
             );
             return;
@@ -306,7 +306,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
     }
 
     @Override
-    public void actionPerformed(GuiButton btn) {
+    public void actionPerformed(Button btn) {
         if (btn == saveButton) {
             profile.isEnabled = !hiddenBox.isChecked();
             setCircular();

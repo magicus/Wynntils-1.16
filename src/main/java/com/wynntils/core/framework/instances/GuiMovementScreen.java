@@ -5,14 +5,14 @@
 package com.wynntils.core.framework.instances;
 
 import com.wynntils.core.framework.enums.wynntils.WynntilsConflictContext;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 
-public class GuiMovementScreen extends GuiScreen {
+public class GuiMovementScreen extends Screen {
     protected boolean allowMovement = true;
 
     @Override

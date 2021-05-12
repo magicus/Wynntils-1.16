@@ -10,7 +10,7 @@ import com.wynntils.core.utils.objects.Location;
 import com.wynntils.core.utils.objects.SquareRegion;
 import com.wynntils.modules.visual.configs.VisualConfig;
 import com.wynntils.modules.visual.entities.EntityFirefly;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -23,7 +23,7 @@ public class FireflySpawnCondition implements EntitySpawnCodition {
     private static final SquareRegion DARK_FOREST = new SquareRegion(-1433, -5613, -938, -5099);
 
     @Override
-    public boolean shouldSpawn(Location pos, World world, EntityPlayerSP player, Random random) {
+    public boolean shouldSpawn(Location pos, World world, ClientPlayerEntity player, Random random) {
         if (!VisualConfig.Fireflies.INSTANCE.enabled) return false;
 
         BlockPos block = pos.toBlockPos();
@@ -39,7 +39,7 @@ public class FireflySpawnCondition implements EntitySpawnCodition {
     }
 
     @Override
-    public FakeEntity createEntity(Location location, World world, EntityPlayerSP player, Random random) {
+    public FakeEntity createEntity(Location location, World world, ClientPlayerEntity player, Random random) {
         float r, g, b;
         if (world.getBiome(location.toBlockPos()) == Biomes.SWAMPLAND) {
             r = 0.29f; g = 0f; b = 0.5f; // dark firefly

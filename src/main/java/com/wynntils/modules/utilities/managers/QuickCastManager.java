@@ -12,7 +12,7 @@ import com.wynntils.core.framework.instances.data.CharacterData;
 import com.wynntils.core.framework.instances.data.SpellData;
 import com.wynntils.modules.core.managers.PacketQueue;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.Packet;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
@@ -89,7 +89,7 @@ public class QuickCastManager {
         }
 
         if (PlayerInfo.get(CharacterData.class).getLevel() < spellUnlock[spell - 1]) {
-            Minecraft.getMinecraft().player.sendMessage(new TextComponentString(
+            Minecraft.getInstance().player.sendMessage(new TextComponentString(
                     TextFormatting.GRAY + "You have not yet unlocked this spell! You need to be level " + spellUnlock[spell - 1]
             ));
             return false;
@@ -98,7 +98,7 @@ public class QuickCastManager {
         return true;
     }
 
-    private static boolean checkKey(Packet<?> input, int pos, boolean clickType, boolean isLowLevel) {
+    private static boolean checkKey(IPacket<?> input, int pos, boolean clickType, boolean isLowLevel) {
         boolean[] spell;
 
         SpellData data = PlayerInfo.get(SpellData.class);

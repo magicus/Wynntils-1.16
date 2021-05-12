@@ -16,7 +16,7 @@ import com.wynntils.modules.questbook.managers.QuestManager;
 import com.wynntils.modules.utilities.configs.TranslationConfig;
 import com.wynntils.webapi.services.TranslationManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -122,7 +122,7 @@ public class ChatManager {
 
         // popup sound
         if (in.getUnformattedText().contains(" requires your ") && in.getUnformattedText().contains(" skill to be at least "))
-            ModCore.mc().player.playSound(popOffSound, 1f, 1f);
+            ModCore.mc().player.play(popOffSound, 1f, 1f);
 
         // wynnic and gavellian translator
         if (StringUtils.hasWynnic(in.getUnformattedText()) || StringUtils.hasGavellian(in.getUnformattedText())) {
@@ -484,7 +484,7 @@ public class ChatManager {
             } catch (InterruptedException e) {
                 // ignore
             }
-            Minecraft.getMinecraft().addScheduledTask(() ->
+            Minecraft.getInstance().submit(() ->
                     ChatOverlay.getChat().printChatMessage(new TextComponentString(TranslationManager.TRANSLATED_PREFIX + prefix + translatedMsg + suffix)));
         });
     }
@@ -494,7 +494,7 @@ public class ChatManager {
     }
 
     public static boolean processUserMention(ITextComponent in, ITextComponent original) {
-        if (ChatConfig.INSTANCE.allowChatMentions && in != null && Minecraft.getMinecraft().player != null) {
+        if (ChatConfig.INSTANCE.allowChatMentions && in != null && Minecraft.getInstance().player != null) {
             String match = "\\b(" + ModCore.mc().player.getName() + (ChatConfig.INSTANCE.mentionNames.length() > 0 ? "|" + ChatConfig.INSTANCE.mentionNames.replace(",", "|") : "") + ")\\b";
             Pattern pattern = Pattern.compile(match, Pattern.CASE_INSENSITIVE);
 
@@ -557,7 +557,7 @@ public class ChatManager {
                     components.add(afterComponent);
                 }
                 if (hasMention) {
-                    ModCore.mc().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1.0F));
+                    ModCore.mc().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1.0F));
                     in.getSiblings().clear();
                     in.getSiblings().addAll(components);
 
@@ -886,7 +886,7 @@ public class ChatManager {
 
         @Override
         public void run() {
-            Minecraft.getMinecraft().player.sendMessage(chapterText);
+            Minecraft.getInstance().player.sendMessage(chapterText);
         }
 
     }

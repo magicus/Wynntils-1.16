@@ -16,7 +16,7 @@ import com.wynntils.core.utils.objects.Pair;
 import com.wynntils.modules.core.enums.OverlayRotation;
 import com.wynntils.modules.utilities.configs.OverlayConfig;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.event.TickEvent;
 
 public class ManaBarOverlay extends Overlay {
     public ManaBarOverlay() {

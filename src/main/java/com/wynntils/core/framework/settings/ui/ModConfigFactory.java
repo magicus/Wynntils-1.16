@@ -5,7 +5,7 @@
 package com.wynntils.core.framework.settings.ui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraftforge.fml.client.IModGuiFactory;
 
 import java.util.Set;
@@ -18,7 +18,7 @@ public class ModConfigFactory implements IModGuiFactory {
     @Override public boolean hasConfigGui() { return true; }
 
     @Override
-    public GuiScreen createConfigGui(GuiScreen parentScreen) {
+    public Screen createConfigGui(Screen parentScreen) {
         return SettingsUI.getInstance(parentScreen);
     }
 

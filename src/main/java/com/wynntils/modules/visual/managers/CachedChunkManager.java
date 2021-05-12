@@ -131,7 +131,7 @@ public class CachedChunkManager {
      * This method is thread safe
      */
     private static void startChunkLoader() {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         while (Reference.onWorld && VisualConfig.CachedChunks.INSTANCE.enabled) {
             // Sleep the thread for 1 second, we don't care about precision for this
             try {
@@ -220,7 +220,7 @@ public class CachedChunkManager {
                     packet.readPacketData(packetBuffer);
 
                     // Submit the packet to the client handler bypassing the packet sent
-                    mc.addScheduledTask(() -> mc.getConnection().handleChunkData(packet));
+                    mc.submit(() -> mc.getConnection().handleChunkData(packet));
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

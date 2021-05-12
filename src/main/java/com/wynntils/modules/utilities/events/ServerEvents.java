@@ -18,8 +18,8 @@ import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketResourcePackSend;
 import net.minecraft.network.play.server.SPacketSpawnObject;
 import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.opengl.Display;
 
 public class ServerEvents implements Listener {
@@ -30,7 +30,7 @@ public class ServerEvents implements Listener {
     public void leaveServer(WynncraftServerEvent.Leave e) {
         WindowIconManager.update();
         if (UtilitiesConfig.INSTANCE.changeWindowTitle) {
-            ModCore.mc().addScheduledTask(() -> Display.setTitle(oldWindowTitle));
+            ModCore.mc().submit(() -> Display.setTitle(oldWindowTitle));
         }
     }
 
@@ -44,7 +44,7 @@ public class ServerEvents implements Listener {
             oldWindowTitle = title;
         }
         if (UtilitiesConfig.INSTANCE.changeWindowTitle) {
-            ModCore.mc().addScheduledTask(() -> Display.setTitle("Wynncraft"));
+            ModCore.mc().submit(() -> Display.setTitle("Wynncraft"));
         }
         ClientEvents.setLoadingStatusMsg("Loading resources...");
         ServerResourcePackManager.applyOnServerJoin();

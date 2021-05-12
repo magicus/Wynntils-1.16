@@ -9,8 +9,8 @@ import com.wynntils.Reference;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.interfaces.Listener;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,7 @@ public class IngredientFilterOverlay implements Listener {
         if (!Reference.onWorld || !UtilitiesConfig.Items.INSTANCE.filterEnabled) return;
 
         e.getButtonList().add(
-                new GuiButton(11,
+                new Button(11,
                         (e.getGui().width - e.getGui().getXSize()) / 2 - 20,
                         (e.getGui().height - e.getGui().getYSize()) / 2 + 15,
                         18, 18,
@@ -60,7 +60,7 @@ public class IngredientFilterOverlay implements Listener {
                     RarityColorOverlay.setProfessionFilter("-");
                     gb.displayString = "-";
                 }
-                gb.playPressSound(ModCore.mc().getSoundHandler());
+                gb.playPressSound(ModCore.mc().getSoundManager());
             }
         });
     }

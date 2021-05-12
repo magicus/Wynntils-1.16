@@ -12,7 +12,7 @@ import com.wynntils.core.utils.helpers.Delay;
 import com.wynntils.modules.utilities.events.ClientEvents;
 import com.wynntils.modules.utilities.overlays.hud.GameUpdateOverlay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
@@ -49,7 +49,7 @@ public class MountHorseManager {
     }
 
     private static Entity findHorseInRadius(Minecraft mc) {
-        EntityPlayerSP player = mc.player;
+        ClientPlayerEntity player = mc.player;
 
         List<Entity> horses = mc.world.getEntitiesWithinAABB(AbstractHorse.class, new AxisAlignedBB(
                 player.posX - searchRadius, player.posY - searchRadius, player.posZ - searchRadius,
@@ -82,7 +82,7 @@ public class MountHorseManager {
         int prev = mc.player.inventory.currentItem;
         new Delay(() -> {
             mc.player.inventory.currentItem = horse.getInventorySlot();
-            mc.playerController.processRightClick(mc.player, mc.player.world, EnumHand.MAIN_HAND);
+            mc.gameMode.processRightClick(mc.player, mc.player.level, EnumHand.MAIN_HAND);
             mc.player.inventory.currentItem = prev;
 
             if (findHorseInRadius(mc) != null) {
@@ -99,8 +99,8 @@ public class MountHorseManager {
 
     public static MountHorseStatus mountHorse(boolean allowRetry) {
         Minecraft mc = ModCore.mc();
-        EntityPlayerSP player = mc.player;
-        PlayerControllerMP playerController = mc.playerController;
+        ClientPlayerEntity player = mc.player;
+        PlayerControllerMP gameMode = mc.gameMode;
 
         HorseData horse = PlayerInfo.get(HorseData.class);
 
@@ -127,7 +127,7 @@ public class MountHorseManager {
             }
 
             player.inventory.currentItem = horse.getInventorySlot();
-            playerController.processRightClick(player, player.world, EnumHand.MAIN_HAND);
+            gameMode.processRightClick(player, player.level, EnumHand.MAIN_HAND);
             player.inventory.currentItem = prev;
             if (far) {
                 tryDelayedSpawnMount(mc, horse, spawnAttempts);
@@ -143,7 +143,7 @@ public class MountHorseManager {
         }
 
         player.inventory.currentItem = 8; // swap to soul points to avoid any right-click conflicts
-        playerController.interactWithEntity(player, playersHorse, EnumHand.MAIN_HAND);
+        gameMode.interactWithEntity(player, playersHorse, EnumHand.MAIN_HAND);
         player.inventory.currentItem = prev;
         return MountHorseStatus.SUCCESS;
     }

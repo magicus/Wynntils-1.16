@@ -14,7 +14,7 @@ import com.wynntils.modules.utilities.configs.OverlayConfig;
 import com.wynntils.modules.utilities.instances.Toast;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +106,7 @@ public class ToastOverlay extends Overlay {
 
     @Override
     public void tick(TickEvent.ClientTickEvent event, long ticks) {
-        if (Minecraft.getMinecraft().currentScreen != null) return;  // HeyZeer0: This will avoid toasts being processed when the user can't view them
+        if (Minecraft.getInstance().screen != null) return;  // HeyZeer0: This will avoid toasts being processed when the user can't view them
 
         if (OverlayConfig.ToastsSettings.INSTANCE.enableToast) {
             // Flip coordinates:

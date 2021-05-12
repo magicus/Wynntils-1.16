@@ -5,7 +5,7 @@
 package com.wynntils.modules.core.managers;
 
 import com.wynntils.modules.core.instances.packet.PacketResponse;
-import net.minecraft.network.Packet;
+import net.minecraft.network.IPacket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +15,19 @@ public class PacketQueue {
 
     private static List<PacketResponse> complexQueue = new ArrayList<>();
 
-    public static PacketResponse queueSimplePacket(Packet packet) {
+    public static PacketResponse queueSimplePacket(IPacket packet) {
         PacketResponse response = new PacketResponse(packet);
         complexQueue.add(response);
         return response;
     }
 
-    public static PacketResponse queueComplexPacket(Packet packet, Class responseType) {
+    public static PacketResponse queueComplexPacket(IPacket packet, Class responseType) {
         PacketResponse response = new PacketResponse(packet, responseType);
         complexQueue.add(response);
         return response;
     }
 
-    public static PacketResponse queueComplexPacket(Packet packet, Class responseType, Function<Packet, Boolean> verification) {
+    public static PacketResponse queueComplexPacket(IPacket packet, Class responseType, Function<IPacket, Boolean> verification) {
         PacketResponse response = new PacketResponse(packet, responseType);
         response.setVerification(verification);
 
@@ -35,7 +35,7 @@ public class PacketQueue {
         return response;
     }
 
-    public static void checkResponse(Packet<?> response) {
+    public static void checkResponse(IPacket<?> response) {
         if (complexQueue.size() == 0) return;
 
         PacketResponse r = complexQueue.get(0);

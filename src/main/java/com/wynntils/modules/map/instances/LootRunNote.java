@@ -7,11 +7,11 @@ import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.utils.StringUtils;
 import com.wynntils.core.utils.objects.Location;
 
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class LootRunNote {
 
@@ -44,7 +44,7 @@ public class LootRunNote {
     public void drawNote(CustomColor color) {
         RenderManager render = ModCore.mc().getRenderManager();
         FontRenderer fr = render.getFontRenderer();
-        EntityPlayerSP player = ModCore.mc().player;
+        ClientPlayerEntity player = ModCore.mc().player;
 
         if (player.getDistanceSq(location.x, location.y, location.z) > 4096f)
             return; // only draw nametag when close

@@ -5,8 +5,8 @@
 package com.wynntils.core.framework.entities.instances;
 
 import com.wynntils.core.utils.objects.Location;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 
 import java.util.Random;
@@ -47,7 +47,7 @@ public class FakeEntity {
      * Use this to calculate pathfinders and related things.
      *
      */
-    public void tick(Random r, EntityPlayerSP player) {
+    public void tick(Random r, ClientPlayerEntity player) {
 
     }
 
@@ -58,7 +58,7 @@ public class FakeEntity {
      * @param context the rendering context
      * @param render the Minecraft Render Manager
      */
-    public void render(float partialTicks, RenderGlobal context, RenderManager render) {
+    public void render(float partialTicks, WorldRenderer context, RenderManager render) {
 
     }
 
@@ -70,7 +70,7 @@ public class FakeEntity {
      * @param context the rendering context
      * @param render the Minecraft Render Manager
      */
-    public void preRender(float partialTicks, RenderGlobal context, RenderManager render) {
+    public void preRender(float partialTicks, WorldRenderer context, RenderManager render) {
 
     }
 

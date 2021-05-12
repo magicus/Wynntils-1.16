@@ -7,15 +7,15 @@ package com.wynntils.core.framework.entities;
 import com.wynntils.core.framework.entities.instances.FakeEntity;
 import com.wynntils.core.utils.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class EntityManager {
 
@@ -46,7 +46,7 @@ public class EntityManager {
     public static void tickEntities() {
         if (entityList.isEmpty() && toSpawn.isEmpty()) return;
 
-        Minecraft.getMinecraft().profiler.startSection("fakeEntities");
+        Minecraft.getInstance().getProfiler().push("fakeEntities");
         {
             // adds all new entities to the set
             Iterator<FakeEntity> it = toSpawn.iterator();
@@ -55,10 +55,10 @@ public class EntityManager {
                 it.remove();
             }
 
-            RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+            RenderManager renderManager = Minecraft.getInstance().getRenderManager();
             if (renderManager == null || renderManager.options == null) return;
 
-            EntityPlayerSP player = Minecraft.getMinecraft().player;
+            ClientPlayerEntity player = Minecraft.getInstance().player;
             // ticks each entity
             it = entityList.iterator();
             while (it.hasNext()) {
@@ -70,15 +70,15 @@ public class EntityManager {
                     continue;
                 }
 
-                Minecraft.getMinecraft().profiler.startSection(next.getName());
+                Minecraft.getInstance().getProfiler().push(next.getName());
                 { // render
                     next.livingTicks += 1;
                     next.tick(Utils.getRandom(), player);
                 }
-                Minecraft.getMinecraft().profiler.endSection();
+                Minecraft.getInstance().getProfiler().pop();
             }
         }
-        Minecraft.getMinecraft().profiler.endSection();
+        Minecraft.getInstance().getProfiler().pop();
     }
 
     /**
@@ -87,10 +87,10 @@ public class EntityManager {
      * @param partialTicks the world partial ticks
      * @param context the rendering context
      */
-    public static void renderEntities(float partialTicks, RenderGlobal context) {
+    public static void renderEntities(float partialTicks, WorldRenderer context) {
         if (entityList.isEmpty() && toSpawn.isEmpty()) return;
 
-        Minecraft.getMinecraft().profiler.startSection("fakeEntities");
+        Minecraft.getInstance().getProfiler().push("fakeEntities");
         {
             // adds all new entities to the set
             Iterator<FakeEntity> it = toSpawn.iterator();
@@ -99,35 +99,35 @@ public class EntityManager {
                 it.remove();
             }
 
-            RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+            RenderManager renderManager = Minecraft.getInstance().getRenderManager();
             if (renderManager == null || renderManager.options == null) return;
 
-            EntityPlayerSP player = Minecraft.getMinecraft().player;
+            ClientPlayerEntity player = Minecraft.getInstance().player;
             // ticks each entity
             it = entityList.iterator();
             while (it.hasNext()) {
                 FakeEntity next = it.next();
 
-                Minecraft.getMinecraft().profiler.startSection(next.getName());
+                Minecraft.getInstance().getProfiler().push(next.getName());
                 {
-                    pushMatrix();
+                    _pushMatrix();
                     {
                         next.preRender(partialTicks, context, renderManager);
                         // translates to the correctly entity position
                         // subtracting the viewer position offset
-                        translate(
+                        _translated(
                                 next.currentLocation.x - renderManager.viewerPosX,
                                 next.currentLocation.y - renderManager.viewerPosY,
                                 next.currentLocation.z - renderManager.viewerPosZ
                         );
                         next.render(partialTicks, context, renderManager);
                     }
-                    popMatrix();
+                    _popMatrix();
                 }
-                Minecraft.getMinecraft().profiler.endSection();
+                Minecraft.getInstance().getProfiler().pop();
             }
         }
-        Minecraft.getMinecraft().profiler.endSection();
+        Minecraft.getInstance().getProfiler().pop();
     }
 
 }

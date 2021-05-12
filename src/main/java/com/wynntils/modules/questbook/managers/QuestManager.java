@@ -23,7 +23,7 @@ import com.wynntils.modules.questbook.events.custom.QuestBookUpdateEvent;
 import com.wynntils.modules.questbook.instances.DiscoveryInfo;
 import com.wynntils.modules.questbook.instances.QuestInfo;
 import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
@@ -137,7 +137,7 @@ public class QuestManager {
                 nextClick = i.findItem(">>>>>", FilterType.CONTAINS); // next page item
 
                 for (ItemStack stack : i.getInventory()) {
-                    if (!stack.hasDisplayName()) continue; // also checks for nbt
+                    if (!stack.hasCustomHoverName()) continue; // also checks for nbt
 
                     List<String> lore = ItemUtils.getUnformattedLore(stack);
                     // uppercase on beta
@@ -163,7 +163,7 @@ public class QuestManager {
                 nextClick = i.findItem(">>>>>", FilterType.CONTAINS); // next page item
 
                 for (ItemStack stack : i.getInventory()) {
-                    if (!stack.hasDisplayName()) continue; // also checks for nbt
+                    if (!stack.hasCustomHoverName()) continue; // also checks for nbt
 
                     List<String> lore = ItemUtils.getUnformattedLore(stack);
                     if (lore.isEmpty() || (!lore.contains("Right click to track") && !lore.contains("RIGHT-CLICK TO TRACK"))) continue; // not a valid mini-quest
@@ -188,7 +188,7 @@ public class QuestManager {
                 nextClick = i.findItem(">>>>>", FilterType.CONTAINS); // next page item
 
                 for (ItemStack stack : i.getInventory()) {
-                    if (!stack.hasDisplayName()) continue; // also checks for nbt
+                    if (!stack.hasCustomHoverName()) continue; // also checks for nbt
 
                     List<String> lore = ItemUtils.getLore(stack);
                     if (lore.isEmpty() || !getTextWithoutFormattingCodes(lore.get(0)).contains("✔ Combat Lv")) continue;
@@ -465,7 +465,7 @@ public class QuestManager {
 
     private static void sendMessage(String msg) {
         // Can be called from nio thread by FakeInventory
-        Minecraft.getMinecraft().addScheduledTask(() ->
+        Minecraft.getInstance().submit(() ->
             ChatOverlay.getChat().printChatMessageWithOptionalDeletion(new TextComponentString(msg), MESSAGE_ID)
         );
     }

@@ -15,14 +15,14 @@ import com.wynntils.modules.chat.language.WynncraftLanguage;
 import com.wynntils.modules.chat.managers.TabManager;
 import com.wynntils.modules.chat.overlays.ChatOverlay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class ChatGUI extends GuiChat {
                     tabButtons.values().stream().forEach(ChatButton::unselect);
                     tabButton.getValue().setSelected(true);
                 }
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
             }
         }
 
@@ -67,7 +67,7 @@ public class ChatGUI extends GuiChat {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected void actionPerformed(Button button) throws IOException {
         if (button == addTab) {
             mc.displayGuiScreen(new TabGUI(-2));
         } else if (button instanceof ChatButton) {
@@ -81,8 +81,8 @@ public class ChatGUI extends GuiChat {
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (inputField.getText().isEmpty() && keyCode == Keyboard.KEY_TAB) {
-            ChatOverlay.getChat().switchTabs(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? -1 : +1);
+        if (inputField.getText().isEmpty() && keyCode == GLFW.GLFW_KEY_TAB) {
+            ChatOverlay.getChat().switchTabs(Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1);
             tabButtons.values().stream().forEach(ChatButton::unselect);
             tabButtons.get(ChatOverlay.getChat().getCurrentTab()).setSelected(true);
         }
@@ -136,13 +136,13 @@ public class ChatGUI extends GuiChat {
             ITextComponent itextcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
 
             for (int i = 0; i < this.buttonList.size(); ++i) {
-                ((GuiButton) this.buttonList.get(i)).drawButton(this.mc, mouseX, mouseY, partialTicks);
+                ((Button) this.buttonList.get(i)).drawButton(this.mc, mouseX, mouseY, partialTicks);
             }
 
             for (int j = 0; j < this.labelList.size(); ++j) {
                 ((GuiLabel) this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
             }
-            
+
             if (itextcomponent != null && itextcomponent.getStyle().getHoverEvent() != null) {
                 this.handleComponentHover(itextcomponent, mouseX, mouseY);
             }
@@ -161,7 +161,7 @@ public class ChatGUI extends GuiChat {
         }
     }
 
-    private static class ChatButton extends GuiButton {
+    private static class ChatButton extends Button {
         private ChatTab tab = null;
         private boolean selected = false;
         private WynncraftLanguage language = null;

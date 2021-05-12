@@ -6,10 +6,10 @@ package com.wynntils.modules.utilities.managers;
 
 import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.inventory.Slot;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderTooltipEvent;
@@ -18,7 +18,7 @@ import org.lwjgl.input.Mouse;
 import java.util.List;
 
 public class TooltipScrollManager {
-    private static GuiScreen lastGuiScreen = null;
+    private static Screen lastGuiScreen = null;
     private static boolean isGuiContainer = false;
     private static ItemStack lastItemStack = null;
     private static int scrollAmount = 0;
@@ -54,7 +54,7 @@ public class TooltipScrollManager {
         scrollAmount = Math.min(scrollAmount, maxScroll);
     }
 
-    public static void onGuiMouseInput(GuiScreen on) {
+    public static void onGuiMouseInput(Screen on) {
         if (on != lastGuiScreen) return;
 
         int mDWheel = Integer.signum(Mouse.getEventDWheel() * CoreDBConfig.INSTANCE.scrollDirection.getScrollDirection());
@@ -62,7 +62,7 @@ public class TooltipScrollManager {
         scrollAmount = MathHelper.clamp(scrollAmount - scrollPower * mDWheel, 0, maxScroll);
     }
 
-    public static void onBeforeDrawScreen(GuiScreen on) {
+    public static void onBeforeDrawScreen(Screen on) {
         if (on != lastGuiScreen) {
             lastGuiScreen = on;
             isGuiContainer = on instanceof GuiContainer;
@@ -71,7 +71,7 @@ public class TooltipScrollManager {
         }
     }
 
-    public static void onAfterDrawScreen(GuiScreen on) {
+    public static void onAfterDrawScreen(Screen on) {
         if (on != lastGuiScreen) return;
 
         updateHoveredItemStack();

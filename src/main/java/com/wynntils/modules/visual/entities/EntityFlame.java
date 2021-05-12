@@ -8,9 +8,9 @@ import com.wynntils.core.framework.entities.instances.FakeEntity;
 import com.wynntils.core.framework.rendering.textures.Textures;
 import com.wynntils.core.utils.objects.Location;
 import com.wynntils.modules.visual.configs.VisualConfig;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class EntityFlame extends FakeEntity {
 
@@ -38,14 +38,14 @@ public class EntityFlame extends FakeEntity {
     }
 
     @Override
-    public void tick(Random r, EntityPlayerSP player) {
+    public void tick(Random r, ClientPlayerEntity player) {
         if (livingTicks < lifespan) return;
 
         remove();
     }
 
     @Override
-    public void render(float partialTicks, RenderGlobal context, RenderManager render) {
+    public void render(float partialTicks, WorldRenderer context, RenderManager render) {
         float percentage = ((livingTicks + partialTicks) / lifespan);
 
         float alpha = (1f - percentage);

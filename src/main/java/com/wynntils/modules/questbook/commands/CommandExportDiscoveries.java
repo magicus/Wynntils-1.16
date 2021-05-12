@@ -23,7 +23,7 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.client.IClientCommand;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -125,7 +125,7 @@ public class CommandExportDiscoveries extends CommandBase implements IClientComm
             fileText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, exportFile.getCanonicalPath()));
             fileText.getStyle().setUnderlined(true);
             text.appendSibling(fileText);
-            ModCore.mc().addScheduledTask(() -> ModCore.mc().player.sendMessage(text));
+            ModCore.mc().submit(() -> ModCore.mc().player.sendMessage(text));
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {

@@ -44,7 +44,7 @@ public class SettingsManager {
             if (!(obj instanceof Overlay))
                 return;
 
-        File f = new File(configFolder, Minecraft.getMinecraft().getSession().getPlayerID());
+        File f = new File(configFolder, Minecraft.getInstance().getSession().getPlayerID());
         if (!f.exists()) f.mkdirs();  // check if the users folder exists
 
         f = new File(f, m.getInfo().name() + "-" + (obj instanceof Overlay ? "overlay_" + ((Overlay)obj).displayName.toLowerCase(Locale.ROOT).replace(' ', '_') : info.name()) + ".config");
@@ -65,7 +65,7 @@ public class SettingsManager {
             if (!(obj instanceof Overlay))
                 return obj;
 
-        File f = new File(configFolder, Minecraft.getMinecraft().getSession().getPlayerID());
+        File f = new File(configFolder, Minecraft.getInstance().getSession().getPlayerID());
         if (!f.exists()) f.mkdirs();  // check if the users folder exists
 
         String configFile = m.getInfo().name() + "-" + (obj instanceof Overlay ? "overlay_" + ((Overlay)obj).displayName.toLowerCase(Locale.ROOT).replace(' ', '_') : info.name()) + ".config";

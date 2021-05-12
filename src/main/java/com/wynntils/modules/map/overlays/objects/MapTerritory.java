@@ -16,7 +16,7 @@ import com.wynntils.modules.map.instances.MapProfile;
 import com.wynntils.modules.map.managers.GuildResourceManager;
 import com.wynntils.modules.map.overlays.renderer.TerritoryInfoUI;
 import com.wynntils.webapi.profiles.TerritoryProfile;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 public class MapTerritory {
 

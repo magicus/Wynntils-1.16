@@ -8,7 +8,7 @@ import com.wynntils.Reference;
 import com.wynntils.webapi.downloader.DownloaderManager;
 import com.wynntils.webapi.downloader.enums.DownloadAction;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
 
 import javax.imageio.ImageIO;
@@ -44,8 +44,8 @@ public class SplashProfile {
 
     private void setReadyToUse() {
         // make sure this is being called from the main thread
-        if (!Minecraft.getMinecraft().isCallingFromMinecraftThread()) {
-            Minecraft.getMinecraft().addScheduledTask(this::setReadyToUse);
+        if (!Minecraft.getInstance().isCallingFromMinecraftThread()) {
+            Minecraft.getInstance().submit(this::setReadyToUse);
             return;
         }
         readyToUse = true;
@@ -67,7 +67,7 @@ public class SplashProfile {
         textureId = TextureUtil.uploadTextureImageAllocate(TextureUtil.glGenTextures(), img, false, false);
     }
 
-    public void bindTexture() {
+    public void bind() {
         if (!readyToUse) return;
         if (textureId == -1) {
             try {
@@ -78,7 +78,7 @@ public class SplashProfile {
             }
         }
 
-        GlStateManager.bindTexture(textureId);
+        GlStateManager.bind(textureId);
     }
 
     public void downloadSplash() {

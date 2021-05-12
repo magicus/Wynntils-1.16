@@ -7,28 +7,28 @@ package com.wynntils.modules.core.overlays.inventories;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.FrameworkManager;
 import com.wynntils.modules.questbook.enums.QuestBookPages;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.io.IOException;
 import java.util.List;
 
-public class InventoryReplacer extends GuiInventory {
+public class InventoryReplacer extends InventoryScreen {
 
-    EntityPlayer player;
+    PlayerEntity player;
 
-    public InventoryReplacer(EntityPlayer player) {
+    public InventoryReplacer(PlayerEntity player) {
         super(player);
 
         this.player = player;
     }
 
-    public EntityPlayer getPlayer() {
+    public PlayerEntity getPlayer() {
         return player;
     }
 
@@ -65,7 +65,7 @@ public class InventoryReplacer extends GuiInventory {
     }
 
     @Override
-    public void actionPerformed(GuiButton guiButton) throws IOException {
+    public void actionPerformed(Button guiButton) throws IOException {
         if (guiButton.id == 10) {
             QuestBookPages.MAIN.getPage().open(true);
             return;
@@ -94,7 +94,7 @@ public class InventoryReplacer extends GuiInventory {
         super.onGuiClosed();
     }
 
-    public List<GuiButton> getButtonList() {
+    public List<Button> getButtonList() {
         return buttonList;
     }
 }

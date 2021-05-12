@@ -31,8 +31,8 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -72,7 +72,7 @@ public class ItemIdentificationOverlay implements Listener {
     }
 
     public static void replaceLore(ItemStack stack)  {
-        if (!UtilitiesConfig.Identifications.INSTANCE.enabled || !stack.hasDisplayName() || !stack.hasTagCompound()) return;
+        if (!UtilitiesConfig.Identifications.INSTANCE.enabled || !stack.hasCustomHoverName() || !stack.hasTagCompound()) return;
         NBTTagCompound nbt = stack.getTagCompound();
         if (nbt.hasKey("wynntilsIgnore")) return;
 
@@ -311,7 +311,7 @@ public class ItemIdentificationOverlay implements Listener {
         if (item.getLore() != null && !item.getLore().isEmpty()) {
             if (wynntils.hasKey("purchaseInfo")) newLore.add(" ");
 
-            newLore.addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(DARK_GRAY + item.getLore(), 150));
+            newLore.addAll(Minecraft.getInstance().font.listFormattedStringToWidth(DARK_GRAY + item.getLore(), 150));
         }
 
         // Special displayname
@@ -391,8 +391,8 @@ public class ItemIdentificationOverlay implements Listener {
 
     private static NBTTagCompound generateData(ItemStack stack) {
         IdentificationType idType;
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) idType = IdentificationType.MIN_MAX;
-        else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) idType = IdentificationType.UPGRADE_CHANCES;
+        if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) idType = IdentificationType.MIN_MAX;
+        else if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LCONTROL)) idType = IdentificationType.UPGRADE_CHANCES;
         else idType = IdentificationType.PERCENTAGES;
 
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("wynntils")) {

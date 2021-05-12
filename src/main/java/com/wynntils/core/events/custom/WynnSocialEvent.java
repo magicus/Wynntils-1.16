@@ -8,7 +8,7 @@ import com.wynntils.core.framework.instances.PlayerInfo;
 import com.wynntils.core.framework.instances.containers.PartyContainer;
 import com.wynntils.core.framework.instances.data.SocialData;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.Collection;
 import java.util.Set;
@@ -30,7 +30,7 @@ public class WynnSocialEvent extends Event {
     }
 
     public boolean isYou() {
-        return member.equalsIgnoreCase(Minecraft.getMinecraft().player.getName());
+        return member.equalsIgnoreCase(Minecraft.getInstance().player.getName().getString());
     }
 
     public static class Party extends WynnSocialEvent {

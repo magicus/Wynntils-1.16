@@ -10,14 +10,14 @@ import com.wynntils.modules.chat.overlays.ChatOverlay;
 import net.minecraft.client.gui.*;
 import static net.minecraft.util.text.TextFormatting.*;
 import net.minecraftforge.fml.client.config.GuiCheckBox;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
 
-public class TabGUI extends GuiScreen {
+public class TabGUI extends Screen {
 
     int id;
     ChatTab tab;
@@ -31,10 +31,10 @@ public class TabGUI extends GuiScreen {
     List<GuiCheckBox> simpleRegexSettings = new ArrayList<>();
 
     // ui things
-    GuiButton saveButton;
-    GuiButton deleteButton;
-    GuiButton advancedButton;
-    GuiButton closeButton;
+    Button saveButton;
+    Button deleteButton;
+    Button advancedButton;
+    Button closeButton;
     GuiCheckBox lowPriority;
     GuiCheckBox allRegex;
     GuiCheckBox localRegex;
@@ -62,26 +62,26 @@ public class TabGUI extends GuiScreen {
         int x = width / 2; int y = height / 2;
 
         // General
-        buttonList.add(saveButton = new GuiButton(0, x - 90, y + 40, 40, 20, GREEN + "Save"));
-        buttonList.add(deleteButton = new GuiButton(1, x - 45, y + 40, 40, 20, DARK_RED + "Delete"));
-        buttonList.add(closeButton = new GuiButton(2, x + 50, y + 40, 40, 20, WHITE + "Close"));
-        buttonList.add(advancedButton = new GuiButton(4, x - 65, y - 60, 130, 20, "Show Advanced Settings"));
+        buttonList.add(saveButton = new Button(0, x - 90, y + 40, 40, 20, GREEN + "Save"));
+        buttonList.add(deleteButton = new Button(1, x - 45, y + 40, 40, 20, DARK_RED + "Delete"));
+        buttonList.add(closeButton = new Button(2, x + 50, y + 40, 40, 20, WHITE + "Close"));
+        buttonList.add(advancedButton = new Button(4, x - 65, y - 60, 130, 20, "Show Advanced Settings"));
 
         deleteButton.enabled = (id != -2) && TabManager.getAvailableTabs().size() > 1;
 
-        nameTextField = new GuiTextField(3, mc.fontRenderer, x - 110, y - 90, 80, 20);
+        nameTextField = new GuiTextField(3, mc.font, x - 110, y - 90, 80, 20);
         nameTextField.setVisible(true);
         nameTextField.setEnabled(true);
         nameTextField.setEnableBackgroundDrawing(true);
         nameTextField.setMaxStringLength(10);
 
-        autoCommandField = new GuiTextField(3, mc.fontRenderer, x - 12, y - 90, 80, 20);
+        autoCommandField = new GuiTextField(3, mc.font, x - 12, y - 90, 80, 20);
         autoCommandField.setVisible(true);
         autoCommandField.setEnabled(true);
         autoCommandField.setEnableBackgroundDrawing(true);
         autoCommandField.setMaxStringLength(10);
 
-        orderNbField = new GuiTextField(3, mc.fontRenderer, x + 85, y - 90, 25, 20);
+        orderNbField = new GuiTextField(3, mc.font, x + 85, y - 90, 25, 20);
         orderNbField.setVisible(true);
         orderNbField.setEnabled(true);
         orderNbField.setEnableBackgroundDrawing(true);
@@ -90,7 +90,7 @@ public class TabGUI extends GuiScreen {
         buttonList.add(lowPriority = new GuiCheckBox(3, x - 100, y + 22, "Low Priority", true));
 
         // Simple
-        labelList.add(simpleSettings = new GuiLabel(mc.fontRenderer, 4, x - 100, y - 35, 10, 10, 0xFFFFFF));
+        labelList.add(simpleSettings = new GuiLabel(mc.font, 4, x - 100, y - 35, 10, 10, 0xFFFFFF));
         simpleSettings.addLine("Message types " + RED + "*");
 
         simpleRegexSettings.add(allRegex = new GuiCheckBox(10, x - 100, y - 25, "All", false));
@@ -102,7 +102,7 @@ public class TabGUI extends GuiScreen {
         buttonList.addAll(simpleRegexSettings);
         applyRegexSettings();
         // Advanced
-        regexTextField = new GuiTextField(3, mc.fontRenderer, x - 100, y - 20, 200, 20);
+        regexTextField = new GuiTextField(3, mc.font, x - 100, y - 20, 200, 20);
         regexTextField.setVisible(false);
         regexTextField.setEnabled(true);
         regexTextField.setEnableBackgroundDrawing(true);
@@ -117,14 +117,14 @@ public class TabGUI extends GuiScreen {
             checkIfRegexIsValid();
         }
 
-        labelList.add(nameLabel = new GuiLabel(mc.fontRenderer, 0, x - 110, y - 105, 10, 10, 0xFFFFFF));
+        labelList.add(nameLabel = new GuiLabel(mc.font, 0, x - 110, y - 105, 10, 10, 0xFFFFFF));
         nameLabel.addLine("Name " + RED + "*");
-        labelList.add(regexLabel = new GuiLabel(mc.fontRenderer, 1, x - 100, y - 35, 10, 10, 0xFFFFFF));
+        labelList.add(regexLabel = new GuiLabel(mc.font, 1, x - 100, y - 35, 10, 10, 0xFFFFFF));
         regexLabel.addLine("Regex " + RED + "*");
         regexLabel.visible = false;
-        labelList.add(autoCommand = new GuiLabel(mc.fontRenderer, 2, x - 12, y - 105, 10, 10, 0xFFFFFF));
+        labelList.add(autoCommand = new GuiLabel(mc.font, 2, x - 12, y - 105, 10, 10, 0xFFFFFF));
         autoCommand.addLine("Auto Command");
-        labelList.add(orderNb = new GuiLabel(mc.fontRenderer, 3, x + 85, y - 105, 10, 10, 0xFFFFFF));
+        labelList.add(orderNb = new GuiLabel(mc.font, 3, x + 85, y - 105, 10, 10, 0xFFFFFF));
         orderNb.addLine("Order #");
 
         Keyboard.enableRepeatEvents(true);
@@ -136,7 +136,7 @@ public class TabGUI extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected void actionPerformed(Button button) throws IOException {
         super.actionPerformed(button);
 
         if (button == closeButton) mc.displayGuiScreen(new ChatGUI());

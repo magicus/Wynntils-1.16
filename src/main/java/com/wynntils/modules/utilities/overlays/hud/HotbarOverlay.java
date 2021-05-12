@@ -14,7 +14,7 @@ import com.wynntils.modules.utilities.configs.OverlayConfig;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.wynntils.modules.utilities.events.ClientEvents;
 import com.wynntils.webapi.profiles.item.enums.ItemTier;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -31,7 +31,7 @@ public class HotbarOverlay extends Overlay {
     public void render(RenderGameOverlayEvent.Pre event) {
         if (!WIDGETS_TEXTURE.loaded) WIDGETS_TEXTURE.load();
 
-        EntityPlayerSP player = ModCore.mc().player;
+        ClientPlayerEntity player = ModCore.mc().player;
         int textureY = 0;
 
         if (OverlayConfig.Hotbar.INSTANCE.hotbarTexture == OverlayConfig.Hotbar.HotbarTextures.Resource_Pack) {
@@ -50,7 +50,7 @@ public class HotbarOverlay extends Overlay {
         }
 
         for (int i = 0; i < 9; i++) {
-            ItemStack stack = player.inventory.mainInventory.get(i);
+            ItemStack stack = player.inventory.items.get(i);
             if (stack.isEmpty()) continue;
 
             int x = -88 + (i*20);

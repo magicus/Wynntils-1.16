@@ -16,11 +16,11 @@ import com.wynntils.modules.map.overlays.enums.MapButtonType;
 import com.wynntils.modules.map.overlays.objects.MapTerritory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -43,7 +43,7 @@ public class GuildWorldMapUI extends WorldMapUI {
     private boolean showTradeRoutes = true;
 
     public GuildWorldMapUI() {
-        super((float) Minecraft.getMinecraft().player.posX, (float) Minecraft.getMinecraft().player.posZ);
+        super((float) Minecraft.getInstance().player.posX, (float) Minecraft.getInstance().player.posZ);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class GuildWorldMapUI extends WorldMapUI {
 
         // HeyZeer0: This close the map if the user was pressing the map key and after a moment dropped it
         if (holdingMapKey && !isHoldingMapKey()) {
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            Minecraft.getInstance().displayGuiScreen(null);
             return;
         }
 
@@ -212,7 +212,7 @@ public class GuildWorldMapUI extends WorldMapUI {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         if (!holdingMapKey && keyCode == MapModule.getModule().getGuildMapKey().getKeyBinding().getKeyCode()) {
-            Minecraft.getMinecraft().displayGuiScreen(null);
+            Minecraft.getInstance().displayGuiScreen(null);
             return;
         }
 

@@ -125,7 +125,7 @@ public class PlayerInfoOverlay extends Overlay {
         nextExecution = Minecraft.getSystemTime() + 250;
 
         List<NetworkPlayerInfo> players = TabManager.getEntryOrdering()
-                .sortedCopy(Minecraft.getMinecraft().player.connection.getPlayerInfoMap());
+                .sortedCopy(Minecraft.getInstance().player.connection.getPlayerInfoMap());
 
         if (players.isEmpty()) return lastPlayers;
 
@@ -138,11 +138,11 @@ public class PlayerInfoOverlay extends Overlay {
     }
 
     private static String wrapText(String input, int maxLength) {
-        if (fontRenderer.getStringWidth(input) <= maxLength) return input;
+        if (font.getStringWidth(input) <= maxLength) return input;
 
         StringBuilder builder = new StringBuilder();
         for (char c : input.toCharArray()) {
-            if (fontRenderer.getStringWidth(builder.toString() + c) > maxLength) break;
+            if (font.getStringWidth(builder.toString() + c) > maxLength) break;
 
             builder.append(c);
         }

@@ -23,9 +23,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.network.play.server.SPacketWindowItems;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 
 public class ClientEvents implements Listener {
@@ -92,20 +92,20 @@ public class ClientEvents implements Listener {
     public void areaTracks(SchedulerEvent.RegionUpdate e) {
         if (!MusicConfig.INSTANCE.replaceJukebox) return;
 
-        Minecraft.getMinecraft().addScheduledTask(BossTrackManager::update);
+        Minecraft.getInstance().submit(BossTrackManager::update);
 
         if (BossTrackManager.isAlive()) return;
-        AreaTrackManager.update(new Location(Minecraft.getMinecraft().player));
+        AreaTrackManager.update(new Location(Minecraft.getInstance().player));
     }
 
     // mythic found sfx
     @SubscribeEvent
     public void onMythicFound(PacketEvent<SPacketWindowItems> e) {
         if (!MusicConfig.SoundEffects.INSTANCE.mythicFound) return;
-        if (Minecraft.getMinecraft().currentScreen == null) return;
-        if (!(Minecraft.getMinecraft().currentScreen instanceof ChestReplacer)) return;
+        if (Minecraft.getInstance().screen == null) return;
+        if (!(Minecraft.getInstance().screen instanceof ChestReplacer)) return;
 
-        ChestReplacer chest = (ChestReplacer) Minecraft.getMinecraft().currentScreen;
+        ChestReplacer chest = (ChestReplacer) Minecraft.getInstance().screen;
         if (!chest.getLowerInv().getName().contains("Loot Chest") &&
                 !chest.getLowerInv().getName().contains("Daily Rewards") &&
                 !chest.getLowerInv().getName().contains("Objective Rewards")) return;
@@ -113,7 +113,7 @@ public class ClientEvents implements Listener {
         int size = Math.min(chest.getLowerInv().getSizeInventory(), e.getPacket().getItemStacks().size());
         for (int i = 0; i < size; i++) {
             ItemStack stack = e.getPacket().getItemStacks().get(i);
-            if (stack.isEmpty() || !stack.hasDisplayName()) continue;
+            if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
             if (!stack.getDisplayName().contains(TextFormatting.DARK_PURPLE.toString())) continue;
             if (!stack.getDisplayName().contains("Unidentified")) continue;
 

@@ -14,7 +14,7 @@ import com.wynntils.core.utils.Utils;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import com.wynntils.modules.utilities.configs.OverlayConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -64,9 +64,9 @@ public class ActionBarOverlay extends Overlay {
         // Order:
         // Powder % | RLR | Sprint | and if there is nothing more coordinates
         if (OverlayConfig.INSTANCE.splitCoordinates && OverlayConfig.INSTANCE.actionBarCoordinates) {
-            drawString(lCoord, (-ScreenRenderer.fontRenderer.getStringWidth(lCoord) - ScreenRenderer.fontRenderer.getStringWidth(middleCoord) / 2.0f - padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
+            drawString(lCoord, (-ScreenRenderer.font.getStringWidth(lCoord) - ScreenRenderer.font.getStringWidth(middleCoord) / 2.0f - padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
             drawString(middleCoord, 0, y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.MIDDLE, OverlayConfig.INSTANCE.textShadow);
-            drawString(rCoord, (ScreenRenderer.fontRenderer.getStringWidth(middleCoord) / 2.0f + padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
+            drawString(rCoord, (ScreenRenderer.font.getStringWidth(middleCoord) / 2.0f + padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
             y -= 11;
             staticSize.y = 21;
             growth = OverlayGrowFrom.MIDDLE_CENTRE;
@@ -95,20 +95,20 @@ public class ActionBarOverlay extends Overlay {
         // breaks if it's rendering an item name or if doesn't have preference
         if (!preference && renderItemName()) return;
 
-        drawString(l, (-ScreenRenderer.fontRenderer.getStringWidth(l) - ScreenRenderer.fontRenderer.getStringWidth(middle) / 2.0f - padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
+        drawString(l, (-ScreenRenderer.font.getStringWidth(l) - ScreenRenderer.font.getStringWidth(middle) / 2.0f - padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
         drawString(middle, 0, y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.MIDDLE, OverlayConfig.INSTANCE.textShadow);
-        drawString(r, (ScreenRenderer.fontRenderer.getStringWidth(middle) / 2.0f + padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
+        drawString(r, (ScreenRenderer.font.getStringWidth(middle) / 2.0f + padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
     }
 
     private boolean renderItemName() {
-        int newHighlightTicks = ReflectionFields.GuiIngame_remainingHighlightTicks.getValue(Minecraft.getMinecraft().ingameGUI);
-        ItemStack newHighlightItem = ReflectionFields.GuiIngame_highlightingItemStack.getValue(Minecraft.getMinecraft().ingameGUI);
+        int newHighlightTicks = ReflectionFields.GuiIngame_remainingHighlightTicks.getValue(Minecraft.getInstance().ingameGUI);
+        ItemStack newHighlightItem = ReflectionFields.GuiIngame_highlightingItemStack.getValue(Minecraft.getInstance().ingameGUI);
 
         if (newHighlightTicks > 0) { // update item
             highlightTicks = newHighlightTicks*5; // this method ticks 5 times as fast as the default
             highlightItem = newHighlightItem;
 
-            ReflectionFields.GuiIngame_remainingHighlightTicks.setValue(Minecraft.getMinecraft().ingameGUI, 0);
+            ReflectionFields.GuiIngame_remainingHighlightTicks.setValue(Minecraft.getInstance().ingameGUI, 0);
         } else if (newHighlightItem.isEmpty()) { // clear highlight when player switches to an empty hand
             highlightTicks = 0;
         }
@@ -117,14 +117,14 @@ public class ActionBarOverlay extends Overlay {
 
             String s = highlightItem.getDisplayName();
 
-            if (highlightItem.hasDisplayName()) {
+            if (highlightItem.hasCustomHoverName()) {
                 s = TextFormatting.ITALIC + s;
             }
 
-            int i = ((int) (position.anchorX * ScreenRenderer.screen.getScaledWidth()) - ScreenRenderer.mc.fontRenderer.getStringWidth(s) / 2) + position.offsetX;
+            int i = ((int) (position.anchorX * ScreenRenderer.screen.getScaledWidth()) - ScreenRenderer.mc.font.getStringWidth(s) / 2) + position.offsetX;
             int j = (int) (position.anchorY * ScreenRenderer.screen.getScaledHeight()) + position.offsetY + (OverlayConfig.INSTANCE.splitCoordinates ? -11 : 0);
 
-            if (!ScreenRenderer.mc.playerController.shouldDrawHUD()) {
+            if (!ScreenRenderer.mc.gameMode.shouldDrawHUD()) {
                 j += 14;
             }
 
@@ -139,7 +139,7 @@ public class ActionBarOverlay extends Overlay {
                 GlStateManager.pushMatrix();
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                ScreenRenderer.mc.fontRenderer.drawStringWithShadow(s, (float) i, (float) j, 16777215 + (k << 24));
+                ScreenRenderer.mc.font.drawStringWithShadow(s, (float) i, (float) j, 16777215 + (k << 24));
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
                 return true;

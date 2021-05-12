@@ -15,20 +15,20 @@ import com.wynntils.modules.utilities.instances.ContainerBuilds;
 import com.wynntils.modules.utilities.instances.SkillPointAllocation;
 import com.wynntils.modules.utilities.overlays.inventories.SkillPointOverlay;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.gui.screen.Screen;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +39,11 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
     private static final ResourceLocation CHEST_GUI_TEXTURE = new ResourceLocation("textures/gui/container/generic_54.png");
 
     private final SkillPointOverlay parent;
-    private final GuiScreen spMenu;
+    private final Screen spMenu;
     private final InventoryBasic inventory;
     private final int inventoryRows;
 
-    public SkillPointLoadoutUI(SkillPointOverlay parent, GuiScreen spMenu, InventoryBasic inventory) {
+    public SkillPointLoadoutUI(SkillPointOverlay parent, Screen spMenu, InventoryBasic inventory) {
         super(new ContainerBuilds(inventory, ModCore.mc().player));
         this.parent = parent;
         this.spMenu = spMenu;
@@ -116,14 +116,14 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
         if (mouseButton == 1) { // right click <-> delete
             List<String> lore = ItemUtils.getLore(slotIn.getStack());
             if (lore.get(lore.size() - 1).contains("confirm")) { // confirm deletion
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
 
                 removeLoadout(name);
                 this.initGui();
                 return;
             }
 
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_ANVIL_LAND, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_LAND, 1f));
             lore.set(lore.size() -1, TextFormatting.DARK_RED + "> Right-click to confirm deletion");
             ItemUtils.replaceLore(slotIn.getStack(), lore);
         }
@@ -131,7 +131,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
-        if (keyCode == Keyboard.KEY_ESCAPE || keyCode == ModCore.mc().gameSettings.keyBindInventory.getKeyCode()) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == ModCore.mc().gameSettings.keyBindInventory.getKeyCode()) {
             ModCore.mc().displayGuiScreen(spMenu);
         }
     }
@@ -145,13 +145,13 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRenderer.drawString(this.inventory.getDisplayName().getUnformattedText(), 8, 6, 4210752);
+        this.font.drawString(this.inventory.getDisplayName().getUnformattedText(), 8, 6, 4210752);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(CHEST_GUI_TEXTURE);
+        this.mc.getTextureManager().bind(CHEST_GUI_TEXTURE);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.inventoryRows * 18 + 17);

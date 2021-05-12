@@ -14,7 +14,7 @@ import com.wynntils.modules.questbook.events.ClientEvents;
 import com.wynntils.modules.questbook.managers.QuestManager;
 import com.wynntils.modules.questbook.overlays.hud.TrackedQuestOverlay;
 import net.minecraftforge.client.settings.KeyConflictContext;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 @ModuleInfo(name = "quest_book", displayName = "Quest Book")
 public class QuestBookModule extends Module {
@@ -31,12 +31,12 @@ public class QuestBookModule extends Module {
 
         registerCommand(new CommandExportDiscoveries());
 
-        registerKeyBinding("Open Quest Book", Keyboard.KEY_K, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.QUESTS.getPage().open(true));
-        registerKeyBinding("Open Discoveries", Keyboard.KEY_U, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.DISCOVERIES.getPage().open(true));
-        registerKeyBinding("Open Item Guide", Keyboard.KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.ITEMGUIDE.getPage().open(true));
-        registerKeyBinding("Open Lootrun List", Keyboard.KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.LOOTRUNS.getPage().open(true));
-        registerKeyBinding("Open HUD configuration", Keyboard.KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.HUDCONFIG.getPage().open(true));
-        registerKeyBinding("Open Menu", Keyboard.KEY_I, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
+        registerKeyBinding("Open Quest Book", GLFW.GLFW_KEY_K, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.QUESTS.getPage().open(true));
+        registerKeyBinding("Open Discoveries", GLFW.GLFW_KEY_U, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.DISCOVERIES.getPage().open(true));
+        registerKeyBinding("Open Item Guide", GLFW.GLFW_KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.ITEMGUIDE.getPage().open(true));
+        registerKeyBinding("Open Lootrun List", GLFW.GLFW_KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.LOOTRUNS.getPage().open(true));
+        registerKeyBinding("Open HUD configuration", GLFW.GLFW_KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.HUDCONFIG.getPage().open(true));
+        registerKeyBinding("Open Menu", GLFW.GLFW_KEY_I, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
             QuestBookPages.MAIN.getPage().open(true);
             QuestManager.readQuestBook();
         });

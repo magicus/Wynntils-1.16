@@ -10,12 +10,12 @@ import com.wynntils.modules.core.CoreModule;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.core.enums.UpdateStream;
 import com.wynntils.webapi.WebManager;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.util.text.TextFormatting;
 
-public class UpdateAvailableScreen extends GuiScreen {
+public class UpdateAvailableScreen extends Screen {
 
     private ServerData server;
     private String text;
@@ -31,27 +31,27 @@ public class UpdateAvailableScreen extends GuiScreen {
 
     @Override
     public void initGui() {
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 84, 200, 20, "View changelog"));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 4 + 108, 98, 20, "Update now"));
-        this.buttonList.add(new GuiButton(2, this.width / 2 + 2, this.height / 4 + 108, 98, 20, "Update at exit"));
-        this.buttonList.add(new GuiButton(3, this.width / 2 - 100, this.height / 4 + 132, 98, 20, "Ignore update"));
-        this.buttonList.add(new GuiButton(4, this.width / 2 + 2, this.height / 4 + 132, 98, 20, "Cancel"));
+        this.buttonList.add(new Button(0, this.width / 2 - 100, this.height / 4 + 84, 200, 20, "View changelog"));
+        this.buttonList.add(new Button(1, this.width / 2 - 100, this.height / 4 + 108, 98, 20, "Update now"));
+        this.buttonList.add(new Button(2, this.width / 2 + 2, this.height / 4 + 108, 98, 20, "Update at exit"));
+        this.buttonList.add(new Button(3, this.width / 2 - 100, this.height / 4 + 132, 98, 20, "Ignore update"));
+        this.buttonList.add(new Button(4, this.width / 2 + 2, this.height / 4 + 132, 98, 20, "Cancel"));
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
-        int yOffset = Math.min(this.height / 2, this.height / 4 + 80 - mc.fontRenderer.FONT_HEIGHT * 2);
-        drawCenteredString(mc.fontRenderer, text, this.width/2, yOffset - mc.fontRenderer.FONT_HEIGHT - 2, 0xFFFFFFFF);
-        drawCenteredString(mc.fontRenderer, "Update now or when leaving Minecraft?", this.width/2, yOffset, 0xFFFFFFFF);
-        drawCenteredString(mc.fontRenderer, "(Updating now will exit Minecraft after downloading update)", this.width/2, yOffset + mc.fontRenderer.FONT_HEIGHT + 2, 0xFFFFFFFF);
+        int yOffset = Math.min(this.height / 2, this.height / 4 + 80 - mc.font.FONT_HEIGHT * 2);
+        drawCenteredString(mc.font, text, this.width/2, yOffset - mc.font.FONT_HEIGHT - 2, 0xFFFFFFFF);
+        drawCenteredString(mc.font, "Update now or when leaving Minecraft?", this.width/2, yOffset, 0xFFFFFFFF);
+        drawCenteredString(mc.font, "(Updating now will exit Minecraft after downloading update)", this.width/2, yOffset + mc.font.FONT_HEIGHT + 2, 0xFFFFFFFF);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public void actionPerformed(GuiButton button) {
+    public void actionPerformed(Button button) {
         if (button.id == 1 || button.id == 2) {
             // Update
             CoreDBConfig.INSTANCE.showChangelogs = true;

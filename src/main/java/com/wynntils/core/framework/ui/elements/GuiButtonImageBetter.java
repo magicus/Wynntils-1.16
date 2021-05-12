@@ -5,9 +5,9 @@
 package com.wynntils.core.framework.ui.elements;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiButtonImage;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
@@ -16,8 +16,8 @@ import net.minecraft.util.math.MathHelper;
  * and can also be scaled
  */
 public class GuiButtonImageBetter extends GuiButtonImage {
-    private static final GuiButton highlightFixHovering = new GuiButton(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, "");
-    private static final GuiButton highlightFixNoHovering = new GuiButton(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, 0, 0, "");
+    private static final Button highlightFixHovering = new Button(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, "");
+    private static final Button highlightFixNoHovering = new Button(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, 0, 0, "");
 
     private float scaleFactor;
     private float scaleFromX;
@@ -90,10 +90,10 @@ public class GuiButtonImageBetter extends GuiButtonImage {
     public static void setColour(boolean hovering, boolean enabled) {
         if (hovering) {
             highlightFixHovering.enabled = enabled;
-            highlightFixHovering.drawButton(Minecraft.getMinecraft(), Integer.MIN_VALUE, Integer.MIN_VALUE, 0);
+            highlightFixHovering.drawButton(Minecraft.getInstance(), Integer.MIN_VALUE, Integer.MIN_VALUE, 0);
         } else {
             highlightFixNoHovering.enabled = enabled;
-            highlightFixNoHovering.drawButton(Minecraft.getMinecraft(), 0, 0, 0);
+            highlightFixNoHovering.drawButton(Minecraft.getInstance(), 0, 0, 0);
         }
     }
 }

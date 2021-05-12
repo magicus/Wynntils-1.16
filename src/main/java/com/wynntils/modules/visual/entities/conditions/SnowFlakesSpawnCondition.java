@@ -10,7 +10,7 @@ import com.wynntils.core.utils.objects.Location;
 import com.wynntils.core.utils.objects.SquareRegion;
 import com.wynntils.modules.visual.configs.VisualConfig;
 import com.wynntils.modules.visual.entities.EntitySnowFlake;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -23,7 +23,7 @@ public class SnowFlakesSpawnCondition implements EntitySpawnCodition {
     private static final SquareRegion LUSUCO = new SquareRegion(-492, -550, -66, -127);
 
     @Override
-    public boolean shouldSpawn(Location pos, World world, EntityPlayerSP player, Random random) {
+    public boolean shouldSpawn(Location pos, World world, ClientPlayerEntity player, Random random) {
         if (!VisualConfig.Snowflakes.INSTANCE.enabled) return false;
 
         Biome biome = world.getBiome(pos.toBlockPos());
@@ -43,7 +43,7 @@ public class SnowFlakesSpawnCondition implements EntitySpawnCodition {
     }
 
     @Override
-    public FakeEntity createEntity(Location location, World world, EntityPlayerSP player, Random random) {
+    public FakeEntity createEntity(Location location, World world, ClientPlayerEntity player, Random random) {
         return new EntitySnowFlake(location, random);
     }
 

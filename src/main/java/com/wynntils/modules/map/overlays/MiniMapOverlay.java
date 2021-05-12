@@ -19,7 +19,7 @@ import com.wynntils.modules.map.managers.LootRunManager;
 import com.wynntils.modules.map.overlays.objects.MapCompassIcon;
 import com.wynntils.modules.map.overlays.objects.MapIcon;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
@@ -94,7 +94,7 @@ public class MiniMapOverlay extends Overlay {
             }
 
             // map texture
-            map.bindTexture();
+            map.bind();
             GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
 
             // rotation axis

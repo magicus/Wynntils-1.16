@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 import com.wynntils.ModCore;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
@@ -27,22 +27,22 @@ import com.wynntils.modules.utilities.UtilitiesModule;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.AbstractGui;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketClickWindow;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class BankOverlay implements Listener {
 
@@ -97,8 +97,8 @@ public class BankOverlay implements Listener {
         if (destinationPage == page) destinationPage = 0; // if we've already arrived, reset destination
 
         if (searchField == null && UtilitiesConfig.Bank.INSTANCE.showBankSearchBar) {
-            int nameWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(e.getGui().getUpperInv().getDisplayName().getUnformattedText());
-            searchField = new GuiTextFieldWynn(201, Minecraft.getMinecraft().fontRenderer, nameWidth + 13, 128, 157 - nameWidth, 10);
+            int nameWidth = Minecraft.getInstance().font.getStringWidth(e.getGui().getUpperInv().getDisplayName().getUnformattedText());
+            searchField = new GuiTextFieldWynn(201, Minecraft.getInstance().font, nameWidth + 13, 128, 157 - nameWidth, 10);
             searchField.setText("Search...");
         }
 
@@ -113,7 +113,7 @@ public class BankOverlay implements Listener {
 
         // searched item highlight
         for (Slot s : e.getGui().inventorySlots.inventorySlots) {
-            if (s.getStack().isEmpty() || !s.getStack().hasDisplayName()) continue;
+            if (s.getStack().isEmpty() || !s.getStack().hasCustomHoverName()) continue;
             if (!searchedItems.contains(s.getStack())) continue;
 
             SpecialRendering.renderGodRays(e.getGui().getGuiLeft() + s.xPos + 5,
@@ -128,7 +128,7 @@ public class BankOverlay implements Listener {
             Slot s = e.getGui().inventorySlots.getSlot(QA_SLOTS[i]);
 
             s.putStack(new ItemStack(Blocks.SNOW_LAYER));
-            ModCore.mc().getTextureManager().bindTexture(COLUMN_ARROW);
+            ModCore.mc().getTextureManager().bind(COLUMN_ARROW);
 
             GlStateManager.pushMatrix();
             {
@@ -138,7 +138,7 @@ public class BankOverlay implements Listener {
                     GlStateManager.disableLighting();
                 }
 
-                Gui.drawModalRectWithCustomSizedTexture((int) ((e.getGui().getGuiLeft() + s.xPos - 8) / 1.1f) - 1, (int) ((e.getGui().getGuiTop() + s.yPos - 8) / 1.1f) - 1, 0, 0, 32, 32, 32, 32);
+                AbstractGui.drawModalRectWithCustomSizedTexture((int) ((e.getGui().getGuiLeft() + s.xPos - 8) / 1.1f) - 1, (int) ((e.getGui().getGuiTop() + s.yPos - 8) / 1.1f) - 1, 0, 0, 32, 32, 32, 32);
             }
             GlStateManager.popMatrix();
         }
@@ -268,7 +268,7 @@ public class BankOverlay implements Listener {
             }
 
             ((InventoryBasic) e.getGui().getLowerInv()).setCustomName("");
-            nameField = new GuiTextFieldWynn(200, Minecraft.getMinecraft().fontRenderer, 8, 5, 120, 10);
+            nameField = new GuiTextFieldWynn(200, Minecraft.getInstance().font, 8, 5, 120, 10);
             nameField.setFocused(true);
 
             if (UtilitiesConfig.Bank.INSTANCE.pageNames.containsKey(page))
@@ -290,7 +290,7 @@ public class BankOverlay implements Listener {
         // handle typing in text boxes
         if (nameField != null && nameField.isFocused()) {
             e.setCanceled(true);
-            if (e.getKeyCode() == Keyboard.KEY_RETURN) {
+            if (e.getKeyCode() == GLFW.GLFW_KEY_RETURN) {
                 String name = nameField.getText();
                 nameField = null;
 
@@ -298,7 +298,7 @@ public class BankOverlay implements Listener {
                 UtilitiesConfig.Bank.INSTANCE.pageNames.put(page, name);
                 UtilitiesConfig.Bank.INSTANCE.saveSettings(UtilitiesModule.getModule());
                 updateName(e.getGui().getLowerInv());
-            } else if (e.getKeyCode() == Keyboard.KEY_ESCAPE) {
+            } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
                 nameField = null;
                 updateName(e.getGui().getLowerInv());
             } else {
@@ -306,16 +306,16 @@ public class BankOverlay implements Listener {
             }
         } else if (searchField != null && searchField.isFocused()) {
             e.setCanceled(true);
-            if (e.getKeyCode() == Keyboard.KEY_ESCAPE) {
+            if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
                 searchField.setFocused(false);
-            } else if (e.getKeyCode() == Keyboard.KEY_RETURN && isSearching()) {
+            } else if (e.getKeyCode() == GLFW.GLFW_KEY_RETURN && isSearching()) {
                 searching = 1;
                 destinationPage = page + 1;
                 gotoPage(e.getGui());
             } else {
                 searchField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
             }
-        } else if (e.getKeyCode() == Keyboard.KEY_ESCAPE || e.getKeyCode() == ModCore.mc().gameSettings.keyBindInventory.getKeyCode()) { // bank was closed by player
+        } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE || e.getKeyCode() == ModCore.mc().gameSettings.keyBindInventory.getKeyCode()) { // bank was closed by player
             destinationPage = 0;
             searchField = null;
             searching = 0;
@@ -361,7 +361,7 @@ public class BankOverlay implements Listener {
                 ItemStack is = bankGui.inventorySlots.getSlot(PAGE_FORWARD).getStack();
 
                 // ensure arrow is there
-                if (!is.hasDisplayName() || !is.getDisplayName().contains(">" + TextFormatting.DARK_GREEN + ">" + TextFormatting.GREEN + ">" + TextFormatting.DARK_GREEN + ">" + TextFormatting.GREEN + ">")) {
+                if (!is.hasCustomHoverName() || !is.getDisplayName().contains(">" + TextFormatting.DARK_GREEN + ">" + TextFormatting.GREEN + ">" + TextFormatting.DARK_GREEN + ">" + TextFormatting.GREEN + ">")) {
                     destinationPage = 0;
                     searching = 0;
                     return;
@@ -372,7 +372,7 @@ public class BankOverlay implements Listener {
                 ItemStack is = bankGui.inventorySlots.getSlot(PAGE_BACK).getStack();
 
                 // ensure arrow is there
-                if (!is.hasDisplayName() || !is.getDisplayName().contains("<" + TextFormatting.DARK_GREEN + "<" + TextFormatting.GREEN + "<" + TextFormatting.DARK_GREEN + "<" + TextFormatting.GREEN + "<")) {
+                if (!is.hasCustomHoverName() || !is.getDisplayName().contains("<" + TextFormatting.DARK_GREEN + "<" + TextFormatting.GREEN + "<" + TextFormatting.DARK_GREEN + "<" + TextFormatting.GREEN + "<")) {
                     destinationPage = 0;
                     searching = 0;
                     return;

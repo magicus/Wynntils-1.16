@@ -19,7 +19,7 @@ public class PartyManager {
     private static final CommandResponse listExecutor = new CommandResponse("/party list", (matcher, text) -> {
         String entire = matcher.group(0);
         if (entire.contains("You must be in")) {  // clears the party
-            PlayerInfo.get(SocialData.class).getPlayerParty().removeMember(Minecraft.getMinecraft().player.getName());
+            PlayerInfo.get(SocialData.class).getPlayerParty().removeMember(Minecraft.getInstance().player.getName());
             return;
         }
 
@@ -49,13 +49,13 @@ public class PartyManager {
                 || component.getUnformattedText().startsWith("Your party has been disbanded since you were the only member remaining.")
                 || component.getUnformattedText().startsWith("Your party has been disbanded.")) {
             PartyContainer partyContainer = PlayerInfo.get(SocialData.class).getPlayerParty();
-            partyContainer.removeMember(Minecraft.getMinecraft().player.getName());
+            partyContainer.removeMember(Minecraft.getInstance().player.getName());
             return;
         }
         if (component.getUnformattedText().startsWith("You have successfully created a party.")) {
             PartyContainer partyContainer = PlayerInfo.get(SocialData.class).getPlayerParty();
-            partyContainer.setOwner(Minecraft.getMinecraft().player.getName());
-            partyContainer.addMember(Minecraft.getMinecraft().player.getName());
+            partyContainer.setOwner(Minecraft.getInstance().player.getName());
+            partyContainer.addMember(Minecraft.getInstance().player.getName());
             return;
         }
         if (component.getFormattedText().startsWith("§e") && component.getUnformattedText().contains("has joined the party.")) {

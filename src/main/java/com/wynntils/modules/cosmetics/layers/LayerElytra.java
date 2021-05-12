@@ -12,15 +12,15 @@ import com.wynntils.modules.cosmetics.layers.models.CustomElytraModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.GlStateManager.DestFactor;
-import net.minecraft.client.renderer.GlStateManager.SourceFactor;
+import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
+import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClientPlayer> {
 
@@ -44,7 +44,7 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
     @Override
     public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (!CosmeticsConfig.INSTANCE.forceCapes
-                && !Minecraft.getMinecraft().gameSettings.getModelParts().toString().contains("CAPE")
+                && !Minecraft.getInstance().gameSettings.getModelParts().toString().contains("CAPE")
                 && player.getUniqueID() == ModCore.mc().player.getUniqueID()) return;
 
         WynntilsUser info = UserManager.getUser(player.getUniqueID());
@@ -68,7 +68,7 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
         enableBlend();
         blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
-        renderPlayer.bindTexture(elytra);
+        renderPlayer.bind(elytra);
 
         // rendering
         { pushMatrix();

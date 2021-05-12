@@ -12,7 +12,7 @@ import com.wynntils.modules.map.instances.LootRunNote;
 import com.wynntils.modules.map.managers.LootRunManager;
 import com.wynntils.modules.questbook.enums.QuestBookPages;
 import com.wynntils.modules.questbook.instances.QuestBookPage;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -231,7 +231,7 @@ public class CommandLootRun extends CommandBase implements IClientCommand {
 
                 String text = String.join(" ", args);
                 text = text.substring(text.indexOf(" ")).trim();
-                EntityPlayerSP player = ModCore.mc().player;
+                ClientPlayerEntity player = ModCore.mc().player;
                 LootRunNote note = new LootRunNote(new Location(player.posX, player.posY, player.posZ), text);
 
                 ITextComponent message;

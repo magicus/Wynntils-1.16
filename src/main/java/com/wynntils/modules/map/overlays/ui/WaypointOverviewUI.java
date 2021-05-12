@@ -14,27 +14,27 @@ import com.wynntils.modules.map.configs.MapConfig;
 import com.wynntils.modules.map.instances.WaypointProfile;
 import com.wynntils.modules.map.overlays.objects.MapWaypointIcon;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiButtonImage;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.screen.Screen;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.*;
 
-public class WaypointOverviewUI extends GuiScreen {
+public class WaypointOverviewUI extends Screen {
 
-    private GuiButton nextPageBtn;
-    private GuiButton previousPageBtn;
-    private GuiButton nextGroupBtn;
-    private GuiButton previousGroupBtn;
-    private List<GuiButton> groupBtns = new ArrayList<>();
-    private GuiButton exitBtn;
-    private GuiButton exportBtn;
-    private GuiButton importBtn;
-    private List<GuiButton> editButtons = new ArrayList<>();
+    private Button nextPageBtn;
+    private Button previousPageBtn;
+    private Button nextGroupBtn;
+    private Button previousGroupBtn;
+    private List<Button> groupBtns = new ArrayList<>();
+    private Button exitBtn;
+    private Button exportBtn;
+    private Button importBtn;
+    private List<Button> editButtons = new ArrayList<>();
 
     private List<String> exportText;
     private List<String> importText;
@@ -58,21 +58,21 @@ public class WaypointOverviewUI extends GuiScreen {
         waypoints = MapConfig.Waypoints.INSTANCE.waypoints;
 
         pageHeight = (this.height - 100) / 25;
-        this.buttonList.add(nextPageBtn = new GuiButton(0, this.width/2 + 2, this.height - 45, 20, 20, ">"));
-        this.buttonList.add(previousPageBtn = new GuiButton(1, this.width/2 - 22, this.height - 45, 20, 20, "<"));
-        this.buttonList.add(exitBtn = new GuiButton(2, this.width - 40, 20, 20, 20, TextFormatting.RED + "X"));
+        this.buttonList.add(nextPageBtn = new Button(0, this.width/2 + 2, this.height - 45, 20, 20, ">"));
+        this.buttonList.add(previousPageBtn = new Button(1, this.width/2 - 22, this.height - 45, 20, 20, "<"));
+        this.buttonList.add(exitBtn = new Button(2, this.width - 40, 20, 20, 20, TextFormatting.RED + "X"));
 
         groupWidth = Math.min(Math.max((this.width - 100) / 22, 2), ungroupedIndex + 1);
         int halfGroupPixelWidth = groupWidth * 11 + 2;
-        previousGroupBtn = new GuiButton(-(ungroupedIndex + 2), this.width / 2 - halfGroupPixelWidth - 22, 20, 18, 18, "<");
-        nextGroupBtn = new GuiButton(-(ungroupedIndex + 3), this.width / 2 + halfGroupPixelWidth + 4, 20, 18, 18, ">");
+        previousGroupBtn = new Button(-(ungroupedIndex + 2), this.width / 2 - halfGroupPixelWidth - 22, 20, 18, 18, "<");
+        nextGroupBtn = new Button(-(ungroupedIndex + 3), this.width / 2 + halfGroupPixelWidth + 4, 20, 18, 18, ">");
         if (groupWidth != ungroupedIndex + 1) {
             this.buttonList.add(previousGroupBtn);
             this.buttonList.add(nextGroupBtn);
         }
 
-        this.buttonList.add(exportBtn = new GuiButton(8, this.width/2 + 26, this.height - 45, 50, 20, "EXPORT"));
-        this.buttonList.add(importBtn = new GuiButton(9, this.width/2 - 76, this.height - 45, 50, 20, "IMPORT"));
+        this.buttonList.add(exportBtn = new Button(8, this.width/2 + 26, this.height - 45, 50, 20, "EXPORT"));
+        this.buttonList.add(importBtn = new Button(9, this.width/2 - 76, this.height - 45, 50, 20, "IMPORT"));
 
         onWaypointChange();
     }
@@ -82,12 +82,12 @@ public class WaypointOverviewUI extends GuiScreen {
         drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        fontRenderer.drawString(TextFormatting.BOLD + "Group", this.width/2 - 205, 43, 0xFFFFFF);
-        fontRenderer.drawString(TextFormatting.BOLD + "Icon", this.width / 2 - 165, 43, 0xFFFFFF);
-        fontRenderer.drawString(TextFormatting.BOLD + "Name", this.width / 2 - 130, 43, 0xFFFFFF);
-        drawCenteredString(fontRenderer, TextFormatting.BOLD + "X", this.width/2 - 15, 43, 0xFFFFFF);
-        drawCenteredString(fontRenderer, TextFormatting.BOLD + "Z", this.width/2 + 40, 43, 0xFFFFFF);
-        drawCenteredString(fontRenderer, TextFormatting.BOLD + "Y", this.width/2 + 80, 43, 0xFFFFFF);
+        font.drawString(TextFormatting.BOLD + "Group", this.width/2 - 205, 43, 0xFFFFFF);
+        font.drawString(TextFormatting.BOLD + "Icon", this.width / 2 - 165, 43, 0xFFFFFF);
+        font.drawString(TextFormatting.BOLD + "Name", this.width / 2 - 130, 43, 0xFFFFFF);
+        drawCenteredString(font, TextFormatting.BOLD + "X", this.width/2 - 15, 43, 0xFFFFFF);
+        drawCenteredString(font, TextFormatting.BOLD + "Z", this.width/2 + 40, 43, 0xFFFFFF);
+        drawCenteredString(font, TextFormatting.BOLD + "Y", this.width/2 + 80, 43, 0xFFFFFF);
         drawRect(this.width/2 - 205, 52, this.width/2 + 190, 53, 0xFFFFFFFF);
 
         ScreenRenderer.beginGL(0, 0);
@@ -113,7 +113,7 @@ public class WaypointOverviewUI extends GuiScreen {
             }
             if (wp.getGroup() == null) {
                 String text = "NONE";
-                fontRenderer.drawString(text, (int) (this.width / 2f - 191 - fontRenderer.getStringWidth(text) / 2f), (int) centreZ, 0xFFFFFFFF);
+                font.drawString(text, (int) (this.width / 2f - 191 - font.getStringWidth(text) / 2f), (int) centreZ, 0xFFFFFFFF);
             } else {
                 MapWaypointIcon groupIcon = MapWaypointIcon.getFree(wp.getGroup());
                 float groupIconMultiplier = 9f / Math.max(groupIcon.getSizeX(), groupIcon.getSizeZ());
@@ -123,10 +123,10 @@ public class WaypointOverviewUI extends GuiScreen {
                 GuiButtonImageBetter.setColour(false, true);
             }
 
-            fontRenderer.drawString(wp.getName(), this.width/2 - 130, 60 + 25 * i, colour);
-            drawCenteredString(fontRenderer, Integer.toString((int) wp.getX()), this.width/2 - 15, 60 + 25 * i, colour);
-            drawCenteredString(fontRenderer, Integer.toString((int) wp.getZ()), this.width/2 + 40, 60 + 25 * i, colour);
-            drawCenteredString(fontRenderer, Integer.toString((int) wp.getY()), this.width/2 + 80, 60 + 25 * i, colour);
+            font.drawString(wp.getName(), this.width/2 - 130, 60 + 25 * i, colour);
+            drawCenteredString(font, Integer.toString((int) wp.getX()), this.width/2 - 15, 60 + 25 * i, colour);
+            drawCenteredString(font, Integer.toString((int) wp.getZ()), this.width/2 + 40, 60 + 25 * i, colour);
+            drawCenteredString(font, Integer.toString((int) wp.getY()), this.width/2 + 80, 60 + 25 * i, colour);
 
             if (hidden) {
                 drawHorizontalLine(this.width / 2 - 135, this.width / 2 + 95, (int) centreZ - 1, colour | 0xFF000000);
@@ -136,9 +136,9 @@ public class WaypointOverviewUI extends GuiScreen {
         ScreenRenderer.endGL();
 
         if (exportBtn.isMouseOver()) {
-            drawHoveringText(exportText, mouseX, mouseY, fontRenderer);
+            drawHoveringText(exportText, mouseX, mouseY, font);
         } else if (importBtn.isMouseOver()) {
-            drawHoveringText(importText, mouseX, mouseY, fontRenderer);
+            drawHoveringText(importText, mouseX, mouseY, font);
         }
     }
 
@@ -197,7 +197,7 @@ public class WaypointOverviewUI extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton b) {
+    protected void actionPerformed(Button b) {
         if (b == nextPageBtn) {
             page++;
             checkAvailablePages();
@@ -266,7 +266,7 @@ public class WaypointOverviewUI extends GuiScreen {
                 onWaypointChange();
             }
         } else if (b.id % 10 == 3) {
-            Minecraft.getMinecraft().displayGuiScreen(new WaypointCreationMenu(getWaypoints().get(b.id / 10 + page * pageHeight), this));
+            Minecraft.getInstance().displayGuiScreen(new WaypointCreationMenu(getWaypoints().get(b.id / 10 + page * pageHeight), this));
         } else if (b.id % 10 == 5) {
             MapConfig.Waypoints.INSTANCE.waypoints.remove(getWaypoints().get(b.id / 10 + page * pageHeight));
             onWaypointChange();
@@ -351,7 +351,7 @@ public class WaypointOverviewUI extends GuiScreen {
         previousGroupBtn.enabled = groupScroll > 0;
         for (int i = groupScroll - 1; i < groupScroll + groupWidth - 1; ++i) {
             if (i == -1) {
-                GuiButton btn = new GuiButton(-(ungroupedIndex + 1), buttonX, buttonY, 18, 18, "*");
+                Button btn = new Button(-(ungroupedIndex + 1), buttonX, buttonY, 18, 18, "*");
                 groupBtns.add(btn);
                 if (this.group == ungroupedIndex) {
                     btn.enabled = false;
@@ -389,10 +389,10 @@ public class WaypointOverviewUI extends GuiScreen {
         editButtons.clear();
         int groupShift = group == ungroupedIndex ? 20 : 0;
         for (int i = 0, lim = Math.min(pageHeight, getWaypoints().size() - pageHeight * page); i < lim; i++) {
-            editButtons.add(new GuiButton(3 + 10 * i, this.width/2 + 85 + groupShift, 54 + 25 * i, 40, 20,"Edit..."));
-            editButtons.add(new GuiButton(5 + 10 * i, this.width/2 + 130 + groupShift, 54 + 25 * i, 40, 20, "Delete"));
-            GuiButton up = new GuiButton(6 + 10 * i, this.width/2 + 172 + groupShift, 54 + 25 * i, 9, 9, "\u028C");
-            GuiButton down = new GuiButton(7 + 10 * i, this.width/2 + 172 + groupShift, 65 + 25 * i, 9, 9, "v");
+            editButtons.add(new Button(3 + 10 * i, this.width/2 + 85 + groupShift, 54 + 25 * i, 40, 20,"Edit..."));
+            editButtons.add(new Button(5 + 10 * i, this.width/2 + 130 + groupShift, 54 + 25 * i, 40, 20, "Delete"));
+            Button up = new Button(6 + 10 * i, this.width/2 + 172 + groupShift, 54 + 25 * i, 9, 9, "\u028C");
+            Button down = new Button(7 + 10 * i, this.width/2 + 172 + groupShift, 65 + 25 * i, 9, 9, "v");
             up.enabled = i != 0 || previousPageBtn.enabled;
             down.enabled = i == pageHeight - 1 ? nextPageBtn.enabled : i != lim - 1;
             editButtons.add(up);

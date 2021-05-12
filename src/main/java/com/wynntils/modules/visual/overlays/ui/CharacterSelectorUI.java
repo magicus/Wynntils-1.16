@@ -16,19 +16,19 @@ import com.wynntils.modules.visual.VisualModule;
 import com.wynntils.modules.visual.instances.CharacterProfile;
 import com.wynntils.webapi.profiles.player.PlayerStatsProfile;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -36,9 +36,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
-public class CharacterSelectorUI extends GuiScreen {
+public class CharacterSelectorUI extends Screen {
 
     protected ScreenRenderer renderer = new ScreenRenderer();
 
@@ -191,7 +191,7 @@ public class CharacterSelectorUI extends GuiScreen {
         lastClick = System.currentTimeMillis();
         lastButton = hoveredButton;
 
-        mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        mc.getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
         // character picking
         if (hoveredButton <= 50) {
@@ -234,7 +234,7 @@ public class CharacterSelectorUI extends GuiScreen {
 
     @Override
     public void keyTyped(char typedChar, int keyCode)  {
-        if (keyCode == Keyboard.KEY_RETURN) { // return select character
+        if (keyCode == GLFW.GLFW_KEY_RETURN) { // return select character
             hoveredButton = 57;
             mouseClicked(0, 0, 1);
             return;
@@ -287,7 +287,7 @@ public class CharacterSelectorUI extends GuiScreen {
 
         for (Slot s : chest.inventorySlots.inventorySlots) {
             ItemStack stack = s.getStack();
-            if (stack.isEmpty() || !stack.hasDisplayName()) continue;
+            if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
 
             String displayName = stack.getDisplayName();
             if (displayName.contains("Create a new character")) {
@@ -432,7 +432,7 @@ public class CharacterSelectorUI extends GuiScreen {
             enableBlend();
         }
 
-        GuiInventory.drawEntityOnScreen(middleX, 210, 60, 0, 0, Minecraft.getMinecraft().player);
+        InventoryScreen.drawEntityOnScreen(middleX, 210, 60, 0, 0, Minecraft.getInstance().player);
     }
 
     private void drawCharacterBadge(int posX, int posY, ItemStack item, String name, String level, String deletion, float xp, boolean selected, int id) {
@@ -533,7 +533,7 @@ public class CharacterSelectorUI extends GuiScreen {
         }
 
         if (VisualModule.getModule().getCharSelectionSplash() != null) {
-            VisualModule.getModule().getCharSelectionSplash().bindTexture();
+            VisualModule.getModule().getCharSelectionSplash().bind();
 
             // original
             builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

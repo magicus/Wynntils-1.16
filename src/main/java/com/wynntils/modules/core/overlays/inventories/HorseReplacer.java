@@ -6,12 +6,12 @@ package com.wynntils.modules.core.overlays.inventories;
 
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.FrameworkManager;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.io.IOException;
@@ -84,7 +84,7 @@ public class HorseReplacer extends GuiScreenHorseInventory  {
         super.onGuiClosed();
     }
 
-    public List<GuiButton> getButtonList() {
+    public List<Button> getButtonList() {
         return buttonList;
     }
 

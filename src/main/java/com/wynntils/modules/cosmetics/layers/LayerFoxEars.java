@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import com.wynntils.modules.cosmetics.layers.models.EarModelRenderer;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
 
@@ -32,7 +32,7 @@ public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
         if (info == null || !info.getCosmetics().hasEars()) return;
         if (!player.hasSkin() || player.isInvisible()) return;
 
-        this.playerRenderer.bindTexture(player.getLocationSkin());
+        this.playerRenderer.bind(player.getLocationSkin());
 
         float f = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * partialTicks - (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks);
         float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;

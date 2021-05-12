@@ -8,7 +8,7 @@ import com.wynntils.ModCore;
 import com.wynntils.modules.core.interfaces.IInventoryOpenAction;
 import com.wynntils.modules.core.managers.PacketQueue;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.Packet;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.CPacketHeldItemChange;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
 import net.minecraft.network.play.server.SPacketOpenWindow;
@@ -17,7 +17,7 @@ import net.minecraft.util.EnumHand;
 public class InventoryOpenByItem implements IInventoryOpenAction {
 
     private static final CPacketPlayerTryUseItem rightClick = new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND);
-    public static final Packet<?> ignoredPacket = rightClick;
+    public static final IPacket<?> ignoredPacket = rightClick;
 
     int inputSlot;
 

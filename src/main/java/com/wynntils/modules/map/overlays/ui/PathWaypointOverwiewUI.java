@@ -12,8 +12,8 @@ import com.wynntils.modules.map.MapModule;
 import com.wynntils.modules.map.configs.MapConfig;
 import com.wynntils.modules.map.instances.PathWaypointProfile;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Mouse;
 
@@ -21,12 +21,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PathWaypointOverwiewUI extends GuiScreen {
-    private GuiButton nextPageBtn;
-    private GuiButton previousPageBtn;
-    private GuiButton exitBtn;
-    private GuiButton newBtn;
-    private List<GuiButton> editButtons = new ArrayList<>();
+public class PathWaypointOverwiewUI extends Screen {
+    private Button nextPageBtn;
+    private Button previousPageBtn;
+    private Button exitBtn;
+    private Button newBtn;
+    private List<Button> editButtons = new ArrayList<>();
 
     private ScreenRenderer renderer = new ScreenRenderer();
     private List<PathWaypointProfile> paths;
@@ -40,10 +40,10 @@ public class PathWaypointOverwiewUI extends GuiScreen {
 
         pageHeight = (this.height - 100) / 25;
         setEditButtons();
-        this.buttonList.add(newBtn = new GuiButton(-1, this.width/2 - 20, this.height - 45, 40, 20, "NEW"));
-        this.buttonList.add(nextPageBtn = new GuiButton(0, this.width/2 + 24, this.height - 45, 20, 20, ">"));
-        this.buttonList.add(previousPageBtn = new GuiButton(1, this.width/2 - 44, this.height - 45, 20, 20, "<"));
-        this.buttonList.add(exitBtn = new GuiButton(2, this.width - 40, 20, 20, 20, TextFormatting.RED + "X"));
+        this.buttonList.add(newBtn = new Button(-1, this.width/2 - 20, this.height - 45, 40, 20, "NEW"));
+        this.buttonList.add(nextPageBtn = new Button(0, this.width/2 + 24, this.height - 45, 20, 20, ">"));
+        this.buttonList.add(previousPageBtn = new Button(1, this.width/2 - 44, this.height - 45, 20, 20, "<"));
+        this.buttonList.add(exitBtn = new Button(2, this.width - 40, 20, 20, 20, TextFormatting.RED + "X"));
         checkAvailablePages();
     }
 
@@ -51,10 +51,10 @@ public class PathWaypointOverwiewUI extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
-        fontRenderer.drawString(TextFormatting.BOLD + "Icon", this.width/2 - 185, 39, 0xFFFFFF);
-        fontRenderer.drawString(TextFormatting.BOLD + "Name", this.width/2 - 150, 39, 0xFFFFFF);
-        drawCenteredString(fontRenderer, TextFormatting.BOLD + "X", this.width/2 + 20, 39, 0xFFFFFF);
-        drawCenteredString(fontRenderer, TextFormatting.BOLD + "Z", this.width/2 + 60, 39, 0xFFFFFF);
+        font.drawString(TextFormatting.BOLD + "Icon", this.width/2 - 185, 39, 0xFFFFFF);
+        font.drawString(TextFormatting.BOLD + "Name", this.width/2 - 150, 39, 0xFFFFFF);
+        drawCenteredString(font, TextFormatting.BOLD + "X", this.width/2 + 20, 39, 0xFFFFFF);
+        drawCenteredString(font, TextFormatting.BOLD + "Z", this.width/2 + 60, 39, 0xFFFFFF);
         drawRect(this.width/2 - 185, 48, this.width/2 + 170, 49, 0xFFFFFFFF);
 
         ScreenRenderer.beginGL(0, 0);
@@ -70,9 +70,9 @@ public class PathWaypointOverwiewUI extends GuiScreen {
             renderer.drawRect(CommonColors.BLACK, this.width / 2 - 180, 51 + 25 * i, this.width / 2 - 162, 69 + 25 * i);
             renderer.drawRect(wp.getColor(), this.width / 2 - 179, 52 + 25 * i, this.width / 2 - 163, 68 + 25 * i);
 
-            fontRenderer.drawString(wp.name, this.width/2 - 150, 56 + 25 * i, colour);
-            drawCenteredString(fontRenderer, Integer.toString(wp.getPosX()), this.width/2 + 20, 56 + 25 * i, colour);
-            drawCenteredString(fontRenderer, Integer.toString(wp.getPosZ()), this.width/2 + 60, 56 + 25 * i, colour);
+            font.drawString(wp.name, this.width/2 - 150, 56 + 25 * i, colour);
+            drawCenteredString(font, Integer.toString(wp.getPosX()), this.width/2 + 20, 56 + 25 * i, colour);
+            drawCenteredString(font, Integer.toString(wp.getPosZ()), this.width/2 + 60, 56 + 25 * i, colour);
 
             if (hidden) {
                 drawHorizontalLine(this.width / 2 - 155, this.width / 2 + 75, 60 + 25 * i - 1, colour | 0xFF000000);
@@ -82,7 +82,7 @@ public class PathWaypointOverwiewUI extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton b) {
+    protected void actionPerformed(Button b) {
         if (b == nextPageBtn) {
             page++;
             checkAvailablePages();
@@ -94,13 +94,13 @@ public class PathWaypointOverwiewUI extends GuiScreen {
         } else if (b == exitBtn) {
             Utils.displayGuiScreen(new MainWorldMapUI());
         } else if (b.id % 10 == 3) {
-            Minecraft.getMinecraft().displayGuiScreen(new PathWaypointCreationUI(paths.get(b.id / 10 + page * pageHeight)));
+            Minecraft.getInstance().displayGuiScreen(new PathWaypointCreationUI(paths.get(b.id / 10 + page * pageHeight)));
         } else if (b.id %10 == 5) {
             MapConfig.Waypoints.INSTANCE.pathWaypoints.remove(paths.get(b.id / 10 + page * pageHeight));
             MapConfig.Waypoints.INSTANCE.saveSettings(MapModule.getModule());
-            Minecraft.getMinecraft().displayGuiScreen(new PathWaypointOverwiewUI());
+            Minecraft.getInstance().displayGuiScreen(new PathWaypointOverwiewUI());
         } else if (b == newBtn) {
-            Minecraft.getMinecraft().displayGuiScreen(new PathWaypointCreationUI());
+            Minecraft.getInstance().displayGuiScreen(new PathWaypointCreationUI());
         }
     }
 
@@ -113,8 +113,8 @@ public class PathWaypointOverwiewUI extends GuiScreen {
         this.buttonList.removeAll(editButtons);
         editButtons.clear();
         for (int i = 0; i < Math.min(pageHeight, paths.size() - pageHeight * page); i++) {
-            editButtons.add(new GuiButton(3 + 10 * i, this.width/2 + 85, 50 + 25 * i, 40, 20,"Edit..."));
-            editButtons.add(new GuiButton(5 + 10 * i, this.width/2 + 130, 50 + 25 * i, 40, 20, "Delete"));
+            editButtons.add(new Button(3 + 10 * i, this.width/2 + 85, 50 + 25 * i, 40, 20,"Edit..."));
+            editButtons.add(new Button(5 + 10 * i, this.width/2 + 130, 50 + 25 * i, 40, 20, "Delete"));
         }
         this.buttonList.addAll(editButtons);
     }

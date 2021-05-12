@@ -6,7 +6,7 @@ package com.wynntils.core.framework.enums.wynntils;
 
 import com.wynntils.ModCore;
 import com.wynntils.Reference;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 
@@ -34,8 +34,8 @@ public enum WynntilsSound {
     }
 
     public void play(float volume, float pitch) {
-        ModCore.mc().addScheduledTask(() ->
-                ModCore.mc().getSoundHandler().playSound(PositionedSoundRecord.getRecord(event, pitch, volume)));
+        ModCore.mc().submit(() ->
+                ModCore.mc().getSoundManager().play(SimpleSound.forUI(event, pitch, volume)));
     }
 
     public void play() {

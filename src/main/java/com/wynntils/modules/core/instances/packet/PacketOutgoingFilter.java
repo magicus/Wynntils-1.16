@@ -11,7 +11,7 @@ import com.wynntils.modules.core.instances.inventory.InventoryOpenByItem;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
-import net.minecraft.network.Packet;
+import net.minecraft.network.IPacket;
 
 public class PacketOutgoingFilter extends ChannelOutboundHandlerAdapter {
 
@@ -22,7 +22,7 @@ public class PacketOutgoingFilter extends ChannelOutboundHandlerAdapter {
      *
      *
      * @param ctx The Channel Handler
-     * @param msg The incoming Packet
+     * @param msg The incoming IPacket
      * @throws Exception If something fails (idk exactly, that was inherited)
      */
     @Override
@@ -30,12 +30,12 @@ public class PacketOutgoingFilter extends ChannelOutboundHandlerAdapter {
 
         boolean noEvent = false;
 
-        Packet<?> packet = (Packet<?>) msg;
+        IPacket<?> packet = (IPacket<?>) msg;
         if (packet == InventoryOpenByItem.ignoredPacket) {
             noEvent = true;
         }
 
-        PacketEvent.Outgoing<? extends Packet<?>> event = noEvent ? null :
+        PacketEvent.Outgoing<? extends IPacket<?>> event = noEvent ? null :
             new PacketEvent.Outgoing<>(packet, ModCore.mc().getConnection(), this, ctx);
         if (!noEvent && FrameworkManager.getEventBus().post(event)) return;
 

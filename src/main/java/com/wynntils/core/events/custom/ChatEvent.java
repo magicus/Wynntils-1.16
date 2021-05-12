@@ -5,7 +5,7 @@
 package com.wynntils.core.events.custom;
 
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 public class ChatEvent extends Event {
 

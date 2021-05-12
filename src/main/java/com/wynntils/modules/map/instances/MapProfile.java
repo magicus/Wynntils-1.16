@@ -13,7 +13,7 @@ import com.wynntils.webapi.downloader.enums.DownloadAction;
 import com.wynntils.webapi.request.Request;
 import com.wynntils.webapi.request.RequestHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
 
 import javax.imageio.ImageIO;
@@ -73,8 +73,8 @@ public class MapProfile {
 
     private void setReadyToUse() {
         // make sure this is being called from the main thread
-        if (!Minecraft.getMinecraft().isCallingFromMinecraftThread()) {
-            Minecraft.getMinecraft().addScheduledTask(this::setReadyToUse);
+        if (!Minecraft.getInstance().isCallingFromMinecraftThread()) {
+            Minecraft.getInstance().submit(this::setReadyToUse);
             return;
         }
         readyToUse = true;
@@ -96,11 +96,11 @@ public class MapProfile {
         textureId = TextureUtil.uploadTextureImageAllocate(TextureUtil.glGenTextures(), img, false, false);
     }
 
-    public void bindTexture() throws Exception {
+    public void bind() throws Exception {
         if (!readyToUse) return;
         if (textureId == -20) setTexture();
 
-        GlStateManager.bindTexture(textureId);
+        GlStateManager.bind(textureId);
     }
 
     public float getTextureXPosition(double posX) {

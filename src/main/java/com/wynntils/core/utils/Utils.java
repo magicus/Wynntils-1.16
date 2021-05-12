@@ -8,12 +8,12 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.wynntils.ModCore;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -28,7 +28,7 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -131,7 +131,7 @@ public class Utils {
         }
     }
 
-    public static String getPlayerHPBar(EntityPlayer entityPlayer) {
+    public static String getPlayerHPBar(PlayerEntity entityPlayer) {
         int health = (int) (0.3f + (entityPlayer.getHealth() / entityPlayer.getMaxHealth()) * 15);  // 0.3f for better experience rounding off near full hp
         String healthBar = TextFormatting.DARK_RED + "[" + TextFormatting.RED + "|||||||||||||||" + TextFormatting.DARK_RED + "]";
         healthBar = healthBar.substring(0, 5 + Math.min(health, 15)) + TextFormatting.DARK_GRAY + healthBar.substring(5 + Math.min(health, 15));
@@ -140,18 +140,18 @@ public class Utils {
     }
 
     /**
-     * Return true if the GuiScreen is the character information page (selected from the compass)
+     * Return true if the Screen is the character information page (selected from the compass)
      */
-    public static boolean isCharacterInfoPage(GuiScreen gui) {
+    public static boolean isCharacterInfoPage(Screen gui) {
         if (!(gui instanceof GuiContainer)) return false;
         Matcher m = CHAR_INFO_PAGE_TITLE.matcher(((GuiContainer)gui).inventorySlots.getSlot(0).inventory.getName());
         return m.find();
     }
 
     /**
-     * @return true if the GuiScreen is the server selection, false otherwise
+     * @return true if the Screen is the server selection, false otherwise
      */
-    public static boolean isServerSelector(GuiScreen gui) {
+    public static boolean isServerSelector(Screen gui) {
         if (!(gui instanceof GuiContainer)) return false;
         Matcher m = SERVER_SELECTOR_TITLE.matcher(((GuiContainer) gui).inventorySlots.getSlot(0).inventory.getName());
         return m.find();
@@ -165,10 +165,10 @@ public class Utils {
      * @return the Scoreboard Team
      */
     public static ScorePlayerTeam createFakeScoreboard(String name, Team.CollisionRule rule) {
-        Scoreboard mc = Minecraft.getMinecraft().world.getScoreboard();
+        Scoreboard mc = Minecraft.getInstance().world.getScoreboard();
         if (mc.getTeam(name) != null) return mc.getTeam(name);
 
-        String player = Minecraft.getMinecraft().player.getName();
+        String player = Minecraft.getInstance().player.getName();
         if (mc.getPlayersTeam(player) != null) previousTeam = mc.getPlayersTeam(player).getName();
 
         ScorePlayerTeam team = mc.createTeam(name);
@@ -184,11 +184,11 @@ public class Utils {
      * @param name the scoreboard name
      */
     public static void removeFakeScoreboard(String name) {
-        Scoreboard mc = Minecraft.getMinecraft().world.getScoreboard();
+        Scoreboard mc = Minecraft.getInstance().world.getScoreboard();
         if (mc.getTeam(name) == null) return;
 
         mc.removeTeam(mc.getTeam(name));
-        if (previousTeam != null) mc.addPlayerToTeam(Minecraft.getMinecraft().player.getName(), previousTeam);
+        if (previousTeam != null) mc.addPlayerToTeam(Minecraft.getInstance().player.getName(), previousTeam);
     }
 
     /**
@@ -196,10 +196,10 @@ public class Utils {
      *
      * @param screen the provided screen
      */
-    public static void displayGuiScreen(GuiScreen screen) {
-        Minecraft mc = Minecraft.getMinecraft();
+    public static void displayGuiScreen(Screen screen) {
+        Minecraft mc = Minecraft.getInstance();
 
-        GuiScreen oldScreen = mc.currentScreen;
+        Screen oldScreen = mc.screen;
 
         GuiOpenEvent event = new GuiOpenEvent(screen);
         if (MinecraftForge.EVENT_BUS.post(event)) return;
@@ -210,10 +210,10 @@ public class Utils {
             oldScreen.onGuiClosed();
         }
 
-        mc.currentScreen = screen;
+        mc.screen = screen;
 
         if (screen != null) {
-            Minecraft.getMinecraft().setIngameNotInFocus();
+            Minecraft.getInstance().setIngameNotInFocus();
 
             ScaledResolution scaledresolution = new ScaledResolution(mc);
             int i = scaledresolution.getScaledWidth();
@@ -221,7 +221,7 @@ public class Utils {
             screen.setWorldAndResolution(mc, i, j);
             mc.skipRenderWorld = false;
         } else {
-            mc.getSoundHandler().resumeSounds();
+            mc.getSoundManager().resumeSounds();
             mc.setIngameFocus();
         }
     }

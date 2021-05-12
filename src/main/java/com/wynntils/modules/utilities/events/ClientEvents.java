@@ -32,21 +32,21 @@ import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.profiles.item.enums.ItemType;
 import com.wynntils.webapi.profiles.player.PlayerStatsProfile;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -62,11 +62,11 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.TickEvent.Phase;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -79,7 +79,7 @@ import java.util.regex.Pattern;
 
 public class ClientEvents implements Listener {
 
-    private static GuiScreen scheduledGuiScreen = null;
+    private static Screen scheduledGuiScreen = null;
     private static boolean firstNullOccurred = false;
 
     private static boolean afkProtectionEnabled = false;
@@ -137,7 +137,7 @@ public class ClientEvents implements Listener {
         afkProtectionEnabled = false;
         afkProtectionActivated = false;
 
-        lastHealth = Minecraft.getMinecraft().player.getHealth();
+        lastHealth = Minecraft.getInstance().player.getHealth();
         lastUserInput = System.currentTimeMillis();
     }
 
@@ -173,29 +173,29 @@ public class ClientEvents implements Listener {
                 if (!afkProtectionBlocked && timeSinceActivity >= longAfkThresholdMillis) {
                     // Enable AFK protection (but not if we're in a chest/inventory GUI)
                     afkProtectionRequested = false;
-                    lastHealth = Minecraft.getMinecraft().player.getHealth();
+                    lastHealth = Minecraft.getInstance().player.getHealth();
                     if (OverlayConfig.GameUpdate.RedirectSystemMessages.INSTANCE.redirectAfk) {
                         GameUpdateOverlay.queueMessage("AFK Protection enabled");
                     } else {
-                        Minecraft.getMinecraft().addScheduledTask(() ->
+                        Minecraft.getInstance().submit(() ->
                                 ChatOverlay.getChat().printChatMessage(new TextComponentString(TextFormatting.GRAY + "AFK Protection enabled due to lack of movement")));
                     }
                     afkProtectionEnabled = true;
                 }
             } else {
-                float currentHealth = Minecraft.getMinecraft().player.getHealth();
+                float currentHealth = Minecraft.getInstance().player.getHealth();
                 if (currentHealth < (lastHealth  * UtilitiesConfig.AfkProtection.INSTANCE.healthPercentage / 100.0f)) {
                     // We're taking damage; activate AFK protection and go to class screen
                     afkProtectionActivated = true;
-                    Minecraft.getMinecraft().addScheduledTask(() ->
+                    Minecraft.getInstance().submit(() ->
                             ChatOverlay.getChat().printChatMessage(new TextComponentString(TextFormatting.GRAY + "AFK Protection activated due to player taking damage")));
-                    Minecraft.getMinecraft().player.sendChatMessage("/class");
+                    Minecraft.getInstance().player.sendChatMessage("/class");
                 }
                 if (timeSinceActivity < longAfkThresholdMillis) {
                     if (OverlayConfig.GameUpdate.RedirectSystemMessages.INSTANCE.redirectAfk) {
                         GameUpdateOverlay.queueMessage("AFK Protection disabled");
                     } else {
-                        Minecraft.getMinecraft().addScheduledTask(() ->
+                        Minecraft.getInstance().submit(() ->
                                 ChatOverlay.getChat().printChatMessage(new TextComponentString(TextFormatting.GRAY + "AFK Protection disabled")));
                     }
                     afkProtectionEnabled = false;
@@ -287,8 +287,8 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void onSlotSet(PacketEvent<SPacketSetSlot> e) {
-        if (Minecraft.getMinecraft().currentScreen == null) return;
-        if (!(Minecraft.getMinecraft().currentScreen instanceof FakeGuiContainer)) return;
+        if (Minecraft.getInstance().screen == null) return;
+        if (!(Minecraft.getInstance().screen instanceof FakeGuiContainer)) return;
 
         e.setCanceled(true); // stops wynncraft from adding pouch to gui
     }
@@ -332,7 +332,7 @@ public class ClientEvents implements Listener {
             return;
         }
 
-        EntityPlayerSP player = ModCore.mc().player;
+        ClientPlayerEntity player = ModCore.mc().player;
         String entityName = Utils.getNameFromMetadata(e.getPacket().getDataManagerEntries());
         if (entityName == null ||  entityName.isEmpty() ||
                 !MountHorseManager.isPlayersHorse(entityName, player.getName())) return;
@@ -466,7 +466,7 @@ public class ClientEvents implements Listener {
         if (!Reference.onWorld) return;
 
         if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKeyCode()) {
-            if (e.getGui().getSlotUnderMouse() != null && Minecraft.getMinecraft().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
+            if (e.getGui().getSlotUnderMouse() != null && Minecraft.getInstance().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
                 checkLockState(e.getGui().getSlotUnderMouse().getSlotIndex());
             }
 
@@ -478,7 +478,7 @@ public class ClientEvents implements Listener {
             return;
         }
 
-        if (e.getGui().getSlotUnderMouse() != null && Minecraft.getMinecraft().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getGui().getSlotUnderMouse() != null && Minecraft.getInstance().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return;
 
             e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), e.getKeyCode()));
@@ -497,15 +497,15 @@ public class ClientEvents implements Listener {
                         inv.getDisplayName().getUnformattedText().contains("Objective Rewards")) {
                     for (int i = 0; i < inv.getSizeInventory(); i++) {
                         ItemStack stack = inv.getStackInSlot(i);
-                        if (!stack.hasDisplayName() ||
+                        if (!stack.hasCustomHoverName() ||
                             !stack.getDisplayName().startsWith(TextFormatting.DARK_PURPLE.toString()) ||
                             !ItemUtils.getStringLore(stack).toLowerCase().contains("mythic")) continue;
 
                         TextComponentString text = new TextComponentString("You cannot close this loot chest while there is a mythic in it!");
                         text.getStyle().setColor(TextFormatting.RED);
 
-                        Minecraft.getMinecraft().player.sendMessage(text);
-                        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
+                        Minecraft.getInstance().player.sendMessage(text);
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
                         e.setCanceled(true);
                         break;
                     }
@@ -515,7 +515,7 @@ public class ClientEvents implements Listener {
         }
 
         if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKeyCode()) {
-            if (e.getGui().getSlotUnderMouse() != null && Minecraft.getMinecraft().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
+            if (e.getGui().getSlotUnderMouse() != null && Minecraft.getInstance().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
                 checkLockState(e.getGui().getSlotUnderMouse().getSlotIndex());
             }
 
@@ -527,7 +527,7 @@ public class ClientEvents implements Listener {
             return;
         }
 
-        if (e.getGui().getSlotUnderMouse() != null && Minecraft.getMinecraft().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getGui().getSlotUnderMouse() != null && Minecraft.getInstance().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return;
 
             e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), e.getKeyCode()));
@@ -539,7 +539,7 @@ public class ClientEvents implements Listener {
         if (!Reference.onWorld) return;
 
         if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKeyCode()) {
-            if (e.getGui().getSlotUnderMouse() != null && Minecraft.getMinecraft().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
+            if (e.getGui().getSlotUnderMouse() != null && Minecraft.getInstance().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
                 checkLockState(e.getGui().getSlotUnderMouse().getSlotIndex());
             }
 
@@ -551,7 +551,7 @@ public class ClientEvents implements Listener {
             return;
         }
 
-        if (e.getGui().getSlotUnderMouse() != null && Minecraft.getMinecraft().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getGui().getSlotUnderMouse() != null && Minecraft.getInstance().player.inventory == e.getGui().getSlotUnderMouse().inventory) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return;
 
             e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), e.getKeyCode()));
@@ -564,8 +564,8 @@ public class ClientEvents implements Listener {
     public void clickOnInventory(GuiOverlapEvent.InventoryOverlap.HandleMouseClick e) {
         if(!Reference.onWorld) return;
 
-        if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getGui().getSlotUnderMouse() != null && e.getGui().getSlotUnderMouse().inventory == Minecraft.getMinecraft().player.inventory) {
-            if (checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode())) {
+        if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getGui().getSlotUnderMouse() != null && e.getGui().getSlotUnderMouse().inventory == Minecraft.getInstance().player.inventory) {
+            if (checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode())) {
                 e.setCanceled(true);
                 return;
             }
@@ -635,11 +635,11 @@ public class ClientEvents implements Listener {
         if (!Reference.onWorld || accessoryDestinationSlot == -1) return;
 
         // inventory was closed
-        if (!(ModCore.mc().currentScreen instanceof InventoryReplacer)) {
+        if (!(ModCore.mc().screen instanceof InventoryReplacer)) {
             accessoryDestinationSlot = -1;
             return;
         }
-        InventoryReplacer gui = (InventoryReplacer) ModCore.mc().currentScreen;
+        InventoryReplacer gui = (InventoryReplacer) ModCore.mc().screen;
 
         // no item picked up
         if (ModCore.mc().player.inventory.getItemStack().isEmpty()) return;
@@ -662,9 +662,9 @@ public class ClientEvents implements Listener {
     public void clickOnChest(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getSlotIn() != null) {
             if (e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() >= 0 && e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() < 27) {
-                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() + 9, Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode()));
+                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() + 9, Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
             } else {
-                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() - 27, Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode()));
+                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getSizeInventory() - 27, Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
             }
         }
 
@@ -725,7 +725,7 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void clickOnHorse(GuiOverlapEvent.HorseOverlap.HandleMouseClick e) {
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getGui().getSlotUnderMouse() != null) {
-            e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode()));
+            e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
         }
     }
 
@@ -738,7 +738,7 @@ public class ClientEvents implements Listener {
             return;
 
         lastWasDrop = true;
-        if (UtilitiesConfig.INSTANCE.locked_slots.get(PlayerInfo.get(CharacterData.class).getClassId()).contains(Minecraft.getMinecraft().player.inventory.currentItem))
+        if (UtilitiesConfig.INSTANCE.locked_slots.get(PlayerInfo.get(CharacterData.class).getClassId()).contains(Minecraft.getInstance().player.inventory.currentItem))
             e.setCanceled(true);
     }
 
@@ -748,9 +748,9 @@ public class ClientEvents implements Listener {
 
         // the reason of the +36, is because in the client the hotbar is handled between 0-8
         // the hotbar in the packet starts in 36, counting from up to down
-        if (e.getPacket().getSlot() != Minecraft.getMinecraft().player.inventory.currentItem + 36) return;
+        if (e.getPacket().getSlot() != Minecraft.getInstance().player.inventory.currentItem + 36) return;
 
-        InventoryPlayer inventory = Minecraft.getMinecraft().player.inventory;
+        InventoryPlayer inventory = Minecraft.getInstance().player.inventory;
         ItemStack oldStack = inventory.getStackInSlot(e.getPacket().getSlot() - 36);
         ItemStack newStack = e.getPacket().getStack();
 
@@ -760,7 +760,7 @@ public class ClientEvents implements Listener {
         }
 
         if (oldStack.isEmpty() || !newStack.isEmpty() && !oldStack.isItemEqual(newStack)) return; // invalid move
-        if (!oldStack.hasDisplayName()) return; // old item is not a valid item
+        if (!oldStack.hasCustomHoverName()) return; // old item is not a valid item
 
         String oldName = TextFormatting.getTextWithoutFormattingCodes(oldStack.getDisplayName());
         Matcher oldMatcher = CRAFTED_USES.matcher(oldName);
@@ -781,7 +781,7 @@ public class ClientEvents implements Listener {
         if (oldUses - 1 != newUses) {
             return;
         }
-        Minecraft.getMinecraft().addScheduledTask(() -> ConsumableTimerOverlay.addConsumable(oldStack));
+        Minecraft.getInstance().submit(() -> ConsumableTimerOverlay.addConsumable(oldStack));
     }
 
     @SubscribeEvent
@@ -794,7 +794,7 @@ public class ClientEvents implements Listener {
     private static boolean checkDropState(int slot, int key) {
         if (!Reference.onWorld) return false;
 
-        if (key == Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode()) {
+        if (key == Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return false;
 
             return UtilitiesConfig.INSTANCE.locked_slots.get(PlayerInfo.get(CharacterData.class).getClassId()).contains(slot);
@@ -821,46 +821,46 @@ public class ClientEvents implements Listener {
     // blocking healing pots below
     @SubscribeEvent
     public void onUseItem(PacketEvent<CPacketPlayerTryUseItem> e) {
-        ItemStack item = Minecraft.getMinecraft().player.getHeldItem(EnumHand.MAIN_HAND);
+        ItemStack item = Minecraft.getInstance().player.getHeldItem(EnumHand.MAIN_HAND);
 
-        if (item.isEmpty() || !item.hasDisplayName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
+        if (item.isEmpty() || !item.hasCustomHoverName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
 
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
         if (player.getHealth() != player.getMaxHealth()) return;
 
         e.setCanceled(true);
-        Minecraft.getMinecraft().addScheduledTask(() -> GameUpdateOverlay.queueMessage(TextFormatting.DARK_RED + "You are already at full health!"));
+        Minecraft.getInstance().submit(() -> GameUpdateOverlay.queueMessage(TextFormatting.DARK_RED + "You are already at full health!"));
     }
 
     @SubscribeEvent
     public void onUseItemOnBlock(PacketEvent<CPacketPlayerTryUseItemOnBlock> e) {
-        ItemStack item = Minecraft.getMinecraft().player.getHeldItem(EnumHand.MAIN_HAND);
+        ItemStack item = Minecraft.getInstance().player.getHeldItem(EnumHand.MAIN_HAND);
 
-        if (item.isEmpty() || !item.hasDisplayName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
+        if (item.isEmpty() || !item.hasCustomHoverName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
 
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
         if (player.getHealth() != player.getMaxHealth()) return;
 
         e.setCanceled(true);
-        Minecraft.getMinecraft().addScheduledTask(() -> GameUpdateOverlay.queueMessage(TextFormatting.DARK_RED + "You are already at full health!"));
+        Minecraft.getInstance().submit(() -> GameUpdateOverlay.queueMessage(TextFormatting.DARK_RED + "You are already at full health!"));
     }
 
     @SubscribeEvent
     public void onUseItemOnEntity(PacketEvent<CPacketUseEntity> e) {
-        ItemStack item = Minecraft.getMinecraft().player.getHeldItem(EnumHand.MAIN_HAND);
+        ItemStack item = Minecraft.getInstance().player.getHeldItem(EnumHand.MAIN_HAND);
 
-        if (item.isEmpty() || !item.hasDisplayName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
+        if (item.isEmpty() || !item.hasCustomHoverName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
 
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
         if (player.getHealth() != player.getMaxHealth()) return;
 
         e.setCanceled(true);
-        Minecraft.getMinecraft().addScheduledTask(() -> GameUpdateOverlay.queueMessage(TextFormatting.DARK_RED + "You are already at full health!"));
+        Minecraft.getInstance().submit(() -> GameUpdateOverlay.queueMessage(TextFormatting.DARK_RED + "You are already at full health!"));
     }
 
     @SubscribeEvent
     public void rightClickItem(PlayerInteractEvent.RightClickItem e) {
-        if (!e.getItemStack().hasDisplayName() || !e.getItemStack().getDisplayName().contains(TextFormatting.RED + "Potion of Healing")) return;
+        if (!e.getItemStack().hasCustomHoverName() || !e.getItemStack().getDisplayName().contains(TextFormatting.RED + "Potion of Healing")) return;
         if (e.getEntityPlayer().getHealth() != e.getEntityPlayer().getMaxHealth()) return;
 
         e.setCanceled(true);
@@ -870,13 +870,13 @@ public class ClientEvents implements Listener {
     public void onShiftClickPlayer(PacketEvent<CPacketUseEntity> e) {
         if (!UtilitiesConfig.INSTANCE.preventTradesDuels) return;
 
-        EntityPlayerSP player = ModCore.mc().player;
+        ClientPlayerEntity player = ModCore.mc().player;
         if (!player.isSneaking()) return;
 
-        Entity clicked = e.getPacket().getEntityFromWorld(player.world);
-        if (!(clicked instanceof EntityPlayer)) return;
+        Entity clicked = e.getPacket().getEntityFromWorld(player.level);
+        if (!(clicked instanceof PlayerEntity)) return;
 
-        EntityPlayer ep = (EntityPlayer) clicked;
+        PlayerEntity ep = (PlayerEntity) clicked;
         if (ep.getTeam() == null) return; // player model npc
 
         ItemType item = ItemUtils.getItemType(player.getHeldItemMainhand());
@@ -939,7 +939,7 @@ public class ClientEvents implements Listener {
         if (e.getGui().getSlotUnderMouse() == null || e.getGui().getSlotUnderMouse().getStack().isEmpty()) return;
 
         ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
-        if (stack.hasDisplayName() && stack.getDisplayName().equals(" ")) {
+        if (stack.hasCustomHoverName() && stack.getDisplayName().equals(" ")) {
             e.setCanceled(true);
         }
     }

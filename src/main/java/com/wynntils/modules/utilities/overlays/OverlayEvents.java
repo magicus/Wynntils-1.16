@@ -28,9 +28,9 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -119,7 +119,7 @@ public class OverlayEvents implements Listener {
             /*Inventory full message*/
             if (OverlayConfig.GameUpdate.GameUpdateInventoryMessages.INSTANCE.enabled) {
                 if (tickcounter % (int) (OverlayConfig.GameUpdate.GameUpdateInventoryMessages.INSTANCE.inventoryUpdateRate * 20f) == 0) {
-                    IInventory inv = Minecraft.getMinecraft().player.inventory;
+                    IInventory inv = Minecraft.getInstance().player.inventory;
                     int itemCounter = 0;
                     for (int i = 0; i < inv.getSizeInventory(); i++) {
                         if (!inv.getStackInSlot(i).isEmpty()) {
@@ -176,7 +176,7 @@ public class OverlayEvents implements Listener {
             if (!wynnExpTimestampNotified) {
                 TextComponentString text = new TextComponentString("[" + Reference.NAME + "] WynnExpansion's chat timestamps detected, please use " + Reference.NAME + "' chat timestamps for full compatibility.");
                 text.getStyle().setColor(DARK_RED);
-                Minecraft.getMinecraft().player.sendMessage(text);
+                Minecraft.getInstance().player.sendMessage(text);
                 wynnExpTimestampNotified = true;
             }
         }
@@ -754,7 +754,7 @@ public class OverlayEvents implements Listener {
 
     @SubscribeEvent
     public void onClassChange(WynnClassChangeEvent e) {
-        ModCore.mc().addScheduledTask(GameUpdateOverlay::resetMessages);
+        ModCore.mc().submit(GameUpdateOverlay::resetMessages);
         // WynnCraft seem to be off with its timer with around 10 seconds
         loginTime = Minecraft.getSystemTime() + 10000;
         msgcounter = 0;
@@ -770,7 +770,7 @@ public class OverlayEvents implements Listener {
         if (!Reference.onWorld || !OverlayConfig.ConsumableTimer.INSTANCE.showSpellEffects) return;
 
         SPacketEntityEffect effect = e.getPacket();
-        if (effect.getEntityId() != Minecraft.getMinecraft().player.getEntityId()) return;
+        if (effect.getEntityId() != Minecraft.getInstance().player.getEntityId()) return;
 
         Potion potion = Potion.getPotionById(effect.getEffectId());
 
@@ -808,7 +808,7 @@ public class OverlayEvents implements Listener {
         }
 
         // create timer with name and duration (duration in ticks)/20 -> seconds
-        Minecraft.getMinecraft().addScheduledTask(() ->
+        Minecraft.getInstance().submit(() ->
                 ConsumableTimerOverlay.addBasicTimer(timerName, effect.getDuration() / 20));
     }
 
@@ -817,9 +817,9 @@ public class OverlayEvents implements Listener {
         if (!Reference.onWorld || !OverlayConfig.ConsumableTimer.INSTANCE.showSpellEffects) return;
 
         SPacketRemoveEntityEffect effect = e.getPacket();
-        if (effect.getEntity(Minecraft.getMinecraft().world) != Minecraft.getMinecraft().player) return;
+        if (effect.getEntity(Minecraft.getInstance().world) != Minecraft.getInstance().player) return;
 
-        Minecraft.getMinecraft().addScheduledTask(() -> {
+        Minecraft.getInstance().submit(() -> {
             Potion potion = effect.getPotion();
 
             // When removing speed boost from (archer)

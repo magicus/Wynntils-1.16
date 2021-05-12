@@ -23,7 +23,7 @@ public class PingManager {
     public static void calculatePing() {
         if (!Reference.onWorld
             || !PlayerInfo.get(CharacterData.class).isLoaded()
-            || Minecraft.getMinecraft().currentScreen instanceof GuiChat
+            || Minecraft.getInstance().screen instanceof GuiChat
             || System.currentTimeMillis() - lastCall < 15000) return;
 
         CommandResponse response = new CommandResponse("/toggle", (m, t) -> {

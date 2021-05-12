@@ -23,7 +23,7 @@ import com.wynntils.webapi.downloader.DownloaderManager;
 import com.wynntils.webapi.downloader.enums.DownloadAction;
 import com.wynntils.webapi.request.Request;
 import com.wynntils.webapi.request.RequestHandler;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -86,7 +86,7 @@ public class RichProfile {
                             return;
                         }
 
-                        ModCore.mc().addScheduledTask(() -> setup(id));
+                        ModCore.mc().submit(() -> setup(id));
                     });
                     return true;
                 }));
@@ -111,8 +111,8 @@ public class RichProfile {
             IDiscordOverlayEvents.ByReference overlayEvents = new IDiscordOverlayEvents.ByReference();
             overlayEvents.on_toggle = (callbackData, closedAsByte) -> {
                 boolean opened = closedAsByte == 0;
-                if (opened && ModCore.mc().currentScreen == null) {
-                    ModCore.mc().displayGuiScreen(new GuiScreen() {
+                if (opened && ModCore.mc().screen == null) {
+                    ModCore.mc().displayGuiScreen(new Screen() {
                         public void onGuiClosed() {
                             isBlankGuiOpen = false;
                         }

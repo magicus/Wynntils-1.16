@@ -17,8 +17,8 @@ import com.wynntils.core.framework.settings.SettingsContainer;
 import com.wynntils.core.framework.ui.UI;
 import com.wynntils.core.framework.ui.elements.UIEButton;
 import com.wynntils.core.framework.ui.elements.UIEClickZone;
-import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.input.Keyboard;
+import net.minecraft.client.gui.screen.Screen;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class OverlayPositionsUI extends UI {
 
-    private GuiScreen parentScreen;
+    private Screen parentScreen;
 
     private List<OverlayButton> registeredOverlaySettings = new ArrayList<>();
 
@@ -83,7 +83,7 @@ public class OverlayPositionsUI extends UI {
         }
     }, 0, 0, 17, 45);
 
-    public OverlayPositionsUI(GuiScreen parentScreen) {
+    public OverlayPositionsUI(Screen parentScreen) {
         this.parentScreen = parentScreen;
     }
 
@@ -109,7 +109,7 @@ public class OverlayPositionsUI extends UI {
 
     @Override
     public void onClose() {
-        mc.currentScreen = null;
+        mc.screen = null;
         mc.displayGuiScreen(parentScreen);
     }
 
@@ -131,7 +131,7 @@ public class OverlayPositionsUI extends UI {
             } else if (stringToDrawOnTop.y < 0) {
                 stringToDrawOnTop.y = 1;
             }
-            int widthOfString = ScreenRenderer.fontRenderer.getStringWidth(stringToDrawOnTop.string);
+            int widthOfString = ScreenRenderer.font.getStringWidth(stringToDrawOnTop.string);
             if (stringToDrawOnTop.x - widthOfString / 2 < 0) {
                 stringToDrawOnTop.x = 1;
                 stringToDrawOnTop.alignment = SmartFontRenderer.TextAlignment.LEFT_RIGHT;

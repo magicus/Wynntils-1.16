@@ -4,16 +4,16 @@
 
 package com.wynntils.modules.utilities.instances;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 
 public class ContainerBuilds extends Container {
 
     public final IInventory inventory;
 
-    public ContainerBuilds(IInventory inventory, EntityPlayer player) {
+    public ContainerBuilds(IInventory inventory, PlayerEntity player) {
         this.inventory = inventory;
         int numRows = inventory.getSizeInventory() / 9;
         inventory.openInventory(player);
@@ -26,11 +26,11 @@ public class ContainerBuilds extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer playerIn) {
+    public boolean canInteractWith(PlayerEntity playerIn) {
         return true;
     }
 
-    public void onContainerClosed(EntityPlayer playerIn) {
+    public void onContainerClosed(PlayerEntity playerIn) {
         super.onContainerClosed(playerIn);
         this.inventory.closeInventory(playerIn);
     }

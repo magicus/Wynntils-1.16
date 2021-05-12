@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class MapPlayerIcon extends MapIcon {
 
@@ -107,7 +107,7 @@ public class MapPlayerIcon extends MapIcon {
                     (centreZ) + sizeZ + .5f
             );
 
-            Minecraft.getMinecraft().getTextureManager().bindTexture(res);
+            Minecraft.getInstance().getTextureManager().bind(res);
 
             drawScaledCustomSizeModalRect(
                     ((centreX + ScreenRenderer.drawingOrigin().x) -sizeX),

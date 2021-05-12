@@ -25,7 +25,7 @@ import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.WebReader;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.settings.KeyConflictContext;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 @ModuleInfo(name = "map", displayName = "Map")
 public class MapModule extends Module {
@@ -61,12 +61,12 @@ public class MapModule extends Module {
         registerCommand(new CommandLocate());
         registerCommand(new CommandDetection());
 
-        registerKeyBinding("New Waypoint", Keyboard.KEY_B, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
+        registerKeyBinding("New Waypoint", GLFW.GLFW_KEY_B, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
             if (Reference.onWorld)
-                Minecraft.getMinecraft().displayGuiScreen(new WaypointCreationMenu(null));
+                Minecraft.getInstance().displayGuiScreen(new WaypointCreationMenu(null));
         });
 
-        mapKey = registerKeyBinding("Open Map", Keyboard.KEY_M, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
+        mapKey = registerKeyBinding("Open Map", GLFW.GLFW_KEY_M, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
             if (Reference.onWorld) {
                 if (WebManager.getApiUrls() == null) {
                     WebManager.tryReloadApiUrls(true);
@@ -76,7 +76,7 @@ public class MapModule extends Module {
             }
         });
 
-        guildMapKey = registerKeyBinding("Open Guild Map", Keyboard.KEY_L, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
+        guildMapKey = registerKeyBinding("Open Guild Map", GLFW.GLFW_KEY_L, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
             if (Reference.onWorld) {
                 if (WebManager.getApiUrls() == null) {
                     WebManager.tryReloadApiUrls(true);

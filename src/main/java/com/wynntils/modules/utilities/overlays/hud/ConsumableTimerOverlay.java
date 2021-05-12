@@ -55,7 +55,7 @@ public class ConsumableTimerOverlay extends Overlay {
     }
 
     public static void addConsumable(ItemStack stack) {
-        if (stack.isEmpty() || !stack.hasDisplayName()) return; // display name also checks for the nbt data
+        if (stack.isEmpty() || !stack.hasCustomHoverName()) return; // display name also checks for the nbt data
         if (stack.getItem() != Items.DIAMOND_AXE && stack.getItem() != Items.POTIONITEM && stack.getItem() != Items.SPLASH_POTION) return; // foods and scrolls have DIAMOND_AXE as their items
 
         // vanilla potions needs a special verification, they DON'T start with dark aqua

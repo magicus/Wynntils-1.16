@@ -10,9 +10,9 @@ import com.wynntils.modules.core.managers.GuildAndFriendManager;
 import com.wynntils.modules.core.managers.PlayerEntityManager;
 import com.wynntils.modules.map.overlays.objects.MapPlayerIcon;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 
 import java.util.Collection;
@@ -78,7 +78,7 @@ public class OtherPlayerProfile {
     }
 
     public NetworkPlayerInfo getPlayerInfo() {
-        NetHandlerPlayClient conn = Minecraft.getMinecraft().getConnection();
+        ClientPlayNetHandler conn = Minecraft.getInstance().getConnection();
         return conn == null ? null : conn.getPlayerInfo(uuid);
     }
 
@@ -103,12 +103,12 @@ public class OtherPlayerProfile {
      * @return true if the player entity was found on the world and location can be live-updated.
      */
     public boolean updateLocationFromWorld() {
-        EntityPlayer e = PlayerEntityManager.getPlayerByUUID(uuid);
+        PlayerEntity e = PlayerEntityManager.getPlayerByUUID(uuid);
         if (e == null) return false;
 
         hasHat = e.isWearing(EnumPlayerModelParts.HAT);
 
-        if (e.isDead || e.getDistance(Minecraft.getMinecraft().player) >= 30) return false;
+        if (e.isDead || e.getDistance(Minecraft.getInstance().player) >= 30) return false;
         x = (int) e.posX;
         y = (int) e.posY;
         z = (int) e.posZ;

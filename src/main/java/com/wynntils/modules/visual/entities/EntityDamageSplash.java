@@ -11,15 +11,15 @@ import com.wynntils.core.framework.rendering.SmartFontRenderer;
 import com.wynntils.core.framework.rendering.colors.CommonColors;
 import com.wynntils.core.utils.objects.Location;
 import com.wynntils.modules.visual.configs.VisualConfig;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 
 import java.util.Map;
 import java.util.Random;
 import java.util.WeakHashMap;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class EntityDamageSplash extends FakeEntity {
 
@@ -63,14 +63,14 @@ public class EntityDamageSplash extends FakeEntity {
     }
 
     @Override
-    public void tick(Random r, EntityPlayerSP player) {
+    public void tick(Random r, ClientPlayerEntity player) {
         if (livingTicks < maxLiving) return;
 
         remove();
     }
 
     @Override
-    public void render(float partialTicks, RenderGlobal context, RenderManager render) {
+    public void render(float partialTicks, WorldRenderer context, RenderManager render) {
         boolean thirdPerson = render.options.thirdPersonView == 2;
         Location loc = getCurrentLocation();
 

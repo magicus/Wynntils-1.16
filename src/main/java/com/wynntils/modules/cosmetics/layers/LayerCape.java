@@ -20,7 +20,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
 
@@ -50,7 +50,7 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
 
     public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (!CosmeticsConfig.INSTANCE.forceCapes
-                && !Minecraft.getMinecraft().gameSettings.getModelParts().toString().contains("CAPE")
+                && !Minecraft.getInstance().gameSettings.getModelParts().toString().contains("CAPE")
                 && player.getUniqueID() == ModCore.mc().player.getUniqueID()) return;
 
         WynntilsUser info = UserManager.getUser(player.getUniqueID());
@@ -65,7 +65,7 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
 
         // texture
         color(1.0F, 1.0F, 1.0F, 1.0F);
-        playerRenderer.bindTexture(rl);
+        playerRenderer.bind(rl);
 
         // rendering
         { pushMatrix();

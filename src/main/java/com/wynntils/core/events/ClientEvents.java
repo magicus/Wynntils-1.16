@@ -20,18 +20,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiDisconnected;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SPacketPlayerListItem;
-import net.minecraft.network.play.server.SPacketPlayerListItem.Action;
+import net.minecraft.network.play.server.SPlayerListItemPacket;
+import net.minecraft.network.play.server.SPlayerListItemPacket.Action;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.network.FMLNetworkConstants;
 
 import java.util.List;
 import java.util.UUID;
@@ -64,13 +65,14 @@ public class ClientEvents {
     public void onScreenDraw(GuiScreenEvent.DrawScreenEvent.Post e) {
         if (!(e.getGui() instanceof GuiConnecting)) return;
 
-        e.getGui().drawCenteredString(Minecraft.getMinecraft().fontRenderer, statusMsg, e.getGui().width / 2, e.getGui().height / 2 - 20, 16777215);
+        e.getGui().drawCenteredString(Minecraft.getInstance().font, statusMsg, e.getGui().width / 2, e.getGui().height / 2 - 20, 16777215);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onServerJoin(FMLNetworkEvent.ClientConnectedToServerEvent e) {
         setLoadingStatusMsg("Connected...");
         Reference.setUserWorld(null);
+        FMLNetworkConstants
 
         if (Reference.onServer) MinecraftForge.EVENT_BUS.post(new WynncraftServerEvent.Login());
     }
@@ -168,7 +170,7 @@ public class ClientEvents {
 
     //
     @SubscribeEvent
-    public void onTabListChange(PacketEvent<SPacketPlayerListItem> e) {
+    public void onTabListChange(PacketEvent<SPlayerListItemPacket> e) {
         if (!Reference.onServer) return;
         if (e.getPacket().getAction() != Action.UPDATE_DISPLAY_NAME && e.getPacket().getAction() != Action.REMOVE_PLAYER) return;
 
@@ -222,7 +224,7 @@ public class ClientEvents {
         if (e.phase != TickEvent.Phase.END) return;
 
         ScreenRenderer.refresh();
-        if (!Reference.onServer || Minecraft.getMinecraft().player == null) return;
+        if (!Reference.onServer || Minecraft.getInstance().player == null) return;
 
         FrameworkManager.triggerHudTick(e);
         FrameworkManager.triggerKeyPress();
@@ -245,8 +247,8 @@ public class ClientEvents {
     public void checkSpellCast(TickEvent.ClientTickEvent e) {
         if (!Reference.onWorld) return;
 
-        int remainingHighlightTicks = ReflectionFields.GuiIngame_remainingHighlightTicks.getValue(Minecraft.getMinecraft().ingameGUI);
-        ItemStack highlightingItemStack = ReflectionFields.GuiIngame_highlightingItemStack.getValue(Minecraft.getMinecraft().ingameGUI);
+        int remainingHighlightTicks = ReflectionFields.GuiIngame_remainingHighlightTicks.getValue(Minecraft.getInstance().ingameGUI);
+        ItemStack highlightingItemStack = ReflectionFields.GuiIngame_highlightingItemStack.getValue(Minecraft.getInstance().ingameGUI);
 
         if (remainingHighlightTicks == 0 || highlightingItemStack.isEmpty()) {
             heldItem = "";

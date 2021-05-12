@@ -4,7 +4,7 @@
 
 package com.wynntils.core.events.custom;
 
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 public class SchedulerEvent extends Event {
 

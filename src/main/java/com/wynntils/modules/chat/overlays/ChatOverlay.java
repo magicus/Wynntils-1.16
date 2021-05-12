@@ -13,10 +13,10 @@ import com.wynntils.modules.chat.language.WynncraftLanguage;
 import com.wynntils.modules.chat.managers.ChatManager;
 import com.wynntils.modules.chat.managers.TabManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.*;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -38,7 +38,7 @@ public class ChatOverlay extends GuiNewChat {
     private static ChatOverlay chat;
 
     private static final Logger LOGGER = LogManager.getFormatterLogger("chat");
-    private final Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getInstance();
 
     private int scrollPos;
     private boolean isScrolled;
@@ -55,7 +55,7 @@ public class ChatOverlay extends GuiNewChat {
     }
 
     public void drawChat(int updateCounter) {
-        if (mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN) {
+        if (mc.gameSettings.chatVisibility != PlayerEntity.EnumChatVisibility.HIDDEN) {
             int chatSize = getCurrentTab().getCurrentMessages().size();
 
             getCurrentTab().checkNotifications();
@@ -99,7 +99,7 @@ public class ChatOverlay extends GuiNewChat {
                             }
                             String s = ChatManager.renderMessage(chatline.getChatComponent()).getFormattedText();
                             GlStateManager.enableBlend();
-                            mc.fontRenderer.drawStringWithShadow(s, 0.0F, (float)(j2 - 8), 16777215 + (l1 << 24));
+                            mc.font.drawStringWithShadow(s, 0.0F, (float)(j2 - 8), 16777215 + (l1 << 24));
                             GlStateManager.disableAlpha();
                             GlStateManager.disableBlend();
                         }
@@ -110,7 +110,7 @@ public class ChatOverlay extends GuiNewChat {
             if (flag) {
                 // continuing chat render
                 if (chatSize > 0) {
-                    int k2 = mc.fontRenderer.FONT_HEIGHT;
+                    int k2 = mc.font.FONT_HEIGHT;
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
                     int l2 = chatSize * k2 + chatSize;
                     int i3 = l * k2 + l;
@@ -230,7 +230,7 @@ public class ChatOverlay extends GuiNewChat {
 
                         int chatWidth = MathHelper.floor((float)getChatWidth() / getChatScale());
 
-                        List<ITextComponent> chatLines = GuiUtilRenderComponents.splitText(chatWithCounter, chatWidth, mc.fontRenderer, false, false);
+                        List<ITextComponent> chatLines = GuiUtilRenderComponents.splitText(chatWithCounter, chatWidth, mc.font, false, false);
 
                         Collections.reverse(chatLines);
                         lines.addAll(0, chatLines
@@ -261,7 +261,7 @@ public class ChatOverlay extends GuiNewChat {
 
         int thisGroupId = noProcessing ? 0 : tab.increaseCurrentGroupId();
         int chatWidth = MathHelper.floor((float)getChatWidth() / getChatScale());
-        List<ITextComponent> list = GuiUtilRenderComponents.splitText(displayedMessage, chatWidth, mc.fontRenderer, false, false);
+        List<ITextComponent> list = GuiUtilRenderComponents.splitText(displayedMessage, chatWidth, mc.font, false, false);
         boolean flag = tab == getCurrentTab() && getChatOpen();
 
         for (ITextComponent itextcomponent : list) {
@@ -292,7 +292,7 @@ public class ChatOverlay extends GuiNewChat {
     public void switchTabs(int amount) {
         currentTab = Math.floorMod(currentTab + amount, TabManager.getAvailableTabs().size());
 
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
     }
 
     public void resetScroll() {
@@ -328,8 +328,8 @@ public class ChatOverlay extends GuiNewChat {
             if (j >= 0 && k >= 0) {
                 int l = Math.min(getLineCount(), getCurrentTab().getCurrentMessages().size());
 
-                if (j <= MathHelper.floor((float) getChatWidth() / getChatScale()) && k < mc.fontRenderer.FONT_HEIGHT * l + l) {
-                    int i1 = k / mc.fontRenderer.FONT_HEIGHT + scrollPos;
+                if (j <= MathHelper.floor((float) getChatWidth() / getChatScale()) && k < mc.font.FONT_HEIGHT * l + l) {
+                    int i1 = k / mc.font.FONT_HEIGHT + scrollPos;
 
                     if (i1 >= 0 && i1 < getCurrentTab().getCurrentMessages().size()) {
                         ChatLine chatline = getCurrentTab().getCurrentMessages().get(i1);
@@ -337,7 +337,7 @@ public class ChatOverlay extends GuiNewChat {
 
                         for (ITextComponent itextcomponent : chatline.getChatComponent()) {
                             if (itextcomponent instanceof TextComponentString) {
-                                j1 += mc.fontRenderer.getStringWidth(GuiUtilRenderComponents.removeTextColorsIfConfigured(((TextComponentString) itextcomponent).getText(), false));
+                                j1 += mc.font.getStringWidth(GuiUtilRenderComponents.removeTextColorsIfConfigured(((TextComponentString) itextcomponent).getText(), false));
 
                                 if (j1 > j) {
                                     return itextcomponent;
@@ -352,7 +352,7 @@ public class ChatOverlay extends GuiNewChat {
     }
 
     public boolean getChatOpen() {
-        return mc.currentScreen instanceof GuiChat;
+        return mc.screen instanceof GuiChat;
     }
 
     public void deleteChatLine(int id) {

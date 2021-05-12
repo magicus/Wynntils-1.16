@@ -15,7 +15,7 @@ import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.core.enums.UpdateStream;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -24,14 +24,14 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ChangelogUI extends GuiScreen {
+public class ChangelogUI extends Screen {
 
     private static final CustomColor SCROLL_BACKGROUND = new CustomColor(191, 159, 110);
     private static final CustomColor SCROLL_ACTIVE = new CustomColor(248, 207, 145);
 
     ScreenRenderer renderer = new ScreenRenderer();
 
-    GuiScreen previousGui;
+    Screen previousGui;
 
     List<String> changelogContent = new ArrayList<>();
 
@@ -44,7 +44,7 @@ public class ChangelogUI extends GuiScreen {
         this(null, changelogContent, major);
     }
 
-    public ChangelogUI(GuiScreen previousGui, List<String> changelogContent, boolean major) {
+    public ChangelogUI(Screen previousGui, List<String> changelogContent, boolean major) {
         this.previousGui = previousGui;
 
         this.major = major;
@@ -74,27 +74,27 @@ public class ChangelogUI extends GuiScreen {
      * @param major {@link WebManager#getChangelog(boolean, boolean)}'s first argument (Stable or CE?)
      * @param forceLatest {@link WebManager#getChangelog(boolean, boolean)}'s second argument (Latest or current changelog?)
      */
-    public static void loadChangelogAndShow(GuiScreen previousGui, boolean major, boolean forceLatest) {
-        Minecraft mc = Minecraft.getMinecraft();
+    public static void loadChangelogAndShow(Screen previousGui, boolean major, boolean forceLatest) {
+        Minecraft mc = Minecraft.getInstance();
 
-        GuiScreen loadingScreen = new ChangelogUI(previousGui, Collections.singletonList("Loading..."), major);
+        Screen loadingScreen = new ChangelogUI(previousGui, Collections.singletonList("Loading..."), major);
         mc.displayGuiScreen(loadingScreen);
-        if (mc.currentScreen != loadingScreen) {
+        if (mc.screen != loadingScreen) {
             // Changed by an event handler
             return;
         }
 
         new Thread(() -> {
-            if (mc.currentScreen != loadingScreen) {
+            if (mc.screen != loadingScreen) {
                 return;
             }
             List<String> changelog = WebManager.getChangelog(major, forceLatest);
-            if (mc.currentScreen != loadingScreen) {
+            if (mc.screen != loadingScreen) {
                 return;
             }
 
-            mc.addScheduledTask(() -> {
-                if (mc.currentScreen != loadingScreen) {
+            mc.submit(() -> {
+                if (mc.screen != loadingScreen) {
                     return;
                 }
 
@@ -129,7 +129,7 @@ public class ChangelogUI extends GuiScreen {
 
         float scrollPositionOffset = scrollbarSize == 118 ? 0 : (((changelogContent.size() / 15.0f) * 159) * scrollPercent);
         for (String changelogLine : changelogContent) {
-            renderer.drawString(changelogLine.replace("%user%", Minecraft.getMinecraft().getSession().getUsername()), textX, baseY - scrollPositionOffset, CommonColors.BROWN, SmartFontRenderer.TextAlignment.LEFT_RIGHT, SmartFontRenderer.TextShadow.NONE);
+            renderer.drawString(changelogLine.replace("%user%", Minecraft.getInstance().getSession().getUsername()), textX, baseY - scrollPositionOffset, CommonColors.BROWN, SmartFontRenderer.TextAlignment.LEFT_RIGHT, SmartFontRenderer.TextShadow.NONE);
 
             baseY += 10;
         }
@@ -166,8 +166,8 @@ public class ChangelogUI extends GuiScreen {
     @Override
     protected void keyTyped(char charType, int keyCode) throws IOException {
         if (keyCode == 1) {  // ESC
-            Minecraft.getMinecraft().displayGuiScreen(previousGui);
-            if (Minecraft.getMinecraft().currentScreen == null) mc.setIngameFocus();
+            Minecraft.getInstance().displayGuiScreen(previousGui);
+            if (Minecraft.getInstance().screen == null) mc.setIngameFocus();
         }
     }
 

@@ -27,7 +27,7 @@ public class LocationData extends PlayerData {
      * @param location the target location
      */
     public void setLocation(String location) {
-        ModCore.mc().addScheduledTask(() -> {
+        ModCore.mc().submit(() -> {
             FrameworkManager.getEventBus().post(new WynnTerritoryChangeEvent(this.location, location));
         });
 

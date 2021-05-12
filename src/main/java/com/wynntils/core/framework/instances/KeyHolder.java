@@ -4,10 +4,11 @@
 
 package com.wynntils.core.framework.instances;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.client.settings.IKeyConflictContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import org.lwjgl.input.Keyboard;
 
 public class KeyHolder {
 
@@ -28,7 +29,7 @@ public class KeyHolder {
         this.onPress = onPress;
         this.press = press;
 
-        keyBinding = conflictCtx != null ? new KeyBinding(name, conflictCtx, key, tab) : new KeyBinding(name, key, tab);
+        keyBinding = conflictCtx != null ? new KeyBinding(name, conflictCtx, InputMappings.Type.KEYSYM, key, tab) : new KeyBinding(name, key, tab);
         ClientRegistry.registerKeyBinding(keyBinding);
     }
 
@@ -45,19 +46,19 @@ public class KeyHolder {
     }
 
     public String getName() {
-        return keyBinding.getKeyDescription();
+        return keyBinding.getName();
     }
 
     public String getTab() {
-        return keyBinding.getKeyCategory();
+        return keyBinding.getCategory();
     }
 
     public int getKey() {
-        return keyBinding.getKeyCode();
+        return keyBinding.getKey().getValue();
     }
 
     public boolean isKeyDown() {
-        return Keyboard.isKeyDown(getKey());
+        return InputMappings.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), getKey());
     }
 
 }

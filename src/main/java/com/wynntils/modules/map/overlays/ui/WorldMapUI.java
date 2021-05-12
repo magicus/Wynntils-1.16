@@ -25,13 +25,13 @@ import com.wynntils.modules.utilities.managers.KeyManager;
 import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.profiles.TerritoryProfile;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -44,7 +44,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class WorldMapUI extends GuiMovementScreen {
 
@@ -82,11 +82,11 @@ public class WorldMapUI extends GuiMovementScreen {
     protected float outsideTextOpacity = 0f;
 
     protected WorldMapUI() {
-        this((float) Minecraft.getMinecraft().player.posX, (float) Minecraft.getMinecraft().player.posZ);
+        this((float) Minecraft.getInstance().player.posX, (float) Minecraft.getInstance().player.posZ);
     }
 
     protected WorldMapUI(float startX, float startZ) {
-        mc = Minecraft.getMinecraft();
+        mc = Minecraft.getInstance();
 
         // HeyZeer0: Handles the territories
         for (TerritoryProfile territory : WebManager.getTerritories().values()) {
@@ -105,8 +105,8 @@ public class WorldMapUI extends GuiMovementScreen {
         this.animationEnd = System.currentTimeMillis() + MapConfig.WorldMap.INSTANCE.animationLength;
 
         // Opening SFX
-        Minecraft.getMinecraft().getSoundHandler().playSound(
-                PositionedSoundRecord.getMasterRecord(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f)
+        Minecraft.getInstance().getSoundManager().play(
+                SimpleSound.getMasterRecord(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f)
         );
     }
 
@@ -266,7 +266,7 @@ public class WorldMapUI extends GuiMovementScreen {
             color(1, 1, 1, 1f);
             enableTexture2D();
 
-            map.bindTexture();  // <--- binds the texture
+            map.bind();  // <--- binds the texture
             glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
             glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
 
@@ -337,7 +337,7 @@ public class WorldMapUI extends GuiMovementScreen {
             popMatrix();
         }
 
-        if (MapConfig.WorldMap.INSTANCE.keepTerritoryVisible || Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+        if (MapConfig.WorldMap.INSTANCE.keepTerritoryVisible || Keyboard.isKeyDown(GLFW.GLFW_KEY_LCONTROL) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RCONTROL)) {
             territories.values().forEach(c -> c.drawScreen(mouseX, mouseY, partialTicks,
                     MapConfig.WorldMap.INSTANCE.territoryArea, false, false, true));
         }

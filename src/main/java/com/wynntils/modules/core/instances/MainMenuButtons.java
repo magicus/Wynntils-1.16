@@ -13,13 +13,13 @@ import com.wynntils.modules.core.overlays.ui.UpdateAvailableScreen;
 import com.wynntils.modules.utilities.instances.ServerIcon;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -32,10 +32,10 @@ public class MainMenuButtons {
     private static final int WYNNCRAFT_BUTTON_ID = 3790627;
 
     private static WynncraftButton lastButton = null;
-    
+
     private static boolean alreadyLoaded = false;
 
-    public static void addButtons(GuiMainMenu to, List<GuiButton> buttonList, boolean resize) {
+    public static void addButtons(GuiMainMenu to, List<Button> buttonList, boolean resize) {
         if (!CoreDBConfig.INSTANCE.addMainMenuButton) return;
 
         if (lastButton == null || !resize) {
@@ -50,7 +50,7 @@ public class MainMenuButtons {
 
             // little pling when finished loading
             if (!alreadyLoaded) {
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1f));
                 alreadyLoaded = true;
             }
             return;
@@ -60,13 +60,13 @@ public class MainMenuButtons {
         buttonList.add(lastButton);
     }
 
-    public static void actionPerformed(GuiMainMenu on, GuiButton button, List<GuiButton> buttonList) {
+    public static void actionPerformed(GuiMainMenu on, Button button, List<Button> buttonList) {
         if (button.id == WYNNCRAFT_BUTTON_ID) {
             clickedWynncraftButton(on.mc, ((WynncraftButton) button).serverIcon.getServer(), on);
         }
     }
 
-    private static void clickedWynncraftButton(Minecraft mc, ServerData server, GuiScreen backGui) {
+    private static void clickedWynncraftButton(Minecraft mc, ServerData server, Screen backGui) {
         if (hasUpdate()) {
             mc.displayGuiScreen(new UpdateAvailableScreen(server));
         } else {
@@ -83,7 +83,7 @@ public class MainMenuButtons {
         return ServerUtils.getWynncraftServerData(serverList = new ServerList(mc), true);
     }
 
-    private static class WynncraftButton extends GuiButton {
+    private static class WynncraftButton extends Button {
 
         private ServerIcon serverIcon;
 
@@ -103,7 +103,7 @@ public class MainMenuButtons {
             ServerIcon.ping();
             ResourceLocation icon = serverIcon.getServerIcon();
             if (icon == null) icon = ServerIcon.UNKNOWN_SERVER;
-            mc.getTextureManager().bindTexture(icon);
+            mc.getTextureManager().bind(icon);
 
             boolean hasUpdate = hasUpdate();
 
@@ -130,7 +130,7 @@ public class MainMenuButtons {
 
     }
 
-    public static class FakeGui extends GuiScreen {
+    public static class FakeGui extends Screen {
         FakeGui() {
             doAction();
         }
@@ -141,7 +141,7 @@ public class MainMenuButtons {
         }
 
         private static void doAction() {
-            clickedWynncraftButton(Minecraft.getMinecraft(), getWynncraftServerData(Minecraft.getMinecraft()), null);
+            clickedWynncraftButton(Minecraft.getInstance(), getWynncraftServerData(Minecraft.getMinecraft()), null);
         }
     }
 

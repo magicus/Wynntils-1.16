@@ -5,7 +5,7 @@
 package com.wynntils.modules.questbook.events.custom;
 
 import com.wynntils.modules.questbook.enums.AnalysePosition;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 public class QuestBookUpdateEvent extends Event {
 

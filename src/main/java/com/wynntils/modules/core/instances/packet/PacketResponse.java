@@ -7,38 +7,38 @@ package com.wynntils.modules.core.instances.packet;
 import com.wynntils.core.utils.Utils;
 import com.wynntils.modules.core.managers.PingManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.network.Packet;
+import net.minecraft.client.network.play.ClientPlayNetHandler;
+import net.minecraft.network.IPacket;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class PacketResponse {
 
-    Packet input;
+    IPacket input;
     Class responseType;
 
-    Function<Packet, Boolean> verification = null;
+    Function<IPacket, Boolean> verification = null;
     Runnable onDrop = null;
-    BiConsumer<NetHandlerPlayClient, Packet> sender = null;
+    BiConsumer<ClientPlayNetHandler, IPacket> sender = null;
     boolean skipping = false;
 
     long lastSent = -1;
     int tries = 0;
     int maxTries = 3;
 
-    public PacketResponse(Packet input, Class responseType) {
+    public PacketResponse(IPacket input, Class responseType) {
         this.input = input;
         this.responseType = responseType;
     }
 
-    public PacketResponse(Packet input) {
+    public PacketResponse(IPacket input) {
         this.input = input;
 
         this.responseType = null;
     }
 
-    public Packet getInput() {
+    public IPacket getInput() {
         return input;
     }
 
@@ -46,7 +46,7 @@ public class PacketResponse {
         return responseType;
     }
 
-    public PacketResponse setVerification(Function<Packet, Boolean> verification) {
+    public PacketResponse setVerification(Function<IPacket, Boolean> verification) {
         this.verification = verification;
         return this;
     }
@@ -56,7 +56,7 @@ public class PacketResponse {
     }
 
     // TODO make this verification faster cuz at the current state it's slowing the packet a lot
-    public boolean isResponseValid(Packet packetType) {
+    public boolean isResponseValid(IPacket packetType) {
         if (skipping) {
             return true;
         }
@@ -73,7 +73,7 @@ public class PacketResponse {
         if (skipping || !shouldSend()) return;
 
         Utils.runAsync(() -> {
-            NetHandlerPlayClient conn = Minecraft.getMinecraft().getConnection();
+            ClientPlayNetHandler conn = Minecraft.getInstance().getConnection();
             if (this.sender != null) {
                 this.sender.accept(conn, input);
             } else {
@@ -105,7 +105,7 @@ public class PacketResponse {
      *
      * Can be used to change the packet sent depending on the outcome of previous packets.
      */
-    public PacketResponse setSender(BiConsumer<NetHandlerPlayClient, Packet> sender) {
+    public PacketResponse setSender(BiConsumer<ClientPlayNetHandler, IPacket> sender) {
         this.sender = sender;
         return this;
     }

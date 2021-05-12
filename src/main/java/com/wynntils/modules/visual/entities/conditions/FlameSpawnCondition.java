@@ -10,7 +10,7 @@ import com.wynntils.core.utils.objects.Location;
 import com.wynntils.core.utils.objects.SquareRegion;
 import com.wynntils.modules.visual.configs.VisualConfig;
 import com.wynntils.modules.visual.entities.EntityFlame;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -20,7 +20,7 @@ public class FlameSpawnCondition implements EntitySpawnCodition {
     private static final SquareRegion ROOTS_OF_CORRUPTION = new SquareRegion(83, -1408, 360, -1222);
 
     @Override
-    public boolean shouldSpawn(Location pos, World world, EntityPlayerSP player, Random random) {
+    public boolean shouldSpawn(Location pos, World world, ClientPlayerEntity player, Random random) {
         if (!ROOTS_OF_CORRUPTION.isInside(pos)) return false;
 
         // max distance
@@ -33,7 +33,7 @@ public class FlameSpawnCondition implements EntitySpawnCodition {
     }
 
     @Override
-    public FakeEntity createEntity(Location location, World world, EntityPlayerSP player, Random random) {
+    public FakeEntity createEntity(Location location, World world, ClientPlayerEntity player, Random random) {
         return new EntityFlame(location, random);
     }
 

@@ -6,8 +6,9 @@ package com.wynntils.core.events.custom;
 
 import com.wynntils.core.utils.objects.Location;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraftforge.eventbus.api.Event;
 
 public class LocationEvent extends Event {
 
@@ -47,9 +48,9 @@ public class LocationEvent extends Event {
     public static class EntityLabelFoundEvent extends LocationEvent {
         private final String label;
         private final Location location;
-        private final EntityLiving entity;
+        private final LivingEntity entity;
 
-        public EntityLabelFoundEvent(String label, Location location, EntityLiving entity) {
+        public EntityLabelFoundEvent(String label, Location location, LivingEntity entity) {
             this.label = label;
             this.location = location;
             this.entity = entity;
@@ -63,7 +64,7 @@ public class LocationEvent extends Event {
             return location;
         }
 
-        public EntityLiving getEntity() {
+        public LivingEntity getEntity() {
             return entity;
         }
     }

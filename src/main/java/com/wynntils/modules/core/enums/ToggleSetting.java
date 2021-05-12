@@ -59,7 +59,7 @@ public enum ToggleSetting {
             // show message is false when the option was already on the value status
             if (!showMessage) return;
 
-            Minecraft.getMinecraft().player.sendMessage(getToggleText(value));
+            Minecraft.getInstance().player.sendMessage(getToggleText(value));
         }, TOGGLE_MESSAGE_PATTERN);
 
         response.setCancel(true);

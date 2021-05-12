@@ -15,8 +15,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -39,11 +39,11 @@ public class PointRenderer {
 
     public static void drawTexturedLines(Texture texture, Long2ObjectMap<List<List<LootRunPath.LootRunPathLocation>>> points, Long2ObjectMap<List<List<Vector3d>>> directions, CustomColor color, float width) {
         List<ChunkPos> chunks = new ArrayList<>();
-        int renderDistance = Minecraft.getMinecraft().gameSettings.renderDistanceChunks;
+        int renderDistance = Minecraft.getInstance().gameSettings.renderDistanceChunks;
         for (int x = -renderDistance; x <= renderDistance; x++) {
             for (int z = -renderDistance; z <= renderDistance; z++) {
-                int playerChunkX = Minecraft.getMinecraft().player.chunkCoordX;
-                int playerChunkZ = Minecraft.getMinecraft().player.chunkCoordZ;
+                int playerChunkX = Minecraft.getInstance().player.chunkCoordX;
+                int playerChunkZ = Minecraft.getInstance().player.chunkCoordZ;
                 ChunkPos chunk = new ChunkPos(x + playerChunkX, z + playerChunkZ);
                 chunks.add(chunk);
             }
@@ -56,7 +56,7 @@ public class PointRenderer {
         texture.bind();
 
         for (ChunkPos chunk : chunks) {
-            if (!Minecraft.getMinecraft().world.isChunkGeneratedAt(chunk.x, chunk.z)) {
+            if (!Minecraft.getInstance().world.isChunkGeneratedAt(chunk.x, chunk.z)) {
                 continue;
             }
             List<List<LootRunPath.LootRunPathLocation>> pointsInChunk = points.get(ChunkPos.asLong(chunk.x, chunk.z));
@@ -69,7 +69,7 @@ public class PointRenderer {
                     List<Pair<LootRunPath.LootRunPathLocation, Vector3d>> toRender = new ArrayList<>();
                     for (int k = 0; k < pointsInRoute.size(); ++k) {
                         Point3d start = new Point3d(pointsInRoute.get(k).getLocation());
-                        World world = Minecraft.getMinecraft().world;
+                        World world = Minecraft.getInstance().world;
                         BlockPos minPos = new BlockPos(start.x - 0.3D, start.y - 1D, start.z - 0.3D);
                         BlockPos maxPos = new BlockPos(start.x + 0.3D, start.y - 1D, start.z + 0.3D);
                         Iterable<BlockPos> blocks = BlockPos.getAllInBox(minPos, maxPos);
@@ -203,7 +203,7 @@ public class PointRenderer {
     }
 
     private static void drawTexturedLine(Point3d start, Point3d end, float width) {
-        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager renderManager = Minecraft.getInstance().getRenderManager();
 
         Vector3d direction = new Vector3d(start);
         direction.sub(end);
@@ -251,17 +251,17 @@ public class PointRenderer {
         if (locations.isEmpty()) return;
 
         List<ChunkPos> chunks = new ArrayList<>();
-        int renderDistance = Minecraft.getMinecraft().gameSettings.renderDistanceChunks;
+        int renderDistance = Minecraft.getInstance().gameSettings.renderDistanceChunks;
         for (int x = -renderDistance; x <= renderDistance; x++) {
             for (int z = -renderDistance; z <= renderDistance; z++) {
-                int playerChunkX = Minecraft.getMinecraft().player.chunkCoordX;
-                int playerChunkZ = Minecraft.getMinecraft().player.chunkCoordZ;
+                int playerChunkX = Minecraft.getInstance().player.chunkCoordX;
+                int playerChunkZ = Minecraft.getInstance().player.chunkCoordZ;
                 ChunkPos chunk = new ChunkPos(x + playerChunkX, z + playerChunkZ);
                 chunks.add(chunk);
             }
         }
 
-        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager renderManager = Minecraft.getInstance().getRenderManager();
 
         GlStateManager.glLineWidth(3f);
         GlStateManager.depthMask(false);
@@ -277,7 +277,7 @@ public class PointRenderer {
 
         {
             for (ChunkPos chunkPos : chunks) {
-                if (!Minecraft.getMinecraft().world.isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
+                if (!Minecraft.getInstance().world.isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
                     continue;
                 }
                 List<List<LootRunPath.LootRunPathLocation>> locationsInChunk = locations.get(ChunkPos.asLong(chunkPos.x, chunkPos.z));
@@ -292,7 +292,7 @@ public class PointRenderer {
                             boolean pauseDraw = false;
                             BlockPos blockPos = loc.getLocation().toBlockPos();
 
-                            World world = Minecraft.getMinecraft().world;
+                            World world = Minecraft.getInstance().world;
 
                             if (!blockPos.equals(lastBlockPos)) {
                                 BlockPos minPos = new BlockPos(loc.getLocation().x - 0.3D, loc.getLocation().y - 1D, loc.getLocation().z - 0.3D);
@@ -375,9 +375,9 @@ public class PointRenderer {
     }
 
     public static void drawCube(BlockPos point, CustomColor color) {
-        if (!Minecraft.getMinecraft().world.isBlockLoaded(point, false)) return;
+        if (!Minecraft.getInstance().world.isBlockLoaded(point, false)) return;
 
-        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager renderManager = Minecraft.getInstance().getRenderManager();
 
         Location c = new Location(
             point.getX() - renderManager.viewerPosX,
@@ -393,7 +393,7 @@ public class PointRenderer {
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
-        RenderGlobal.drawBoundingBox(c.x, c.y, c.z, c.x + 1, c.y + 1, c.z + 1, color.r, color.g, color.b, color.a);
+        WorldRenderer.drawBoundingBox(c.x, c.y, c.z, c.x + 1, c.y + 1, c.z + 1, color.r, color.g, color.b, color.a);
 
         GlStateManager.disableBlend();
         GlStateManager.enableTexture2D();

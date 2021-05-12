@@ -18,8 +18,8 @@ import com.wynntils.modules.utilities.overlays.hud.WarTimerOverlay;
 import com.wynntils.modules.utilities.overlays.hud.WarTimerOverlay.WarStage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.server.SPacketSetExperience;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -104,7 +104,7 @@ public class ServerEvents implements Listener {
         if (!RichPresenceConfig.INSTANCE.enableRichPresence || !Reference.onWorld
                 || !PlayerInfo.get(CharacterData.class).isLoaded()) return;
 
-        if (e.getPacket().getLevel() != Minecraft.getMinecraft().player.experienceLevel) {
+        if (e.getPacket().getLevel() != Minecraft.getInstance().player.experienceLevel) {
             forceUpdate = true;
         }
     }
@@ -166,7 +166,7 @@ public class ServerEvents implements Listener {
      * @return RichPresence largeImageText
      */
     public static String getPlayerInfo() {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         return RichPresenceConfig.INSTANCE.showUserInformation ? mc.player.getName() + " | Level " + mc.player.experienceLevel + " " + PlayerInfo.get(CharacterData.class).getCurrentClass().toString() : null;
     }
 

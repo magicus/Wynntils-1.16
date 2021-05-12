@@ -6,7 +6,7 @@ package com.wynntils.core.events.custom;
 
 import com.wynntils.core.utils.objects.Location;
 import com.wynntils.modules.core.instances.TotemTracker;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 
 public class SpellEvent extends Event {

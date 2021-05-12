@@ -5,7 +5,7 @@
 package com.wynntils.core.events.custom;
 
 import com.wynntils.modules.utilities.overlays.hud.WarTimerOverlay.WarStage;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 public class WarStageEvent extends Event {
 

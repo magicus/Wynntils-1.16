@@ -4,7 +4,7 @@
 
 package com.wynntils.core.framework.rendering.colors;
 
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.codec.digest.DigestUtils;
 

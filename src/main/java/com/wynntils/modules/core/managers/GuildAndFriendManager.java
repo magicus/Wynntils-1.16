@@ -6,8 +6,8 @@ package com.wynntils.modules.core.managers;
 
 import com.wynntils.modules.core.instances.OtherPlayerProfile;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.client.network.NetworkPlayerInfo;
 
 import java.util.HashMap;
@@ -25,9 +25,9 @@ public class GuildAndFriendManager {
 
     public static void tryResolveNames() {
         // Try to resolve names from the connection map
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
         if (player == null) return;
-        NetHandlerPlayClient conn = player.connection;
+        ClientPlayNetHandler conn = player.connection;
         if (conn == null) return;
         for (NetworkPlayerInfo i : conn.getPlayerInfoMap()) {
             String name = i.getGameProfile().getName();

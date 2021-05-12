@@ -56,7 +56,7 @@ public abstract class Module {
     /**
      * Registers a new listener class to the Wynntils Event Bus linked to the module.
      * All event methods should have the SubscribeEvent annotation in order to receive events
-     * @see net.minecraftforge.fml.common.eventhandler.SubscribeEvent
+     * @see net.minecraftforge.eventbus.api.SubscribeEvent
      *
      * @param listenerClass the class instance
      */
@@ -140,7 +140,7 @@ public abstract class Module {
     }
 
     public Minecraft getMinecraft() {
-        return Minecraft.getMinecraft();
+        return Minecraft.getInstance();
     }
 
     public Logger getLogger() {

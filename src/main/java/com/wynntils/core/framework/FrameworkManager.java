@@ -24,17 +24,19 @@ import com.wynntils.core.utils.Utils;
 import com.wynntils.core.utils.objects.Location;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.eventhandler.EventBus;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.eventbus.EventBus;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.Event;
+
+import net.minecraftforge.event.TickEvent;
 import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
 
-import static net.minecraft.client.gui.Gui.ICONS;
+import static net.minecraft.client.gui.AbstractGui.GUI_ICONS_LOCATION;
 
 public class FrameworkManager {
 
@@ -42,7 +44,7 @@ public class FrameworkManager {
     protected final static Map<Priority, List<Overlay>> registeredOverlays = new LinkedHashMap<>();
     protected final static Set<EntitySpawnCodition> registeredSpawnConditions = new HashSet<>();
 
-    private static final EventBus eventBus = new EventBus();
+    private static final EventBus eventBus = new EventBus(null);
 
     static {
         registeredOverlays.put(Priority.LOWEST, new ArrayList<>());
@@ -145,14 +147,14 @@ public class FrameworkManager {
     }
 
     public static void triggerPreHud(RenderGameOverlayEvent.Pre e) {
-        if (Reference.onServer && !ModCore.mc().playerController.isSpectator()) {
+        if (Reference.onServer && !ModCore.mc().gameMode.isAlwaysFlying()) {
             if (e.getType() == RenderGameOverlayEvent.ElementType.AIR ||  // move it to somewhere else if you want, it seems pretty core to wynncraft tho..
                e.getType() == RenderGameOverlayEvent.ElementType.ARMOR) {
                 e.setCanceled(true);
                 return;
             }
 
-            Minecraft.getMinecraft().profiler.startSection("preRenOverlay");
+            Minecraft.getInstance().getProfiler().push("preRenOverlay");
             for (List<Overlay> overlays : registeredOverlays.values()) {
                 for (Overlay overlay : overlays) {
                     if (!overlay.active) continue;
@@ -171,39 +173,39 @@ public class FrameworkManager {
                             continue;
                     }
                     if ((overlay.module == null || overlay.module.getModule().isActive()) && overlay.visible && overlay.active) {
-                        Minecraft.getMinecraft().profiler.startSection(overlay.displayName);
+                        Minecraft.getInstance().getProfiler().push(overlay.displayName);
                         ScreenRenderer.beginGL(overlay.position.getDrawingX(), overlay.position.getDrawingY());
                         overlay.render(e);
                         ScreenRenderer.endGL();
-                        Minecraft.getMinecraft().profiler.endSection();
+                        Minecraft.getInstance().getProfiler().pop();
                     }
                 }
             }
-            Minecraft.getMinecraft().profiler.endSection();
+            Minecraft.getInstance().getProfiler().pop();
 
-            Minecraft.getMinecraft().getTextureManager().bindTexture(ICONS);
+            Minecraft.getInstance().getTextureManager().bind(GUI_ICONS_LOCATION);
         }
     }
 
     public static void triggerPostHud(RenderGameOverlayEvent.Post e) {
-        if (Reference.onServer && !ModCore.mc().playerController.isSpectator()) {
-            Minecraft.getMinecraft().profiler.startSection("posRenOverlay");
+        if (Reference.onServer && !ModCore.mc().gameMode.isAlwaysFlying()) {
+            Minecraft.getInstance().getProfiler().push("posRenOverlay");
             for (List<Overlay> overlays : registeredOverlays.values()) {
                 for (Overlay overlay : overlays) {
                     if (!overlay.active) continue;
 
                     if ((overlay.module == null || overlay.module.getModule().isActive()) && overlay.visible && overlay.active) {
-                        Minecraft.getMinecraft().profiler.startSection(overlay.displayName);
+                        Minecraft.getInstance().getProfiler().push(overlay.displayName);
 
                         ScreenRenderer.beginGL(overlay.position.getDrawingX(), overlay.position.getDrawingY());
                         overlay.render(e);
                         ScreenRenderer.endGL();
 
-                        Minecraft.getMinecraft().profiler.endSection();
+                        Minecraft.getInstance().getProfiler().pop();
                     }
                 }
             }
-            Minecraft.getMinecraft().profiler.endSection();
+            Minecraft.getInstance().getProfiler().pop();
         }
     }
 
@@ -226,15 +228,15 @@ public class FrameworkManager {
         Random r = Utils.getRandom();
         if (r.nextBoolean()) return; // reduce spawn chances by half
 
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
         for (double x = -10; x < 10; x++) {
             for (double y = -1; y < 6; y++) {
                 for (double z = -10; z < 10; z++) {
                     for (EntitySpawnCodition condition : registeredSpawnConditions) {
                         Location relative = new Location(player).add(x, y, z);
-                        if (!condition.shouldSpawn(relative, player.world, player, r)) continue;
+                        if (!condition.shouldSpawn(relative, player.level, player, r)) continue;
 
-                        EntityManager.spawnEntity(condition.createEntity(relative, player.world, player, r));
+                        EntityManager.spawnEntity(condition.createEntity(relative, player.level, player, r));
                     }
                 }
             }

@@ -18,8 +18,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class LoreChangerOverlay implements Listener {
         }
 
         // Wynnic Translator
-        if (stack.hasTagCompound() && !stack.getTagCompound().getBoolean("showWynnic") && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+        if (stack.hasTagCompound() && !stack.getTagCompound().getBoolean("showWynnic") && Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
             String fullLore = ItemUtils.getStringLore(stack);
             if (StringUtils.hasWynnic(fullLore) || StringUtils.hasGavellian(fullLore)) {
                 NBTTagList loreList = ItemUtils.getLoreTag(stack);
@@ -129,7 +129,7 @@ public class LoreChangerOverlay implements Listener {
             stack.getTagCompound().setBoolean("showWynnic", true);
         }
 
-        if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("showWynnic") && !Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+        if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("showWynnic") && !Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
             NBTTagCompound tag = stack.getTagCompound();
             if (tag.hasKey("originalLore")) {
                 NBTTagCompound displayTag = tag.getCompoundTag("display");

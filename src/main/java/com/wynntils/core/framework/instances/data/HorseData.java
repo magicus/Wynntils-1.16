@@ -51,12 +51,12 @@ public class HorseData extends PlayerData {
      * Updates the player horse information
      */
     public void update() {
-        NonNullList<ItemStack> inventory = getPlayer().inventory.mainInventory;
+        NonNullList<ItemStack> inventory = getPlayer().inventory.items;
 
         if (inventorySlot != -1) {
             ItemStack stack = inventory.get(inventorySlot);
 
-            if (!stack.isEmpty() && stack.hasDisplayName() && stack.getDisplayName().contains(" Horse")) {
+            if (!stack.isEmpty() && stack.hasCustomHoverName() && stack.getDisplayName().contains(" Horse")) {
                 update(stack, inventorySlot);
                 return;
             }
@@ -65,7 +65,7 @@ public class HorseData extends PlayerData {
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.get(i);
 
-            if (!stack.isEmpty() && stack.hasDisplayName() && stack.getDisplayName().contains(" Horse")) {
+            if (!stack.isEmpty() && stack.hasCustomHoverName() && stack.getDisplayName().contains(" Horse")) {
                 update(stack, i);
                 return;
             }

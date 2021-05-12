@@ -20,8 +20,8 @@ import com.wynntils.webapi.downloader.enums.DownloadAction;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.event.TickEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.File;
 import java.io.IOException;
@@ -145,7 +145,7 @@ public class UpdateOverlay extends Overlay {
             }
         }
         if (acceptYesOrNo) {
-            if (Keyboard.isKeyDown(Keyboard.KEY_Y)) {
+            if (Keyboard.isKeyDown(GLFW.GLFW_KEY_Y)) {
                 disappear = true;
                 acceptYesOrNo = false;
                 download = true;
@@ -153,7 +153,7 @@ public class UpdateOverlay extends Overlay {
                 CoreDBConfig.INSTANCE.showChangelogs = true;
                 CoreDBConfig.INSTANCE.lastVersion = Reference.VERSION;
                 CoreDBConfig.INSTANCE.saveSettings(CoreModule.getModule());
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
+            } else if (Keyboard.isKeyDown(GLFW.GLFW_KEY_N)) {
                 timeout = 35000;
                 acceptYesOrNo = false;
                 download = false;

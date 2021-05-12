@@ -10,17 +10,17 @@ import com.wynntils.modules.core.overlays.inventories.HorseReplacer;
 import com.wynntils.modules.core.overlays.inventories.IngameMenuReplacer;
 import com.wynntils.modules.core.overlays.inventories.InventoryReplacer;
 import com.wynntils.modules.core.overlays.ui.PlayerInfoReplacer;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Slot;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Slot;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.List;
 
-public class GuiOverlapEvent<T extends Gui> extends Event {
+public class GuiOverlapEvent<T extends AbstractGui> extends Event {
 
     protected T gui;
 
@@ -32,13 +32,13 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
         return gui;
     }
 
-    public static class GuiScreenOverlapEvent<T extends GuiScreen> extends GuiOverlapEvent<T> {
+    public static class GuiScreenOverlapEvent<T extends Screen> extends GuiOverlapEvent<T> {
 
         protected GuiScreenOverlapEvent(T guiScreen) {
             super(guiScreen);
         }
 
-        public List<GuiButton> getButtonList() {
+        public List<Button> getButtonList() {
             return ReflectionFields.GuiScreen_buttonList.getValue(getGui());
         }
 
@@ -51,7 +51,7 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
         }
 
         @Override
-        public List<GuiButton> getButtonList() {
+        public List<Button> getButtonList() {
             return getGui().getButtonList();
         }
 
@@ -226,7 +226,7 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
         }
 
         @Override
-        public List<GuiButton> getButtonList() {
+        public List<Button> getButtonList() {
             return getGui().getButtonList();
         }
 
@@ -455,15 +455,15 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
 
         public static class InitGui extends ChestOverlap {
 
-            List<GuiButton> buttonList;
+            List<Button> buttonList;
 
-            public InitGui(ChestReplacer guiChest, List<GuiButton> buttonList) {
+            public InitGui(ChestReplacer guiChest, List<Button> buttonList) {
                 super(guiChest);
                 this.buttonList = buttonList;
             }
 
             @Override
-            public List<GuiButton> getButtonList() {
+            public List<Button> getButtonList() {
                 return buttonList;
             }
 
@@ -521,7 +521,7 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
         }
 
         @Override
-        public List<GuiButton> getButtonList() {
+        public List<Button> getButtonList() {
             return getGui().getButtonList();
         }
 
@@ -701,7 +701,7 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
         }
 
         @Override
-        public List<GuiButton> getButtonList() {
+        public List<Button> getButtonList() {
             return getGui().getButtonList();
         }
 
@@ -754,16 +754,16 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
 
         public static class InitGui extends IngameMenuOverlap {
 
-            List<GuiButton> buttonList;
+            List<Button> buttonList;
 
-            public InitGui(IngameMenuReplacer ingameMenuReplacer, List<GuiButton> buttonList) {
+            public InitGui(IngameMenuReplacer ingameMenuReplacer, List<Button> buttonList) {
                 super(ingameMenuReplacer);
 
                 this.buttonList = buttonList;
             }
 
             @Override
-            public List<GuiButton> getButtonList() {
+            public List<Button> getButtonList() {
                 return buttonList;
             }
 
@@ -771,9 +771,9 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
 
         public static class ActionPerformed extends IngameMenuOverlap {
 
-            GuiButton button;
+            Button button;
 
-            public ActionPerformed(IngameMenuReplacer ingameMenuReplacer, GuiButton button) {
+            public ActionPerformed(IngameMenuReplacer ingameMenuReplacer, Button button) {
                 super(ingameMenuReplacer);
 
                 this.button = button;
@@ -784,7 +784,7 @@ public class GuiOverlapEvent<T extends Gui> extends Event {
                 return true;
             }
 
-            public GuiButton getButton() {
+            public Button getButton() {
                 return button;
             }
 

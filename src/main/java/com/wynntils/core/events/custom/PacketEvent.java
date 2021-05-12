@@ -8,22 +8,23 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelOutboundHandler;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.network.Packet;
-import net.minecraftforge.fml.common.eventhandler.GenericEvent;
+import net.minecraft.client.network.play.ClientPlayNetHandler;
+
+import net.minecraft.network.IPacket;
+import net.minecraftforge.eventbus.api.GenericEvent;
 
 /**
  * Triggered when a packet is sent to or from the client
  * is cancellable (you can avoid it to reach the client processor or the server)
  */
-public class PacketEvent<T extends Packet<?>> extends GenericEvent<T> {
+public class PacketEvent<T extends IPacket<?>> extends GenericEvent<T> {
 
     T packet;
-    NetHandlerPlayClient playClient;
+    ClientPlayNetHandler playClient;
     ChannelHandler handler;
     ChannelHandlerContext ctx;
 
-    public PacketEvent(T packet, NetHandlerPlayClient playClient, ChannelHandler handler, ChannelHandlerContext ctx) {
+    public PacketEvent(T packet, ClientPlayNetHandler playClient, ChannelHandler handler, ChannelHandlerContext ctx) {
         super((Class<T>) packet.getClass());
         this.packet = packet;
         this.playClient = playClient;
@@ -35,7 +36,7 @@ public class PacketEvent<T extends Packet<?>> extends GenericEvent<T> {
         return packet;
     }
 
-    public NetHandlerPlayClient getPlayClient() {
+    public ClientPlayNetHandler getPlayClient() {
         return playClient;
     }
 
@@ -56,9 +57,9 @@ public class PacketEvent<T extends Packet<?>> extends GenericEvent<T> {
      * Triggered when a packet is being sent by the client to the server.
      * Cancelling means it won't be sent to the server.
      */
-    public static class Outgoing<T extends Packet<?>> extends PacketEvent<T> {
+    public static class Outgoing<T extends IPacket<?>> extends PacketEvent<T> {
 
-        public Outgoing(T packet, NetHandlerPlayClient playClient, ChannelOutboundHandler handler, ChannelHandlerContext ctx) {
+        public Outgoing(T packet, ClientPlayNetHandler playClient, ChannelOutboundHandler handler, ChannelHandlerContext ctx) {
             super(packet, playClient, handler, ctx);
         }
 
@@ -68,7 +69,7 @@ public class PacketEvent<T extends Packet<?>> extends GenericEvent<T> {
          *
          * @param packet The packet to send
          */
-        public void sendImmediately(Packet<?> packet) {
+        public void sendImmediately(IPacket<?> packet) {
             try {
                 ((ChannelOutboundHandler) handler).write(ctx, packet, ctx.newPromise());
             } catch (Exception e) {
@@ -81,7 +82,7 @@ public class PacketEvent<T extends Packet<?>> extends GenericEvent<T> {
          *
          * @param to The packet to send to the server instead
          */
-        public void transform(Packet<?> to) {
+        public void transform(IPacket<?> to) {
             setCanceled(true);
             sendImmediately(to);
         }
@@ -98,19 +99,19 @@ public class PacketEvent<T extends Packet<?>> extends GenericEvent<T> {
      *
      * Cancelling means that it won't be processed by the client (as if it wasn't sent at all)
      */
-    public static class Incoming<T extends Packet<?>> extends PacketEvent<T> {
+    public static class Incoming<T extends IPacket<?>> extends PacketEvent<T> {
 
-        public Incoming(T packet, NetHandlerPlayClient playClient, ChannelInboundHandler adapter, ChannelHandlerContext ctx) {
+        public Incoming(T packet, ClientPlayNetHandler playClient, ChannelInboundHandler adapter, ChannelHandlerContext ctx) {
             super(packet, playClient, adapter, ctx);
         }
 
         /**
          * Emulates an incoming packet as if it was sent before the packet from this event.
-         * Will fire another Packet.Incoming event
+         * Will fire another IPacket.Incoming event
          *
          * @param packet The packet to emulate
          */
-        public void emulateRead(Packet<?> packet) {
+        public void emulateRead(IPacket<?> packet) {
             try {
                 ((ChannelInboundHandler) handler).channelRead(ctx, packet);
             } catch (Exception e) {
@@ -123,7 +124,7 @@ public class PacketEvent<T extends Packet<?>> extends GenericEvent<T> {
          *
          * @param to The packet to be handled by Minecraft instead
          */
-        public void transform(Packet<?> to) {
+        public void transform(IPacket<?> to) {
             setCanceled(true);
             emulateRead(to);
         }

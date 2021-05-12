@@ -26,9 +26,9 @@ import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.profiles.item.ItemProfile;
 import com.wynntils.webapi.profiles.item.enums.ItemType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -37,7 +37,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -213,7 +213,7 @@ public class ItemPage extends QuestBookPage {
         checkForwardAndBackButtons(posX, posY);
 
         if (posX >= -157 && posX <= -147 && posY >= 89 && posY <= 99) { // search mode toggle button
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
             if (QuestBookConfig.INSTANCE.advancedItemSearch) {
                 QuestBookConfig.INSTANCE.advancedItemSearch = false;
                 initBasicSearch();
@@ -235,7 +235,7 @@ public class ItemPage extends QuestBookPage {
         }
 
         if (selected < 0) { // an item in the guide is hovered
-            if (mouseButton != 1 || !(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) return;
+            if (mouseButton != 1 || !(Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT))) return;
 
             int selectedIndex = -(selected + 1);
             if (selectedIndex >= itemSearch.size()) return;
@@ -411,19 +411,19 @@ public class ItemPage extends QuestBookPage {
             switch (selected) { // is one of the sorting buttons hovered?
                 case 1:
                     if (sortFunction != SortFunction.ALPHABETICAL) {
-                        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
                         sortFunction = SortFunction.ALPHABETICAL;
                     }
                     return true;
                 case 2:
                     if (sortFunction != SortFunction.BY_LEVEL) {
-                        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
                         sortFunction = SortFunction.BY_LEVEL;
                     }
                     return true;
                 case 3:
                     if (sortFunction != SortFunction.BY_RARITY) {
-                        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
                         sortFunction = SortFunction.BY_RARITY;
                     }
                     return true;
@@ -432,7 +432,7 @@ public class ItemPage extends QuestBookPage {
             if (selected < 10) return false; // selected >= 10 means one of the item filter buttons is hovered
 
             ItemType selectedType = itemTypeArray.get(selected / 10 - 1);
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
                 if (allowedTypes.size() == 1 && allowedTypes.contains(selectedType)) {
                     allowedTypes.addAll(itemTypeArray);
                 } else {
@@ -444,7 +444,7 @@ public class ItemPage extends QuestBookPage {
             } else {
                 allowedTypes.add(selectedType);
             }
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
 
             return true;
         }

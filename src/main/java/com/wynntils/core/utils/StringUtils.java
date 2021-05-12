@@ -115,7 +115,7 @@ public class StringUtils {
     }
 
     public static String[] wrapTextBySize(String s, int maxPixels) {
-        SmartFontRenderer renderer = ScreenRenderer.fontRenderer;
+        SmartFontRenderer renderer = ScreenRenderer.font;
         int spaceSize = renderer.getStringWidth(" ");
 
         String[] stringArray = s.split(" ");

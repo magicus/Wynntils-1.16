@@ -26,22 +26,22 @@ import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.wynntils.modules.utilities.instances.SkillPointAllocation;
 import com.wynntils.modules.utilities.overlays.ui.SkillPointLoadoutUI;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.audio.SimpleSound;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketClickWindow;
 import net.minecraft.network.play.server.SPacketCustomSound;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -113,7 +113,7 @@ public class SkillPointOverlay implements Listener {
 
         for (int i = 0; i < e.getGui().getLowerInv().getSizeInventory(); i++) {
             ItemStack stack = e.getGui().getLowerInv().getStackInSlot(i);
-            if (stack.isEmpty() || !stack.hasDisplayName()) continue; // display name also checks for tag compound
+            if (stack.isEmpty() || !stack.hasCustomHoverName()) continue; // display name also checks for tag compound
 
             String lore = TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack));
             String name = TextFormatting.getTextWithoutFormattingCodes(stack.getDisplayName());
@@ -191,7 +191,7 @@ public class SkillPointOverlay implements Listener {
         if (!Reference.onWorld || !Utils.isCharacterInfoPage(e.getGui())) return;
 
         if (e.getSlotId() == SAVE_SLOT) {
-            nameField = new GuiTextFieldWynn(200, Minecraft.getMinecraft().fontRenderer, 8, 5, 130, 10);
+            nameField = new GuiTextFieldWynn(200, Minecraft.getInstance().font, 8, 5, 130, 10);
             nameField.setFocused(true);
             nameField.setText("Enter build name");
             Keyboard.enableRepeatEvents(true);
@@ -199,7 +199,7 @@ public class SkillPointOverlay implements Listener {
             e.setCanceled(true);
         } else if (e.getSlotId() == LOAD_SLOT) {
             ModCore.mc().displayGuiScreen(
-                    new SkillPointLoadoutUI(this, ModCore.mc().currentScreen,
+                    new SkillPointLoadoutUI(this, ModCore.mc().screen,
                             new InventoryBasic("Skill Points Loadouts", false, 54))
             );
 
@@ -236,15 +236,15 @@ public class SkillPointOverlay implements Listener {
         // handle typing in text boxes
         if (nameField == null || !nameField.isFocused()) return;
 
-        if (e.getKeyCode() == Keyboard.KEY_RETURN) {
+        if (e.getKeyCode() == GLFW.GLFW_KEY_RETURN) {
             String name = nameField.getText();
             nameField = null;
 
             name = name.replaceAll("&([a-f0-9k-or])", "§$1");
             UtilitiesConfig.INSTANCE.skillPointLoadouts.put(name, getSkillPoints(e.getGui()));
             UtilitiesConfig.INSTANCE.saveSettings(UtilitiesModule.getModule());
-            ModCore.mc().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1f));
-        } else if (e.getKeyCode() == Keyboard.KEY_ESCAPE) {
+            ModCore.mc().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1f));
+        } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
             nameField = null;
             loadedBuild = null;
             buildPercentage = 0.0f;
@@ -276,7 +276,7 @@ public class SkillPointOverlay implements Listener {
 
     public void addManaTables(ChestReplacer gui) {
         ItemStack stack = gui.getLowerInv().getStackInSlot(11);
-        if (stack.isEmpty() || !stack.hasDisplayName()) return; // display name also checks for tag compound
+        if (stack.isEmpty() || !stack.hasCustomHoverName()) return; // display name also checks for tag compound
 
         int intelligencePoints = getIntelligencePoints(stack);
         if (stack.getTagCompound().hasKey("wynntilsAnalyzed")) return;
@@ -353,7 +353,7 @@ public class SkillPointOverlay implements Listener {
             text.getStyle().setColor(TextFormatting.RED);
 
             ModCore.mc().player.sendMessage(text);
-            ModCore.mc().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
+            ModCore.mc().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
             return;
         }
 
@@ -381,14 +381,14 @@ public class SkillPointOverlay implements Listener {
                     ClickType.PICKUP, gui.inventorySlots.getSlot(9 + i).getStack(),
                     gui.inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
 
-            Minecraft.getMinecraft().getSoundHandler().playSound(
-                    PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));
+            Minecraft.getInstance().getSoundManager().play(
+                    SimpleSound.getMasterRecord(SoundEvents.ENTITY_ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));
 
             ModCore.mc().getConnection().sendPacket(packet);
             return; // can only click once at a time
         }
 
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 1f));
+        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 1f));
         loadedBuild = null; // we've fully loaded the build if we reach this point
         buildPercentage = 0.0f;
     }

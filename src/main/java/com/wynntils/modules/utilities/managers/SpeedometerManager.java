@@ -5,13 +5,13 @@
 package com.wynntils.modules.utilities.managers;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.math.MathHelper;
 
 public class SpeedometerManager {
 
     public static double getCurrentSpeed() {
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
 
         double distX = player.posX - player.prevPosX;
         double distZ = player.posZ - player.prevPosZ;

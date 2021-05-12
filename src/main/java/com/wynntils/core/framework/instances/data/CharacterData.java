@@ -10,7 +10,7 @@ import com.wynntils.core.framework.enums.ClassType;
 import com.wynntils.core.framework.instances.containers.PlayerData;
 import com.wynntils.modules.core.CoreModule;
 import com.wynntils.modules.core.config.CoreDBConfig;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 
 import java.text.DecimalFormat;
 
@@ -49,7 +49,7 @@ public class CharacterData extends PlayerData {
 
     public int getXpNeededToLevelUp() {
         // Quick fix for crash bug - more investigation to be done.
-        EntityPlayerSP player = getPlayer();
+        ClientPlayerEntity player = getPlayer();
         try {
             if (player != null
                     && player.experienceLevel != 0
@@ -70,17 +70,17 @@ public class CharacterData extends PlayerData {
     }
 
     public String getCurrentXPAsPercentage() {
-        EntityPlayerSP player = getPlayer();
+        ClientPlayerEntity player = getPlayer();
         if (player == null || currentClass == ClassType.NONE) return "";
 
-        return PER_FORMAT.format(player.experience * 100);
+        return PER_FORMAT.format(player.experienceProgress * 100);
     }
 
     public int getCurrentXP() {
-        EntityPlayerSP player = getPlayer();
+        ClientPlayerEntity player = getPlayer();
         if (player == null || currentClass == ClassType.NONE) return -1;
 
-        return (int)(getXpNeededToLevelUp() * player.experience);
+        return (int)(getXpNeededToLevelUp() * player.experienceProgress);
     }
 
     public float getExperiencePercentage() {
@@ -104,7 +104,7 @@ public class CharacterData extends PlayerData {
     }
 
     public int getCurrentMana() {
-        return currentClass == ClassType.NONE ? -1 : getPlayer().getFoodStats().getFoodLevel();
+        return currentClass == ClassType.NONE ? -1 : getPlayer().getFoodData().getFoodLevel();
     }
 
     public int getClassId() {

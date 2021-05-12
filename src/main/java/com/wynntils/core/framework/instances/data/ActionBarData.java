@@ -7,7 +7,7 @@ package com.wynntils.core.framework.instances.data;
 import com.wynntils.core.framework.enums.ClassType;
 import com.wynntils.core.framework.instances.containers.PlayerData;
 import com.wynntils.core.utils.StringUtils;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.regex.Matcher;
@@ -25,7 +25,7 @@ public class ActionBarData extends PlayerData {
     public void updateActionBar(String actionBar) {
         CharacterData characterData = get(CharacterData.class);
         SpellData spellData = get(SpellData.class);
-        EntityPlayerSP player = getPlayer();
+        ClientPlayerEntity player = getPlayer();
 
         if (characterData.getCurrentClass() == ClassType.NONE) return;
 
@@ -64,7 +64,7 @@ public class ActionBarData extends PlayerData {
         }
 
         characterData.setLevel(player.experienceLevel);
-        characterData.setExperiencePercentage(player.experience);
+        characterData.setExperiencePercentage(player.experienceProgress);
     }
 
     public String getSpecialActionBar() {

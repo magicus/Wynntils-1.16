@@ -10,8 +10,8 @@ import com.wynntils.core.framework.rendering.instances.WindowedResolution;
 import com.wynntils.modules.visual.configs.VisualConfig;
 import com.wynntils.modules.visual.overlays.ui.CharacterSelectorUI;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class OverlayEvents implements Listener {
 
@@ -24,7 +24,7 @@ public class OverlayEvents implements Listener {
 
         WindowedResolution res = new WindowedResolution(480, 254);
         fakeCharacterSelector = new CharacterSelectorUI(null, e.getGui(), res.getScaleFactor());
-        fakeCharacterSelector.setWorldAndResolution(Minecraft.getMinecraft(), e.getGui().width, e.getGui().height);
+        fakeCharacterSelector.setWorldAndResolution(Minecraft.getInstance(), e.getGui().width, e.getGui().height);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

@@ -10,11 +10,11 @@ import com.wynntils.core.utils.StringUtils;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -29,7 +29,7 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class ScreenRenderer {
 
-    public static SmartFontRenderer fontRenderer = null;
+    public static SmartFontRenderer font = null;
     public static Minecraft mc;
     public static ScaledResolution screen = null;
     private static boolean rendering = false;
@@ -55,15 +55,15 @@ public class ScreenRenderer {
      * except {@link com.wynntils.core.events.ClientEvents#onTick(TickEvent.ClientTickEvent)} !
      */
     public static void refresh() {
-        mc = Minecraft.getMinecraft();
+        mc = Minecraft.getInstance();
         screen = new ScaledResolution(mc);
-        if (fontRenderer == null) {
-            fontRenderer = new SmartFontRenderer();
-            fontRenderer.onResourceManagerReload(mc.getResourceManager());
+        if (font == null) {
+            font = new SmartFontRenderer();
+            font.onResourceManagerReload(mc.getResourceManager());
         }
-        fontRenderer.setUnicodeFlag(CoreDBConfig.INSTANCE.useUnicode);
+        font.setUnicodeFlag(CoreDBConfig.INSTANCE.useUnicode);
         if (itemRenderer == null)
-            itemRenderer = Minecraft.getMinecraft().getRenderItem();
+            itemRenderer = Minecraft.getInstance().getRenderItem();
     }
 
     /** void beginGL
@@ -385,7 +385,7 @@ public class ScreenRenderer {
     }
 
     /** float drawString
-     * Draws a string using the current fontRenderer
+     * Draws a string using the current font
      *
      * @param text the text to render
      * @param x x(from drawingOrigin) to render at
@@ -397,7 +397,7 @@ public class ScreenRenderer {
      */
     public float drawString(String text, float x, float y, CustomColor color, SmartFontRenderer.TextAlignment alignment, SmartFontRenderer.TextShadow shadow) {
         if (!rendering) return -1f;
-        float f = fontRenderer.drawString(text, drawingOrigin.x + x, drawingOrigin.y + y, color, alignment, shadow);
+        float f = font.drawString(text, drawingOrigin.x + x, drawingOrigin.y + y, color, alignment, shadow);
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         return f;
     }
@@ -458,7 +458,7 @@ public class ScreenRenderer {
             }
         }
 
-        return fontRenderer.getCharWidth(text.charAt(0)) + SmartFontRenderer.CHAR_SPACING + getStringWidth(text.substring(1));
+        return font.getCharWidth(text.charAt(0)) + SmartFontRenderer.CHAR_SPACING + getStringWidth(text.substring(1));
     }
 
     /** void drawRect
@@ -836,7 +836,7 @@ public class ScreenRenderer {
         RenderHelper.enableGUIStandardItemLighting();
         itemRenderer.zLevel = 200.0F;
         net.minecraft.client.gui.FontRenderer font = is.getItem().getFontRenderer(is);
-        if (font == null) font = fontRenderer;
+        if (font == null) font = font;
         if (effects)
             itemRenderer.renderItemAndEffectIntoGUI(is, x + drawingOrigin.x, y + drawingOrigin.y);
         else

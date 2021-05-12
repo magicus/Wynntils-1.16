@@ -9,8 +9,8 @@ import com.wynntils.modules.core.CoreModule;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.core.overlays.UpdateOverlay;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 
@@ -22,13 +22,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 
-public class UpdatingScreen extends GuiScreen {
+public class UpdatingScreen extends Screen {
 
     private static final int DOT_TIME = 200;  // ms between "." -> ".." -> "..."
 
     private boolean failed = false;
     private boolean complete = false;
-    private GuiButton backButton;
+    private Button backButton;
     private float progress = 0f;
 
     public UpdatingScreen(boolean restartNow) {
@@ -37,7 +37,7 @@ public class UpdatingScreen extends GuiScreen {
 
     @Override
     public void initGui() {
-        this.buttonList.add(backButton = new GuiButton(0, this.width / 2 - 100, this.height / 4 + 132, 200, 20, ""));
+        this.buttonList.add(backButton = new Button(0, this.width / 2 - 100, this.height / 4 + 132, 200, 20, ""));
         updateText();
     }
 
@@ -103,7 +103,7 @@ public class UpdatingScreen extends GuiScreen {
                 int count;
 
                 while ((count = fis.read(data)) != -1) {
-                    if (mc.currentScreen != UpdatingScreen.this) {
+                    if (mc.screen != UpdatingScreen.this) {
                         // Cancelled
                         fos.close();
                         fis.close();
@@ -120,7 +120,7 @@ public class UpdatingScreen extends GuiScreen {
             }
             fis.close();
 
-            if (mc.currentScreen != UpdatingScreen.this) {
+            if (mc.screen != UpdatingScreen.this) {
                 failed = true;
                 setChangelogs();
             }
@@ -133,7 +133,7 @@ public class UpdatingScreen extends GuiScreen {
     }
 
     @Override
-    public void actionPerformed(GuiButton button) {
+    public void actionPerformed(Button button) {
         if (button.id == 0) {
             mc.displayGuiScreen(null);
         }
@@ -154,24 +154,24 @@ public class UpdatingScreen extends GuiScreen {
 
         if (failed) {
             setChangelogs();
-            drawCenteredString(mc.fontRenderer, TextFormatting.RED + "Update download failed", this.width/2, this.height/2, 0xFFFFFFFF);
+            drawCenteredString(mc.font, TextFormatting.RED + "Update download failed", this.width/2, this.height/2, 0xFFFFFFFF);
         } else if (complete) {
-            drawCenteredString(mc.fontRenderer, TextFormatting.GREEN + "Update download complete", this.width/2, this.height/2, 0xFFFFFF);
+            drawCenteredString(mc.font, TextFormatting.GREEN + "Update download complete", this.width/2, this.height/2, 0xFFFFFF);
         } else {
             int left = Math.max(this.width/2 - 100, 10);
             int right = Math.min(this.width/2 + 100, this.width - 10);
-            int top = this.height/2 - 2 - MathHelper.ceil(mc.fontRenderer.FONT_HEIGHT / 2f);
-            int bottom = this.height/2 + 2 + MathHelper.floor(mc.fontRenderer.FONT_HEIGHT / 2f);
+            int top = this.height/2 - 2 - MathHelper.ceil(mc.font.FONT_HEIGHT / 2f);
+            int bottom = this.height/2 + 2 + MathHelper.floor(mc.font.FONT_HEIGHT / 2f);
             drawRect(left - 1, top - 1, right + 1, bottom + 1, 0xFFC0C0C0);
             int progressPoint = MathHelper.clamp(MathHelper.floor(progress * (right - left) + left), left, right);
             drawRect(left, top, progressPoint, bottom, 0xFFCB3D35);
             drawRect(progressPoint, top, right, bottom, 0xFFFFFFFF);
 
             String label = String.format("%d%%", MathHelper.clamp(MathHelper.floor(progress * 100), 0, 100));
-            mc.fontRenderer.drawString(label, (this.width - mc.fontRenderer.getStringWidth(label))/2, top + 3, 0xFF000000);
-            int x = (this.width - mc.fontRenderer.getStringWidth(String.format("Downloading %s", DOTS[DOTS.length - 1]))) / 2;
+            mc.font.drawString(label, (this.width - mc.font.getStringWidth(label))/2, top + 3, 0xFF000000);
+            int x = (this.width - mc.font.getStringWidth(String.format("Downloading %s", DOTS[DOTS.length - 1]))) / 2;
             String title = String.format("Downloading %s", DOTS[((int) (System.currentTimeMillis() % (DOT_TIME * DOTS.length))) / DOT_TIME]);
-            drawString(mc.fontRenderer, title, x, top - mc.fontRenderer.FONT_HEIGHT - 2, 0xFFFFFFFF);
+            drawString(mc.font, title, x, top - mc.font.FONT_HEIGHT - 2, 0xFFFFFFFF);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);

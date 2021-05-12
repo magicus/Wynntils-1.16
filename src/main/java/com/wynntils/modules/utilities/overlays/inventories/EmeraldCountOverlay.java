@@ -18,21 +18,21 @@ import com.wynntils.core.framework.rendering.textures.Texture;
 import com.wynntils.core.utils.ItemUtils;
 import com.wynntils.core.utils.reference.EmeraldSymbols;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.input.Keyboard;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.text.DecimalFormat;
 
-import static net.minecraft.client.renderer.GlStateManager.color;
-import static net.minecraft.client.renderer.GlStateManager.disableLighting;
+import static com.mojang.blaze3d.platform.GlStateManager.color;
+import static com.mojang.blaze3d.platform.GlStateManager.disableLighting;
 
 public class EmeraldCountOverlay implements Listener {
 
@@ -102,7 +102,7 @@ public class EmeraldCountOverlay implements Listener {
 
         // generating text
         String moneyText = "";
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {  // plain text
+        if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT)) {  // plain text
             moneyText = formatAmount(moneyAmount) + EmeraldSymbols.EMERALDS;
         } else {  // sliced text
             int[] moneySlices = calculateMoneyAmount(moneyAmount);
@@ -135,7 +135,7 @@ public class EmeraldCountOverlay implements Listener {
         String emeraldAmount = null;
         String blocksAmount = null;
         String leAmount = null;
-        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+        if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT)) {
             // Alternative render: Amount after converting all to one type (Including fractional blocks / LE)
             emeraldAmount = formatAmount((double) moneyAmount);
             blocksAmount = formatAmount(moneyAmount / 64D);
@@ -179,7 +179,7 @@ public class EmeraldCountOverlay implements Listener {
         int textureWidthScale = (int) inventoryTexture.width / 256;
         renderer.drawRect(inventoryTexture, x, y, x + 24, y + 24, textureWidthScale * 141, textureHeightScale * 190, textureWidthScale * 165, textureHeightScale * 166);
 
-        int textWidth = ScreenRenderer.fontRenderer.getStringWidth(text);
+        int textWidth = ScreenRenderer.font.getStringWidth(text);
         renderer.drawItemStack(new ItemStack(i), x + 4, y + 4, textWidth > 18 ? "" : text);
         if (textWidth <= 18) return;
         GlStateManager.pushMatrix();
@@ -189,7 +189,7 @@ public class EmeraldCountOverlay implements Listener {
             GlStateManager.disableLighting();
             GlStateManager.disableDepth();
             GlStateManager.disableBlend();
-            ScreenRenderer.fontRenderer.drawStringWithShadow(text, -textWidth, -ScreenRenderer.fontRenderer.FONT_HEIGHT, 0xFFFFFFFF);
+            ScreenRenderer.font.drawStringWithShadow(text, -textWidth, -ScreenRenderer.font.FONT_HEIGHT, 0xFFFFFFFF);
             GlStateManager.enableDepth();
             GlStateManager.enableBlend();
         }

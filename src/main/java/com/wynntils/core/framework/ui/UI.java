@@ -12,8 +12,8 @@ import com.wynntils.core.framework.ui.elements.UIEColorWheel;
 import com.wynntils.core.framework.ui.elements.UIEList;
 import com.wynntils.core.framework.ui.elements.UIETextBox;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.gui.screen.Screen;
+import com.mojang.blaze3d.platform.GlStateManager;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
-public abstract class UI extends GuiScreen {
+public abstract class UI extends Screen {
     private ScreenRenderer screenRenderer = new ScreenRenderer();
     protected long ticks = 0;
     protected int screenWidth = 0, screenHeight = 0, mouseX = 0, mouseY = 0;
@@ -145,7 +145,7 @@ public abstract class UI extends GuiScreen {
 
     public void show() {
         setupUI(this);
-        Minecraft.getMinecraft().displayGuiScreen(this);
+        Minecraft.getInstance().displayGuiScreen(this);
     }
 
     public static abstract class CommonUIFeatures {

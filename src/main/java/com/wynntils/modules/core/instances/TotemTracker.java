@@ -20,7 +20,7 @@ import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketEntityMetadata;
 import net.minecraft.network.play.server.SPacketEntityTeleport;
 import net.minecraft.network.play.server.SPacketSpawnObject;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class TotemTracker {
     }
 
     private void postEvent(Event event) {
-        ModCore.mc().addScheduledTask(() -> FrameworkManager.getEventBus().post(event));
+        ModCore.mc().submit(() -> FrameworkManager.getEventBus().post(event));
     }
 
     private Entity getBufferedEntity(int entityId) {
@@ -138,9 +138,9 @@ public class TotemTracker {
             }
 
             // Is it created close to us? Then it's a potential new totem
-            if (isClose(e.getPacket().getX(), Minecraft.getMinecraft().player.posX) &&
-                    isClose(e.getPacket().getY(), Minecraft.getMinecraft().player.posY + 1.0) &&
-                    isClose(e.getPacket().getZ(), Minecraft.getMinecraft().player.posZ)) {
+            if (isClose(e.getPacket().getX(), Minecraft.getInstance().player.posX) &&
+                    isClose(e.getPacket().getY(), Minecraft.getInstance().player.posY + 1.0) &&
+                    isClose(e.getPacket().getZ(), Minecraft.getInstance().player.posZ)) {
                 potentialId = e.getPacket().getEntityID();
                 potentialX = e.getPacket().getX();
                 potentialY = e.getPacket().getY();
@@ -154,7 +154,7 @@ public class TotemTracker {
     public void onTotemSpellCast(SpellEvent.Cast e) {
         if (e.getSpell().equals("Totem") || e.getSpell().equals("Sky Emblem")) {
             totemCastTimestamp = System.currentTimeMillis();
-            heldWeaponSlot =  Minecraft.getMinecraft().player.inventory.currentItem;
+            heldWeaponSlot =  Minecraft.getInstance().player.inventory.currentItem;
             checkTotemSummoned();
         } else if (e.getSpell().equals("Uproot") || e.getSpell().equals("Gale Funnel")) {
             totemCastTimestamp = System.currentTimeMillis();

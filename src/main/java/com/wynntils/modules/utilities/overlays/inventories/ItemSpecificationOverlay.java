@@ -24,12 +24,12 @@ import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.wynntils.webapi.profiles.item.enums.ItemType;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ItemSpecificationOverlay implements Listener {
 
@@ -38,7 +38,7 @@ public class ItemSpecificationOverlay implements Listener {
 
         for (Slot s : gui.inventorySlots.inventorySlots) {
             ItemStack stack = s.getStack();
-            if (stack.isEmpty() || !stack.hasDisplayName()) continue; // display name also checks for tag compound
+            if (stack.isEmpty() || !stack.hasCustomHoverName()) continue; // display name also checks for tag compound
 
             List<String> lore = ItemUtils.getLore(stack);
             String name = StringUtils.normalizeBadString(stack.getDisplayName());

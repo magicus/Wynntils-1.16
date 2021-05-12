@@ -9,7 +9,7 @@ import com.wynntils.core.framework.FrameworkManager;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -21,7 +21,7 @@ public class WynnRenderItem extends RenderItem {
 
     public static void inject() {
         if (instance != null) throw new IllegalStateException("Wynntils item renderer has already been installed!");
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         instance = new WynnRenderItem(mc.getRenderItem(), mc.renderEngine, mc.getItemColors());
         // the resource manager reload listener for the item renderer merely invalidates the cache of the held item model mesher
         // since we're inheriting the one from the original item renderer and also not unregistering it as a reload listener, we don't need to register our own renderer as a listener
@@ -55,15 +55,15 @@ public class WynnRenderItem extends RenderItem {
         GlStateManager.disableBlend();
         GlStateManager.pushMatrix();
 
-        int width = ScreenRenderer.fontRenderer.getStringWidth(event.getOverlayText());
+        int width = ScreenRenderer.font.getStringWidth(event.getOverlayText());
         GlStateManager.translate(xPosition + 17f, yPosition + 9f, 0f);
         if (width > GUI_OVERLAY_WIDTH_THRESH) {
             float scaleRatio = GUI_OVERLAY_WIDTH_THRESH / (float)width;
-            GlStateManager.translate(0f, ScreenRenderer.fontRenderer.FONT_HEIGHT * (1f - scaleRatio) / 2f, 0f);
+            GlStateManager.translate(0f, ScreenRenderer.font.FONT_HEIGHT * (1f - scaleRatio) / 2f, 0f);
             GlStateManager.scale(scaleRatio, scaleRatio, 1f);
         }
 
-        ScreenRenderer.fontRenderer.drawString(event.getOverlayText(), 0, 0, event.getOverlayTextColor(),
+        ScreenRenderer.font.drawString(event.getOverlayText(), 0, 0, event.getOverlayTextColor(),
                 SmartFontRenderer.TextAlignment.RIGHT_LEFT, SmartFontRenderer.TextShadow.NORMAL);
 
         GlStateManager.popMatrix();

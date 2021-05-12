@@ -10,7 +10,7 @@ import com.wynntils.core.utils.objects.Location;
 import com.wynntils.core.utils.objects.SquareRegion;
 import com.wynntils.modules.visual.configs.VisualConfig;
 import com.wynntils.modules.visual.entities.EntityAsh;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -20,7 +20,7 @@ public class AshSpawnCondition implements EntitySpawnCodition {
     private static final SquareRegion MOLTEN_HEIGHTS = new SquareRegion(1035, -5647, 1700, -4931);
 
     @Override
-    public boolean shouldSpawn(Location pos, World world, EntityPlayerSP player, Random random) {
+    public boolean shouldSpawn(Location pos, World world, ClientPlayerEntity player, Random random) {
         if (!VisualConfig.Ashes.INSTANCE.enabled) return false;
         if (!MOLTEN_HEIGHTS.isInside(pos)) return false;
 
@@ -32,7 +32,7 @@ public class AshSpawnCondition implements EntitySpawnCodition {
     }
 
     @Override
-    public FakeEntity createEntity(Location location, World world, EntityPlayerSP player, Random random) {
+    public FakeEntity createEntity(Location location, World world, ClientPlayerEntity player, Random random) {
         return new EntityAsh(location, random);
     }
 

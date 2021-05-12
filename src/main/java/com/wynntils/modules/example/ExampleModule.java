@@ -7,7 +7,7 @@ package com.wynntils.modules.example;
 import com.wynntils.core.framework.enums.Priority;
 import com.wynntils.core.framework.instances.Module;
 import com.wynntils.core.framework.interfaces.annotations.ModuleInfo;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 /** EXAMPLE CLASS
  * ExampleModule shows some of the things that are needed to make
@@ -34,7 +34,7 @@ public class ExampleModule extends Module {
 
         registerOverlay(new ExampleOverlay(), Priority.LOW);  // Registering ExampleOverlay on the LOW priority Overlays collection
 
-        registerKeyBinding("Test", Keyboard.KEY_G, "Wynntils", true, () -> {
+        registerKeyBinding("Test", GLFW.GLFW_KEY_G, "Wynntils", true, () -> {
             getLogger().warn("KEY PRESSED");  // Registering the 'G' key to a test example key and make it spit "KEY PRESSED" to console
         });
     }

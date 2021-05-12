@@ -6,17 +6,17 @@ package com.wynntils.core.framework.instances.containers;
 
 import com.wynntils.core.framework.instances.PlayerInfo;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 
 public class PlayerData {
 
     public PlayerData() { }
 
     public Minecraft getMinecraft() {
-        return Minecraft.getMinecraft();
+        return Minecraft.getInstance();
     }
 
-    public EntityPlayerSP getPlayer() {
+    public ClientPlayerEntity getPlayer() {
         return getMinecraft().player;
     }
 

@@ -46,14 +46,14 @@ public class HeldItemChatManager {
     }
 
     private static ITextComponent getMessage() {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         if (
             !ChatConfig.INSTANCE.heldItemChat ||
             mc.player == null || mc.world == null ||
-            mc.player.inventory.mainInventory.get(6).getItem() != Items.COMPASS ||
-            mc.player.inventory.mainInventory.get(7).getItem() != Items.WRITTEN_BOOK ||
-            mc.player.inventory.mainInventory.get(8).getItem() != Items.NETHER_STAR &&
-            mc.player.inventory.mainInventory.get(8).getItem() != Item.getItemFromBlock(Blocks.SNOW_LAYER) ||
+            mc.player.inventory.items.get(6).getItem() != Items.COMPASS ||
+            mc.player.inventory.items.get(7).getItem() != Items.WRITTEN_BOOK ||
+            mc.player.inventory.items.get(8).getItem() != Items.NETHER_STAR &&
+            mc.player.inventory.items.get(8).getItem() != Item.getItemFromBlock(Blocks.SNOW_LAYER) ||
             !PlayerInfo.get(CharacterData.class).isLoaded()
         ) {
             reset();
@@ -124,8 +124,8 @@ public class HeldItemChatManager {
 
         double compassX = compass.getX();
         double compassZ = compass.getZ();
-        double playerX = Minecraft.getMinecraft().player.posX;
-        double playerZ = Minecraft.getMinecraft().player.posZ;
+        double playerX = Minecraft.getInstance().player.posX;
+        double playerZ = Minecraft.getInstance().player.posZ;
 
         int distance = MathHelper.floor(MathHelper.sqrt((compassX - playerX) * (compassX - playerX) + (compassZ - playerZ) * (compassZ - playerZ)));
 
@@ -193,7 +193,7 @@ public class HeldItemChatManager {
             ChatConfig.INSTANCE.saveSettings(ChatModule.getModule());
 
             ITextComponent message = new TextComponentString("Enable §bMod options > Chat > Held Item Chat Messages§r to undo (or click this)");
-            Minecraft.getMinecraft().player.sendMessage(TextAction.withStaticEvent(message, OnUnhideClick.class));
+            Minecraft.getInstance().player.sendMessage(TextAction.withStaticEvent(message, OnUnhideClick.class));
         }
     }
 

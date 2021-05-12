@@ -12,12 +12,12 @@ import com.wynntils.core.framework.rendering.textures.Textures;
 import com.wynntils.core.framework.ui.UI;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiPageButtonList;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.GuiSlider;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.text.WordUtils;
@@ -35,12 +35,12 @@ public class UIEColorWheel extends UIEClickZone {
     private static final Pattern hexAndAlphaChecker = Pattern.compile("^#((?:[0-9A-Fa-f]{3}){1,2}),\\s+(\\d*(?:\\.\\d*)?)%$");
 
     CustomColor color = new CustomColor(1f, 1f, 1f);
-    GuiScreen backGui;
+    Screen backGui;
     Consumer<CustomColor> onAccept;
     boolean allowAlpha;
     public UIETextBox textBox;
 
-    public UIEColorWheel(float anchorX, float anchorY, int offsetX, int offsetY, int width, int height, boolean active, Consumer<CustomColor> onAccept, GuiScreen backGui) {
+    public UIEColorWheel(float anchorX, float anchorY, int offsetX, int offsetY, int width, int height, boolean active, Consumer<CustomColor> onAccept, Screen backGui) {
         super(anchorX, anchorY, offsetX, offsetY, width, height, active, (ui, mouse) -> {});
 
         this.backGui = backGui;
@@ -130,12 +130,12 @@ public class UIEColorWheel extends UIEClickZone {
         super.render(mouseX, mouseY);
     }
 
-    public class ColorPickerGUI extends GuiScreen {
+    public class ColorPickerGUI extends Screen {
 
         CustomColor toChange;
 
-        GuiButton applyButton;
-        GuiButton cancelButton;
+        Button applyButton;
+        Button cancelButton;
         GuiSlider valueSlider;
         GuiSlider alphaSlider;
 
@@ -152,12 +152,12 @@ public class UIEColorWheel extends UIEClickZone {
         }
 
         @Override
-        protected void actionPerformed(GuiButton button) {
+        protected void actionPerformed(Button button) {
             if (button == applyButton) {
                 color = toChange;
 
                 mc.displayGuiScreen(backGui);
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(clickSound, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(clickSound, 1f));
                 onAccept.accept(color);
                 if (colorText == null) {
                     textBox.setText(formatColourName(color));
@@ -166,14 +166,14 @@ public class UIEColorWheel extends UIEClickZone {
                 }
             } else if (button == cancelButton) {
                 mc.displayGuiScreen(backGui);
-                Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(clickSound, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(clickSound, 1f));
             }
         }
 
         @Override
         public void initGui() {
-            buttonList.add(applyButton = new GuiButton(0, width/2 - 65, height/2 + 95, 50, 20, TextFormatting.GREEN + "Apply"));
-            buttonList.add(cancelButton = new GuiButton(1, (width/2) + 15, height/2 + 95, 50, 20, TextFormatting.RED + "Cancel"));
+            buttonList.add(applyButton = new Button(0, width/2 - 65, height/2 + 95, 50, 20, TextFormatting.GREEN + "Apply"));
+            buttonList.add(cancelButton = new Button(1, (width/2) + 15, height/2 + 95, 50, 20, TextFormatting.RED + "Cancel"));
             buttonList.add(valueSlider = new GuiSlider(new GuiPageButtonList.GuiResponder() {
                 @Override public void setEntryValue(int id, boolean value) {}
                 @Override public void setEntryValue(int id, String value) {}
@@ -328,7 +328,7 @@ public class UIEColorWheel extends UIEClickZone {
             drawRectF(CommonColors.BLACK, (width/2f)-11, (height/2f)+94, (width/2f)+11, (height/2f)+116);  // current color back
             drawRectF(toChange, (width/2f)-10, (height/2f)+95, (width/2f)+10, (height/2f)+115);  // current color
 
-            drawCenteredString(mc.fontRenderer, "Click to pick a color!", (width/2), (height/2)-110, 0xFFFFFF);
+            drawCenteredString(mc.font, "Click to pick a color!", (width/2), (height/2)-110, 0xFFFFFF);
 
             for (int i = 0; i < 16; ++i) {
                 int col = i / 8;

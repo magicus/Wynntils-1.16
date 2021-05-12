@@ -14,7 +14,7 @@ import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.core.enums.UpdateStream;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +23,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.List;
 
@@ -88,15 +88,15 @@ public class ServerSelectorOverlay implements Listener {
         if (nbt.hasKey("wynntilsBlock")) {
             TextComponentString text = new TextComponentString("Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Trying changing update stream to cutting edge, or removing Wynntils while on the Hero Beta until support is added.");
             text.getStyle().setColor(TextFormatting.RED);
-            Minecraft.getMinecraft().player.sendMessage(text);
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
+            Minecraft.getInstance().player.sendMessage(text);
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
 
             e.setCanceled(true);
         } else if (nbt.hasKey("wynntilsWarn")) {
             TextComponentString text = new TextComponentString("Your version of Wynntils is currently unstable on the Hero Beta. Expect frequent crashes and bugs!");
             text.getStyle().setColor(TextFormatting.RED);
             text.getStyle().setBold(true);
-            Minecraft.getMinecraft().player.sendMessage(text);
+            Minecraft.getInstance().player.sendMessage(text);
 
             text = new TextComponentString("Please report any issues you do experience on the Wynntils discord ");
             text.getStyle().setColor(TextFormatting.GREEN);
@@ -107,9 +107,9 @@ public class ServerSelectorOverlay implements Listener {
                 linkText.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, discordInvite));
                 text.appendSibling(linkText);
             }
-            Minecraft.getMinecraft().player.sendMessage(text);
+            Minecraft.getInstance().player.sendMessage(text);
 
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
         }
     }
 }

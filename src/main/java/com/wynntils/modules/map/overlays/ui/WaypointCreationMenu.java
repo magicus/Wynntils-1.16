@@ -17,11 +17,11 @@ import com.wynntils.modules.map.instances.WaypointProfile;
 import com.wynntils.modules.map.instances.WaypointProfile.WaypointType;
 import com.wynntils.modules.map.overlays.objects.MapWaypointIcon;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiLabel;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.GuiTextField;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
 
@@ -35,41 +35,41 @@ public class WaypointCreationMenu extends UI {
     private GuiLabel zCoordFieldLabel;
     private GuiTextField zCoordField;
     private GuiLabel coordinatesLabel;
-    private GuiButton defaultVisibilityButton;
-    private GuiButton alwaysVisibleButton;
-    private GuiButton hiddenButton;
+    private Button defaultVisibilityButton;
+    private Button alwaysVisibleButton;
+    private Button hiddenButton;
     private UIEColorWheel colorWheel;
-    private GuiButton saveButton;
-    private GuiButton cancelButton;
-    private GuiButton waypointTypeNext;
-    private GuiButton waypointTypeBack;
+    private Button saveButton;
+    private Button cancelButton;
+    private Button waypointTypeNext;
+    private Button waypointTypeBack;
 
     private boolean isUpdatingExisting;
     private WaypointProfile wp;
     private MapWaypointIcon wpIcon;
-    private GuiScreen previousGui;
+    private Screen previousGui;
 
     private int initialX;
     private int initialZ;
 
     private WaypointCreationMenuState state;
 
-    public WaypointCreationMenu(GuiScreen previousGui) {
+    public WaypointCreationMenu(Screen previousGui) {
         this.previousGui = previousGui;
 
-        initialX = Minecraft.getMinecraft().player.getPosition().getX();
-        initialZ = Minecraft.getMinecraft().player.getPosition().getZ();
+        initialX = Minecraft.getInstance().player.getPosition().getX();
+        initialZ = Minecraft.getInstance().player.getPosition().getZ();
     }
 
     // Create a waypoint at a position other than the current player's position
-    public WaypointCreationMenu(GuiScreen previousGui, int initialX, int initialZ) {
+    public WaypointCreationMenu(Screen previousGui, int initialX, int initialZ) {
         this.previousGui = previousGui;
 
         this.initialX = initialX;
         this.initialZ = initialZ;
     }
 
-    public WaypointCreationMenu(WaypointProfile wp, GuiScreen previousGui) {
+    public WaypointCreationMenu(WaypointProfile wp, Screen previousGui) {
         this(previousGui);
         this.wp = wp;
         isUpdatingExisting = true;
@@ -80,37 +80,37 @@ public class WaypointCreationMenu extends UI {
     @Override public void onWindowUpdate() {
         buttonList.clear();
 
-        nameField = new GuiTextField(0, mc.fontRenderer, this.width/2 - 80, this.height/2 - 70, 160, 20);
-        xCoordField = new GuiTextField(1, mc.fontRenderer, this.width/2 - 65, this.height/2 - 30, 40, 20);
-        zCoordField = new GuiTextField(2, mc.fontRenderer, this.width/2 - 5, this.height/2 - 30, 40, 20);
-        yCoordField = new GuiTextField(3, mc.fontRenderer, this.width/2 + 55, this.height/2 - 30, 25, 20);
-        buttonList.add(waypointTypeNext = new GuiButton(97, this.width/2 - 40, this.height/2 + 10, 18, 18, ">"));
-        buttonList.add(waypointTypeBack = new GuiButton(98, this.width/2 - 80, this.height/2 + 10, 18, 18, "<"));
+        nameField = new GuiTextField(0, mc.font, this.width/2 - 80, this.height/2 - 70, 160, 20);
+        xCoordField = new GuiTextField(1, mc.font, this.width/2 - 65, this.height/2 - 30, 40, 20);
+        zCoordField = new GuiTextField(2, mc.font, this.width/2 - 5, this.height/2 - 30, 40, 20);
+        yCoordField = new GuiTextField(3, mc.font, this.width/2 + 55, this.height/2 - 30, 25, 20);
+        buttonList.add(waypointTypeNext = new Button(97, this.width/2 - 40, this.height/2 + 10, 18, 18, ">"));
+        buttonList.add(waypointTypeBack = new Button(98, this.width/2 - 80, this.height/2 + 10, 18, 18, "<"));
 
         int visibilityButtonWidth = 100;
         int visibilityButtonHeight = this.height/2 + 40;
-        buttonList.add(defaultVisibilityButton = new GuiButton(99, this.width/2 - 3 * visibilityButtonWidth / 2 - 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Default"));
-        buttonList.add(alwaysVisibleButton = new GuiButton(100, this.width/2 - visibilityButtonWidth / 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Always Visible"));
-        buttonList.add(hiddenButton = new GuiButton(101, this.width/2 + visibilityButtonWidth / 2 + 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Hidden"));
+        buttonList.add(defaultVisibilityButton = new Button(99, this.width/2 - 3 * visibilityButtonWidth / 2 - 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Default"));
+        buttonList.add(alwaysVisibleButton = new Button(100, this.width/2 - visibilityButtonWidth / 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Always Visible"));
+        buttonList.add(hiddenButton = new Button(101, this.width/2 + visibilityButtonWidth / 2 + 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Hidden"));
 
         int saveButtonHeight = this.height - 80 > visibilityButtonHeight + 20 ? this.height - 80 : this.height - 60;
-        buttonList.add(cancelButton = new GuiButton(102, this.width/2 - 71, saveButtonHeight, 45, 18, "Cancel"));
-        buttonList.add(saveButton = new GuiButton(103, this.width/2 + 25, saveButtonHeight, 45, 18, "Save"));
+        buttonList.add(cancelButton = new Button(102, this.width/2 - 71, saveButtonHeight, 45, 18, "Cancel"));
+        buttonList.add(saveButton = new Button(103, this.width/2 + 25, saveButtonHeight, 45, 18, "Save"));
         saveButton.enabled = false;
 
         xCoordField.setText(Integer.toString(initialX));
         zCoordField.setText(Integer.toString(initialZ));
-        yCoordField.setText(Integer.toString(Minecraft.getMinecraft().player.getPosition().getY()));
+        yCoordField.setText(Integer.toString(Minecraft.getInstance().player.getPosition().getY()));
 
-        nameFieldLabel = new GuiLabel(mc.fontRenderer, 0, this.width/2 - 80, this.height/2 - 81, 40, 10, 0xFFFFFF);
+        nameFieldLabel = new GuiLabel(mc.font, 0, this.width/2 - 80, this.height/2 - 81, 40, 10, 0xFFFFFF);
         nameFieldLabel.addLine("Waypoint Name:");
-        xCoordFieldLabel = new GuiLabel(mc.fontRenderer, 1, this.width/2 - 75, this.height/2 - 24, 40, 10, 0xFFFFFF);
+        xCoordFieldLabel = new GuiLabel(mc.font, 1, this.width/2 - 75, this.height/2 - 24, 40, 10, 0xFFFFFF);
         xCoordFieldLabel.addLine("X");
-        yCoordFieldLabel = new GuiLabel(mc.fontRenderer, 2, this.width/2 + 45, this.height/2 - 24, 40, 10, 0xFFFFFF);
+        yCoordFieldLabel = new GuiLabel(mc.font, 2, this.width/2 + 45, this.height/2 - 24, 40, 10, 0xFFFFFF);
         yCoordFieldLabel.addLine("Y");
-        zCoordFieldLabel = new GuiLabel(mc.fontRenderer, 3, this.width/2 - 15, this.height/2 - 24, 40, 10, 0xFFFFFF);
+        zCoordFieldLabel = new GuiLabel(mc.font, 3, this.width/2 - 15, this.height/2 - 24, 40, 10, 0xFFFFFF);
         zCoordFieldLabel.addLine("Z");
-        coordinatesLabel = new GuiLabel(mc.fontRenderer, 3, this.width/2 - 80, this.height/2 - 41, 40, 10, 0xFFFFFF);
+        coordinatesLabel = new GuiLabel(mc.font, 3, this.width/2 - 80, this.height/2 - 41, 40, 10, 0xFFFFFF);
         coordinatesLabel.addLine("Coordinates:");
 
         boolean returning = state != null;  // true if reusing gui (i.e., returning from another gui)
@@ -223,8 +223,8 @@ public class WaypointCreationMenu extends UI {
         zCoordFieldLabel.drawLabel(mc, mouseX, mouseY);
         coordinatesLabel.drawLabel(mc, mouseX, mouseY);
 
-        fontRenderer.drawString("Icon:", this.width / 2.0f - 80, this.height / 2.0f, 0xFFFFFF, true);
-        fontRenderer.drawString("Colour:", this.width / 2.0f, this.height / 2.0f, 0xFFFFFF, true);
+        font.drawString("Icon:", this.width / 2.0f - 80, this.height / 2.0f, 0xFFFFFF, true);
+        font.drawString("Colour:", this.width / 2.0f, this.height / 2.0f, 0xFFFFFF, true);
 
         float centreX = this.width / 2f - 60 + 9;
         float centreZ = this.height / 2f + 10 + 9;
@@ -246,9 +246,9 @@ public class WaypointCreationMenu extends UI {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (keyCode == Keyboard.KEY_TAB) {
+        if (keyCode == GLFW.GLFW_KEY_TAB) {
             Utils.tab(
-                Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) ? -1 : +1,
+                Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1,
                 nameField, xCoordField, zCoordField, yCoordField, colorWheel.textBox.textField
             );
             return;
@@ -262,7 +262,7 @@ public class WaypointCreationMenu extends UI {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
+    protected void actionPerformed(Button button) {
         if (button == saveButton) {
             WaypointProfile newWp = new WaypointProfile(
                     nameField.getText().trim(),

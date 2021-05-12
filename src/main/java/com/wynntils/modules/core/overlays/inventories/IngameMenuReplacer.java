@@ -6,7 +6,7 @@ package com.wynntils.modules.core.overlays.inventories;
 
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.FrameworkManager;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiIngameMenu;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class IngameMenuReplacer extends GuiIngameMenu {
     }
 
     @Override
-    public void actionPerformed(GuiButton btn) throws IOException {
+    public void actionPerformed(Button btn) throws IOException {
         if (FrameworkManager.getEventBus().post(new GuiOverlapEvent.IngameMenuOverlap.ActionPerformed(this, btn))) {
             return;
         }
@@ -47,7 +47,7 @@ public class IngameMenuReplacer extends GuiIngameMenu {
         super.drawHoveringText(text, x, y);
     }
 
-    public List<GuiButton> getButtonList() {
+    public List<Button> getButtonList() {
         return buttonList;
     }
 

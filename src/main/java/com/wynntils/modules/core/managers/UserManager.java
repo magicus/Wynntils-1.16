@@ -51,8 +51,8 @@ public class UserManager {
 
                     // loading needs to occur inside the client thread
                     // otherwise some weird texture corruption WILL happen
-                    Minecraft.getMinecraft().addScheduledTask(() -> {
-                        TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
+                    Minecraft.getInstance().submit(() -> {
+                        TextureManager textureManager = Minecraft.getInstance().getTextureManager();
                         textureManager.loadTexture(rl, info);
 
                         users.put(uuid, new WynntilsUser(AccountType.valueOf(user.get("accountType").getAsString()), info));
@@ -73,11 +73,11 @@ public class UserManager {
     }
 
     public static void clearRegistry() {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
 
         // needs to be run inside the client thread
         // otherwise some weird corrupting issues WILL happen
-        mc.addScheduledTask(() -> {
+        mc.submit(() -> {
             Iterator<Map.Entry<UUID, WynntilsUser>> it = users.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<UUID, WynntilsUser> next = it.next();

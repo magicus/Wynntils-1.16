@@ -20,7 +20,7 @@ import com.wynntils.modules.questbook.instances.IconContainer;
 import com.wynntils.modules.questbook.instances.QuestBookPage;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
@@ -34,7 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static net.minecraft.client.renderer.GlStateManager.*;
+import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class LootRunPage extends QuestBookPage {
 
@@ -129,7 +129,7 @@ public class LootRunPage extends QuestBookPage {
                         render.drawRect(Textures.Map.paper_map_textures, mapX - boundarySize, mapY - boundarySize, mapX + mapWidth + boundarySize, mapY + mapHeight + boundarySize, 0, 0, 217, 217);
                         ScreenRenderer.enableScissorTest(mapX, mapY, mapWidth, mapHeight);
 
-                        map.bindTexture();
+                        map.bind();
                         color(1.0f, 1.0f, 1.0f, 1.0f);
 
                         glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -255,7 +255,7 @@ public class LootRunPage extends QuestBookPage {
 
                     String friendlyName = getFriendlyName(currentName, 120);
                     if (selected == i && toCrop && animationTick > 0) {
-                        int maxScroll = fontRenderer.getStringWidth(friendlyName) - (120 - 10);
+                        int maxScroll = font.getStringWidth(friendlyName) - (120 - 10);
                         int scrollAmount = (animationTick / 20) % (maxScroll + 60);
 
                         if (maxScroll <= scrollAmount && scrollAmount <= maxScroll + 40) {
@@ -319,11 +319,11 @@ public class LootRunPage extends QuestBookPage {
     }
 
     public String getFriendlyName(String str, int width) {
-        if (!(Minecraft.getMinecraft().fontRenderer.getStringWidth(str) > width)) return str;
+        if (!(Minecraft.getInstance().font.getStringWidth(str) > width)) return str;
 
         str += "...";
 
-        while (Minecraft.getMinecraft().fontRenderer.getStringWidth(str) > width) {
+        while (Minecraft.getInstance().font.getStringWidth(str) > width) {
             str = str.substring(0, str.length() - 4).trim() + "...";
         }
 
@@ -363,11 +363,11 @@ public class LootRunPage extends QuestBookPage {
                             Location start = LootRunManager.getActivePath().getPoints().get(0);
                             String startingPointMsg = "Loot run " + LootRunManager.getActivePathName() + " starts at [" + (int) start.getX() + ", " + (int) start.getZ() + "]";
 
-                            Minecraft.getMinecraft().addScheduledTask(() ->
+                            Minecraft.getInstance().submit(() ->
                                     ChatOverlay.getChat().printChatMessageWithOptionalDeletion(new TextComponentString(startingPointMsg), MESSAGE_ID)
                             );
 
-                            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
+                            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -380,7 +380,7 @@ public class LootRunPage extends QuestBookPage {
                 if (result) {
                     names.remove(selected);
                     updateSelected();
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
                 }
 
                 return;

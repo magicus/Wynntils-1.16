@@ -19,11 +19,11 @@ import com.wynntils.modules.questbook.configs.QuestBookConfig;
 import com.wynntils.modules.questbook.enums.QuestBookPages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPageButtonList;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class QuestBookPage extends GuiScreen {
+public class QuestBookPage extends Screen {
 
     protected final ScreenRenderer render = new ScreenRenderer();
     private long time;
@@ -100,7 +100,7 @@ public class QuestBookPage extends GuiScreen {
         lastTick = Minecraft.getSystemTime();
 
         if (showSearchBar) {
-            textField = new GuiTextField(0, Minecraft.getMinecraft().fontRenderer, width / 2 + 32, height / 2 - 97, 113, 23);
+            textField = new GuiTextField(0, Minecraft.getInstance().font, width / 2 + 32, height / 2 - 97, 113, 23);
             textField.setFocused(!QuestBookConfig.INSTANCE.searchBoxClickRequired);
             textField.setMaxStringLength(50);
             textField.setEnableBackgroundDrawing(false);
@@ -216,7 +216,7 @@ public class QuestBookPage extends GuiScreen {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (keyCode == Keyboard.KEY_LSHIFT || keyCode == Keyboard.KEY_RSHIFT || keyCode == Keyboard.KEY_LCONTROL || keyCode == Keyboard.KEY_RCONTROL) return;
+        if (keyCode == GLFW.GLFW_KEY_LSHIFT || keyCode == GLFW.GLFW_KEY_RSHIFT || keyCode == GLFW.GLFW_KEY_LCONTROL || keyCode == GLFW.GLFW_KEY_RCONTROL) return;
         if (showSearchBar) {
             textField.textboxKeyTyped(typedChar, keyCode);
             currentPage = 1;
@@ -273,7 +273,7 @@ public class QuestBookPage extends GuiScreen {
         this.showAnimation = showAnimation;
 
         if (showAnimation) WynntilsSound.QUESTBOOK_OPENING.play(); // sfx
-        Minecraft.getMinecraft().displayGuiScreen(this);
+        Minecraft.getInstance().displayGuiScreen(this);
     }
 
     public void updateSearch() {

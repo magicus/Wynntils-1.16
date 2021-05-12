@@ -32,7 +32,7 @@ public class ScoreboardOverlay extends Overlay {
                 event.getType() != RenderGameOverlayEvent.ElementType.ALL) return;
 
         // vanilla fontrenderer
-        FontRenderer fontRenderer = mc.fontRenderer;
+        FontRenderer font = mc.font;
 
         ScoreObjective objective = mc.world.getScoreboard().getObjectiveInDisplaySlot(1); // sidebar objective
         if (objective == null) return;
@@ -51,21 +51,21 @@ public class ScoreboardOverlay extends Overlay {
         if (scores.isEmpty()) return;
 
         // calculate width based on widest line
-        int width = OverlayConfig.Scoreboard.INSTANCE.showTitle ? fontRenderer.getStringWidth(objective.getDisplayName()) : 0;
+        int width = OverlayConfig.Scoreboard.INSTANCE.showTitle ? font.getStringWidth(objective.getDisplayName()) : 0;
         for (Score s : scores) {
             ScorePlayerTeam team = scoreboard.getPlayersTeam(s.getPlayerName());
             String line = ScorePlayerTeam.formatPlayerName(team, s.getPlayerName());
             if (OverlayConfig.Scoreboard.INSTANCE.showNumbers) line += ": " + TextFormatting.RED + s.getScorePoints();
-            width = Math.max(width, fontRenderer.getStringWidth(line));
+            width = Math.max(width, font.getStringWidth(line));
         }
 
-        int height = scores.size() * fontRenderer.FONT_HEIGHT;
+        int height = scores.size() * font.FONT_HEIGHT;
         int yOffset = height/3;
         int xOffset = -3 - width;
 
         // Background box
         if (OverlayConfig.Scoreboard.INSTANCE.opacity > 0) {
-            int titleOffset = OverlayConfig.Scoreboard.INSTANCE.showTitle ? fontRenderer.FONT_HEIGHT + 1 : 1;
+            int titleOffset = OverlayConfig.Scoreboard.INSTANCE.showTitle ? font.FONT_HEIGHT + 1 : 1;
             drawRect(OverlayConfig.Scoreboard.INSTANCE.backgroundColor, xOffset - 2, yOffset, -1, yOffset - height - titleOffset);
         }
 
@@ -77,14 +77,14 @@ public class ScoreboardOverlay extends Overlay {
             String score = TextFormatting.RED + "" + s.getScorePoints();
 
             // draw line, including score if enabled
-            int y = yOffset - (lineCount * fontRenderer.FONT_HEIGHT);
-            fontRenderer.drawString(name, drawingOrigin().x + xOffset, drawingOrigin().y + y, CommonColors.WHITE.toInt());
-            if (OverlayConfig.Scoreboard.INSTANCE.showNumbers) fontRenderer.drawString(score, drawingOrigin().x - 1 - fontRenderer.getStringWidth(score), drawingOrigin().y + y, CommonColors.WHITE.toInt());
+            int y = yOffset - (lineCount * font.FONT_HEIGHT);
+            font.drawString(name, drawingOrigin().x + xOffset, drawingOrigin().y + y, CommonColors.WHITE.toInt());
+            if (OverlayConfig.Scoreboard.INSTANCE.showNumbers) font.drawString(score, drawingOrigin().x - 1 - font.getStringWidth(score), drawingOrigin().y + y, CommonColors.WHITE.toInt());
 
             lineCount++;
             if (lineCount > scores.size() && OverlayConfig.Scoreboard.INSTANCE.showTitle) { // end of scores, draw title if enabled
                 String title = objective.getDisplayName();
-                fontRenderer.drawString(title, drawingOrigin().x + xOffset + width/2 - fontRenderer.getStringWidth(title)/2, drawingOrigin().y + y - fontRenderer.FONT_HEIGHT, CommonColors.WHITE.toInt());
+                font.drawString(title, drawingOrigin().x + xOffset + width/2 - font.getStringWidth(title)/2, drawingOrigin().y + y - font.FONT_HEIGHT, CommonColors.WHITE.toInt());
             }
         }
 

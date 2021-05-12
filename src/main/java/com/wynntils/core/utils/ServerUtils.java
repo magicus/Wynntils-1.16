@@ -9,7 +9,7 @@ import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -30,7 +30,7 @@ public class ServerUtils {
         connect(new GuiMultiplayer(new GuiMainMenu()), serverData, unloadCurrentServerResourcePack);
     }
 
-    public static void connect(GuiScreen backGui, ServerData serverData) {
+    public static void connect(Screen backGui, ServerData serverData) {
         connect(backGui, serverData, false);
     }
 
@@ -41,7 +41,7 @@ public class ServerUtils {
      * @param serverData The server to connect to
      * @param unloadCurrentServerResourcePack If false, retain the same server resource pack between disconnecting and connecting
      */
-    public static void connect(GuiScreen backGui, ServerData serverData, boolean unloadCurrentServerResourcePack) {
+    public static void connect(Screen backGui, ServerData serverData, boolean unloadCurrentServerResourcePack) {
         disconnect(false, unloadCurrentServerResourcePack);
         FMLClientHandler.instance().connectToServer(backGui, serverData);
     }
@@ -61,7 +61,7 @@ public class ServerUtils {
      * @param unloadServerPack if false, disconnect without refreshing resources by unloading the server resource pack
      */
     public static void disconnect(boolean switchGui, boolean unloadServerPack) {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
 
         WorldClient world = mc.world;
         if (world == null) return;
@@ -94,7 +94,7 @@ public class ServerUtils {
 
     private static class FakeResourcePackRepositoryHolder {
         // Will only be created by classloader when used
-        static final ResourcePackRepository instance = new ResourcePackRepository(Minecraft.getMinecraft().getResourcePackRepository().getDirResourcepacks(), null, null, null, Minecraft.getMinecraft().gameSettings) {
+        static final ResourcePackRepository instance = new ResourcePackRepository(Minecraft.getInstance().getResourcePackRepository().getDirResourcepacks(), null, null, null, Minecraft.getInstance().gameSettings) {
             @Override
             public void clearResourcePack() {
                 // Don't
@@ -103,11 +103,11 @@ public class ServerUtils {
     }
 
     public static synchronized void loadWorldWithoutUnloadingServerResourcePack(WorldClient world, String loadingMessage) {
-        ResourcePackRepository original = Minecraft.getMinecraft().getResourcePackRepository();
+        ResourcePackRepository original = Minecraft.getInstance().getResourcePackRepository();
 
-        ReflectionFields.Minecraft_resourcePackRepository.setValue(Minecraft.getMinecraft(), FakeResourcePackRepositoryHolder.instance);
-        Minecraft.getMinecraft().loadWorld(world, loadingMessage);
-        ReflectionFields.Minecraft_resourcePackRepository.setValue(Minecraft.getMinecraft(), original);
+        ReflectionFields.Minecraft_resourcePackRepository.setValue(Minecraft.getInstance(), FakeResourcePackRepositoryHolder.instance);
+        Minecraft.getInstance().loadWorld(world, loadingMessage);
+        ReflectionFields.Minecraft_resourcePackRepository.setValue(Minecraft.getInstance(), original);
     }
 
     public static ServerData getWynncraftServerData(boolean addNew) {

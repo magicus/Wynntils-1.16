@@ -21,13 +21,13 @@ import com.wynntils.core.framework.ui.UIElement;
 import com.wynntils.core.framework.ui.elements.*;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class SettingsUI extends UI {
         UI.setupUI(INSTANCE);
     }
 
-    private GuiScreen parentScreen;
+    private Screen parentScreen;
 
     private String currentSettingsPath = "";
     private Map<String, SettingsContainer> registeredSettings = new HashMap<>();
@@ -68,7 +68,7 @@ public class SettingsUI extends UI {
 
     private SettingsUI() { }
 
-    public static SettingsUI getInstance(GuiScreen parentScreen) {
+    public static SettingsUI getInstance(Screen parentScreen) {
         INSTANCE.parentScreen = parentScreen;
         return INSTANCE;
     }
@@ -113,7 +113,7 @@ public class SettingsUI extends UI {
     public void onClose() {
         Keyboard.enableRepeatEvents(false);
 
-        mc.currentScreen = null;
+        mc.screen = null;
         mc.displayGuiScreen(parentScreen);
     }
 
@@ -194,9 +194,9 @@ public class SettingsUI extends UI {
                 );
                 ScreenRenderer.resetScale();
                 if (setting.isSearched) {
-                    int y = (int) (setting.position.getDrawingY() + 4.5f + fontRenderer.FONT_HEIGHT * 0.8f);
+                    int y = (int) (setting.position.getDrawingY() + 4.5f + font.FONT_HEIGHT * 0.8f);
                     int x = setting.position.getDrawingX() + 43;
-                    render.drawRect(CommonColors.BLACK, x, y, x + (int) (ScreenRenderer.fontRenderer.getStringWidth(name) * 0.8f) + 1, y + 1);
+                    render.drawRect(CommonColors.BLACK, x, y, x + (int) (ScreenRenderer.font.getStringWidth(name) * 0.8f) + 1, y + 1);
                 }
             }
             setting.position.offsetX -= settings.position.offsetX;
@@ -223,8 +223,8 @@ public class SettingsUI extends UI {
         settings.elements.forEach(setting -> {
             if (setting.visible && mouseX >= screenWidth/2+5 && mouseX < screenWidth/2+185 && mouseY > screenHeight/2-100 && mouseY < screenHeight/2+100 && mouseY >= setting.position.getDrawingY() && mouseY < setting.position.getDrawingY() + settingHeight) {
                 List<String> lines = Arrays.asList(((SettingElement) setting).field.info.description().split("_nl"));
-//                GuiUtils.drawHoveringText(lines, setting.position.getDrawingX()-10, screenHeight/2-100, 0, screenHeight, 170, render.fontRenderer);
-                GuiUtils.drawHoveringText(lines, mouseX, mouseY, 0, screenHeight, 170, ScreenRenderer.fontRenderer);
+//                GuiUtils.drawHoveringText(lines, setting.position.getDrawingX()-10, screenHeight/2-100, 0, screenHeight, 170, render.font);
+                GuiUtils.drawHoveringText(lines, mouseX, mouseY, 0, screenHeight, 170, ScreenRenderer.font);
             }
         });
     }
@@ -332,7 +332,7 @@ public class SettingsUI extends UI {
             this.text = paths[paths.length-1];
             this.position.offsetY = 11*holders.elements.size();
             this.position.offsetX = 10*paths.length;
-            this.textWidth = fontRenderer.getStringWidth(this.text);
+            this.textWidth = font.getStringWidth(this.text);
         }
 
         @Override
@@ -347,7 +347,7 @@ public class SettingsUI extends UI {
 
             if (isSearched) {
                 int x = (int) (this.position.getDrawingX()+(width - textWidth)/2f);
-                int y = (int) (this.position.getDrawingY()+height/2f-4f) + fontRenderer.FONT_HEIGHT;
+                int y = (int) (this.position.getDrawingY()+height/2f-4f) + font.FONT_HEIGHT;
                 drawRect(CommonColors.BLACK, x + 1, y + 1, x + textWidth + 1, y + 2);
                 drawRect(color, x, y, x + textWidth, y + 1);
             }
@@ -358,7 +358,7 @@ public class SettingsUI extends UI {
             hovering = mouseX >= position.getDrawingX() && mouseX <= position.getDrawingX()+width && mouseY >= position.getDrawingY() && mouseY <= position.getDrawingY()+height;
             if (visible && active && hovering) {
                 if (clickSound != null)
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(clickSound, 1f));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(clickSound, 1f));
                 setCurrentSettingsPath(path);
             }
         }

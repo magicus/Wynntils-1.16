@@ -36,16 +36,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.inventory.GuiChest;
-import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.client.CPacketClientSettings;
@@ -62,9 +62,9 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class ClientEvents implements Listener {
     /**
      * This replace these GUIS into a "provided" format to make it more modular
      *
-     * GuiInventory -> InventoryReplacer
+     * InventoryScreen -> InventoryReplacer
      * GuiChest -> ChestReplacer
      * GuiScreenHorseInventory -> HorseReplacer
      * GuiIngameMenu -> IngameMenuReplacer
@@ -99,7 +99,7 @@ public class ClientEvents implements Listener {
      */
     @SubscribeEvent
     public void onGuiOpened(GuiOpenEvent e) {
-        if (e.getGui() instanceof GuiInventory) {
+        if (e.getGui() instanceof InventoryScreen) {
             if (e.getGui() instanceof InventoryReplacer) return;
 
             e.setGui(new InventoryReplacer(ModCore.mc().player));
@@ -135,7 +135,7 @@ public class ClientEvents implements Listener {
         if (e.getPacket().getAction() == 1) {
             ScorePlayerTeam scoreplayerteam;
 
-            Scoreboard scoreboard = Minecraft.getMinecraft().world.getScoreboard();
+            Scoreboard scoreboard = Minecraft.getInstance().world.getScoreboard();
             scoreplayerteam = scoreboard.getTeam(e.getPacket().getName());
             if (scoreplayerteam == null) {
                 // This would cause an NPE so cancel it
@@ -149,10 +149,10 @@ public class ClientEvents implements Listener {
         // I'm not sure what this does, but the code has been here a long time,
         // just moving it here. /magicus, 2021
         SPacketEntityVelocity velocity = e.getPacket();
-        if (Minecraft.getMinecraft().world != null) {
-            Entity entity = Minecraft.getMinecraft().world.getEntityByID(velocity.getEntityID());
-            Entity vehicle = Minecraft.getMinecraft().player.getLowestRidingEntity();
-            if ((entity == vehicle) && (vehicle != Minecraft.getMinecraft().player) && (vehicle.canPassengerSteer())) {
+        if (Minecraft.getInstance().world != null) {
+            Entity entity = Minecraft.getInstance().world.getEntityByID(velocity.getEntityID());
+            Entity vehicle = Minecraft.getInstance().player.getLowestRidingEntity();
+            if ((entity == vehicle) && (vehicle != Minecraft.getInstance().player) && (vehicle.canPassengerSteer())) {
                 e.setCanceled(true);
             }
         }
@@ -163,8 +163,8 @@ public class ClientEvents implements Listener {
         // I'm not sure what this does, but the code has been here a long time,
         // just moving it here. /magicus, 2021
         SPacketMoveVehicle moveVehicle = e.getPacket();
-        Entity vehicle = Minecraft.getMinecraft().player.getLowestRidingEntity();
-        if ((vehicle == Minecraft.getMinecraft().player) || (!vehicle.canPassengerSteer()) || (vehicle.getDistance(moveVehicle.getX(), moveVehicle.getY(), moveVehicle.getZ()) <= 25D)) {
+        Entity vehicle = Minecraft.getInstance().player.getLowestRidingEntity();
+        if ((vehicle == Minecraft.getInstance().player) || (!vehicle.canPassengerSteer()) || (vehicle.getDistance(moveVehicle.getX(), moveVehicle.getY(), moveVehicle.getZ()) <= 25D)) {
             e.setCanceled(true);
         }
     }
@@ -172,28 +172,28 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void findLabels(PacketEvent<SPacketEntityMetadata> e) {
         // makes this method always be called in main thread
-        if (!Minecraft.getMinecraft().isCallingFromMinecraftThread()) {
-            Minecraft.getMinecraft().addScheduledTask(() -> findLabels(e));
+        if (!Minecraft.getInstance().isCallingFromMinecraftThread()) {
+            Minecraft.getInstance().submit(() -> findLabels(e));
             return;
         }
 
         if (e.getPacket().getDataManagerEntries() == null || e.getPacket().getDataManagerEntries().isEmpty()) return;
-        Entity i = Minecraft.getMinecraft().world.getEntityByID(e.getPacket().getEntityId());
+        Entity i = Minecraft.getInstance().world.getEntityByID(e.getPacket().getEntityId());
         if (i == null) return;
 
         if (i instanceof EntityItemFrame) {
             ItemStack item = Utils.getItemFromMetadata(e.getPacket().getDataManagerEntries());
-            if (item.hasDisplayName()) {
+            if (item.hasCustomHoverName()) {
                 FrameworkManager.getEventBus().post(new LocationEvent.LabelFoundEvent(item.getDisplayName(), new Location(i), i));
             }
-        } else if (i instanceof EntityLiving) {
+        } else if (i instanceof LivingEntity) {
             boolean visible = Utils.isNameVisibleFromMetadata(e.getPacket().getDataManagerEntries());
             if (!visible) return;
 
             String value = Utils.getNameFromMetadata(e.getPacket().getDataManagerEntries());
             if (value == null || value.isEmpty()) return;
 
-            FrameworkManager.getEventBus().post(new LocationEvent.EntityLabelFoundEvent(value, new Location(i), (EntityLiving) i));
+            FrameworkManager.getEventBus().post(new LocationEvent.EntityLabelFoundEvent(value, new Location(i), (LivingEntity) i));
         } else if (i instanceof EntityArmorStand) {
             boolean visible = Utils.isNameVisibleFromMetadata(e.getPacket().getDataManagerEntries());
             if (!visible) return;
@@ -296,9 +296,9 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void updateChatVisibility(PacketEvent<CPacketClientSettings> e) {
-        if (e.getPacket().getChatVisibility() != EntityPlayer.EnumChatVisibility.HIDDEN) return;
+        if (e.getPacket().getChatVisibility() != PlayerEntity.EnumChatVisibility.HIDDEN) return;
 
-        ReflectionFields.CPacketClientSettings_chatVisibility.setValue(e.getPacket(), EntityPlayer.EnumChatVisibility.FULL);
+        ReflectionFields.CPacketClientSettings_chatVisibility.setValue(e.getPacket(), PlayerEntity.EnumChatVisibility.FULL);
     }
 
     /**
@@ -327,14 +327,14 @@ public class ClientEvents implements Listener {
         EntityManager.tickEntities();
     }
 
-    GuiScreen lastScreen = null;
+    Screen lastScreen = null;
 
     /**
      *  Register the new Main Menu buttons
      */
     @SubscribeEvent
     public void addMainMenuButtons(GuiScreenEvent.InitGuiEvent.Post e) {
-        GuiScreen gui = e.getGui();
+        Screen gui = e.getGui();
 
         if (gui instanceof GuiMainMenu) {
             boolean resize = lastScreen != null && lastScreen instanceof GuiMainMenu;
@@ -349,8 +349,8 @@ public class ClientEvents implements Listener {
      */
     @SubscribeEvent
     public void mainMenuActionPerformed(GuiScreenEvent.ActionPerformedEvent.Post e) {
-        GuiScreen gui = e.getGui();
-        if (gui != gui.mc.currentScreen || !(gui instanceof GuiMainMenu)) return;
+        Screen gui = e.getGui();
+        if (gui != gui.mc.screen || !(gui instanceof GuiMainMenu)) return;
 
         MainMenuButtons.actionPerformed((GuiMainMenu) gui, e.getButton(), e.getButtonList());
     }
@@ -378,7 +378,7 @@ public class ClientEvents implements Listener {
         if (e.getMouseButton() != 0
             || e.getSlotIn() == null
             || !e.getSlotIn().getHasStack()
-            || !e.getSlotIn().getStack().hasDisplayName()
+            || !e.getSlotIn().getStack().hasCustomHoverName()
             || !e.getSlotIn().getStack().getDisplayName().contains("[>] Select")) return;
 
 
@@ -443,8 +443,8 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void entityJoin(EntityJoinWorldEvent e) {
-        if (!(e.getEntity() instanceof EntityPlayer)) return;
-        EntityPlayer player = (EntityPlayer) e.getEntity();
+        if (!(e.getEntity() instanceof PlayerEntity)) return;
+        PlayerEntity player = (PlayerEntity) e.getEntity();
         if (player.getGameProfile() == null) return;
 
         String name = player.getGameProfile().getName();

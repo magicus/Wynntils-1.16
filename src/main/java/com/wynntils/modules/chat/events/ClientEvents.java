@@ -23,9 +23,9 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 public class ClientEvents implements Listener {
 
@@ -80,7 +80,7 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void onWynnLogin(WynncraftServerEvent.Login e) {
-        ReflectionFields.GuiIngame_persistantChatGUI.setValue(Minecraft.getMinecraft().ingameGUI, new ChatOverlay());
+        ReflectionFields.GuiIngame_persistantChatGUI.setValue(Minecraft.getInstance().ingameGUI, new ChatOverlay());
         TranslationManager.init();
     }
 

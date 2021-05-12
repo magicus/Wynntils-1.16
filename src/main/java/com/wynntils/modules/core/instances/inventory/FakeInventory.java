@@ -10,7 +10,7 @@ import com.wynntils.core.utils.objects.Pair;
 import com.wynntils.modules.core.enums.InventoryResult;
 import com.wynntils.modules.core.interfaces.IInventoryOpenAction;
 import net.minecraft.client.Minecraft;
-import net.minecraft.inventory.ClickType;
+import net.minecraft.inventory.container.ClickType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CPacketClickWindow;
 import net.minecraft.network.play.client.CPacketCloseWindow;
@@ -22,8 +22,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.event.TickEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +59,7 @@ public class FakeInventory {
     private boolean expectingResponse = false;
     private long limitTime = 10000;
 
-    private Minecraft mc = Minecraft.getMinecraft();
+    private Minecraft mc = Minecraft.getInstance();
 
     public FakeInventory(Pattern expectedWindowTitle, IInventoryOpenAction openAction) {
         this.expectedWindowTitle = expectedWindowTitle;
@@ -112,7 +112,7 @@ public class FakeInventory {
         if (windowId != -1) mc.getConnection().sendPacket(new CPacketCloseWindow(windowId));
         windowId = -1;
 
-        if(onClose != null) mc.addScheduledTask(() -> onClose.accept(this, result));
+        if(onClose != null) mc.submit(() -> onClose.accept(this, result));
     }
 
     public void clickItem(int slot, int mouseButton, ClickType type) {
@@ -130,7 +130,7 @@ public class FakeInventory {
 
         for(int slot = 0; slot < inventory.size(); slot++) {
             ItemStack stack = inventory.get(slot);
-            if (stack.isEmpty() || !stack.hasDisplayName()) continue;
+            if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
 
             String displayName = TextFormatting.getTextWithoutFormattingCodes(stack.getDisplayName());
             if (filterType.test(displayName, name)) {
@@ -153,7 +153,7 @@ public class FakeInventory {
 
         for (int slot = 0, len = inventory.size(); slot < len && found != names.size(); ++slot) {
             ItemStack stack = inventory.get(slot);
-            if (stack.isEmpty() || !stack.hasDisplayName()) continue;
+            if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
 
             String displayName = TextFormatting.getTextWithoutFormattingCodes(stack.getDisplayName());
             for (int i = 0; i < names.size(); ++i) {
@@ -233,7 +233,7 @@ public class FakeInventory {
         expectingResponse = false;
         lastAction = Minecraft.getSystemTime();
 
-        if (onReceiveItems != null) mc.addScheduledTask(() -> onReceiveItems.accept(this));
+        if (onReceiveItems != null) mc.submit(() -> onReceiveItems.accept(this));
 
         e.setCanceled(true);
     }

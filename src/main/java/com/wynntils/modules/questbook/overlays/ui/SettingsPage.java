@@ -20,7 +20,7 @@ public class SettingsPage extends QuestBookPage {
 
     @Override
     public void open(boolean showAnimation) {
-        ModCore.mc().displayGuiScreen(SettingsUI.getInstance(ModCore.mc().currentScreen));
+        ModCore.mc().displayGuiScreen(SettingsUI.getInstance(ModCore.mc().screen));
     }
 
     @Override

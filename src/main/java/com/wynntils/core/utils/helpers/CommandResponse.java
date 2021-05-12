@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
@@ -54,7 +54,7 @@ public class CommandResponse {
     public void executeCommand() {
         FrameworkManager.getEventBus().register(this);
 
-        Minecraft.getMinecraft().player.sendChatMessage(command);
+        Minecraft.getInstance().player.sendChatMessage(command);
     }
 
     @SubscribeEvent

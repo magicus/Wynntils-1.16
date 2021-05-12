@@ -6,7 +6,7 @@ package com.wynntils.modules.core.managers;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -19,13 +19,13 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PlayerEntityManager {
-    private static Map<UUID, EntityPlayer> map = new HashMap<>();
+    private static Map<UUID, PlayerEntity> map = new HashMap<>();
 
     /**
      * @param uuid UUID of player
-     * @return The {@link EntityPlayer} with the given uuid, or null if no such player exists
+     * @return The {@link PlayerEntity} with the given uuid, or null if no such player exists
      */
-    public static EntityPlayer getPlayerByUUID(UUID uuid) {
+    public static PlayerEntity getPlayerByUUID(UUID uuid) {
         return map.get(uuid);
     }
 
@@ -37,11 +37,11 @@ public class PlayerEntityManager {
         return map.containsKey(uuid);
     }
 
-    static void onPlayerJoin(EntityPlayer e) {
+    static void onPlayerJoin(PlayerEntity e) {
         map.put(e.getUniqueID(), e);
     }
 
-    static void onPlayerLeave(EntityPlayer e) {
+    static void onPlayerLeave(PlayerEntity e) {
         map.remove(e.getUniqueID());
     }
 
@@ -58,25 +58,25 @@ public class PlayerEntityManager {
         @Override public void notifyBlockUpdate(World worldIn, BlockPos pos, IBlockState oldState, IBlockState newState, int flags) { }
         @Override public void notifyLightSet(BlockPos pos) { }
         @Override public void markBlockRangeForRenderUpdate(int x1, int y1, int z1, int x2, int y2, int z2) { }
-        @Override public void playSoundToAllNearExcept(@Nullable EntityPlayer player, SoundEvent soundIn, SoundCategory category, double x, double y, double z, float volume, float pitch) { }
+        @Override public void playSoundToAllNearExcept(@Nullable PlayerEntity player, SoundEvent soundIn, SoundCategory category, double x, double y, double z, float volume, float pitch) { }
         @Override public void playRecord(SoundEvent soundIn, BlockPos pos) { }
         @Override public void spawnParticle(int particleID, boolean ignoreRange, double xCoord, double yCoord, double zCoord, double xSpeed, double ySpeed, double zSpeed, int... parameters) { }
         @Override public void spawnParticle(int id, boolean ignoreRange, boolean minimiseParticleLevel, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int... parameters) { }
         @Override public void broadcastSound(int soundID, BlockPos pos, int data) { }
-        @Override public void playEvent(EntityPlayer player, int type, BlockPos blockPosIn, int data) { }
+        @Override public void playEvent(PlayerEntity player, int type, BlockPos blockPosIn, int data) { }
         @Override public void sendBlockBreakProgress(int breakerId, BlockPos pos, int progress) { }
 
         @Override
         public void onEntityAdded(Entity entityIn) {
-            if (entityIn instanceof EntityPlayer) {
-                onPlayerJoin((EntityPlayer) entityIn);
+            if (entityIn instanceof PlayerEntity) {
+                onPlayerJoin((PlayerEntity) entityIn);
             }
         }
 
         @Override
         public void onEntityRemoved(Entity entityIn) {
-            if (entityIn instanceof EntityPlayer) {
-                onPlayerLeave((EntityPlayer) entityIn);
+            if (entityIn instanceof PlayerEntity) {
+                onPlayerLeave((PlayerEntity) entityIn);
             }
         }
 
