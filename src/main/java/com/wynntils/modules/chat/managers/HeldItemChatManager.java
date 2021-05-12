@@ -16,8 +16,8 @@ import com.wynntils.modules.chat.overlays.ChatOverlay;
 import com.wynntils.modules.core.managers.CompassManager;
 import com.wynntils.modules.map.overlays.ui.MainWorldMapUI;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -53,7 +53,7 @@ public class HeldItemChatManager {
             mc.player.inventory.items.get(6).getItem() != Items.COMPASS ||
             mc.player.inventory.items.get(7).getItem() != Items.WRITTEN_BOOK ||
             mc.player.inventory.items.get(8).getItem() != Items.NETHER_STAR &&
-            mc.player.inventory.items.get(8).getItem() != Item.getItemFromBlock(Blocks.SNOW_LAYER) ||
+            mc.player.inventory.items.get(8).getItem() != Item.byBlock(Blocks.SNOW_LAYER) ||
             !PlayerInfo.get(CharacterData.class).isLoaded()
         ) {
             reset();

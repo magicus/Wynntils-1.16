@@ -7,9 +7,8 @@ package com.wynntils.core.utils.objects;
 import java.util.Objects;
 
 import com.wynntils.core.framework.rendering.ScreenRenderer;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import net.minecraft.util.math.MathHelper;
-
 public class Position {
 
     public transient int drawingX = -1, drawingY = -1;
@@ -24,10 +23,10 @@ public class Position {
         return drawingY;
     }
 
-    public void refresh(ScaledResolution screen) {
+    public void refresh(MainWindow screen) {
         if (screen == null) return;
-        drawingX = offsetX + MathHelper.fastFloor(anchorX*screen.getScaledWidth());
-        drawingY = offsetY + MathHelper.fastFloor(anchorY*screen.getScaledHeight());
+        drawingX = offsetX + MathHelper.fastFloor(anchorX*screen.getGuiScaledWidth());
+        drawingY = offsetY + MathHelper.fastFloor(anchorY*screen.getGuiScaledHeight());
     }
 
     public void refresh() {

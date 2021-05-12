@@ -18,7 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.InventoryBasic;
@@ -131,7 +131,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == ModCore.mc().gameSettings.keyBindInventory.getKeyCode()) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == ModCore.mc().options.keyBindInventory.getKeyCode()) {
             ModCore.mc().displayGuiScreen(spMenu);
         }
     }

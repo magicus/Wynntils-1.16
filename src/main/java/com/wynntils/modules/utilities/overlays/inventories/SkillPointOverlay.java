@@ -29,7 +29,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.InventoryBasic;
@@ -317,7 +317,7 @@ public class SkillPointOverlay implements Listener {
         loreTag.addAll(newLore);
 
         ItemUtils.replaceLore(stack, loreTag);
-        stack.getTag().setBoolean("wynntilsAnalyzed", true);
+        stack.getTag().putBoolean("wynntilsAnalyzed", true);
     }
 
     private SkillPointAllocation getSkillPoints(ChestReplacer gui) {

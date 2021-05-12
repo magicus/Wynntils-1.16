@@ -9,7 +9,7 @@ import com.wynntils.core.framework.rendering.textures.Texture;
 import com.wynntils.core.utils.StringUtils;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -31,7 +31,7 @@ public class ScreenRenderer {
 
     public static SmartFontRenderer font = null;
     public static Minecraft mc;
-    public static ScaledResolution screen = null;
+    public static MainWindow screen = null;
     private static boolean rendering = false;
     private static float scale = 1.0f;
     private static float rotation = 0;
@@ -56,7 +56,7 @@ public class ScreenRenderer {
      */
     public static void refresh() {
         mc = Minecraft.getInstance();
-        screen = new ScaledResolution(mc);
+        screen = new MainWindow(mc);
         if (font == null) {
             font = new SmartFontRenderer();
             font.onResourceManagerReload(mc.getResourceManager());
@@ -439,26 +439,26 @@ public class ScreenRenderer {
         return drawString(text, x, y, color, SmartFontRenderer.TextAlignment.MIDDLE, SmartFontRenderer.TextShadow.NORMAL);
     }
 
-    /** float getStringWidth
+    /** float width
      * Gets the length of the string in pixels without
      * drawing it (not taking scale into account).
      *
      * @param text the text to measure
      * @return the length of the text in pixels(not taking scale into account)
      */
-    public float getStringWidth(String text) {
+    public float width(String text) {
         if (!rendering) return -1f;
         if (text.isEmpty()) return -SmartFontRenderer.CHAR_SPACING;
         if (text.startsWith("ยง")) {
             if (text.charAt(1) == '[') {
-                return getStringWidth(Arrays.toString(Arrays.copyOfRange(text.split("]"), 1, text.length())));
+                return width(Arrays.toString(Arrays.copyOfRange(text.split("]"), 1, text.length())));
             }
             else {
-                return getStringWidth(text.substring(2));
+                return width(text.substring(2));
             }
         }
 
-        return font.getCharWidth(text.charAt(0)) + SmartFontRenderer.CHAR_SPACING + getStringWidth(text.substring(1));
+        return font.getCharWidth(text.charAt(0)) + SmartFontRenderer.CHAR_SPACING + width(text.substring(1));
     }
 
     /** void drawRect

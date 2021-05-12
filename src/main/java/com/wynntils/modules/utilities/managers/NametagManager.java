@@ -34,7 +34,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Team;
@@ -249,7 +249,7 @@ public class NametagManager {
                     if (Math.abs(x) <= 7.5f && Math.abs(y) <= 7.5f && Math.abs(z) <= 7.5f) disableDepth();  // this limit this feature to 7.5 blocks
                 }
 
-                int middlePos = color != null ? (int) renderer.getStringWidth(input) / 2 : font.getStringWidth(input) / 2;
+                int middlePos = color != null ? (int) renderer.width(input) / 2 : font.width(input) / 2;
 
                 // Nametag Box
                 if (!UtilitiesConfig.INSTANCE.hideNametagBox) {
@@ -330,7 +330,7 @@ public class NametagManager {
 
                 // this solves an unidentified item showcase exploit
                 // boxes items are STONE_SHOVEL, 1 represents UNIQUE boxes and 6 MYTHIC boxes
-                if (is.getItem() == Items.STONE_SHOVEL && is.getItemDamage() >= 1 && is.getItemDamage() <= 6) {
+                if (is.getItem() == Items.STONE_SHOVEL && is.getDamageValue() >= 1 && is.getDamageValue() <= 6) {
                     displayName = "Unidentified Item";
                 } else displayName = itemProfile.getDisplayName();
             } else if (itemName.contains("Crafted")) {

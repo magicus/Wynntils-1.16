@@ -19,8 +19,8 @@ import com.wynntils.core.utils.ItemUtils;
 import com.wynntils.core.utils.reference.EmeraldSymbols;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -121,7 +121,7 @@ public class EmeraldCountOverlay implements Listener {
     }
 
     private static final Texture inventoryTexture = new AssetsTexture(new ResourceLocation("textures/gui/container/inventory.png"), false);
-    private static final Item EMERALD_BLOCK = Item.getItemFromBlock(Blocks.EMERALD_BLOCK);
+    private static final Item EMERALD_BLOCK = Item.byBlock(Blocks.EMERALD_BLOCK);
 
     /**
      * Renders the money amount as 0 to 3 icons (LEs, blocks and emeralds) with numbers in potion effect boxes
@@ -179,7 +179,7 @@ public class EmeraldCountOverlay implements Listener {
         int textureWidthScale = (int) inventoryTexture.width / 256;
         renderer.drawRect(inventoryTexture, x, y, x + 24, y + 24, textureWidthScale * 141, textureHeightScale * 190, textureWidthScale * 165, textureHeightScale * 166);
 
-        int textWidth = ScreenRenderer.font.getStringWidth(text);
+        int textWidth = ScreenRenderer.font.width(text);
         renderer.drawItemStack(new ItemStack(i), x + 4, y + 4, textWidth > 18 ? "" : text);
         if (textWidth <= 18) return;
         GlStateManager._pushMatrix();

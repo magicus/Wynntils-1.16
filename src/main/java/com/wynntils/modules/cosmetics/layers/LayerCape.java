@@ -15,7 +15,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -50,7 +50,7 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
 
     public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (!CosmeticsConfig.INSTANCE.forceCapes
-                && !Minecraft.getInstance().gameSettings.getModelParts().toString().contains("CAPE")
+                && !Minecraft.getInstance().options.getModelParts().toString().contains("CAPE")
                 && player.getUniqueID() == ModCore.mc().player.getUniqueID()) return;
 
         WynntilsUser info = UserManager.getUser(player.getUniqueID());

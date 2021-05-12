@@ -113,7 +113,7 @@ public class WaypointOverviewUI extends Screen {
             }
             if (wp.getGroup() == null) {
                 String text = "NONE";
-                font.drawString(text, (int) (this.width / 2f - 191 - font.getStringWidth(text) / 2f), (int) centreZ, 0xFFFFFFFF);
+                font.drawString(text, (int) (this.width / 2f - 191 - font.width(text) / 2f), (int) centreZ, 0xFFFFFFFF);
             } else {
                 MapWaypointIcon groupIcon = MapWaypointIcon.getFree(wp.getGroup());
                 float groupIconMultiplier = 9f / Math.max(groupIcon.getSizeX(), groupIcon.getSizeZ());

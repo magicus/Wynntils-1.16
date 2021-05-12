@@ -81,14 +81,14 @@ public class ItemIdentificationOverlay implements Listener {
         // Check if unidentified item.
         if (itemName.contains("Unidentified") && UtilitiesConfig.Identifications.INSTANCE.showItemGuesses) {
             // Add possible identifications
-            nbt.setBoolean("wynntilsIgnore", true);
+            nbt.putBoolean("wynntilsIgnore", true);
             addItemGuesses(stack);
             return;
         }
 
         // Check if item is a valid item if not ignore it
         if (!nbt.contains("wynntils") && WebManager.getItems().get(itemName) == null) {
-            nbt.setBoolean("wynntilsIgnore", true);
+            nbt.putBoolean("wynntilsIgnore", true);
             return;
         }
 
@@ -97,7 +97,7 @@ public class ItemIdentificationOverlay implements Listener {
 
         // Block if the item is not the real item
         if (!wynntils.contains("isPerfect") && !stack.getDisplayName().startsWith(item.getTier().getTextColor())) {
-            nbt.setBoolean("wynntilsIgnore", true);
+            nbt.putBoolean("wynntilsIgnore", true);
             nbt.removeTag("wynntils");
             return;
         }
@@ -109,7 +109,7 @@ public class ItemIdentificationOverlay implements Listener {
 
         // Update only if should update, this is decided on generateDate
         if (!wynntils.getBoolean("shouldUpdate")) return;
-        wynntils.setBoolean("shouldUpdate", false);
+        wynntils.putBoolean("shouldUpdate", false);
 
         // Objects
         IdentificationType idType = IdentificationType.valueOf(wynntils.getString("currentType"));
@@ -324,7 +324,7 @@ public class ItemIdentificationOverlay implements Listener {
 
         // check for item perfection
         if (relativeTotal/idAmount >= 1d && idType == IdentificationType.PERCENTAGES && !hasNewId && UtilitiesConfig.Identifications.INSTANCE.rainbowPerfect) {
-            wynntils.setBoolean("isPerfect", true);
+            wynntils.putBoolean("isPerfect", true);
         }
 
         stack.setStackDisplayName(item.getTier().getTextColor() + item.getDisplayName() + specialDisplay);
@@ -400,7 +400,7 @@ public class ItemIdentificationOverlay implements Listener {
 
             // check for updates
             if (!compound.getString("currentType").equals(idType.toString())) {
-                compound.setBoolean("shouldUpdate", true);
+                compound.putBoolean("shouldUpdate", true);
                 compound.setString("currentType", idType.toString());
 
                 stack.getTag().put("wynntils", compound);
@@ -414,7 +414,7 @@ public class ItemIdentificationOverlay implements Listener {
         {  // main data
             mainTag.setString("originName", StringUtils.normalizeBadString(getTextWithoutFormattingCodes(stack.getDisplayName())));  // this replace allow market items to be scanned
             mainTag.setString("currentType", idType.toString());
-            mainTag.setBoolean("shouldUpdate", true);
+            mainTag.putBoolean("shouldUpdate", true);
         }
 
         CompoundNBT idTag = new CompoundNBT();

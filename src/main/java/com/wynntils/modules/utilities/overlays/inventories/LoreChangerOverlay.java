@@ -10,8 +10,8 @@ import com.wynntils.core.framework.instances.data.InventoryData;
 import com.wynntils.core.framework.interfaces.Listener;
 import com.wynntils.core.utils.ItemUtils;
 import com.wynntils.core.utils.StringUtils;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -48,7 +48,7 @@ public class LoreChangerOverlay implements Listener {
 
     private static void replaceLore(ItemStack stack) {
         // Soul Point Timer
-        if ((stack.getItem() == Items.NETHER_STAR || stack.getItem() == Item.getItemFromBlock(Blocks.SNOW_LAYER)) && stack.getDisplayName().contains("Soul Point")) {
+        if ((stack.getItem() == Items.NETHER_STAR || stack.getItem() == Item.byBlock(Blocks.SNOW_LAYER)) && stack.getDisplayName().contains("Soul Point")) {
             List<String> lore = ItemUtils.getLore(stack);
             if (lore != null && !lore.isEmpty()) {
                 if (lore.get(lore.size() - 1).contains("Time until next soul point: ")) {
@@ -126,7 +126,7 @@ public class LoreChangerOverlay implements Listener {
                     }
                 }
             }
-            stack.getTag().setBoolean("showWynnic", true);
+            stack.getTag().putBoolean("showWynnic", true);
         }
 
         if (stack.hasTagCompound() && stack.getTag().getBoolean("showWynnic") && !Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
@@ -138,7 +138,7 @@ public class LoreChangerOverlay implements Listener {
                 }
                 tag.removeTag("originalLore");
             }
-            stack.getTag().setBoolean("showWynnic", false);
+            stack.getTag().putBoolean("showWynnic", false);
         }
     }
 }

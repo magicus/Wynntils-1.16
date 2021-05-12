@@ -30,7 +30,7 @@ import com.wynntils.webapi.request.Request;
 import com.wynntils.webapi.request.RequestHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.text.TextComponentString;
@@ -304,9 +304,9 @@ public class DiscoveriesPage extends QuestBookPage {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        ScaledResolution res = new ScaledResolution(mc);
-        int posX = ((res.getScaledWidth() / 2) - mouseX);
-        int posY = ((res.getScaledHeight() / 2) - mouseY);
+        MainWindow res = new MainWindow(mc);
+        int posX = ((res.getGuiScaledWidth() / 2) - mouseX);
+        int posY = ((res.getGuiScaledHeight() / 2) - mouseY);
 
         // Handle discovery click
         if (overDiscovery != null) {

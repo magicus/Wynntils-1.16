@@ -94,7 +94,7 @@ public class ServerUtils {
 
     private static class FakeResourcePackRepositoryHolder {
         // Will only be created by classloader when used
-        static final ResourcePackRepository instance = new ResourcePackRepository(Minecraft.getInstance().getResourcePackRepository().getDirResourcepacks(), null, null, null, Minecraft.getInstance().gameSettings) {
+        static final ResourcePackRepository instance = new ResourcePackRepository(Minecraft.getInstance().getResourcePackRepository().getDirResourcepacks(), null, null, null, Minecraft.getInstance().options) {
             @Override
             public void clearResourcePack() {
                 // Don't

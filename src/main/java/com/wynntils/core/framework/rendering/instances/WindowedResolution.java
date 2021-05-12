@@ -5,7 +5,7 @@
 package com.wynntils.core.framework.rendering.instances;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import org.lwjgl.opengl.Display;
 
 public class WindowedResolution {
@@ -24,7 +24,7 @@ public class WindowedResolution {
             return;
         }
 
-        int minecraftScale = new ScaledResolution(Minecraft.getInstance()).getScaleFactor();
+        int minecraftScale = new MainWindow(Minecraft.getInstance()).getScaleFactor();
         while (minWidth * scaleFactor < width / 2f && minHeight * scaleFactor < height/2f)  {
             scaleFactor += 0.1f;
         }

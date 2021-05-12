@@ -100,7 +100,7 @@ public class ServerEvents implements Listener {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void joinWorldEvent(WynnWorldEvent.Join e) {
         if (PlayerInfo.get(CharacterData.class).getClassId() == -1 || CoreDBConfig.INSTANCE.lastClass == ClassType.NONE)
-            Minecraft.getInstance().player.sendChatMessage("/class");
+            Minecraft.getInstance().player.chat("/class");
 
         // This codeblock will only be executed if the Wynncraft AUTOJOIN setting is enabled
         // Reason: When you join a world with autojoin enabled, your current class is NONE,
@@ -115,12 +115,12 @@ public class ServerEvents implements Listener {
         // guild members
         if (WebManager.getPlayerProfile() != null && WebManager.getPlayerProfile().getGuildName() != null) {
             waitingForGuildList = true;
-            Minecraft.getInstance().player.sendChatMessage("/guild list");
+            Minecraft.getInstance().player.chat("/guild list");
         }
 
         // friends
         waitingForFriendList = true;
-        Minecraft.getInstance().player.sendChatMessage("/friends list");
+        Minecraft.getInstance().player.chat("/friends list");
 
         // party members
         PartyManager.handlePartyList();  // party list here

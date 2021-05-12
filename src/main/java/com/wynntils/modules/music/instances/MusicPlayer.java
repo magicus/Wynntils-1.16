@@ -92,7 +92,7 @@ public class MusicPlayer {
         }
 
         // update the volume
-        float baseVolume = -36 + (36 * Minecraft.getInstance().gameSettings.getSoundLevel(SoundCategory.RECORDS));
+        float baseVolume = -36 + (36 * Minecraft.getInstance().options.getSoundLevel(SoundCategory.RECORDS));
         float expectedGain = (Display.isActive() && !STATUS.isCurrentQuiet()) ? baseVolume : Math.max(-30, baseVolume + MusicConfig.INSTANCE.focusOffset);
 
         if (STATUS.getCurrentGain() > expectedGain) {
@@ -150,7 +150,7 @@ public class MusicPlayer {
                 BufferedInputStream bis = new BufferedInputStream(fis);
 
                 // updating the volume
-                float baseVolume = -32 + (32 * Minecraft.getInstance().gameSettings.getSoundLevel(SoundCategory.RECORDS));
+                float baseVolume = -32 + (32 * Minecraft.getInstance().options.getSoundLevel(SoundCategory.RECORDS));
                 STATUS.setCurrentGain(STATUS.getCurrentSong().isFadeIn() ? -30f : baseVolume);
 
                 player = new AdvancedPlayer(bis, STATUS.getCurrentGain());

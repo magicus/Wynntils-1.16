@@ -51,7 +51,7 @@ public class LevelingOverlay extends Overlay {
                     .replace("%curlvl%", "" + data.getLevel())
                     .replace("%nextlvl%", data.getLevel() == 104 ? "" : "" + (data.getLevel() + 1));
             drawString(text, 0, 0, CommonColors.LIGHT_BLUE, SmartFontRenderer.TextAlignment.MIDDLE, OverlayConfig.Leveling.INSTANCE.textShadow);
-            staticSize.x = (int) getStringWidth(text);
+            staticSize.x = (int) width(text);
         }
     }
 

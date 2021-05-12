@@ -38,13 +38,13 @@ public class KeyManager {
 
     public static void registerKeys() {
         UtilitiesModule.getModule().registerKeyBinding("Gammabright", GLFW.GLFW_KEY_G, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
-            if (ModCore.mc().gameSettings.gammaSetting < 1000) {
-                lastGamma = ModCore.mc().gameSettings.gammaSetting;
-                ModCore.mc().gameSettings.gammaSetting = 1000;
+            if (ModCore.mc().options.gammaSetting < 1000) {
+                lastGamma = ModCore.mc().options.gammaSetting;
+                ModCore.mc().options.gammaSetting = 1000;
                 return;
             }
 
-            ModCore.mc().gameSettings.gammaSetting = lastGamma;
+            ModCore.mc().options.gammaSetting = lastGamma;
         });
 
         checkForUpdatesKey = CoreModule.getModule().registerKeyBinding("Check for Updates", GLFW.GLFW_KEY_L, "Wynntils", true, WebManager::checkForUpdates);
@@ -70,7 +70,7 @@ public class KeyManager {
         CoreModule.getModule().registerKeyBinding("Mob Totem Menu", GLFW.GLFW_KEY_J, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
             if (!Reference.onWorld) return;
 
-            Minecraft.getInstance().player.sendChatMessage("/totem");
+            Minecraft.getInstance().player.chat("/totem");
         });
 
         CoreModule.getModule().registerKeyBinding("Open Ingredient Pouch", GLFW.GLFW_KEY_O, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {

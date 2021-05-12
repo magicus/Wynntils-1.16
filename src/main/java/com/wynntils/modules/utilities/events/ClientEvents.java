@@ -40,8 +40,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
@@ -189,7 +189,7 @@ public class ClientEvents implements Listener {
                     afkProtectionActivated = true;
                     Minecraft.getInstance().submit(() ->
                             ChatOverlay.getChat().printChatMessage(new TextComponentString(TextFormatting.GRAY + "AFK Protection activated due to player taking damage")));
-                    Minecraft.getInstance().player.sendChatMessage("/class");
+                    Minecraft.getInstance().player.chat("/class");
                 }
                 if (timeSinceActivity < longAfkThresholdMillis) {
                     if (OverlayConfig.GameUpdate.RedirectSystemMessages.INSTANCE.redirectAfk) {
@@ -388,7 +388,7 @@ public class ClientEvents implements Listener {
         Slot slot = e.getGui().inventorySlots.getSlot(20);
 
         ItemStack stack = slot.getStack();
-        if (stack.getItem() == Item.getItemFromBlock(Blocks.SNOW_LAYER) || stack.getItem() == Items.CLOCK) {
+        if (stack.getItem() == Item.byBlock(Blocks.SNOW_LAYER) || stack.getItem() == Items.CLOCK) {
             // There's no chest, create a clock with timer as lore
             CompoundNBT nbt = new CompoundNBT();
             ItemStack newStack = new ItemStack(Items.CLOCK);
@@ -415,7 +415,7 @@ public class ClientEvents implements Listener {
             stack = newStack; // use this for next check
         }
 
-        if (stack.getItem() == Item.getItemFromBlock(Blocks.CHEST)  || stack.getItem() == Items.CLOCK) {
+        if (stack.getItem() == Item.byBlock(Blocks.CHEST)  || stack.getItem() == Items.CLOCK) {
             // We need to strip the old time from the lore, if existent
             List<String> lore = ItemUtils.getLore(stack);
             List<String> newLore = new LinkedList<>();
@@ -490,7 +490,7 @@ public class ClientEvents implements Listener {
         if (!Reference.onWorld) return;
 
         if (UtilitiesConfig.INSTANCE.preventMythicChestClose) {
-            if (e.getKeyCode() == 1 || e.getKeyCode() == ModCore.mc().gameSettings.keyBindInventory.getKeyCode()) {
+            if (e.getKeyCode() == 1 || e.getKeyCode() == ModCore.mc().options.keyBindInventory.getKeyCode()) {
                 IInventory inv = e.getGui().getLowerInv();
                 if (inv.getDisplayName().getUnformattedText().contains("Loot Chest") ||
                         inv.getDisplayName().getUnformattedText().contains("Daily Rewards") ||
@@ -565,7 +565,7 @@ public class ClientEvents implements Listener {
         if(!Reference.onWorld) return;
 
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getGui().getSlotUnderMouse() != null && e.getGui().getSlotUnderMouse().inventory == Minecraft.getInstance().player.inventory) {
-            if (checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode())) {
+            if (checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), Minecraft.getInstance().options.keyBindDrop.getKeyCode())) {
                 e.setCanceled(true);
                 return;
             }
@@ -601,17 +601,17 @@ public class ClientEvents implements Listener {
                 int openSlot = 0;
                 switch (item) {
                     case RING:
-                        if (e.getGui().inventorySlots.getSlot(9).getHasStack() && e.getGui().inventorySlots.getSlot(9).getStack().getItem().equals(Item.getItemFromBlock(Blocks.SNOW_LAYER)))
+                        if (e.getGui().inventorySlots.getSlot(9).getHasStack() && e.getGui().inventorySlots.getSlot(9).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER)))
                             openSlot = 9; // first ring slot
-                        else if (e.getGui().inventorySlots.getSlot(10).getHasStack() && e.getGui().inventorySlots.getSlot(10).getStack().getItem().equals(Item.getItemFromBlock(Blocks.SNOW_LAYER)))
+                        else if (e.getGui().inventorySlots.getSlot(10).getHasStack() && e.getGui().inventorySlots.getSlot(10).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER)))
                             openSlot = 10; // second ring slot
                         break;
                     case BRACELET:
-                        if (e.getGui().inventorySlots.getSlot(11).getHasStack() && e.getGui().inventorySlots.getSlot(11).getStack().getItem().equals(Item.getItemFromBlock(Blocks.SNOW_LAYER)))
+                        if (e.getGui().inventorySlots.getSlot(11).getHasStack() && e.getGui().inventorySlots.getSlot(11).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER)))
                             openSlot = 11; // bracelet slot
                         break;
                     case NECKLACE:
-                        if (e.getGui().inventorySlots.getSlot(12).getHasStack() && e.getGui().inventorySlots.getSlot(12).getStack().getItem().equals(Item.getItemFromBlock(Blocks.SNOW_LAYER)))
+                        if (e.getGui().inventorySlots.getSlot(12).getHasStack() && e.getGui().inventorySlots.getSlot(12).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER)))
                             openSlot = 12; // necklace slot
                         break;
                     default:
@@ -646,7 +646,7 @@ public class ClientEvents implements Listener {
 
         // destination slot was filled in the meantime
         if (gui.inventorySlots.getSlot(accessoryDestinationSlot).getHasStack() &&
-                !gui.inventorySlots.getSlot(accessoryDestinationSlot).getStack().getItem().equals(Item.getItemFromBlock(Blocks.SNOW_LAYER))) {
+                !gui.inventorySlots.getSlot(accessoryDestinationSlot).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER))) {
             accessoryDestinationSlot = -1;
             return;
         }
@@ -662,9 +662,9 @@ public class ClientEvents implements Listener {
     public void clickOnChest(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getSlotIn() != null) {
             if (e.getSlotId() - e.getGui().getLowerInv().getContainerSize() >= 0 && e.getSlotId() - e.getGui().getLowerInv().getContainerSize() < 27) {
-                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() + 9, Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
+                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() + 9, Minecraft.getInstance().options.keyBindDrop.getKeyCode()));
             } else {
-                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() - 27, Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
+                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() - 27, Minecraft.getInstance().options.keyBindDrop.getKeyCode()));
             }
         }
 
@@ -725,7 +725,7 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void clickOnHorse(GuiOverlapEvent.HorseOverlap.HandleMouseClick e) {
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getGui().getSlotUnderMouse() != null) {
-            e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()));
+            e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), Minecraft.getInstance().options.keyBindDrop.getKeyCode()));
         }
     }
 
@@ -794,7 +794,7 @@ public class ClientEvents implements Listener {
     private static boolean checkDropState(int slot, int key) {
         if (!Reference.onWorld) return false;
 
-        if (key == Minecraft.getInstance().gameSettings.keyBindDrop.getKeyCode()) {
+        if (key == Minecraft.getInstance().options.keyBindDrop.getKeyCode()) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return false;
 
             return UtilitiesConfig.INSTANCE.locked_slots.get(PlayerInfo.get(CharacterData.class).getClassId()).contains(slot);

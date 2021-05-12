@@ -64,9 +64,9 @@ public class ActionBarOverlay extends Overlay {
         // Order:
         // Powder % | RLR | Sprint | and if there is nothing more coordinates
         if (OverlayConfig.INSTANCE.splitCoordinates && OverlayConfig.INSTANCE.actionBarCoordinates) {
-            drawString(lCoord, (-ScreenRenderer.font.getStringWidth(lCoord) - ScreenRenderer.font.getStringWidth(middleCoord) / 2.0f - padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
+            drawString(lCoord, (-ScreenRenderer.font.width(lCoord) - ScreenRenderer.font.width(middleCoord) / 2.0f - padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
             drawString(middleCoord, 0, y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.MIDDLE, OverlayConfig.INSTANCE.textShadow);
-            drawString(rCoord, (ScreenRenderer.font.getStringWidth(middleCoord) / 2.0f + padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
+            drawString(rCoord, (ScreenRenderer.font.width(middleCoord) / 2.0f + padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
             y -= 11;
             staticSize.y = 21;
             growth = OverlayGrowFrom.MIDDLE_CENTRE;
@@ -95,9 +95,9 @@ public class ActionBarOverlay extends Overlay {
         // breaks if it's rendering an item name or if doesn't have preference
         if (!preference && renderItemName()) return;
 
-        drawString(l, (-ScreenRenderer.font.getStringWidth(l) - ScreenRenderer.font.getStringWidth(middle) / 2.0f - padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
+        drawString(l, (-ScreenRenderer.font.width(l) - ScreenRenderer.font.width(middle) / 2.0f - padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
         drawString(middle, 0, y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.MIDDLE, OverlayConfig.INSTANCE.textShadow);
-        drawString(r, (ScreenRenderer.font.getStringWidth(middle) / 2.0f + padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
+        drawString(r, (ScreenRenderer.font.width(middle) / 2.0f + padding), y, CommonColors.BLACK, SmartFontRenderer.TextAlignment.LEFT_RIGHT, OverlayConfig.INSTANCE.textShadow);
     }
 
     private boolean renderItemName() {
@@ -121,8 +121,8 @@ public class ActionBarOverlay extends Overlay {
                 s = TextFormatting.ITALIC + s;
             }
 
-            int i = ((int) (position.anchorX * ScreenRenderer.screen.getScaledWidth()) - ScreenRenderer.mc.font.getStringWidth(s) / 2) + position.offsetX;
-            int j = (int) (position.anchorY * ScreenRenderer.screen.getScaledHeight()) + position.offsetY + (OverlayConfig.INSTANCE.splitCoordinates ? -11 : 0);
+            int i = ((int) (position.anchorX * ScreenRenderer.screen.getGuiScaledWidth()) - ScreenRenderer.mc.font.width(s) / 2) + position.offsetX;
+            int j = (int) (position.anchorY * ScreenRenderer.screen.getGuiScaledHeight()) + position.offsetY + (OverlayConfig.INSTANCE.splitCoordinates ? -11 : 0);
 
             if (!ScreenRenderer.mc.gameMode.shouldDrawHUD()) {
                 j += 14;

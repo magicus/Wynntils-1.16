@@ -103,8 +103,8 @@ public class OverlayPositionsUI extends UI {
 
         reloadButtons = false;
         shiftDown = false;
-        GRID_SIZE_VERTICAL = ScreenRenderer.screen.getScaledHeight() / 50;
-        GRID_SIZE_HORIZONTAL = ScreenRenderer.screen.getScaledWidth() / 50;
+        GRID_SIZE_VERTICAL = ScreenRenderer.screen.getGuiScaledHeight() / 50;
+        GRID_SIZE_HORIZONTAL = ScreenRenderer.screen.getGuiScaledWidth() / 50;
     }
 
     @Override
@@ -126,17 +126,17 @@ public class OverlayPositionsUI extends UI {
             zone.render(mouseX, mouseY);
         }
         if (stringToDrawOnTop != null) {
-            if (stringToDrawOnTop.y > ScreenRenderer.screen.getScaledHeight()) {
-                stringToDrawOnTop.y = ScreenRenderer.screen.getScaledHeight() - 12;
+            if (stringToDrawOnTop.y > ScreenRenderer.screen.getGuiScaledHeight()) {
+                stringToDrawOnTop.y = ScreenRenderer.screen.getGuiScaledHeight() - 12;
             } else if (stringToDrawOnTop.y < 0) {
                 stringToDrawOnTop.y = 1;
             }
-            int widthOfString = ScreenRenderer.font.getStringWidth(stringToDrawOnTop.string);
+            int widthOfString = ScreenRenderer.font.width(stringToDrawOnTop.string);
             if (stringToDrawOnTop.x - widthOfString / 2 < 0) {
                 stringToDrawOnTop.x = 1;
                 stringToDrawOnTop.alignment = SmartFontRenderer.TextAlignment.LEFT_RIGHT;
-            } else if (stringToDrawOnTop.x + (widthOfString / 2) > ScreenRenderer.screen.getScaledWidth()) {
-                stringToDrawOnTop.x = ScreenRenderer.screen.getScaledWidth() - 1;
+            } else if (stringToDrawOnTop.x + (widthOfString / 2) > ScreenRenderer.screen.getGuiScaledWidth()) {
+                stringToDrawOnTop.x = ScreenRenderer.screen.getGuiScaledWidth() - 1;
                 stringToDrawOnTop.alignment = SmartFontRenderer.TextAlignment.RIGHT_LEFT;
             }
             render.drawString(stringToDrawOnTop.string, stringToDrawOnTop.x, stringToDrawOnTop.y, stringToDrawOnTop.color, stringToDrawOnTop.alignment, stringToDrawOnTop.textShadow);

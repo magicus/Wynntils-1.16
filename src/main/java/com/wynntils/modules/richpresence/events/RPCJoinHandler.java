@@ -69,11 +69,11 @@ public class RPCJoinHandler implements IDiscordActivityEvents.on_activity_join_c
         if (Reference.onWorld) {
             if (Reference.getUserWorld().replace("WC", "").replace("HB", "").equals(Integer.toString(lastSecret.getWorld())) && Reference.getUserWorld().replaceAll("\\d+", "").equals(lastSecret.getWorldType())) {
                 sentInvite = true;
-                mc.player.sendChatMessage("/msg " + lastSecret.getOwner() + " " + lastSecret.getRandomHash());
+                mc.player.chat("/msg " + lastSecret.getOwner() + " " + lastSecret.getRandomHash());
                 return;
             }
 
-            mc.player.sendChatMessage("/hub");
+            mc.player.chat("/hub");
             waitingLobby = true;
             return;
         }
@@ -96,7 +96,7 @@ public class RPCJoinHandler implements IDiscordActivityEvents.on_activity_join_c
         if (!waitingInvite) return;
         sentInvite = true;
         waitingInvite = false;
-        Minecraft.getInstance().player.sendChatMessage("/msg " + lastSecret.getOwner() + " " + lastSecret.getRandomHash());
+        Minecraft.getInstance().player.chat("/msg " + lastSecret.getOwner() + " " + lastSecret.getRandomHash());
     }
 
     @SubscribeEvent
@@ -105,7 +105,7 @@ public class RPCJoinHandler implements IDiscordActivityEvents.on_activity_join_c
 
         // handles the invitation
         if (lastSecret != null && e.getMessage().getUnformattedText().startsWith("You have been invited to join " + lastSecret.getOwner())) {
-            Minecraft.getInstance().player.sendChatMessage("/party join " + lastSecret.getOwner());
+            Minecraft.getInstance().player.chat("/party join " + lastSecret.getOwner());
 
             lastSecret = null;
             return;
@@ -132,7 +132,7 @@ public class RPCJoinHandler implements IDiscordActivityEvents.on_activity_join_c
                 return;
 
             e.setCanceled(true);
-            Minecraft.getInstance().player.sendChatMessage("/party invite " + user);
+            Minecraft.getInstance().player.chat("/party invite " + user);
         }
     }
 

@@ -54,7 +54,7 @@ public class CommandResponse {
     public void executeCommand() {
         FrameworkManager.getEventBus().register(this);
 
-        Minecraft.getInstance().player.sendChatMessage(command);
+        Minecraft.getInstance().player.chat(command);
     }
 
     @SubscribeEvent

@@ -10,7 +10,7 @@ import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -215,9 +215,9 @@ public class Utils {
         if (screen != null) {
             Minecraft.getInstance().setIngameNotInFocus();
 
-            ScaledResolution scaledresolution = new ScaledResolution(mc);
-            int i = scaledresolution.getScaledWidth();
-            int j = scaledresolution.getScaledHeight();
+            MainWindow scaledresolution = new MainWindow(mc);
+            int i = scaledresolution.getGuiScaledWidth();
+            int j = scaledresolution.getGuiScaledHeight();
             screen.setWorldAndResolution(mc, i, j);
             mc.skipRenderWorld = false;
         } else {

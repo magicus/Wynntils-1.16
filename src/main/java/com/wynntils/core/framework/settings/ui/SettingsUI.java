@@ -196,7 +196,7 @@ public class SettingsUI extends UI {
                 if (setting.isSearched) {
                     int y = (int) (setting.position.getDrawingY() + 4.5f + font.FONT_HEIGHT * 0.8f);
                     int x = setting.position.getDrawingX() + 43;
-                    render.drawRect(CommonColors.BLACK, x, y, x + (int) (ScreenRenderer.font.getStringWidth(name) * 0.8f) + 1, y + 1);
+                    render.drawRect(CommonColors.BLACK, x, y, x + (int) (ScreenRenderer.font.width(name) * 0.8f) + 1, y + 1);
                 }
             }
             setting.position.offsetX -= settings.position.offsetX;
@@ -332,7 +332,7 @@ public class SettingsUI extends UI {
             this.text = paths[paths.length-1];
             this.position.offsetY = 11*holders.elements.size();
             this.position.offsetX = 10*paths.length;
-            this.textWidth = font.getStringWidth(this.text);
+            this.textWidth = font.width(this.text);
         }
 
         @Override
@@ -340,7 +340,7 @@ public class SettingsUI extends UI {
             if (!visible) return;
             hovering = mouseX >= position.getDrawingX() && mouseX < position.getDrawingX()+width && mouseY >= position.getDrawingY() && mouseY < position.getDrawingY()+height;
             active = !currentSettingsPath.equals(this.path);
-            width = Math.max(this.setWidth < 0 ? (int)getStringWidth(text) - this.setWidth : this.setWidth, 0);
+            width = Math.max(this.setWidth < 0 ? (int)width(text) - this.setWidth : this.setWidth, 0);
 
             CustomColor color = !active ? TEXTCOLOR_NOTACTIVE : hovering ? TEXTCOLOR_HOVERING : (!searchText.isEmpty() && !isSearched) ? TEXTCOLOR_UNSEARCHED : TEXTCOLOR_NORMAL;
             drawString(text, this.position.getDrawingX()+width/2f, this.position.getDrawingY()+height/2f-4f, color, SmartFontRenderer.TextAlignment.MIDDLE, SmartFontRenderer.TextShadow.NORMAL);

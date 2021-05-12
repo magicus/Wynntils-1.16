@@ -14,6 +14,8 @@ import com.wynntils.core.framework.ui.elements.UIETextBox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -29,6 +31,10 @@ public abstract class UI extends Screen {
 
     private boolean initiated = false;
 
+    protected UI() {
+        super(StringTextComponent.EMPTY);
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         if (!initiated) { initiated = true; onInit(); }
@@ -38,8 +44,8 @@ public abstract class UI extends Screen {
 
         ScreenRenderer.beginGL(0, 0);
 
-        screenWidth = ScreenRenderer.screen.getScaledWidth();
-        screenHeight = ScreenRenderer.screen.getScaledHeight();
+        screenWidth = ScreenRenderer.screen.getGuiScaledWidth();
+        screenHeight = ScreenRenderer.screen.getGuiScaledHeight();
 
         onRenderPreUIE(screenRenderer);
         for (UIElement uie : UIElements) {
@@ -151,11 +157,11 @@ public abstract class UI extends Screen {
     public static abstract class CommonUIFeatures {
         static ScreenRenderer render = new ScreenRenderer();
         public static void drawBook() {
-            int wh = ScreenRenderer.screen.getScaledWidth()/2, hh = ScreenRenderer.screen.getScaledHeight()/2;
+            int wh = ScreenRenderer.screen.getGuiScaledWidth()/2, hh = ScreenRenderer.screen.getGuiScaledHeight()/2;
             render.drawRect(Textures.UIs.book, wh - 200, hh - 110, wh + 200, hh + 110, 0, 0, 400, 220);
         }
         public static void drawScrollArea() {
-            int wh = ScreenRenderer.screen.getScaledWidth()/2, hh = ScreenRenderer.screen.getScaledHeight()/2;
+            int wh = ScreenRenderer.screen.getGuiScaledWidth()/2, hh = ScreenRenderer.screen.getGuiScaledHeight()/2;
             render.drawRect(Textures.UIs.book_scrollarea_settings, wh - 190, hh - 100, wh - 12, hh + 85, 0, 0, 178, 185);
         }
     }

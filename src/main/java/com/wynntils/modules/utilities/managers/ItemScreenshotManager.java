@@ -62,7 +62,7 @@ public class ItemScreenshotManager {
 
         // calculate width of tooltip
         for (String s : tooltip) {
-            int w = fr.getStringWidth(s);
+            int w = fr.width(s);
             if (w > width) width = w;
         }
         width += 8;
@@ -78,7 +78,7 @@ public class ItemScreenshotManager {
                 List<String> wrappedLine = fr.listFormattedStringToWidth(s, gui.width/2);
                 for (String ws : wrappedLine) {
                     wrappedLines++;
-                    int w = fr.getStringWidth(ws);
+                    int w = fr.width(ws);
                     if (w > wrappedWidth) wrappedWidth = w;
                 }
             }
@@ -130,7 +130,7 @@ public class ItemScreenshotManager {
         int tooltipTextWidth = 0;
 
         for (String textLine : textLines) {
-            int textLineWidth = font.getStringWidth(textLine);
+            int textLineWidth = font.width(textLine);
 
             if (textLineWidth > tooltipTextWidth) {
                 tooltipTextWidth = textLineWidth;
@@ -156,7 +156,7 @@ public class ItemScreenshotManager {
                     titleLinesCount = wrappedLine.size();
 
                 for (String line : wrappedLine) {
-                    int lineWidth = font.getStringWidth(line);
+                    int lineWidth = font.width(line);
                     if (lineWidth > wrappedTooltipWidth)
                         wrappedTooltipWidth = lineWidth;
 

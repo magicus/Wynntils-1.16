@@ -71,7 +71,7 @@ public class LootRunNote {
                 scale(-0.025F, -0.025F, 0.025F);
                 _disableLighting();
 
-                int middlePos = (int) renderer.getStringWidth(input) / 2;
+                int middlePos = (int) renderer.width(input) / 2;
 
                 // draws the label
                 renderer.drawString(input, -middlePos, verticalShift, color, SmartFontRenderer.TextAlignment.LEFT_RIGHT, SmartFontRenderer.TextShadow.NONE);

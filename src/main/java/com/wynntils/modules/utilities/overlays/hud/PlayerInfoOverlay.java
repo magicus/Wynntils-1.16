@@ -32,13 +32,13 @@ public class PlayerInfoOverlay extends Overlay {
     @Override
     public void render(RenderGameOverlayEvent.Post event) {
         if (!Reference.onWorld || !OverlayConfig.PlayerInfo.INSTANCE.replaceVanilla) return;
-        if (!mc.gameSettings.keyBindPlayerList.isKeyDown() && animationProgress <= 0.0) return;
+        if (!mc.options.keyBindPlayerList.isKeyDown() && animationProgress <= 0.0) return;
 
         double animation = 1;
         if (OverlayConfig.PlayerInfo.INSTANCE.openingDuration > 0) { // Animation Detection
             if (lastTime == -1) lastTime += Minecraft.getSystemTime();
 
-            if (mc.gameSettings.keyBindPlayerList.isKeyDown()) {
+            if (mc.options.keyBindPlayerList.isKeyDown()) {
                 animationProgress += (Minecraft.getSystemTime() - lastTime) / OverlayConfig.PlayerInfo.INSTANCE.openingDuration;
                 animationProgress = Math.min(1, animationProgress);
             } else if (animationProgress > 0.0) {
@@ -53,7 +53,7 @@ public class PlayerInfoOverlay extends Overlay {
         }
 
         //scales if the screen don't fit the texture height
-        float yScale = screen.getScaledHeight() < 280f ? (float) screen.getScaledHeight_double() / 280f : 1;
+        float yScale = screen.getGuiScaledHeight() < 280f ? (float) screen.getScaledHeight_double() / 280f : 1;
 
         { scale(yScale);
 
@@ -138,11 +138,11 @@ public class PlayerInfoOverlay extends Overlay {
     }
 
     private static String wrapText(String input, int maxLength) {
-        if (font.getStringWidth(input) <= maxLength) return input;
+        if (font.width(input) <= maxLength) return input;
 
         StringBuilder builder = new StringBuilder();
         for (char c : input.toCharArray()) {
-            if (font.getStringWidth(builder.toString() + c) > maxLength) break;
+            if (font.width(builder.toString() + c) > maxLength) break;
 
             builder.append(c);
         }

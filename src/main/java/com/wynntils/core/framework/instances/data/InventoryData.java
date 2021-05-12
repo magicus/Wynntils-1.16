@@ -9,8 +9,8 @@ import com.wynntils.core.framework.instances.containers.PlayerData;
 import com.wynntils.core.framework.instances.containers.UnprocessedAmount;
 import com.wynntils.core.utils.ItemUtils;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.ListNBT;
@@ -186,7 +186,7 @@ public class InventoryData extends PlayerData {
         if (currentClass == ClassType.NONE || player == null) return -1;
 
         ItemStack soulPoints = player.inventory.items.get(8);
-        if (soulPoints.getItem() != Items.NETHER_STAR && soulPoints.getItem() != Item.getItemFromBlock(Blocks.SNOW_LAYER)) {
+        if (soulPoints.getItem() != Items.NETHER_STAR && soulPoints.getItem() != Item.byBlock(Blocks.SNOW_LAYER)) {
             return -1;
         }
 

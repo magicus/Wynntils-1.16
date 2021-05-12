@@ -27,10 +27,10 @@ import com.wynntils.webapi.profiles.item.ItemProfile;
 import com.wynntils.webapi.profiles.item.enums.ItemType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -205,9 +205,9 @@ public class ItemPage extends QuestBookPage {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        ScaledResolution res = new ScaledResolution(mc);
-        int posX = ((res.getScaledWidth() / 2) - mouseX);
-        int posY = ((res.getScaledHeight() / 2) - mouseY);
+        MainWindow res = new MainWindow(mc);
+        int posX = ((res.getGuiScaledWidth() / 2) - mouseX);
+        int posY = ((res.getGuiScaledHeight() / 2) - mouseY);
 
         checkMenuButton(posX, posY);
         checkForwardAndBackButtons(posX, posY);
@@ -764,7 +764,7 @@ public class ItemPage extends QuestBookPage {
         static {
             SCROLL_STACK.setItemDamage(42);
             CompoundNBT tag = new CompoundNBT();
-            tag.setBoolean("Unbreakable", true);
+            tag.putBoolean("Unbreakable", true);
             tag.setInteger("HideFlags", 6);
             SCROLL_STACK.setTag(tag);
 

@@ -29,9 +29,9 @@ public class TerritoryFeedOverlay extends Overlay {
     public void render(RenderGameOverlayEvent.Pre event) {
         if (currentMessage == null) return;
 
-        float halfStringWidth = getStringWidth(currentMessage) / 2;
+        float halfStringWidth = width(currentMessage) / 2;
         float currentAnimationPercent = (System.currentTimeMillis() - animationStartTime) / ((float) OverlayConfig.TerritoryFeed.INSTANCE.animationLength * 1000f);
-        drawCenteredString(currentMessage, (screen.getScaledWidth() + halfStringWidth) - ((screen.getScaledWidth() + halfStringWidth * 2) * currentAnimationPercent), 0, CommonColors.WHITE);
+        drawCenteredString(currentMessage, (screen.getGuiScaledWidth() + halfStringWidth) - ((screen.getGuiScaledWidth() + halfStringWidth * 2) * currentAnimationPercent), 0, CommonColors.WHITE);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class TerritoryFeedOverlay extends Overlay {
             animationStartTime = System.currentTimeMillis();
         }
 
-        staticSize.x = ScreenRenderer.screen.getScaledWidth();
+        staticSize.x = ScreenRenderer.screen.getGuiScaledWidth();
     }
 
     public static void queueMessage(String message) {

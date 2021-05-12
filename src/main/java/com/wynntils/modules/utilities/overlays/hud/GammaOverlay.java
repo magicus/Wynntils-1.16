@@ -23,7 +23,7 @@ public class GammaOverlay extends Overlay {
             return;
         }
 
-        if (ScreenRenderer.mc.gameSettings.gammaSetting >= 1000) {
+        if (ScreenRenderer.mc.options.gammaSetting >= 1000) {
             drawString("GammaBright", 0, 0, CommonColors.ORANGE, SmartFontRenderer.TextAlignment.RIGHT_LEFT, OverlayConfig.INSTANCE.textShadow);
         }
     }

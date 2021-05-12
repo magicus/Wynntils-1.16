@@ -51,12 +51,12 @@ public class ScoreboardOverlay extends Overlay {
         if (scores.isEmpty()) return;
 
         // calculate width based on widest line
-        int width = OverlayConfig.Scoreboard.INSTANCE.showTitle ? font.getStringWidth(objective.getDisplayName()) : 0;
+        int width = OverlayConfig.Scoreboard.INSTANCE.showTitle ? font.width(objective.getDisplayName()) : 0;
         for (Score s : scores) {
             ScorePlayerTeam team = scoreboard.getPlayersTeam(s.getPlayerName());
             String line = ScorePlayerTeam.formatPlayerName(team, s.getPlayerName());
             if (OverlayConfig.Scoreboard.INSTANCE.showNumbers) line += ": " + TextFormatting.RED + s.getScorePoints();
-            width = Math.max(width, font.getStringWidth(line));
+            width = Math.max(width, font.width(line));
         }
 
         int height = scores.size() * font.FONT_HEIGHT;
@@ -79,12 +79,12 @@ public class ScoreboardOverlay extends Overlay {
             // draw line, including score if enabled
             int y = yOffset - (lineCount * font.FONT_HEIGHT);
             font.drawString(name, drawingOrigin().x + xOffset, drawingOrigin().y + y, CommonColors.WHITE.toInt());
-            if (OverlayConfig.Scoreboard.INSTANCE.showNumbers) font.drawString(score, drawingOrigin().x - 1 - font.getStringWidth(score), drawingOrigin().y + y, CommonColors.WHITE.toInt());
+            if (OverlayConfig.Scoreboard.INSTANCE.showNumbers) font.drawString(score, drawingOrigin().x - 1 - font.width(score), drawingOrigin().y + y, CommonColors.WHITE.toInt());
 
             lineCount++;
             if (lineCount > scores.size() && OverlayConfig.Scoreboard.INSTANCE.showTitle) { // end of scores, draw title if enabled
                 String title = objective.getDisplayName();
-                font.drawString(title, drawingOrigin().x + xOffset + width/2 - font.getStringWidth(title)/2, drawingOrigin().y + y - font.FONT_HEIGHT, CommonColors.WHITE.toInt());
+                font.drawString(title, drawingOrigin().x + xOffset + width/2 - font.width(title)/2, drawingOrigin().y + y - font.FONT_HEIGHT, CommonColors.WHITE.toInt());
             }
         }
 

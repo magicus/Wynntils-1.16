@@ -17,11 +17,11 @@ public class CoreManager {
      */
     public static void preModules() {
         MinecraftForge.EVENT_BUS.register(new ClientEvents());
-        
-        Minecraft.getInstance().gameSettings.keyBindForward.setKeyConflictContext(WynntilsConflictContext.ALLOW_MOVEMENTS);
-        Minecraft.getInstance().gameSettings.keyBindBack.setKeyConflictContext(WynntilsConflictContext.ALLOW_MOVEMENTS);
-        Minecraft.getInstance().gameSettings.keyBindRight.setKeyConflictContext(WynntilsConflictContext.ALLOW_MOVEMENTS);
-        Minecraft.getInstance().gameSettings.keyBindLeft.setKeyConflictContext(WynntilsConflictContext.ALLOW_MOVEMENTS);
+
+        Minecraft.getInstance().options.keyUp.setKeyConflictContext(WynntilsConflictContext.ALLOW_MOVEMENTS);
+        Minecraft.getInstance().options.keyDown.setKeyConflictContext(WynntilsConflictContext.ALLOW_MOVEMENTS);
+        Minecraft.getInstance().options.keyRight.setKeyConflictContext(WynntilsConflictContext.ALLOW_MOVEMENTS);
+        Minecraft.getInstance().options.keyLeft.setKeyConflictContext(WynntilsConflictContext.ALLOW_MOVEMENTS);
     }
 
     /**

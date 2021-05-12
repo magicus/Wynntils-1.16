@@ -55,7 +55,7 @@ public class WynnRenderItem extends ItemRenderer {
         GlStateManager._disableBlend();
         GlStateManager._pushMatrix();
 
-        int width = ScreenRenderer.font.getStringWidth(event.getOverlayText());
+        int width = ScreenRenderer.font.width(event.getOverlayText());
         GlStateManager.translate(xPosition + 17f, yPosition + 9f, 0f);
         if (width > GUI_OVERLAY_WIDTH_THRESH) {
             float scaleRatio = GUI_OVERLAY_WIDTH_THRESH / (float)width;

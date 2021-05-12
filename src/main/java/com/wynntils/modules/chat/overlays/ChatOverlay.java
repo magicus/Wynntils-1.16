@@ -55,7 +55,7 @@ public class ChatOverlay extends GuiNewChat {
     }
 
     public void drawChat(int updateCounter) {
-        if (mc.gameSettings.chatVisibility != PlayerEntity.EnumChatVisibility.HIDDEN) {
+        if (mc.options.chatVisibility != PlayerEntity.EnumChatVisibility.HIDDEN) {
             int chatSize = getCurrentTab().getCurrentMessages().size();
 
             getCurrentTab().checkNotifications();
@@ -89,7 +89,7 @@ public class ChatOverlay extends GuiNewChat {
                             l1 = 255;
                         }
 
-                        l1 = (int)((float)l1 * (mc.gameSettings.chatOpacity * 0.9F + 0.1F));
+                        l1 = (int)((float)l1 * (mc.options.chatOpacity * 0.9F + 0.1F));
                         ++l;
 
                         if (l1 > 3) {
@@ -317,7 +317,7 @@ public class ChatOverlay extends GuiNewChat {
     @Nullable
     public ITextComponent getChatComponent(int mouseX, int mouseY) {
         if (getChatOpen()) {
-            ScaledResolution scaledresolution = new ScaledResolution(mc);
+            MainWindow scaledresolution = new MainWindow(mc);
             int i = scaledresolution.getScaleFactor();
             float f = getChatScale();
             int j = mouseX / i - 2;
@@ -337,7 +337,7 @@ public class ChatOverlay extends GuiNewChat {
 
                         for (ITextComponent itextcomponent : chatline.getChatComponent()) {
                             if (itextcomponent instanceof TextComponentString) {
-                                j1 += mc.font.getStringWidth(GuiUtilRenderComponents.removeTextColorsIfConfigured(((TextComponentString) itextcomponent).getText(), false));
+                                j1 += mc.font.width(GuiUtilRenderComponents.removeTextColorsIfConfigured(((TextComponentString) itextcomponent).getText(), false));
 
                                 if (j1 > j) {
                                     return itextcomponent;
@@ -379,15 +379,15 @@ public class ChatOverlay extends GuiNewChat {
     }
 
     public int getChatWidth() {
-        return calculateChatboxWidth(mc.gameSettings.chatWidth);
+        return calculateChatboxWidth(mc.options.chatWidth);
     }
 
     public int getChatHeight() {
-        return calculateChatboxHeight(getChatOpen() ? mc.gameSettings.chatHeightFocused : mc.gameSettings.chatHeightUnfocused);
+        return calculateChatboxHeight(getChatOpen() ? mc.options.chatHeightFocused : mc.options.chatHeightUnfocused);
     }
 
     public float getChatScale() {
-        return mc.gameSettings.chatScale;
+        return mc.options.chatScale;
     }
 
     public static int calculateChatboxWidth(float scale) {

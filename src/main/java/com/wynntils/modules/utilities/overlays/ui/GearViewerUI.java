@@ -33,7 +33,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.container.Slot;
@@ -142,7 +142,7 @@ public class GearViewerUI extends FakeGuiContainer {
         ItemProfile item = WebManager.getItems().get(itemName);
 
         // disable viewing unidentified items
-        if (stack.getItem() == Items.STONE_SHOVEL && stack.getItemDamage() >= 1 && stack.getItemDamage() <= 6) {
+        if (stack.getItem() == Items.STONE_SHOVEL && stack.getDamageValue() >= 1 && stack.getDamageValue() <= 6) {
             stack.setStackDisplayName(item.getTier().getTextColor() + "Unidentified Item");
             return;
         }

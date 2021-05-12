@@ -168,8 +168,8 @@ public class UpdatingScreen extends Screen {
             drawRect(progressPoint, top, right, bottom, 0xFFFFFFFF);
 
             String label = String.format("%d%%", MathHelper.clamp(MathHelper.floor(progress * 100), 0, 100));
-            mc.font.drawString(label, (this.width - mc.font.getStringWidth(label))/2, top + 3, 0xFF000000);
-            int x = (this.width - mc.font.getStringWidth(String.format("Downloading %s", DOTS[DOTS.length - 1]))) / 2;
+            mc.font.drawString(label, (this.width - mc.font.width(label))/2, top + 3, 0xFF000000);
+            int x = (this.width - mc.font.width(String.format("Downloading %s", DOTS[DOTS.length - 1]))) / 2;
             String title = String.format("Downloading %s", DOTS[((int) (System.currentTimeMillis() % (DOT_TIME * DOTS.length))) / DOT_TIME]);
             drawString(mc.font, title, x, top - mc.font.FONT_HEIGHT - 2, 0xFFFFFFFF);
         }

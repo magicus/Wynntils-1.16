@@ -32,7 +32,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -97,7 +97,7 @@ public class BankOverlay implements Listener {
         if (destinationPage == page) destinationPage = 0; // if we've already arrived, reset destination
 
         if (searchField == null && UtilitiesConfig.Bank.INSTANCE.showBankSearchBar) {
-            int nameWidth = Minecraft.getInstance().font.getStringWidth(e.getGui().getUpperInv().getDisplayName().getUnformattedText());
+            int nameWidth = Minecraft.getInstance().font.width(e.getGui().getUpperInv().getDisplayName().getUnformattedText());
             searchField = new GuiTextFieldWynn(201, Minecraft.getInstance().font, nameWidth + 13, 128, 157 - nameWidth, 10);
             searchField.setText("Search...");
         }
@@ -315,7 +315,7 @@ public class BankOverlay implements Listener {
             } else {
                 searchField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
             }
-        } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE || e.getKeyCode() == ModCore.mc().gameSettings.keyBindInventory.getKeyCode()) { // bank was closed by player
+        } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE || e.getKeyCode() == ModCore.mc().options.keyBindInventory.getKeyCode()) { // bank was closed by player
             destinationPage = 0;
             searchField = null;
             searching = 0;

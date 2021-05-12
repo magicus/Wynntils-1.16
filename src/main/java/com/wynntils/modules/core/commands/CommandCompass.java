@@ -283,11 +283,11 @@ public class CommandCompass extends CommandBase implements IClientCommand {
     public static void shareCoordinates(String recipientUser, String type, int x, int z) {
         String location = "[" + x + ", " + z + "]";
         if (recipientUser == null) {
-            Minecraft.getInstance().player.sendChatMessage("/p " + " My " + type + " is at " + location);
+            Minecraft.getInstance().player.chat("/p " + " My " + type + " is at " + location);
         }else if (recipientUser.equalsIgnoreCase("guild")) {
-            Minecraft.getInstance().player.sendChatMessage("/g " + " My " + type + " is at " + location);
+            Minecraft.getInstance().player.chat("/g " + " My " + type + " is at " + location);
         } else {
-            Minecraft.getInstance().player.sendChatMessage("/msg " + recipientUser + " My " + type + " is at " + location);
+            Minecraft.getInstance().player.chat("/msg " + recipientUser + " My " + type + " is at " + location);
         }
     }
 

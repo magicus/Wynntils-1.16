@@ -30,7 +30,7 @@ public class GuiMovementScreen extends Screen {
         if (Keyboard.isCreated()) {
             while (Keyboard.next()) {
 
-                for (KeyBinding key : mc.gameSettings.keyBindings) {
+                for (KeyBinding key : mc.options.keyBindings) {
                     if (key.getKeyCode() != Keyboard.getEventKey() || key.getKeyConflictContext() != WynntilsConflictContext.ALLOW_MOVEMENTS) continue;
 
                     KeyBinding.setKeyBindState(Keyboard.getEventKey(), Keyboard.getEventKeyState());

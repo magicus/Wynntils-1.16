@@ -39,7 +39,7 @@ public class BeaconManager {
 
         alpha *= color.a;
 
-        double maxDistance = Minecraft.getInstance().gameSettings.renderDistanceChunks * 16d;
+        double maxDistance = Minecraft.getInstance().options.renderDistanceChunks * 16d;
         if (distance > maxDistance) {  // this will drag the beam to the visible area if outside of it
             // partial ticks aren't factored into player pos, so if we're going to use it for rendering, we need to recalculate to account for partial ticks
             Vec3d prevPosVec = new Vec3d(renderManager.renderViewEntity.prevPosX, renderManager.renderViewEntity.prevPosY, renderManager.renderViewEntity.prevPosZ);

@@ -116,19 +116,19 @@ public class StringUtils {
 
     public static String[] wrapTextBySize(String s, int maxPixels) {
         SmartFontRenderer renderer = ScreenRenderer.font;
-        int spaceSize = renderer.getStringWidth(" ");
+        int spaceSize = renderer.width(" ");
 
         String[] stringArray = s.split(" ");
         StringBuilder result = new StringBuilder();
         int length = 0;
 
         for (String string : stringArray) {
-            if (length + renderer.getStringWidth(string) >= maxPixels) {
+            if (length + renderer.width(string) >= maxPixels) {
                 result.append('|');
                 length = 0;
             }
             result.append(string).append(' ');
-            length += renderer.getStringWidth(string) + spaceSize;
+            length += renderer.width(string) + spaceSize;
         }
 
         return result.toString().split("\\|");

@@ -287,7 +287,7 @@ public class ItemProfile {
             if (itemInfo.isArmorColorValid()) display.setInteger("color", itemInfo.getArmorColorAsInt());
 
             tag.put("display", display);
-            tag.setBoolean("Unbreakable", true);  // this allow items like reliks to have damage
+            tag.putBoolean("Unbreakable", true);  // this allow items like reliks to have damage
 
             stack.setTag(tag);
         }

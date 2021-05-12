@@ -342,7 +342,7 @@ public class MiniMapOverlay extends Overlay {
 
     private static void drawTextOverlay(ScreenRenderer renderer, float x, float y, String text) {
         ScreenRenderer.scale(0.8f);
-        float w = renderer.getStringWidth(text) / 2f + 3f, h = SmartFontRenderer.CHAR_HEIGHT / 2f + 2f;
+        float w = renderer.width(text) / 2f + 3f, h = SmartFontRenderer.CHAR_HEIGHT / 2f + 2f;
         renderer.drawRectF(new CustomColor(0f, 0f, 0f, 0.7f), x - w, y - h + 1f, x + w, y + h);
         renderer.drawCenteredString(text, x, y - 3f, CommonColors.WHITE);
         ScreenRenderer.resetScale();

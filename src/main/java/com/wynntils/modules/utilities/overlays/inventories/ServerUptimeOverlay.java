@@ -9,7 +9,7 @@ import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.interfaces.Listener;
 import com.wynntils.core.utils.ItemUtils;
 import com.wynntils.modules.utilities.managers.ServerListManager;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -42,7 +42,7 @@ public class ServerUptimeOverlay implements Listener {
         newLore.forEach(c -> list.add(StringNBT.valueOf(c)));
 
         compound.put("Lore", list);
-        nbt.setBoolean("wynntils", true);
+        nbt.putBoolean("wynntils", true);
     }
 
 }

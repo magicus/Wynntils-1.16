@@ -50,9 +50,9 @@ public class LowHealthVignetteOverlay extends Overlay {
             BufferBuilder bufferbuilder = tessellator.getBuilder();
             {
                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-                bufferbuilder.vertex(0.0D, ScreenRenderer.screen.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-                bufferbuilder.vertex(ScreenRenderer.screen.getScaledWidth(), ScreenRenderer.screen.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-                bufferbuilder.vertex(ScreenRenderer.screen.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+                bufferbuilder.vertex(0.0D, ScreenRenderer.screen.getGuiScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
+                bufferbuilder.vertex(ScreenRenderer.screen.getGuiScaledWidth(), ScreenRenderer.screen.getGuiScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
+                bufferbuilder.vertex(ScreenRenderer.screen.getGuiScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
                 bufferbuilder.vertex(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
             }
             tessellator.end();

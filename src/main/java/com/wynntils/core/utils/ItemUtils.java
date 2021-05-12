@@ -8,8 +8,8 @@ import com.wynntils.core.utils.objects.IntRange;
 import com.wynntils.core.utils.reference.EmeraldSymbols;
 import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.profiles.item.enums.ItemType;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -131,14 +131,14 @@ public class ItemUtils {
                         damageValue = Integer.parseInt(values[1]);
                     }
 
-                    if (Item.getIdFromItem(item.getItem()) == i && item.getItemDamage() == damageValue) return e.getKey();
+                    if (Item.getId(item.getItem()) == i && item.getDamageValue() == damageValue) return e.getKey();
                 }
             }
         }
         return null;
     }
 
-    private static final Item EMERALD_BLOCK = Item.getItemFromBlock(Blocks.EMERALD_BLOCK);
+    private static final Item EMERALD_BLOCK = Item.byBlock(Blocks.EMERALD_BLOCK);
 
     /**
      * @return the total amount of emeralds in an inventory, including blocks and le
@@ -201,7 +201,7 @@ public class ItemUtils {
     }
 
     static {
-        UNBREAKABLE.setBoolean("Unbreakable", true);
+        UNBREAKABLE.putBoolean("Unbreakable", true);
     }
 
 }

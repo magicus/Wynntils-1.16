@@ -21,7 +21,7 @@ import com.wynntils.modules.questbook.instances.QuestBookPage;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -255,7 +255,7 @@ public class LootRunPage extends QuestBookPage {
 
                     String friendlyName = getFriendlyName(currentName, 120);
                     if (selected == i && toCrop && animationTick > 0) {
-                        int maxScroll = font.getStringWidth(friendlyName) - (120 - 10);
+                        int maxScroll = font.width(friendlyName) - (120 - 10);
                         int scrollAmount = (animationTick / 20) % (maxScroll + 60);
 
                         if (maxScroll <= scrollAmount && scrollAmount <= maxScroll + 40) {
@@ -319,11 +319,11 @@ public class LootRunPage extends QuestBookPage {
     }
 
     public String getFriendlyName(String str, int width) {
-        if (!(Minecraft.getInstance().font.getStringWidth(str) > width)) return str;
+        if (!(Minecraft.getInstance().font.width(str) > width)) return str;
 
         str += "...";
 
-        while (Minecraft.getInstance().font.getStringWidth(str) > width) {
+        while (Minecraft.getInstance().font.width(str) > width) {
             str = str.substring(0, str.length() - 4).trim() + "...";
         }
 
@@ -337,9 +337,9 @@ public class LootRunPage extends QuestBookPage {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        ScaledResolution res = new ScaledResolution(mc);
-        int posX = ((res.getScaledWidth() / 2) - mouseX);
-        int posY = ((res.getScaledHeight() / 2) - mouseY);
+        MainWindow res = new MainWindow(mc);
+        int posX = ((res.getGuiScaledWidth() / 2) - mouseX);
+        int posY = ((res.getGuiScaledHeight() / 2) - mouseY);
 
         checkMenuButton(posX, posY);
         checkForwardAndBackButtons(posX, posY);

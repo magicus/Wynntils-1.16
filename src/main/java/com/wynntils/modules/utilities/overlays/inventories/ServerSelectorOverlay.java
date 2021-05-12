@@ -40,9 +40,9 @@ public class ServerSelectorOverlay implements Listener {
         String itemName = StringUtils.normalizeBadString(TextFormatting.getTextWithoutFormattingCodes(stack.getDisplayName()));
 
         if (itemName.startsWith("World") && Reference.onBeta) {
-            nbt.setBoolean("wynntilsServerIgnore", true);
+            nbt.putBoolean("wynntilsServerIgnore", true);
             if (CoreDBConfig.INSTANCE.updateStream == UpdateStream.STABLE && WebManager.blockHeroBetaStable()) {
-                nbt.setBoolean("wynntilsBlock", true);
+                nbt.putBoolean("wynntilsBlock", true);
                 List<String> lore = ItemUtils.getLore(stack);
                 lore.add("" + TextFormatting.RED + TextFormatting.BOLD + "Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Try switching to Cutting Edge, or removing Wynntils while on the Hero Beta until support is added.");
                 CompoundNBT compound = nbt.getCompound("display");
@@ -51,7 +51,7 @@ public class ServerSelectorOverlay implements Listener {
                 compound.put("Lore", list);
                 nbt.put("display", compound);
             } else if (CoreDBConfig.INSTANCE.updateStream == UpdateStream.CUTTING_EDGE && WebManager.blockHeroBetaCuttingEdge()) {
-                nbt.setBoolean("wynntilsBlock", true);
+                nbt.putBoolean("wynntilsBlock", true);
                 List<String> lore = ItemUtils.getLore(stack);
                 lore.add("" + TextFormatting.RED + TextFormatting.BOLD + "Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Try removing Wynntils until support is added.");
                 CompoundNBT compound = nbt.getCompound("display");
@@ -68,7 +68,7 @@ public class ServerSelectorOverlay implements Listener {
     }
 
     private void addWarningToStack(ItemStack stack, CompoundNBT nbt) {
-        nbt.setBoolean("wynntilsWarn", true);
+        nbt.putBoolean("wynntilsWarn", true);
         List<String> lore = ItemUtils.getLore(stack);
         lore.add("" + TextFormatting.RED + TextFormatting.BOLD + "Your version of Wynntils is currently unstable on the Hero Beta. Expect frequent crashes and bugs!");
         lore.add("" + TextFormatting.GREEN + "Please report any issues you do experience on the Wynntils discord (" + WebManager.getApiUrl("DiscordInvite") + ")");

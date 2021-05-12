@@ -25,7 +25,7 @@ import com.wynntils.webapi.request.RequestHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
@@ -195,7 +195,7 @@ public class QuestsPage extends QuestBookPage {
                     String name = selected.getFriendlyName();
                     if (this.selected == i && !name.equals(selected.getName()) && animationTick > 0) {
                         name = selected.getName();
-                        int maxScroll = font.getStringWidth(name) - (120 - 10);
+                        int maxScroll = font.width(name) - (120 - 10);
                         int scrollAmount = (animationTick / 20) % (maxScroll + 60);
 
                         if (maxScroll <= scrollAmount && scrollAmount <= maxScroll + 40) {
@@ -255,9 +255,9 @@ public class QuestsPage extends QuestBookPage {
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        ScaledResolution res = new ScaledResolution(mc);
-        int posX = ((res.getScaledWidth() / 2) - mouseX);
-        int posY = ((res.getScaledHeight() / 2) - mouseY);
+        MainWindow res = new MainWindow(mc);
+        int posX = ((res.getGuiScaledWidth() / 2) - mouseX);
+        int posY = ((res.getGuiScaledHeight() / 2) - mouseY);
 
         // Handle quest click
         if (overQuest != null) {
