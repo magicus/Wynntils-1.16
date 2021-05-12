@@ -69,10 +69,10 @@ public class ItemInfoContainer {
         if (material.matches("(.*\\d.*)")) {
             String[] split = material.split(":");
 
-            ItemStack stack = new ItemStack(Item.getItemById(Integer.parseInt(split[0])));
+            ItemStack stack = new ItemStack(Item.byId(Integer.parseInt(split[0])));
             if (split.length <= 1) return stack;
 
-            stack.setItemDamage(Integer.parseInt(split[1]));
+            stack.setDamageValue(Integer.parseInt(split[1]));
             return stack;
         }
 

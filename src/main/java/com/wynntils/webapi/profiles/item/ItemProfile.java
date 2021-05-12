@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.text.Style;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -268,7 +269,7 @@ public class ItemProfile {
 
             // item lore
             if (lore != null && !lore.isEmpty()) {
-                itemLore.addAll(Minecraft.getInstance().font.listFormattedStringToWidth(DARK_GRAY + this.getLore(), 150));
+                itemLore.addAll(Minecraft.getInstance().font.getSplitter().splitLines(DARK_GRAY + this.getLore(), 150, Style.EMPTY));
             }
         }
 
@@ -281,10 +282,10 @@ public class ItemProfile {
             itemLore.forEach(c -> loreList.add(StringNBT.valueOf(c)));
 
             display.put("Lore", loreList);
-            display.setString("Name", tier.getTextColor() + displayName);  // item display name
+            display.putString("Name", tier.getTextColor() + displayName);  // item display name
 
             // armor color
-            if (itemInfo.isArmorColorValid()) display.setInteger("color", itemInfo.getArmorColorAsInt());
+            if (itemInfo.isArmorColorValid()) display.putInt("color", itemInfo.getArmorColorAsInt());
 
             tag.put("display", display);
             tag.putBoolean("Unbreakable", true);  // this allow items like reliks to have damage

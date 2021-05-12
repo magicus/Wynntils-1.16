@@ -401,7 +401,7 @@ public class ItemIdentificationOverlay implements Listener {
             // check for updates
             if (!compound.getString("currentType").equals(idType.toString())) {
                 compound.putBoolean("shouldUpdate", true);
-                compound.setString("currentType", idType.toString());
+                compound.putString("currentType", idType.toString());
 
                 stack.getTag().put("wynntils", compound);
             }
@@ -412,8 +412,8 @@ public class ItemIdentificationOverlay implements Listener {
         CompoundNBT mainTag = new CompoundNBT();
 
         {  // main data
-            mainTag.setString("originName", StringUtils.normalizeBadString(getTextWithoutFormattingCodes(stack.getDisplayName())));  // this replace allow market items to be scanned
-            mainTag.setString("currentType", idType.toString());
+            mainTag.putString("originName", StringUtils.normalizeBadString(getTextWithoutFormattingCodes(stack.getDisplayName())));  // this replace allow market items to be scanned
+            mainTag.putString("currentType", idType.toString());
             mainTag.putBoolean("shouldUpdate", true);
         }
 
@@ -447,14 +447,14 @@ public class ItemIdentificationOverlay implements Listener {
 
                         String shortIdName = toShortIdName(idName, isRaw);
                         if (stars != 0) {
-                            idTag.setInteger(shortIdName + "*", stars);
+                            idTag.putInt(shortIdName + "*", stars);
                         }
 
                         if (isBonus) {
-                            setBonus.setString(shortIdName, loreLine);
+                            setBonus.putString(shortIdName, loreLine);
                             continue;
                         }
-                        idTag.setInteger(shortIdName, Integer.parseInt(idMatcher.group("Value")));
+                        idTag.putInt(shortIdName, Integer.parseInt(idMatcher.group("Value")));
                         continue;
                     }
                 }
@@ -464,13 +464,13 @@ public class ItemIdentificationOverlay implements Listener {
                     if (rerollMatcher.find()) {
                         if (rerollMatcher.group("Rolls") == null) continue;
 
-                        mainTag.setInteger("rerollAmount", Integer.parseInt(rerollMatcher.group("Rolls")));
+                        mainTag.putInt("rerollAmount", Integer.parseInt(rerollMatcher.group("Rolls")));
                         continue;
                     }
                 }
 
                 // powders
-                if (lColor.contains("] Powder Slots")) mainTag.setString("powderSlots", loreLine);
+                if (lColor.contains("] Powder Slots")) mainTag.putString("powderSlots", loreLine);
 
                 // dungeon and merchant prices
                 if (lColor.startsWith(" - ✔") || lColor.startsWith(" - ✖")) {
@@ -485,11 +485,11 @@ public class ItemIdentificationOverlay implements Listener {
                     CompoundNBT marketTag = new CompoundNBT();
 
                     if (market.group("Quantity") != null)
-                        marketTag.setInteger("quantity", Integer.parseInt(
+                        marketTag.putInt("quantity", Integer.parseInt(
                                 market.group("Quantity").replace(",", "").replace(" x ", "")
                         ));
 
-                    marketTag.setInteger("price", Integer.parseInt(market.group("Value").replace(",", "")));
+                    marketTag.putInt("price", Integer.parseInt(market.group("Value").replace(",", "")));
 
                     mainTag.put("marketInfo", marketTag);
                 }

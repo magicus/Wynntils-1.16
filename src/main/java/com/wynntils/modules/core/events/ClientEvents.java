@@ -131,7 +131,7 @@ public class ClientEvents implements Listener {
     private GatheringBake bakeStatus = null;
 
     @SubscribeEvent
-    public void workAroundWynncraftNPEBug(PacketEvent<SPacketTeams> e) {
+    public void workAroundWynncraftNPEBug(PacketEvent<STeamsPacket> e) {
         if (e.getPacket().getAction() == 1) {
             ScorePlayerTeam scoreplayerteam;
 
@@ -145,12 +145,12 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void cancelSomeVelocity(PacketEvent<SPacketEntityVelocity> e) {
+    public void cancelSomeVelocity(PacketEvent<SEntityVelocityPacket> e) {
         // I'm not sure what this does, but the code has been here a long time,
         // just moving it here. /magicus, 2021
-        SPacketEntityVelocity velocity = e.getPacket();
+        SEntityVelocityPacket velocity = e.getPacket();
         if (Minecraft.getInstance().world != null) {
-            Entity entity = Minecraft.getInstance().world.getEntityByID(velocity.getEntityID());
+            Entity entity = Minecraft.getInstance().level.getEntityByID(velocity.getEntityID());
             Entity vehicle = Minecraft.getInstance().player.getLowestRidingEntity();
             if ((entity == vehicle) && (vehicle != Minecraft.getInstance().player) && (vehicle.canPassengerSteer())) {
                 e.setCanceled(true);

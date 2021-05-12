@@ -66,7 +66,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
             boolean hasRequirement = PlayerInfo.get(CharacterData.class).getLevel() >= levelRequirement;
 
             ItemStack buildStack = new ItemStack(Items.DIAMOND_AXE);
-            buildStack.setItemDamage(hasRequirement ? 42 : 44);
+            buildStack.setDamageValue(hasRequirement ? 42 : 44);
             buildStack.setStackDisplayName(TextFormatting.DARK_AQUA + name);
             buildStack.setTagInfo("Unbreakable", new NBTTagByte((byte) 1));
             buildStack.setTagInfo("HideFlags", new NBTTagInt(6));

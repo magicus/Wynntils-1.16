@@ -762,18 +762,18 @@ public class ItemPage extends QuestBookPage {
         };
 
         static {
-            SCROLL_STACK.setItemDamage(42);
+            SCROLL_STACK.setDamageValue(42);
             CompoundNBT tag = new CompoundNBT();
             tag.putBoolean("Unbreakable", true);
-            tag.setInteger("HideFlags", 6);
+            tag.putInt("HideFlags", 6);
             SCROLL_STACK.setTag(tag);
 
             tag = new CompoundNBT();
-            tag.setInteger("CustomPotionColor", 0xff0000);
+            tag.putInt("CustomPotionColor", 0xff0000);
             RED_POTION_STACK.setTag(tag);
 
             tag = new CompoundNBT();
-            tag.setInteger("CustomPotionColor", 0x0000ff);
+            tag.putInt("CustomPotionColor", 0x0000ff);
             BLUE_POTION_STACK.setTag(tag);
         }
 
