@@ -49,7 +49,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.play.client.CPacketClientSettings;
-import net.minecraft.network.play.client.CPacketHeldItemChange;
+import net.minecraft.network.play.client.CHeldItemChangePacket;
 import net.minecraft.network.play.server.*;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
@@ -445,9 +445,9 @@ public class ClientEvents implements Listener {
     public void entityJoin(EntityJoinWorldEvent e) {
         if (!(e.getEntity() instanceof PlayerEntity)) return;
         PlayerEntity player = (PlayerEntity) e.getEntity();
-        if (player.getGameProfile() == null) return;
+        if (player.getProfile() == null) return;
 
-        String name = player.getGameProfile().getName();
+        String name = player.getProfile().getName();
         if (name.contains("\u0001") || name.contains("§")) return; // avoid player npcs
 
         UserManager.loadUser(e.getEntity().getUniqueID());
@@ -484,7 +484,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onWeaponChange(PacketEvent<CPacketHeldItemChange> e) {
+    public void onWeaponChange(PacketEvent<CHeldItemChangePacket> e) {
         totemTracker.onWeaponChange(e);
     }
 

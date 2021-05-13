@@ -21,7 +21,7 @@ import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPacketTitle;
-import net.minecraft.network.play.server.SPacketWindowItems;
+import net.minecraft.network.play.server.SWindowItemsPacket;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -100,7 +100,7 @@ public class ClientEvents implements Listener {
 
     // mythic found sfx
     @SubscribeEvent
-    public void onMythicFound(PacketEvent<SPacketWindowItems> e) {
+    public void onMythicFound(PacketEvent<SWindowItemsPacket> e) {
         if (!MusicConfig.SoundEffects.INSTANCE.mythicFound) return;
         if (Minecraft.getInstance().screen == null) return;
         if (!(Minecraft.getInstance().screen instanceof ChestReplacer)) return;

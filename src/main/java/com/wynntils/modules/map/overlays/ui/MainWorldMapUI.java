@@ -233,8 +233,8 @@ public class MainWorldMapUI extends WorldMapUI {
             z = (int) location.getZ();
         } else {
             type = "location";
-            x = (int) Minecraft.getInstance().player.posX;
-            z = (int) Minecraft.getInstance().player.posZ;
+            x = (int) Minecraft.getInstance().player.getX();
+            z = (int) Minecraft.getInstance().player.getZ();
         }
 
         if (leftClick)

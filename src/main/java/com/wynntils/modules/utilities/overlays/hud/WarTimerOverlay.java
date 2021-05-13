@@ -163,7 +163,7 @@ public class WarTimerOverlay extends Overlay {
                 if (territory == null) {
                     ClientPlayerEntity pl = ModCore.mc().player;
                     for (TerritoryProfile pf : WebManager.getTerritories().values()) {
-                        if (pf.insideArea((int)pl.posX, (int)pl.posZ)) {
+                        if (pf.insideArea((int)pl.getX(), (int)pl.getZ())) {
                             territory = pf.getFriendlyName();
                             return;
                         }

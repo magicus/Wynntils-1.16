@@ -12,12 +12,12 @@ import com.wynntils.modules.core.interfaces.IInventoryOpenAction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketClickWindow;
-import net.minecraft.network.play.client.CPacketCloseWindow;
-import net.minecraft.network.play.client.CPacketConfirmTransaction;
-import net.minecraft.network.play.server.SPacketConfirmTransaction;
-import net.minecraft.network.play.server.SPacketOpenWindow;
-import net.minecraft.network.play.server.SPacketWindowItems;
+import net.minecraft.network.play.client.CClickWindowPacket;
+import net.minecraft.network.play.client.CCloseWindowPacket;
+import net.minecraft.network.play.client.CConfirmTransactionPacket;
+import net.minecraft.network.play.server.SConfirmTransactionPacket;
+import net.minecraft.network.play.server.SOpenWindowPacket;
+import net.minecraft.network.play.server.SWindowItemsPacket;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatEvent;
@@ -109,7 +109,7 @@ public class FakeInventory {
         FrameworkManager.getEventBus().unregister(this);
         isOpen = false;
 
-        if (windowId != -1) mc.getConnection().sendPacket(new CPacketCloseWindow(windowId));
+        if (windowId != -1) mc.getConnection().send(new CCloseWindowPacket(windowId));
         windowId = -1;
 
         if(onClose != null) mc.submit(() -> onClose.accept(this, result));
@@ -122,7 +122,7 @@ public class FakeInventory {
         expectingResponse = true;
 
         transaction++;
-        mc.getConnection().sendPacket(new CPacketClickWindow(windowId, slot, mouseButton, type, inventory.get(slot), transaction));
+        mc.getConnection().send(new CClickWindowPacket(windowId, slot, mouseButton, type, inventory.get(slot), transaction));
     }
 
     public Pair<Integer, ItemStack> findItem(String name, BiPredicate<String, String> filterType) {
@@ -197,7 +197,7 @@ public class FakeInventory {
 
     // detects the GUI open, and gatters information
     @SubscribeEvent
-    public void onInventoryReceive(PacketEvent<SPacketOpenWindow> e) {
+    public void onInventoryReceive(PacketEvent<SOpenWindowPacket> e) {
         if (!e.getPacket().getGuiId().equalsIgnoreCase("minecraft:container") || !e.getPacket().hasSlots()) {
             close(InventoryResult.CLOSED_OVERLAP);
             return;
@@ -221,7 +221,7 @@ public class FakeInventory {
 
     // detects item receiving
     @SubscribeEvent
-    public void onItemsReceive(PacketEvent<SPacketWindowItems> e) {
+    public void onItemsReceive(PacketEvent<SWindowItemsPacket> e) {
         if (windowId != e.getPacket().getWindowId()) {
             close(InventoryResult.CLOSED_OVERLAP);
             return;
@@ -240,13 +240,13 @@ public class FakeInventory {
 
     // confirm all server transactions
     @SubscribeEvent
-    public void confirmAllTransactions(PacketEvent.Incoming<SPacketConfirmTransaction> e) {
+    public void confirmAllTransactions(PacketEvent.Incoming<SConfirmTransactionPacket> e) {
         if (windowId != e.getPacket().getWindowId()) {
             close(InventoryResult.CLOSED_OVERLAP);
             return;
         }
 
-        mc.getConnection().sendPacket(new CPacketConfirmTransaction(windowId, e.getPacket().getActionNumber(), true));
+        mc.getConnection().send(new CConfirmTransactionPacket(windowId, e.getPacket().getActionNumber(), true));
         e.setCanceled(true);
     }
 

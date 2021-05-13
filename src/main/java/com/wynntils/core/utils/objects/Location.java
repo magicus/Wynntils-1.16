@@ -19,7 +19,7 @@ public class Location extends Point3d {
     }
 
     public Location(Entity entity) {
-        super(entity.posX, entity.posY, entity.posZ);
+        super(entity.getX(), entity.getY(), entity.getZ());
     }
 
     public Location(Tuple3d t) {

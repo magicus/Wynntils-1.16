@@ -21,7 +21,7 @@ import com.wynntils.modules.questbook.instances.QuestBookPage;
 import com.wynntils.modules.questbook.managers.QuestManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Items;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
+import net.minecraft.network.play.client.CPlayerTryUseItemPacket;
 import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -103,7 +103,7 @@ public class ClientEvents implements Listener {
     boolean openQuestBook = false;
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void clickOnQuestBookItem(PacketEvent<CPacketPlayerTryUseItem> e) {
+    public void clickOnQuestBookItem(PacketEvent<CPlayerTryUseItemPacket> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
                 || Minecraft.getInstance().player.inventory.selected != 7) return;

@@ -124,8 +124,8 @@ public class HeldItemChatManager {
 
         double compassX = compass.getX();
         double compassZ = compass.getZ();
-        double playerX = Minecraft.getInstance().player.posX;
-        double playerZ = Minecraft.getInstance().player.posZ;
+        double playerX = Minecraft.getInstance().player.getX();
+        double playerZ = Minecraft.getInstance().player.getZ();
 
         int distance = MathHelper.floor(MathHelper.sqrt((compassX - playerX) * (compassX - playerX) + (compassZ - playerZ) * (compassZ - playerZ)));
 

@@ -62,7 +62,7 @@ public class GearViewerUI extends FakeGuiContainer {
         this.inventory = inventory;
 
         // create copy of given player and inventory to keep items and models separate
-        this.player = new EntityOtherPlayerMP(player.getEntityWorld(), player.getGameProfile());
+        this.player = new EntityOtherPlayerMP(player.getEntityWorld(), player.getProfile());
         this.copyInventory(this.player.inventory, player.inventory);
 
         this.xSize = 103;

@@ -122,7 +122,7 @@ public class ClientEvents implements Listener {
 
         Entity lowestEntity = player.getLowestRidingEntity();
 
-        LootRunManager.recordMovement(lowestEntity.posX, lowestEntity.posY, lowestEntity.posZ);
+        LootRunManager.recordMovement(lowestEntity.getX(), lowestEntity.getY(), lowestEntity.getZ());
     }
 
     @SubscribeEvent

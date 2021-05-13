@@ -11,7 +11,7 @@ import com.wynntils.modules.core.managers.PlayerEntityManager;
 import com.wynntils.modules.map.overlays.objects.MapPlayerIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.play.ClientPlayNetHandler;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.network.play.NetworkPlayerInfo;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 
@@ -109,9 +109,9 @@ public class OtherPlayerProfile {
         hasHat = e.isWearing(EnumPlayerModelParts.HAT);
 
         if (e.isDead || e.getDistance(Minecraft.getInstance().player) >= 30) return false;
-        x = (int) e.posX;
-        y = (int) e.posY;
-        z = (int) e.posZ;
+        x = (int) e.getX();
+        y = (int) e.getY();
+        z = (int) e.getZ();
 
         return true;
     }
@@ -158,7 +158,7 @@ public class OtherPlayerProfile {
         if (username == null) {
             NetworkPlayerInfo info = getPlayerInfo();
             if (info != null) {
-                username = info.getGameProfile().getName();
+                username = info.getProfile().getName();
                 nameMap.put(username, this);
                 GuildAndFriendManager.tryResolveName(uuid, username);
             }

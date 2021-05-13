@@ -38,7 +38,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketClickWindow;
+import net.minecraft.network.play.client.CClickWindowPacket;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -355,7 +355,7 @@ public class BankOverlay implements Listener {
         // don't assume we can hop to a page that's greater than the destination
         if (hop > UtilitiesConfig.Bank.INSTANCE.maxPages && hop > destinationPage) hop -=4;
 
-        CPacketClickWindow packet = null;
+        CClickWindowPacket packet = null;
         if (Math.abs(destinationPage - hop) >= Math.abs(destinationPage - page)) { // we already hopped, or started from a better/equivalent spot
             if (page < destinationPage) { // destination is in front of us
                 ItemStack is = bankGui.inventorySlots.getSlot(PAGE_FORWARD).getStack();
@@ -366,7 +366,7 @@ public class BankOverlay implements Listener {
                     searching = 0;
                     return;
                 }
-                packet = new CPacketClickWindow(bankGui.inventorySlots.windowId, PAGE_FORWARD, 0, ClickType.PICKUP, is,
+                packet = new CClickWindowPacket(bankGui.inventorySlots.windowId, PAGE_FORWARD, 0, ClickType.PICKUP, is,
                                 bankGui.inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
             } else {
                 ItemStack is = bankGui.inventorySlots.getSlot(PAGE_BACK).getStack();
@@ -377,16 +377,16 @@ public class BankOverlay implements Listener {
                     searching = 0;
                     return;
                 }
-                packet = new CPacketClickWindow(bankGui.inventorySlots.windowId, PAGE_BACK, 0, ClickType.PICKUP, is,
+                packet = new CClickWindowPacket(bankGui.inventorySlots.windowId, PAGE_BACK, 0, ClickType.PICKUP, is,
                                 bankGui.inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
             }
         } else { // attempt to hop using default quick access buttons
             int slotId = QA_SLOTS[(hop / 4)];
-            packet = new CPacketClickWindow(bankGui.inventorySlots.windowId, slotId, 0, ClickType.PICKUP, bankGui.inventorySlots.getSlot(slotId).getStack(),
+            packet = new CClickWindowPacket(bankGui.inventorySlots.windowId, slotId, 0, ClickType.PICKUP, bankGui.inventorySlots.getSlot(slotId).getStack(),
                             bankGui.inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
         }
 
-        ModCore.mc().getConnection().sendPacket(packet);
+        ModCore.mc().getConnection().send(packet);
     }
 
     private void searchPageForItems(ChestReplacer bankGui) {

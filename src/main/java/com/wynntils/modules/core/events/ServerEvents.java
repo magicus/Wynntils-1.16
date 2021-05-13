@@ -37,7 +37,7 @@ import com.wynntils.webapi.profiles.TerritoryProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.network.play.server.SPacketSpawnPosition;
+import net.minecraft.network.play.server.SWorldSpawnChangedPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
@@ -285,8 +285,8 @@ public class ServerEvents implements Listener {
      *  Block compass changing locations if a forced location is set
      */
     @SubscribeEvent
-    public void onCompassChange(PacketEvent<SPacketSpawnPosition> e) {
-        currentSpawn = e.getPacket().getSpawnPos();
+    public void onCompassChange(PacketEvent<SWorldSpawnChangedPacket> e) {
+        currentSpawn = e.getPacket().getPos();
         if (Minecraft.getInstance().player == null) {
             CompassManager.reset();
             return;
@@ -339,20 +339,20 @@ public class ServerEvents implements Listener {
 
                 TerritoryProfile currentLocation = WebManager.getTerritories().get(location);
 
-                if (currentLocation != null && currentLocation.insideArea((int) pl.posX, (int) pl.posZ)) {
+                if (currentLocation != null && currentLocation.insideArea((int) pl.getX(), (int) pl.getZ())) {
                     return;
                 }
             }
 
             for (TerritoryProfile pf : WebManager.getTerritories().values()) {
-                if (pf.insideArea((int) pl.posX, (int) pl.posZ)) {
+                if (pf.insideArea((int) pl.getX(), (int) pl.getZ())) {
                     data.setLocation(pf.getFriendlyName());
                     return;
                 }
             }
 
-            int chunkX = pl.chunkCoordX;
-            int chunkZ = pl.chunkCoordZ;
+            int chunkX = pl.xChunk; // FIXME: 1.16 -- is this the correct replacement? /magicus
+            int chunkZ = pl.zChunk;
 
             // housing instances are over these chunk coordinates
             if (chunkX >= 4096 && chunkZ >= 4096) {

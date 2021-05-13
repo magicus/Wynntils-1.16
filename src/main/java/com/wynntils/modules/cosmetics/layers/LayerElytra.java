@@ -74,9 +74,9 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
         { _pushMatrix();
             translate(0.0F, 0.0F, 0.125F);
 
-            double d0 = player.prevChasingPosX + (player.chasingPosX - player.prevChasingPosX) * (double) partialTicks - (player.prevPosX + (player.posX - player.prevPosX) * (double) partialTicks);
-            double d1 = player.prevChasingPosY + (player.chasingPosY - player.prevChasingPosY) * (double) partialTicks - (player.prevPosY + (player.posY - player.prevPosY) * (double) partialTicks);
-            double d2 = player.prevChasingPosZ + (player.chasingPosZ - player.prevChasingPosZ) * (double) partialTicks - (player.prevPosZ + (player.posZ - player.prevPosZ) * (double) partialTicks);
+            double d0 = player.prevChasingPosX + (player.chasingPosX - player.prevChasingPosX) * (double) partialTicks - (player.prevPosX + (player.getX() - player.prevPosX) * (double) partialTicks);
+            double d1 = player.prevChasingPosY + (player.chasingPosY - player.prevChasingPosY) * (double) partialTicks - (player.prevPosY + (player.getY() - player.prevPosY) * (double) partialTicks);
+            double d2 = player.prevChasingPosZ + (player.chasingPosZ - player.prevChasingPosZ) * (double) partialTicks - (player.prevPosZ + (player.getZ() - player.prevPosZ) * (double) partialTicks);
             float f = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks;
             double d3 = MathHelper.sin(f * 0.017453292F);
             double d4 = -MathHelper.cos(f * 0.017453292F);

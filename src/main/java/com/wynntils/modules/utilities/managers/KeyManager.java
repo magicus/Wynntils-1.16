@@ -19,7 +19,7 @@ import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.inventory.container.ClickType;
-import net.minecraft.network.play.client.CPacketClickWindow;
+import net.minecraft.network.play.client.CClickWindowPacket;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import org.lwjgl.glfw.GLFW;
 
@@ -77,7 +77,7 @@ public class KeyManager {
             if (!Reference.onWorld) return;
 
             ClientPlayerEntity player = Minecraft.getInstance().player;
-            player.connection.sendPacket(new CPacketClickWindow(
+            player.connection.send(new CClickWindowPacket(
                     player.inventoryContainer.windowId,
                     13, 0, ClickType.PICKUP, player.inventory.getItem(13),
                     player.inventoryContainer.getNextTransactionID(player.inventory)

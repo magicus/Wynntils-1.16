@@ -177,7 +177,7 @@ public class CommandLootRun extends CommandBase implements IClientCommand {
 
                 Entity lowest = ModCore.mc().player.getLowestRidingEntity();
                 String message;
-                if (LootRunManager.undoMovement(lowest.posX, lowest.posY, lowest.posZ)) {
+                if (LootRunManager.undoMovement(lowest.getX(), lowest.getY(), lowest.getZ())) {
                     message = GREEN + "Undid your most recent movements!";
                 } else {
                     message = RED + "Failed to undo your movements!\n" + RED + "Make sure you are standing on the part of the path you want to rewind to";
@@ -232,7 +232,7 @@ public class CommandLootRun extends CommandBase implements IClientCommand {
                 String text = String.join(" ", args);
                 text = text.substring(text.indexOf(" ")).trim();
                 ClientPlayerEntity player = ModCore.mc().player;
-                LootRunNote note = new LootRunNote(new Location(player.posX, player.posY, player.posZ), text);
+                LootRunNote note = new LootRunNote(new Location(player.getX(), player.getY(), player.getZ()), text);
 
                 ITextComponent message;
                 if (LootRunManager.addNote(note)) {
@@ -265,7 +265,7 @@ public class CommandLootRun extends CommandBase implements IClientCommand {
                 String command = args[0].toLowerCase(Locale.ROOT);
                 BlockPos pos;
                 if (args.length < 4) {
-                    pos = new BlockPos((int) ModCore.mc().player.posX, (int) ModCore.mc().player.posY, (int) ModCore.mc().player.posZ - 1);
+                    pos = new BlockPos((int) ModCore.mc().player.getX(), (int) ModCore.mc().player.getY(), (int) ModCore.mc().player.getZ() - 1);
                 } else {
                     int x = 0, y = 0, z = 0;
                     try {

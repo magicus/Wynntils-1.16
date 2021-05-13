@@ -68,11 +68,11 @@ public class MiniMapOverlay extends Overlay {
         int zoom = MapConfig.INSTANCE.mapZoom;
 
         // texture position
-        float minX = map.getTextureXPosition(mc.player.posX) - extraFactor * (mapSize/2f + zoom);  // <--- min texture x point
-        float minZ = map.getTextureZPosition(mc.player.posZ) - extraFactor * (mapSize/2f + zoom);  // <--- min texture z point
+        float minX = map.getTextureXPosition(mc.player.getX()) - extraFactor * (mapSize/2f + zoom);  // <--- min texture x point
+        float minZ = map.getTextureZPosition(mc.player.getZ()) - extraFactor * (mapSize/2f + zoom);  // <--- min texture z point
 
-        float maxX = map.getTextureXPosition(mc.player.posX) + extraFactor * (mapSize/2f + zoom);  // <--- max texture x point
-        float maxZ = map.getTextureZPosition(mc.player.posZ) + extraFactor * (mapSize/2f + zoom);  // <--- max texture z point
+        float maxX = map.getTextureXPosition(mc.player.getX()) + extraFactor * (mapSize/2f + zoom);  // <--- max texture x point
+        float maxZ = map.getTextureZPosition(mc.player.getZ()) + extraFactor * (mapSize/2f + zoom);  // <--- max texture z point
 
         minX /= (float)map.getImageWidth(); maxX /= (float)map.getImageWidth();
         minZ /= (float)map.getImageHeight(); maxZ /= (float)map.getImageHeight();
@@ -139,11 +139,11 @@ public class MiniMapOverlay extends Overlay {
 
                 // These two points for a box bigger than the actual minimap so the icons outside
                 // can quickly be filtered out
-                final int minFastWorldX = (int) (mc.player.posX - extraFactor * (mapSize/2f + zoom));
-                final int minFastWorldZ = (int) (mc.player.posZ - extraFactor * (mapSize/2f + zoom));
+                final int minFastWorldX = (int) (mc.player.getX() - extraFactor * (mapSize/2f + zoom));
+                final int minFastWorldZ = (int) (mc.player.getZ() - extraFactor * (mapSize/2f + zoom));
 
-                final int maxFastWorldX = (int) (mc.player.posX + extraFactor * (mapSize/2f + zoom)) + 1;
-                final int maxFastWorldZ = (int) (mc.player.posZ + extraFactor * (mapSize/2f + zoom)) + 1;
+                final int maxFastWorldX = (int) (mc.player.getX() + extraFactor * (mapSize/2f + zoom)) + 1;
+                final int maxFastWorldZ = (int) (mc.player.getZ() + extraFactor * (mapSize/2f + zoom)) + 1;
 
                 Consumer<MapIcon> consumer = c -> {
                     if (!c.isEnabled(true)) return;
@@ -157,8 +157,8 @@ public class MiniMapOverlay extends Overlay {
                     ) {
                         return;
                     }
-                    float dx = (float) (posX - mc.player.posX) * scaleFactor;
-                    float dz = (float) (posZ - mc.player.posZ) * scaleFactor;
+                    float dx = (float) (posX - mc.player.getX()) * scaleFactor;
+                    float dz = (float) (posZ - mc.player.getZ()) * scaleFactor;
 
                     boolean followRotation = false;
 
@@ -192,8 +192,8 @@ public class MiniMapOverlay extends Overlay {
                 MapIcon compassIcon = MapIcon.getCompass();
 
                 if (compassIcon.isEnabled(true)) {
-                    float dx = (float) (compassIcon.getPosX() - mc.player.posX) * scaleFactor;
-                    float dz = (float) (compassIcon.getPosZ() - mc.player.posZ) * scaleFactor;
+                    float dx = (float) (compassIcon.getPosX() - mc.player.getX()) * scaleFactor;
+                    float dz = (float) (compassIcon.getPosZ() - mc.player.getZ()) * scaleFactor;
 
                     if (MapConfig.INSTANCE.followPlayerRotation) {
                         float temp = dx * cosRotationRadians - dz * sinRotationRadians;
@@ -331,7 +331,7 @@ public class MiniMapOverlay extends Overlay {
 
             if (MapConfig.INSTANCE.showCoords) {
                 drawString(
-                        String.join(", ", Integer.toString((int) mc.player.posX), Integer.toString((int) mc.player.posY), Integer.toString((int) mc.player.posZ)),
+                        String.join(", ", Integer.toString((int) mc.player.getX()), Integer.toString((int) mc.player.getY()), Integer.toString((int) mc.player.getZ())),
                         mapSize / 2f, mapSize + 6, CommonColors.WHITE, SmartFontRenderer.TextAlignment.MIDDLE, SmartFontRenderer.TextShadow.OUTLINE
                 );
             }

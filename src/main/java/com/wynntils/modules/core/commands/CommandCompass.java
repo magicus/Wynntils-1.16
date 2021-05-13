@@ -202,8 +202,8 @@ public class CommandCompass extends CommandBase implements IClientCommand {
 
             if (args.length >= 2 && args[1].equalsIgnoreCase("location")) {
                 // Use current location instead of compass
-                x = Minecraft.getInstance().player.posX;
-                z = Minecraft.getInstance().player.posZ;
+                x = Minecraft.getInstance().player.getX();
+                z = Minecraft.getInstance().player.getZ();
                 type = "location";
                 recipientIndex = 2;
             } else {
@@ -249,8 +249,8 @@ public class CommandCompass extends CommandBase implements IClientCommand {
             }
 
             try {
-                int x = getSingleCoordinate(xStr, (int) Minecraft.getInstance().player.posX);
-                int z = getSingleCoordinate(zStr, (int) Minecraft.getInstance().player.posZ);
+                int x = getSingleCoordinate(xStr, (int) Minecraft.getInstance().player.getX());
+                int z = getSingleCoordinate(zStr, (int) Minecraft.getInstance().player.getZ());
 
                 CompassManager.setCompassLocation(new Location(x, 0, z));
 

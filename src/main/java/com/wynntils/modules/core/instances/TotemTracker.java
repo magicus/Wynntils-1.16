@@ -15,7 +15,7 @@ import com.wynntils.core.utils.objects.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.network.play.client.CPacketHeldItemChange;
+import net.minecraft.network.play.client.CHeldItemChangePacket;
 import net.minecraft.network.play.server.SPacketDestroyEntities;
 import net.minecraft.network.play.server.SPacketEntityMetadata;
 import net.minecraft.network.play.server.SPacketEntityTeleport;
@@ -138,9 +138,9 @@ public class TotemTracker {
             }
 
             // Is it created close to us? Then it's a potential new totem
-            if (isClose(e.getPacket().getX(), Minecraft.getInstance().player.posX) &&
-                    isClose(e.getPacket().getY(), Minecraft.getInstance().player.posY + 1.0) &&
-                    isClose(e.getPacket().getZ(), Minecraft.getInstance().player.posZ)) {
+            if (isClose(e.getPacket().getX(), Minecraft.getInstance().player.getX()) &&
+                    isClose(e.getPacket().getY(), Minecraft.getInstance().player.getY() + 1.0) &&
+                    isClose(e.getPacket().getZ(), Minecraft.getInstance().player.getZ())) {
                 potentialId = e.getPacket().getEntityID();
                 potentialX = e.getPacket().getX();
                 potentialY = e.getPacket().getY();
@@ -195,17 +195,17 @@ public class TotemTracker {
                 if (totemState == TotemState.PREPARING ) {
                     // Widen search range until found
                     double acceptableDistance = 3.0 + (System.currentTimeMillis() - totemPreparedTimestamp)/1000d;
-                    double distanceXZ = Math.abs(entity.posX - totemX) + Math.abs(entity.posZ - totemZ);
-                    if (distanceXZ < acceptableDistance && entity.posY <= (totemY + 2.0 + (acceptableDistance/3.0)) && entity.posY >= ((totemY + 2.0))) {
+                    double distanceXZ = Math.abs(entity.getX() - totemX) + Math.abs(entity.getZ() - totemZ);
+                    if (distanceXZ < acceptableDistance && entity.getY() <= (totemY + 2.0 + (acceptableDistance/3.0)) && entity.getY() >= ((totemY + 2.0))) {
                         // Update totem location if it was too far away
-                        totemX = entity.posX;
-                        totemY = entity.posY - 2.0;
-                        totemZ = entity.posZ;
+                        totemX = entity.getX();
+                        totemY = entity.getY() - 2.0;
+                        totemZ = entity.getZ();
                     }
                 }
 
-                double distanceXZ = Math.abs(entity.posX - totemX) + Math.abs(entity.posZ - totemZ);
-                if (distanceXZ < 1.0 && entity.posY <= (totemY + 3.0) && entity.posY >= ((totemY + 2.0))) {
+                double distanceXZ = Math.abs(entity.getX() - totemX) + Math.abs(entity.getZ() - totemZ);
+                if (distanceXZ < 1.0 && entity.getY() <= (totemY + 3.0) && entity.getY() >= ((totemY + 2.0))) {
                     // ... and it's close to our totem; regard this as our timer
                     int time = Integer.parseInt(m.group(1));
 
@@ -230,15 +230,15 @@ public class TotemTracker {
             int mobTotemId = e.getPacket().getEntityId();
 
             MobTotem mobTotem = new MobTotem(mobTotemId,
-                    new Location(entity.posX, entity.posY - 4.5, entity.posZ), m2.group(1));
+                    new Location(entity.getX(), entity.getY() - 4.5, entity.getZ()), m2.group(1));
 
             mobTotemUnstarted.put(mobTotemId, mobTotem);
             return;
         }
 
         for (MobTotem mobTotem : mobTotemUnstarted.values()) {
-            if (entity.posX == mobTotem.getLocation().getX() && entity.posZ == mobTotem.getLocation().getZ()
-                    && entity.posY == mobTotem.getLocation().getY() + 4.7) {
+            if (entity.getX() == mobTotem.getLocation().getX() && entity.getZ() == mobTotem.getLocation().getZ()
+                    && entity.getY() == mobTotem.getLocation().getY() + 4.7) {
                 Matcher m3 = MOB_TOTEM_TIMER.matcher(name);
                 if (m3.find()) {
                     int minutes = Integer.parseInt(m3.group(1));
@@ -280,7 +280,7 @@ public class TotemTracker {
         removeAllMobTotems();
     }
 
-    public void onWeaponChange(PacketEvent<CPacketHeldItemChange> e) {
+    public void onWeaponChange(PacketEvent<CHeldItemChangePacket> e) {
         if (!Reference.onWorld) return;
 
         if (e.getPacket().getSlotId() != heldWeaponSlot) {

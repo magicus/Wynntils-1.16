@@ -15,11 +15,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItem;
+import net.minecraft.network.play.client.CPlayerTryUseItemPacket;
 import net.minecraft.network.play.server.SPacketChat;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
@@ -30,8 +30,8 @@ import static com.wynntils.core.framework.instances.data.SpellData.SPELL_RIGHT;
 
 public class QuickCastManager {
 
-    private static final CPacketAnimation leftClick = new CPacketAnimation(EnumHand.MAIN_HAND);
-    private static final CPacketPlayerTryUseItem rightClick = new CPacketPlayerTryUseItem(EnumHand.MAIN_HAND);
+    private static final CPacketAnimation leftClick = new CPacketAnimation(Hand.MAIN_HAND);
+    private static final CPlayerTryUseItemPacket rightClick = new CPlayerTryUseItemPacket(Hand.MAIN_HAND);
     private static final CPacketPlayerDigging releaseClick = new CPacketPlayerDigging(CPacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN);
 
     private static final int[] spellUnlock = { 1, 11, 21, 31 };

@@ -9,7 +9,7 @@ import com.wynntils.Reference;
 import com.wynntils.core.utils.StringUtils;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.network.play.NetworkPlayerInfo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,7 +42,7 @@ public class TabManager {
                 E[] result = (E[]) new NetworkPlayerInfo[80];
                 int found = 0;
                 for (E v : elements) {
-                    String name = v.getGameProfile().getName();
+                    String name = v.getProfile().getName();
                     if (name.length() != 4 || name.charAt(0) != 0) continue;
                     name = name.substring(1, 4);
                     if (!StringUtils.isValidInteger(name)) continue;

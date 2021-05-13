@@ -73,8 +73,8 @@ public class ServerEvents implements Listener {
     public void onResourcePackReceive(PacketEvent<SPacketResourcePackSend> e) {
         if (!ServerResourcePackManager.shouldCancelResourcePackLoad(e.getPacket())) return;
 
-        e.getPlayClient().sendPacket(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.ACCEPTED));
-        e.getPlayClient().sendPacket(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.SUCCESSFULLY_LOADED));
+        e.getPlayClient().send(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.ACCEPTED));
+        e.getPlayClient().send(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.SUCCESSFULLY_LOADED));
 
         e.setCanceled(true);
     }

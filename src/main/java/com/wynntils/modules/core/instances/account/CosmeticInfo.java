@@ -4,16 +4,16 @@
 
 package com.wynntils.modules.core.instances.account;
 
-import net.minecraft.client.renderer.texture.AbstractTexture;
+import net.minecraft.client.renderer.texture.Texture;
 import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.util.Base64;
 
-public class CosmeticInfo extends AbstractTexture {
+public class CosmeticInfo extends Texture {
 
     boolean ears;
     boolean cape;
@@ -51,7 +51,7 @@ public class CosmeticInfo extends AbstractTexture {
     }
 
     @Override
-    public void loadTexture(IResourceManager resourceManager) {
+    public void load(IResourceManager resourceManager) {
         // already loaded yey
     }
 

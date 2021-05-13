@@ -56,7 +56,7 @@ import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
 import net.minecraft.network.play.server.SPacketEntityMetadata;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketTitle;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -624,8 +624,8 @@ public class ClientEvents implements Listener {
             }
 
             // pick up accessory
-            CPacketClickWindow packet = new CPacketClickWindow(e.getGui().inventorySlots.windowId, e.getSlotId(), 0, ClickType.PICKUP, e.getSlotIn().getStack(), e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
-            ModCore.mc().getConnection().sendPacket(packet);
+            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().inventorySlots.windowId, e.getSlotId(), 0, ClickType.PICKUP, e.getSlotIn().getStack(), e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
+            ModCore.mc().getConnection().send(packet);
         }
     }
 
@@ -699,11 +699,11 @@ public class ClientEvents implements Listener {
                     String itemName = item.getDisplayName();
                     String pageNumber = itemName.substring(9, itemName.indexOf(TextFormatting.RED + " >"));
                     ChestReplacer gui = e.getGui();
-                    CPacketClickWindow packet = new CPacketClickWindow(gui.inventorySlots.windowId, e.getSlotId(), e.getMouseButton(), e.getType(), item, e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
+                    CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, e.getSlotId(), e.getMouseButton(), e.getType(), item, e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
                     ModCore.mc().displayGuiScreen(new GuiYesNo((result, parentButtonID) -> {
                         ModCore.mc().displayGuiScreen(gui);
                         if (result) {
-                            ModCore.mc().getConnection().sendPacket(packet);
+                            ModCore.mc().getConnection().send(packet);
                             bankPageConfirmed = true;
                         }
                     }, "Are you sure you want to purchase another bank page?", "Page number: " + pageNumber + "\nCost: " + priceDisplay, 0));
@@ -717,8 +717,8 @@ public class ClientEvents implements Listener {
     public void onSetSlot(PacketEvent<SPacketSetSlot> event) {
         if (bankPageConfirmed && event.getPacket().getSlot() == 8) {
             bankPageConfirmed = false;
-            CPacketClickWindow packet = new CPacketClickWindow(ModCore.mc().player.openContainer.windowId, 8, 0, ClickType.PICKUP, event.getPacket().getStack(), ModCore.mc().player.openContainer.getNextTransactionID(ModCore.mc().player.inventory));
-            ModCore.mc().getConnection().sendPacket(packet);
+            CClickWindowPacket packet = new CClickWindowPacket(ModCore.mc().player.openContainer.windowId, 8, 0, ClickType.PICKUP, event.getPacket().getStack(), ModCore.mc().player.openContainer.getNextTransactionID(ModCore.mc().player.inventory));
+            ModCore.mc().getConnection().send(packet);
         }
     }
 
@@ -820,8 +820,8 @@ public class ClientEvents implements Listener {
 
     // blocking healing pots below
     @SubscribeEvent
-    public void onUseItem(PacketEvent<CPacketPlayerTryUseItem> e) {
-        ItemStack item = Minecraft.getInstance().player.getHeldItem(EnumHand.MAIN_HAND);
+    public void onUseItem(PacketEvent<CPlayerTryUseItemPacket> e) {
+        ItemStack item = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
 
         if (item.isEmpty() || !item.hasCustomHoverName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
 
@@ -834,7 +834,7 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void onUseItemOnBlock(PacketEvent<CPacketPlayerTryUseItemOnBlock> e) {
-        ItemStack item = Minecraft.getInstance().player.getHeldItem(EnumHand.MAIN_HAND);
+        ItemStack item = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
 
         if (item.isEmpty() || !item.hasCustomHoverName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
 
@@ -847,7 +847,7 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void onUseItemOnEntity(PacketEvent<CPacketUseEntity> e) {
-        ItemStack item = Minecraft.getInstance().player.getHeldItem(EnumHand.MAIN_HAND);
+        ItemStack item = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
 
         if (item.isEmpty() || !item.hasCustomHoverName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
 

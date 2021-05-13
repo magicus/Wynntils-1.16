@@ -36,7 +36,7 @@ public class SquareRegion {
     }
 
     public boolean isInside(Entity in) {
-        return isInside(in.posX, in.posZ);
+        return isInside(in.getX(), in.getZ());
     }
 
     public boolean isInside(Location loc) {

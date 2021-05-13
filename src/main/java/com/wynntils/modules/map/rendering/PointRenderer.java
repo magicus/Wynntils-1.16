@@ -42,8 +42,8 @@ public class PointRenderer {
         int renderDistance = Minecraft.getInstance().options.renderDistanceChunks;
         for (int x = -renderDistance; x <= renderDistance; x++) {
             for (int z = -renderDistance; z <= renderDistance; z++) {
-                int playerChunkX = Minecraft.getInstance().player.chunkCoordX;
-                int playerChunkZ = Minecraft.getInstance().player.chunkCoordZ;
+                int playerChunkX = Minecraft.getInstance().player.xChunk;
+                int playerChunkZ = Minecraft.getInstance().player.zChunk;
                 ChunkPos chunk = new ChunkPos(x + playerChunkX, z + playerChunkZ);
                 chunks.add(chunk);
             }
@@ -254,8 +254,8 @@ public class PointRenderer {
         int renderDistance = Minecraft.getInstance().options.renderDistanceChunks;
         for (int x = -renderDistance; x <= renderDistance; x++) {
             for (int z = -renderDistance; z <= renderDistance; z++) {
-                int playerChunkX = Minecraft.getInstance().player.chunkCoordX;
-                int playerChunkZ = Minecraft.getInstance().player.chunkCoordZ;
+                int playerChunkX = Minecraft.getInstance().player.xChunk;
+                int playerChunkZ = Minecraft.getInstance().player.zChunk;
                 ChunkPos chunk = new ChunkPos(x + playerChunkX, z + playerChunkZ);
                 chunks.add(chunk);
             }

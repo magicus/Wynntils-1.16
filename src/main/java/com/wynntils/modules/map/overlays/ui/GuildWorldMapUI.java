@@ -43,7 +43,7 @@ public class GuildWorldMapUI extends WorldMapUI {
     private boolean showTradeRoutes = true;
 
     public GuildWorldMapUI() {
-        super((float) Minecraft.getInstance().player.posX, (float) Minecraft.getInstance().player.posZ);
+        super((float) Minecraft.getInstance().player.getX(), (float) Minecraft.getInstance().player.getZ());
     }
 
     @Override
@@ -116,8 +116,8 @@ public class GuildWorldMapUI extends WorldMapUI {
 
         float scale = getScaleFactor();
 
-        float playerPositionX = (map.getTextureXPosition(mc.player.posX) - minX) / (maxX - minX);
-        float playerPositionZ = (map.getTextureZPosition(mc.player.posZ) - minZ) / (maxZ - minZ);
+        float playerPositionX = (map.getTextureXPosition(mc.player.getX()) - minX) / (maxX - minX);
+        float playerPositionZ = (map.getTextureZPosition(mc.player.getZ()) - minZ) / (maxZ - minZ);
 
         if (playerPositionX > 0 && playerPositionX < 1 && playerPositionZ > 0 && playerPositionZ < 1) {  // <--- player position
             playerPositionX = width * playerPositionX;

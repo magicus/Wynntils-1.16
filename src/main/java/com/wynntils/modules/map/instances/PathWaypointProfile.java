@@ -65,12 +65,12 @@ public class PathWaypointProfile {
         minZ = other.minZ;
         maxX = other.maxX;
         maxZ = other.maxZ;
-        posX = other.posX;
-        posZ = other.posZ;
+        posX = other.getX();
+        posZ = other.getZ();
         sizeX = other.sizeX;
         sizeZ = other.sizeZ;
     }
-    
+
     public PathWaypointProfile(LootRunPath lootrun) {
         name = "Lootrun path";
         color = MapConfig.LootRun.INSTANCE.activePathColour;

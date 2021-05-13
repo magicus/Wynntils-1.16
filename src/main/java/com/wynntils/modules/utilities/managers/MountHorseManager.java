@@ -17,7 +17,7 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.passive.AbstractHorse;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
 
@@ -52,8 +52,8 @@ public class MountHorseManager {
         ClientPlayerEntity player = mc.player;
 
         List<Entity> horses = mc.world.getEntitiesWithinAABB(AbstractHorse.class, new AxisAlignedBB(
-                player.posX - searchRadius, player.posY - searchRadius, player.posZ - searchRadius,
-                player.posX + searchRadius, player.posY + searchRadius, player.posZ + searchRadius
+                player.getX() - searchRadius, player.getY() - searchRadius, player.getZ() - searchRadius,
+                player.getX() + searchRadius, player.getY() + searchRadius, player.getZ() + searchRadius
         ));
 
         String playerName = player.getName();
@@ -82,7 +82,7 @@ public class MountHorseManager {
         int prev = mc.player.inventory.selected;
         new Delay(() -> {
             mc.player.inventory.selected = horse.getInventorySlot();
-            mc.gameMode.processRightClick(mc.player, mc.player.level, EnumHand.MAIN_HAND);
+            mc.gameMode.processRightClick(mc.player, mc.player.level, Hand.MAIN_HAND);
             mc.player.inventory.selected = prev;
 
             if (findHorseInRadius(mc) != null) {
@@ -127,7 +127,7 @@ public class MountHorseManager {
             }
 
             player.inventory.selected = horse.getInventorySlot();
-            gameMode.processRightClick(player, player.level, EnumHand.MAIN_HAND);
+            gameMode.processRightClick(player, player.level, Hand.MAIN_HAND);
             player.inventory.selected = prev;
             if (far) {
                 tryDelayedSpawnMount(mc, horse, spawnAttempts);
@@ -143,7 +143,7 @@ public class MountHorseManager {
         }
 
         player.inventory.selected = 8; // swap to soul points to avoid any right-click conflicts
-        gameMode.interactWithEntity(player, playersHorse, EnumHand.MAIN_HAND);
+        gameMode.interactWithEntity(player, playersHorse, Hand.MAIN_HAND);
         player.inventory.selected = prev;
         return MountHorseStatus.SUCCESS;
     }

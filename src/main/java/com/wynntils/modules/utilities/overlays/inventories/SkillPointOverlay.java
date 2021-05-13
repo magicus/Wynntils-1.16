@@ -35,7 +35,7 @@ import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.CPacketClickWindow;
+import net.minecraft.network.play.client.CClickWindowPacket;
 import net.minecraft.network.play.server.SPacketCustomSound;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -377,14 +377,14 @@ public class SkillPointOverlay implements Listener {
 
             buildPercentage += perSkill * (button == 1 ? 5 : 0);
 
-            CPacketClickWindow packet = new CPacketClickWindow(gui.inventorySlots.windowId, 9 + i, button,
+            CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, 9 + i, button,
                     ClickType.PICKUP, gui.inventorySlots.getSlot(9 + i).getStack(),
                     gui.inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
 
             Minecraft.getInstance().getSoundManager().play(
                     SimpleSound.getMasterRecord(SoundEvents.ENTITY_ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));
 
-            ModCore.mc().getConnection().sendPacket(packet);
+            ModCore.mc().getConnection().send(packet);
             return; // can only click once at a time
         }
 
