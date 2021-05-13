@@ -391,8 +391,8 @@ public class ItemIdentificationOverlay implements Listener {
 
     private static CompoundNBT generateData(ItemStack stack) {
         IdentificationType idType;
-        if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) idType = IdentificationType.MIN_MAX;
-        else if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LCONTROL)) idType = IdentificationType.UPGRADE_CHANCES;
+        if (Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) idType = IdentificationType.MIN_MAX;
+        else if (Utils.isKeyDown(GLFW.GLFW_KEY_LCONTROL)) idType = IdentificationType.UPGRADE_CHANCES;
         else idType = IdentificationType.PERCENTAGES;
 
         if (stack.hasTagCompound() && stack.getTag().contains("wynntils")) {

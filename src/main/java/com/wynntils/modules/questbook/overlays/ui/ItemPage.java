@@ -235,7 +235,7 @@ public class ItemPage extends QuestBookPage {
         }
 
         if (selected < 0) { // an item in the guide is hovered
-            if (mouseButton != 1 || !(Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT))) return;
+            if (mouseButton != 1 || !(Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT))) return;
 
             int selectedIndex = -(selected + 1);
             if (selectedIndex >= itemSearch.size()) return;
@@ -432,7 +432,7 @@ public class ItemPage extends QuestBookPage {
             if (selected < 10) return false; // selected >= 10 means one of the item filter buttons is hovered
 
             ItemType selectedType = itemTypeArray.get(selected / 10 - 1);
-            if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
+            if (Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
                 if (allowedTypes.size() == 1 && allowedTypes.contains(selectedType)) {
                     allowedTypes.addAll(itemTypeArray);
                 } else {

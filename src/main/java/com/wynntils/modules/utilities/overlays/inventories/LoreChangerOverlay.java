@@ -66,7 +66,7 @@ public class LoreChangerOverlay implements Listener {
         }
 
         // Wynnic Translator
-        if (stack.hasTagCompound() && !stack.getTag().getBoolean("showWynnic") && Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
+        if (stack.hasTagCompound() && !stack.getTag().getBoolean("showWynnic") && Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
             String fullLore = ItemUtils.getStringLore(stack);
             if (StringUtils.hasWynnic(fullLore) || StringUtils.hasGavellian(fullLore)) {
                 ListNBT loreList = ItemUtils.getLoreTag(stack);
@@ -129,7 +129,7 @@ public class LoreChangerOverlay implements Listener {
             stack.getTag().putBoolean("showWynnic", true);
         }
 
-        if (stack.hasTagCompound() && stack.getTag().getBoolean("showWynnic") && !Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
+        if (stack.hasTagCompound() && stack.getTag().getBoolean("showWynnic") && !Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
             CompoundNBT tag = stack.getTag();
             if (tag.contains("originalLore")) {
                 CompoundNBT displayTag = tag.getCompound("display");

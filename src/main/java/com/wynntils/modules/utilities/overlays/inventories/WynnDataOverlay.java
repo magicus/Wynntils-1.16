@@ -58,7 +58,7 @@ public class WynnDataOverlay implements Listener {
     public void clickOnChest(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (!Utils.isCharacterInfoPage(e.getGui()) || e.getMouseButton() != 1) return;
 
-        if (!(Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT))) return;
+        if (!(Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT))) return;
 
         Slot slot = e.getGui().getSlotUnderMouse();
         if (slot == null || slot.inventory == null || !slot.getHasStack()) return;

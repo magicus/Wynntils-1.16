@@ -21,14 +21,14 @@ public class CompassManager {
     public static void setCompassLocation(Location compassLocation) {
         CompassManager.compassLocation = compassLocation;
 
-        Minecraft.getInstance().world.setSpawnPoint(compassLocation.toBlockPos());
+        Minecraft.getInstance().level.getLevelData().setSpawn(compassLocation.toBlockPos(), 0);
     }
 
     public static void reset() {
         compassLocation = null;
 
-        if (Minecraft.getInstance().world != null) {
-            Minecraft.getInstance().world.setSpawnPoint(ServerEvents.getCurrentSpawnPosition());
+        if (Minecraft.getInstance().level != null) {
+            Minecraft.getInstance().level.getLevelData().setSpawn(ServerEvents.getCurrentSpawnPosition(), 0);
         }
     }
 

@@ -770,7 +770,7 @@ public class OverlayEvents implements Listener {
         if (!Reference.onWorld || !OverlayConfig.ConsumableTimer.INSTANCE.showSpellEffects) return;
 
         SPacketEntityEffect effect = e.getPacket();
-        if (effect.getEntityId() != Minecraft.getInstance().player.getEntityId()) return;
+        if (effect.getId() != Minecraft.getInstance().player.getId()) return;
 
         Potion potion = Potion.getPotionById(effect.getEffectId());
 
@@ -817,7 +817,7 @@ public class OverlayEvents implements Listener {
         if (!Reference.onWorld || !OverlayConfig.ConsumableTimer.INSTANCE.showSpellEffects) return;
 
         SPacketRemoveEntityEffect effect = e.getPacket();
-        if (effect.getEntity(Minecraft.getInstance().world) != Minecraft.getInstance().player) return;
+        if (effect.getEntity(Minecraft.getInstance().level) != Minecraft.getInstance().player) return;
 
         Minecraft.getInstance().submit(() -> {
             Potion potion = effect.getPotion();

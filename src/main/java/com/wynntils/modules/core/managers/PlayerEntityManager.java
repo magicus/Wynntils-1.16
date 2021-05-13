@@ -38,11 +38,11 @@ public class PlayerEntityManager {
     }
 
     static void onPlayerJoin(PlayerEntity e) {
-        map.put(e.getUniqueID(), e);
+        map.put(e.getUUID(), e);
     }
 
     static void onPlayerLeave(PlayerEntity e) {
-        map.remove(e.getUniqueID());
+        map.remove(e.getUUID());
     }
 
     public static void onWorldLoad(World w) {
@@ -68,6 +68,7 @@ public class PlayerEntityManager {
 
         @Override
         public void onEntityAdded(Entity entityIn) {
+            // FIXME: instead use net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.event.entity.EntityJoinWorldEvent
             if (entityIn instanceof PlayerEntity) {
                 onPlayerJoin((PlayerEntity) entityIn);
             }

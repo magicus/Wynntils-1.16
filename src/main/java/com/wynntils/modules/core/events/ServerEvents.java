@@ -256,7 +256,7 @@ public class ServerEvents implements Listener {
     @SubscribeEvent
     public void onJoinLobby(WynnClassChangeEvent e) {
         if (!Reference.onServer || !CoreDBConfig.INSTANCE.enableChangelogOnUpdate || !CoreDBConfig.INSTANCE.showChangelogs) return;
-        if (UpdateOverlay.isDownloading() || DownloaderManager.isRestartOnQueueFinish() || Minecraft.getInstance().world == null) return;
+        if (UpdateOverlay.isDownloading() || DownloaderManager.isRestartOnQueueFinish() || Minecraft.getInstance().level == null) return;
         if (e.getNewClass() == ClassType.NONE) return;
 
         synchronized (this) {

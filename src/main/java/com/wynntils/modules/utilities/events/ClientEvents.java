@@ -53,7 +53,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
-import net.minecraft.network.play.server.SPacketEntityMetadata;
+import net.minecraft.network.play.server.SEntityMetadataPacket;
 import net.minecraft.network.play.server.SPacketSetSlot;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.Hand;
@@ -316,14 +316,14 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onHorseSpawn(PacketEvent<SPacketEntityMetadata> e) {
+    public void onHorseSpawn(PacketEvent<SEntityMetadataPacket> e) {
         if (!Reference.onServer || !Reference.onWorld) return;
 
-        int thisId = e.getPacket().getEntityId();
-        if (thisId == lastHorseId || ModCore.mc().world == null) return;
-        Entity entity = ModCore.mc().world.getEntityByID(thisId);
+        int thisId = e.getPacket().getId();
+        if (thisId == lastHorseId || ModCore.mc().level == null) return;
+        Entity entity = ModCore.mc().level.getEntity(thisId);
 
-        if (!(entity instanceof AbstractHorse) || e.getPacket().getDataManagerEntries().isEmpty()) {
+        if (!(entity instanceof AbstractHorse) || e.getPacket().getUnpackedData().isEmpty()) {
             return;
         }
 
@@ -333,7 +333,7 @@ public class ClientEvents implements Listener {
         }
 
         ClientPlayerEntity player = ModCore.mc().player;
-        String entityName = Utils.getNameFromMetadata(e.getPacket().getDataManagerEntries());
+        String entityName = Utils.getNameFromMetadata(e.getPacket().getUnpackedData());
         if (entityName == null ||  entityName.isEmpty() ||
                 !MountHorseManager.isPlayersHorse(entityName, player.getName())) return;
 
@@ -572,7 +572,7 @@ public class ClientEvents implements Listener {
         }
 
         if (UtilitiesConfig.INSTANCE.shiftClickAccessories && e.getGui().isShiftKeyDown() && e.getGui().getSlotUnderMouse() != null && ModCore.mc().player.inventory.getItemStack().isEmpty() && e.getGui().getSlotUnderMouse().inventory == ModCore.mc().player.inventory) {
-            if (e.getSlotId() >= 9 && e.getSlotId() <= 12) { // taking off accessory
+            if (e.getSlot() >= 9 && e.getSlot() <= 12) { // taking off accessory
                 // check if hotbar has open slot; if so, no action required
                 for (int i = 36; i < 45; i++) {
                     if (!e.getGui().inventorySlots.getSlot(i).getHasStack()) return;
@@ -624,7 +624,7 @@ public class ClientEvents implements Listener {
             }
 
             // pick up accessory
-            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().inventorySlots.windowId, e.getSlotId(), 0, ClickType.PICKUP, e.getSlotIn().getStack(), e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
+            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().inventorySlots.windowId, e.getSlot(), 0, ClickType.PICKUP, e.getSlotIn().getStack(), e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
             ModCore.mc().getConnection().send(packet);
         }
     }
@@ -661,10 +661,10 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void clickOnChest(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getSlotIn() != null) {
-            if (e.getSlotId() - e.getGui().getLowerInv().getContainerSize() >= 0 && e.getSlotId() - e.getGui().getLowerInv().getContainerSize() < 27) {
-                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() + 9, Minecraft.getInstance().options.keyBindDrop.getKeyCode()));
+            if (e.getSlot() - e.getGui().getLowerInv().getContainerSize() >= 0 && e.getSlot() - e.getGui().getLowerInv().getContainerSize() < 27) {
+                e.setCanceled(checkDropState(e.getSlot() - e.getGui().getLowerInv().getContainerSize() + 9, Minecraft.getInstance().options.keyBindDrop.getKeyCode()));
             } else {
-                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() - 27, Minecraft.getInstance().options.keyBindDrop.getKeyCode()));
+                e.setCanceled(checkDropState(e.getSlot() - e.getGui().getLowerInv().getContainerSize() - 27, Minecraft.getInstance().options.keyBindDrop.getKeyCode()));
             }
         }
 
@@ -699,7 +699,7 @@ public class ClientEvents implements Listener {
                     String itemName = item.getDisplayName();
                     String pageNumber = itemName.substring(9, itemName.indexOf(TextFormatting.RED + " >"));
                     ChestReplacer gui = e.getGui();
-                    CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, e.getSlotId(), e.getMouseButton(), e.getType(), item, e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
+                    CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, e.getSlot(), e.getMouseButton(), e.getType(), item, e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
                     ModCore.mc().displayGuiScreen(new GuiYesNo((result, parentButtonID) -> {
                         ModCore.mc().displayGuiScreen(gui);
                         if (result) {

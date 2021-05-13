@@ -16,7 +16,7 @@ import com.wynntils.modules.utilities.managers.*;
 import net.minecraft.network.play.client.CPacketResourcePackStatus;
 import net.minecraft.network.play.client.CPacketUseEntity;
 import net.minecraft.network.play.server.SPacketResourcePackSend;
-import net.minecraft.network.play.server.SPacketSpawnObject;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -80,7 +80,7 @@ public class ServerEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onSpawnObject(PacketEvent<SPacketSpawnObject> e) {
+    public void onSpawnObject(PacketEvent<SSpawnObjectPacket> e) {
         if (WarManager.filterMob(e)) e.setCanceled(true);
     }
 

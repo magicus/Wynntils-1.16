@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.play.ClientPlayNetHandler;
 import net.minecraft.client.network.play.NetworkPlayerInfo;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.EnumPlayerModelParts;
+import net.minecraft.entity.player.PlayerModelPart;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -106,9 +106,9 @@ public class OtherPlayerProfile {
         PlayerEntity e = PlayerEntityManager.getPlayerByUUID(uuid);
         if (e == null) return false;
 
-        hasHat = e.isWearing(EnumPlayerModelParts.HAT);
+        hasHat = e.isModelPartShown(PlayerModelPart.HAT);
 
-        if (e.isDead || e.getDistance(Minecraft.getInstance().player) >= 30) return false;
+        if (!e.isAlive() || e.distanceTo(Minecraft.getInstance().player) >= 30) return false;
         x = (int) e.getX();
         y = (int) e.getY();
         z = (int) e.getZ();

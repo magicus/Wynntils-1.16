@@ -102,7 +102,7 @@ public class EmeraldCountOverlay implements Listener {
 
         // generating text
         String moneyText = "";
-        if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT)) {  // plain text
+        if (Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT)) {  // plain text
             moneyText = formatAmount(moneyAmount) + EmeraldSymbols.EMERALDS;
         } else {  // sliced text
             int[] moneySlices = calculateMoneyAmount(moneyAmount);
@@ -135,7 +135,7 @@ public class EmeraldCountOverlay implements Listener {
         String emeraldAmount = null;
         String blocksAmount = null;
         String leAmount = null;
-        if (Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT)) {
+        if (Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT)) {
             // Alternative render: Amount after converting all to one type (Including fractional blocks / LE)
             emeraldAmount = formatAmount((double) moneyAmount);
             blocksAmount = formatAmount(moneyAmount / 64D);

@@ -45,9 +45,9 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
     public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (!CosmeticsConfig.INSTANCE.forceCapes
                 && !Minecraft.getInstance().options.getModelParts().toString().contains("CAPE")
-                && player.getUniqueID() == ModCore.mc().player.getUniqueID()) return;
+                && player.getUUID() == ModCore.mc().player.getUUID()) return;
 
-        WynntilsUser info = UserManager.getUser(player.getUniqueID());
+        WynntilsUser info = UserManager.getUser(player.getUUID());
         if (info == null || !info.getCosmetics().hasElytra()) return;
 
         // loading cape

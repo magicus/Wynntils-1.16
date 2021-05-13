@@ -42,7 +42,7 @@ import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.player.PlayerEntity;
@@ -135,7 +135,7 @@ public class ClientEvents implements Listener {
         if (e.getPacket().getAction() == 1) {
             ScorePlayerTeam scoreplayerteam;
 
-            Scoreboard scoreboard = Minecraft.getInstance().world.getScoreboard();
+            Scoreboard scoreboard = Minecraft.getInstance().level.getScoreboard();
             scoreplayerteam = scoreboard.getTeam(e.getPacket().getName());
             if (scoreplayerteam == null) {
                 // This would cause an NPE so cancel it
@@ -149,8 +149,8 @@ public class ClientEvents implements Listener {
         // I'm not sure what this does, but the code has been here a long time,
         // just moving it here. /magicus, 2021
         SEntityVelocityPacket velocity = e.getPacket();
-        if (Minecraft.getInstance().world != null) {
-            Entity entity = Minecraft.getInstance().level.getEntityByID(velocity.getEntityID());
+        if (Minecraft.getInstance().level != null) {
+            Entity entity = Minecraft.getInstance().level.getEntity(velocity.getId());
             Entity vehicle = Minecraft.getInstance().player.getLowestRidingEntity();
             if ((entity == vehicle) && (vehicle != Minecraft.getInstance().player) && (vehicle.canPassengerSteer())) {
                 e.setCanceled(true);
@@ -164,41 +164,41 @@ public class ClientEvents implements Listener {
         // just moving it here. /magicus, 2021
         SPacketMoveVehicle moveVehicle = e.getPacket();
         Entity vehicle = Minecraft.getInstance().player.getLowestRidingEntity();
-        if ((vehicle == Minecraft.getInstance().player) || (!vehicle.canPassengerSteer()) || (vehicle.getDistance(moveVehicle.getX(), moveVehicle.getY(), moveVehicle.getZ()) <= 25D)) {
+        if ((vehicle == Minecraft.getInstance().player) || (!vehicle.canPassengerSteer()) || (vehicle.distanceTo(moveVehicle.getX(), moveVehicle.getY(), moveVehicle.getZ()) <= 25D)) {
             e.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public void findLabels(PacketEvent<SPacketEntityMetadata> e) {
+    public void findLabels(PacketEvent<SEntityMetadataPacket> e) {
         // makes this method always be called in main thread
         if (!Minecraft.getInstance().isCallingFromMinecraftThread()) {
             Minecraft.getInstance().submit(() -> findLabels(e));
             return;
         }
 
-        if (e.getPacket().getDataManagerEntries() == null || e.getPacket().getDataManagerEntries().isEmpty()) return;
-        Entity i = Minecraft.getInstance().world.getEntityByID(e.getPacket().getEntityId());
+        if (e.getPacket().getUnpackedData() == null || e.getPacket().getUnpackedData().isEmpty()) return;
+        Entity i = Minecraft.getInstance().level.getEntity(e.getPacket().getId());
         if (i == null) return;
 
         if (i instanceof EntityItemFrame) {
-            ItemStack item = Utils.getItemFromMetadata(e.getPacket().getDataManagerEntries());
+            ItemStack item = Utils.getItemFromMetadata(e.getPacket().getUnpackedData());
             if (item.hasCustomHoverName()) {
                 FrameworkManager.getEventBus().post(new LocationEvent.LabelFoundEvent(item.getDisplayName(), new Location(i), i));
             }
         } else if (i instanceof LivingEntity) {
-            boolean visible = Utils.isNameVisibleFromMetadata(e.getPacket().getDataManagerEntries());
+            boolean visible = Utils.isNameVisibleFromMetadata(e.getPacket().getUnpackedData());
             if (!visible) return;
 
-            String value = Utils.getNameFromMetadata(e.getPacket().getDataManagerEntries());
+            String value = Utils.getNameFromMetadata(e.getPacket().getUnpackedData());
             if (value == null || value.isEmpty()) return;
 
             FrameworkManager.getEventBus().post(new LocationEvent.EntityLabelFoundEvent(value, new Location(i), (LivingEntity) i));
-        } else if (i instanceof EntityArmorStand) {
-            boolean visible = Utils.isNameVisibleFromMetadata(e.getPacket().getDataManagerEntries());
+        } else if (i instanceof ArmorStandEntity) {
+            boolean visible = Utils.isNameVisibleFromMetadata(e.getPacket().getUnpackedData());
             if (!visible) return;
 
-            String value = Utils.getNameFromMetadata(e.getPacket().getDataManagerEntries());
+            String value = Utils.getNameFromMetadata(e.getPacket().getUnpackedData());
             if (value == null || value.isEmpty()) return;
 
             FrameworkManager.getEventBus().post(new LocationEvent.LabelFoundEvent(value, new Location(i), i));
@@ -382,7 +382,7 @@ public class ClientEvents implements Listener {
             || !e.getSlotIn().getStack().getDisplayName().contains("[>] Select")) return;
 
 
-        get(CharacterData.class).setClassId(e.getSlotId());
+        get(CharacterData.class).setClassId(e.getSlot());
 
         String classLore = ItemUtils.getLore(e.getSlotIn().getStack()).get(1);
         String className = classLore.substring(classLore.indexOf(TextFormatting.WHITE.toString()) + 2);
@@ -450,11 +450,11 @@ public class ClientEvents implements Listener {
         String name = player.getProfile().getName();
         if (name.contains("\u0001") || name.contains("§")) return; // avoid player npcs
 
-        UserManager.loadUser(e.getEntity().getUniqueID());
+        UserManager.loadUser(e.getEntity().getUUID());
     }
 
     @SubscribeEvent
-    public void onTotemSpawn(PacketEvent<SPacketSpawnObject> e) {
+    public void onTotemSpawn(PacketEvent<SSpawnObjectPacket> e) {
         totemTracker.onTotemSpawn(e);
     }
 
@@ -464,17 +464,17 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onTotemTeleport(PacketEvent<SPacketEntityTeleport> e) {
+    public void onTotemTeleport(PacketEvent<SEntityTeleportPacket> e) {
         totemTracker.onTotemTeleport(e);
     }
 
     @SubscribeEvent
-    public void onTotemRename(PacketEvent<SPacketEntityMetadata> e) {
+    public void onTotemRename(PacketEvent<SEntityMetadataPacket> e) {
         totemTracker.onTotemRename(e);
     }
 
     @SubscribeEvent
-    public void onTotemDestroy(PacketEvent<SPacketDestroyEntities> e) {
+    public void onTotemDestroy(PacketEvent<SDestroyEntitiesPacket> e) {
         totemTracker.onTotemDestroy(e);
     }
 

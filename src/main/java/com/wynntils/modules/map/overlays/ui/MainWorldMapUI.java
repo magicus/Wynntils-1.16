@@ -128,7 +128,7 @@ public class MainWorldMapUI extends WorldMapUI {
             return Mouse.isButtonDown(mapKey + 100);
         }
 
-        return Keyboard.isKeyDown(mapKey);
+        return Utils.isKeyDown(mapKey);
     }
 
     @Override

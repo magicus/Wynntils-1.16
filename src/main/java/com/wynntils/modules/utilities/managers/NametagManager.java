@@ -88,10 +88,10 @@ public class NametagManager {
                 if (entity.getTeam().getName().matches("pvp_.*")) customLabels.add(huntedLabel);  // hunted mode
             }
 
-            if (UserManager.isAccountType(entity.getUniqueID(), AccountType.MODERATOR)) customLabels.add(developerLabel);  // developer
-            if (UserManager.isAccountType(entity.getUniqueID(), AccountType.HELPER)) customLabels.add(helperLabel);  // helper
-            if (UserManager.isAccountType(entity.getUniqueID(), AccountType.CONTENT_TEAM)) customLabels.add(contentTeamLabel);  // contentTeam
-            if (UserManager.isAccountType(entity.getUniqueID(), AccountType.DONATOR)) customLabels.add(donatorLabel);  // donator
+            if (UserManager.isAccountType(entity.getUUID(), AccountType.MODERATOR)) customLabels.add(developerLabel);  // developer
+            if (UserManager.isAccountType(entity.getUUID(), AccountType.HELPER)) customLabels.add(helperLabel);  // helper
+            if (UserManager.isAccountType(entity.getUUID(), AccountType.CONTENT_TEAM)) customLabels.add(contentTeamLabel);  // contentTeam
+            if (UserManager.isAccountType(entity.getUUID(), AccountType.DONATOR)) customLabels.add(donatorLabel);  // donator
             if (Reference.onWars && UtilitiesConfig.Wars.INSTANCE.warrerHealthBar) customLabels.add(new NametagLabel(null, Utils.getPlayerHPBar((PlayerEntity)entity), 0.7f));  // war health
             if (UtilitiesConfig.INSTANCE.showArmors) customLabels.addAll(getUserArmorLabels((PlayerEntity)entity));  // armors
         } else if (!UtilitiesConfig.INSTANCE.hideNametags && !UtilitiesConfig.INSTANCE.hideNametagBox) return false;
@@ -161,7 +161,7 @@ public class NametagManager {
                 }
             }
 
-            LeaderboardProfile leader = LeaderboardManager.getLeader(entity.getUniqueID());
+            LeaderboardProfile leader = LeaderboardManager.getLeader(entity.getUUID());
             if (UtilitiesConfig.INSTANCE.renderLeaderboardBadges && leader != null) {
                 double horizontalShift = -(((leader.rankSize() - 1) * 21f) / 2);
 

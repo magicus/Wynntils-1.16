@@ -82,7 +82,7 @@ public class ChatGUI extends GuiChat {
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         if (inputField.getText().isEmpty() && keyCode == GLFW.GLFW_KEY_TAB) {
-            ChatOverlay.getChat().switchTabs(Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1);
+            ChatOverlay.getChat().switchTabs(Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1);
             tabButtons.values().stream().forEach(ChatButton::unselect);
             tabButtons.get(ChatOverlay.getChat().getCurrentTab()).setSelected(true);
         }

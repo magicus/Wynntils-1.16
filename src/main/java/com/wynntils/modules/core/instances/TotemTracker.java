@@ -14,12 +14,13 @@ import com.wynntils.core.utils.Utils;
 import com.wynntils.core.utils.objects.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.network.play.client.CHeldItemChangePacket;
-import net.minecraft.network.play.server.SPacketDestroyEntities;
-import net.minecraft.network.play.server.SPacketEntityMetadata;
-import net.minecraft.network.play.server.SPacketEntityTeleport;
-import net.minecraft.network.play.server.SPacketSpawnObject;
+import net.minecraft.network.play.server.SDestroyEntitiesPacket;
+import net.minecraft.network.play.server.SEntityMetadataPacket;
+import net.minecraft.network.play.server.SEntityTeleportPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraftforge.eventbus.api.Event;
 
 import java.util.Arrays;
@@ -69,11 +70,11 @@ public class TotemTracker {
     }
 
     private Entity getBufferedEntity(int entityId) {
-        Entity entity = ModCore.mc().world.getEntityByID(entityId);
+        Entity entity = ModCore.mc().level.getEntity(entityId);
         if (entity != null) return entity;
 
         if (entityId == bufferedId) {
-            return new EntityArmorStand(ModCore.mc().world, bufferedX, bufferedY, bufferedZ);
+            return new ArmorStandEntity(ModCore.mc().level, bufferedX, bufferedY, bufferedZ);
         }
 
         return null;
@@ -120,16 +121,16 @@ public class TotemTracker {
         mobTotemStarted.clear();
     }
 
-    public void onTotemSpawn(PacketEvent<SPacketSpawnObject> e) {
+    public void onTotemSpawn(PacketEvent<SSpawnObjectPacket> e) {
         if (!Reference.onWorld) return;
 
-        if (e.getPacket().getType() == 78) {
-            bufferedId = e.getPacket().getEntityID();
+        if (e.getPacket().getType() == EntityType.ARMOR_STAND) {
+            bufferedId = e.getPacket().getId();
             bufferedX = e.getPacket().getX();
             bufferedY = e.getPacket().getY();
             bufferedZ = e.getPacket().getZ();
 
-            if (e.getPacket().getEntityID() == totemId && totemState == TotemState.SUMMONED) {
+            if (e.getPacket().getId() == totemId && totemState == TotemState.SUMMONED) {
                 // Totems respawn with the same entityID when landing.
                 // Update with more precise coordinates
                 updateTotemPosition(e.getPacket().getX(), e.getPacket().getY(), e.getPacket().getZ());
@@ -141,7 +142,7 @@ public class TotemTracker {
             if (isClose(e.getPacket().getX(), Minecraft.getInstance().player.getX()) &&
                     isClose(e.getPacket().getY(), Minecraft.getInstance().player.getY() + 1.0) &&
                     isClose(e.getPacket().getZ(), Minecraft.getInstance().player.getZ())) {
-                potentialId = e.getPacket().getEntityID();
+                potentialId = e.getPacket().getId();
                 potentialX = e.getPacket().getX();
                 potentialY = e.getPacket().getY();
                 potentialZ = e.getPacket().getZ();
@@ -161,10 +162,10 @@ public class TotemTracker {
         }
     }
 
-    public void onTotemTeleport(PacketEvent<SPacketEntityTeleport> e) {
+    public void onTotemTeleport(PacketEvent<SEntityTeleportPacket> e) {
         if (!Reference.onWorld) return;
 
-        int thisId = e.getPacket().getEntityId();
+        int thisId = e.getPacket().getId();
         if (thisId == totemId) {
             if (totemState == TotemState.SUMMONED || totemState == TotemState.LANDING) {
                 // Now the totem has gotten it's final coordinates
@@ -179,14 +180,14 @@ public class TotemTracker {
         }
     }
 
-    public void onTotemRename(PacketEvent<SPacketEntityMetadata> e) {
+    public void onTotemRename(PacketEvent<SEntityMetadataPacket> e) {
         if (!Reference.onWorld) return;
 
-        String name = Utils.getNameFromMetadata(e.getPacket().getDataManagerEntries());
+        String name = Utils.getNameFromMetadata(e.getPacket().getUnpackedData());
         if (name == null || name.isEmpty()) return;
 
-        Entity entity = getBufferedEntity(e.getPacket().getEntityId());
-        if (!(entity instanceof EntityArmorStand)) return;
+        Entity entity = getBufferedEntity(e.getPacket().getId());
+        if (!(entity instanceof ArmorStandEntity)) return;
 
         if (totemState == TotemState.PREPARING || totemState == TotemState.ACTIVE) {
             Matcher m = SHAMAN_TOTEM_TIMER.matcher(name);
@@ -227,7 +228,7 @@ public class TotemTracker {
 
         Matcher m2 = MOB_TOTEM_NAME.matcher(name);
         if (m2.find()) {
-            int mobTotemId = e.getPacket().getEntityId();
+            int mobTotemId = e.getPacket().getId();
 
             MobTotem mobTotem = new MobTotem(mobTotemId,
                     new Location(entity.getX(), entity.getY() - 4.5, entity.getZ()), m2.group(1));
@@ -255,17 +256,17 @@ public class TotemTracker {
 
     }
 
-    public void onTotemDestroy(PacketEvent<SPacketDestroyEntities> e) {
+    public void onTotemDestroy(PacketEvent<SDestroyEntitiesPacket> e) {
         if (!Reference.onWorld) return;
 
-        IntStream entityIDs = Arrays.stream(e.getPacket().getEntityIDs());
+        IntStream entityIDs = Arrays.stream(e.getPacket().getEntityIds());
         if (entityIDs.filter(id -> id == totemId).findFirst().isPresent()) {
             if (totemState == TotemState.ACTIVE && totemTime == 0) {
                 removeTotem(false);
             }
         }
 
-        for (int id : e.getPacket().getEntityIDs()) {
+        for (int id : e.getPacket().getEntityIds()) {
             mobTotemUnstarted.remove(id);
             MobTotem mobTotem = mobTotemStarted.get(id);
             if (mobTotem == null) continue;
@@ -283,7 +284,7 @@ public class TotemTracker {
     public void onWeaponChange(PacketEvent<CHeldItemChangePacket> e) {
         if (!Reference.onWorld) return;
 
-        if (e.getPacket().getSlotId() != heldWeaponSlot) {
+        if (e.getPacket().getSlot() != heldWeaponSlot) {
             removeTotem(true);
         }
     }

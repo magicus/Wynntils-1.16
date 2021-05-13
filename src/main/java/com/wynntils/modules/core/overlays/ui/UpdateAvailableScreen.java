@@ -13,6 +13,8 @@ import com.wynntils.webapi.WebManager;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
 public class UpdateAvailableScreen extends Screen {
@@ -21,6 +23,7 @@ public class UpdateAvailableScreen extends Screen {
     private String text;
 
     public UpdateAvailableScreen(ServerData server) {
+        super(StringTextComponent.EMPTY);
         this.server = server;
         if (WebManager.getUpdate().getLatestUpdate().startsWith("B")) {
             text = TextFormatting.YELLOW + "Build " + WebManager.getUpdate().getLatestUpdate().replace("B", "") + TextFormatting.WHITE + " is available.";

@@ -337,7 +337,7 @@ public class WorldMapUI extends GuiMovementScreen {
             _popMatrix();
         }
 
-        if (MapConfig.WorldMap.INSTANCE.keepTerritoryVisible || Keyboard.isKeyDown(GLFW.GLFW_KEY_LCONTROL) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RCONTROL)) {
+        if (MapConfig.WorldMap.INSTANCE.keepTerritoryVisible || Utils.isKeyDown(GLFW.GLFW_KEY_LCONTROL) || Utils.isKeyDown(GLFW.GLFW_KEY_RCONTROL)) {
             territories.values().forEach(c -> c.drawScreen(mouseX, mouseY, partialTicks,
                     MapConfig.WorldMap.INSTANCE.territoryArea, false, false, true));
         }

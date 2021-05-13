@@ -145,7 +145,7 @@ public class OverlayPositionsUI extends UI {
 
     @Override
     public void onRenderPostUIE(ScreenRenderer render) {
-        if (reloadButtons || (shiftDown && !Keyboard.isKeyDown(42)))
+        if (reloadButtons || (shiftDown && !Utils.isKeyDown(42)))
             onInit();
     }
 
@@ -333,7 +333,7 @@ public class OverlayPositionsUI extends UI {
             mouseXPrevious = mouseX;
             mouseYPrevious = mouseY;
             Overlay overlay = (Overlay) overlaySettings.getHolder();
-            if (!Keyboard.isKeyDown(42)) {
+            if (!Utils.isKeyDown(42)) {
                 if (overlay.growth == Overlay.OverlayGrowFrom.TOP_LEFT) {
                     overlay.position.offsetX = position.offsetX;
                     overlay.position.offsetY = position.offsetY;

@@ -248,7 +248,7 @@ public class WaypointCreationMenu extends UI {
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         if (keyCode == GLFW.GLFW_KEY_TAB) {
             Utils.tab(
-                Keyboard.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Keyboard.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1,
+                Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1,
                 nameField, xCoordField, zCoordField, yCoordField, colorWheel.textBox.textField
             );
             return;

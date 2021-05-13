@@ -29,7 +29,7 @@ public class GuildAndFriendManager {
         if (player == null) return;
         ClientPlayNetHandler conn = player.connection;
         if (conn == null) return;
-        for (NetworkPlayerInfo i : conn.getPlayerInfoMap()) {
+        for (NetworkPlayerInfo i : conn.getOnlinePlayers()) {
             String name = i.getProfile().getName();
             if (name == null) continue;
             tryResolveName(i.getProfile().getId(), name);

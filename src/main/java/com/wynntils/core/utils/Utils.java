@@ -165,7 +165,7 @@ public class Utils {
      * @return the Scoreboard Team
      */
     public static ScorePlayerTeam createFakeScoreboard(String name, Team.CollisionRule rule) {
-        Scoreboard mc = Minecraft.getInstance().world.getScoreboard();
+        Scoreboard mc = Minecraft.getInstance().level.getScoreboard();
         if (mc.getTeam(name) != null) return mc.getTeam(name);
 
         String player = Minecraft.getInstance().player.getName();
@@ -184,7 +184,7 @@ public class Utils {
      * @param name the scoreboard name
      */
     public static void removeFakeScoreboard(String name) {
-        Scoreboard mc = Minecraft.getInstance().world.getScoreboard();
+        Scoreboard mc = Minecraft.getInstance().level.getScoreboard();
         if (mc.getTeam(name) == null) return;
 
         mc.removeTeam(mc.getTeam(name));
@@ -423,6 +423,13 @@ public class Utils {
         }
         return ItemStack.EMPTY;
     }
+
+
+    public static boolean isKeyDown(int keycode) {
+        int state = GLFW.glfwGetKey(ModCore.mc().getWindow().getWindow(), keycode) == GLFW.GLFW_PRESS
+        return (state == GLFW.GLFW_PRESS);
+    }
+
 
     // Alias if using already imported org.apache.commons.lang3.StringUtils
     public static class StringUtils extends com.wynntils.core.utils.StringUtils { }

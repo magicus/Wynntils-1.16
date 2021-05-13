@@ -23,7 +23,7 @@ public class BossTrackManager {
     private static QueuedTrack previousTrack = null;
 
     public static void update() {
-        for (Entity i : Minecraft.getInstance().world.loadedEntityList) {
+        for (Entity i : Minecraft.getInstance().level.loadedEntityList) {
             if (!i.hasCustomName()) continue;
 
             Matcher m = MOB_NAMETAG.matcher(TextFormatting.getTextWithoutFormattingCodes(i.getCustomNameTag()));
@@ -34,7 +34,7 @@ public class BossTrackManager {
         if (bossEntityId == -1) return;
 
         // check if the boss is still alive
-        Entity in = Minecraft.getInstance().world.getEntityByID(bossEntityId);
+        Entity in = Minecraft.getInstance().level.getEntity(bossEntityId);
         if (in != null && Math.abs(Minecraft.getInstance().player.getY() - in.getY()) <= 15) return;
 
         // grace period for bosses that have multiple phases (somewhat a transition)
@@ -60,7 +60,7 @@ public class BossTrackManager {
         String soundTrack = WebManager.getMusicLocations().getBossTrack(name);
         if (soundTrack == null || Math.abs(Minecraft.getInstance().player.getY() - entity.getY()) >= 15) return false;
 
-        bossEntityId = entity.getEntityId();
+        bossEntityId = entity.getId();
         gracePeriod = -1;
 
         QueuedTrack previous = SoundTrackManager.getCurrentSong();
