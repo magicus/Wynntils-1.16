@@ -12,7 +12,7 @@ import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -43,7 +43,7 @@ public class DailyReminderManager {
             text.appendText("are available to claim!");
 
             p.sendMessage(text);
-            ModCore.mc().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1.0F));
+            ModCore.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1.0F));
 
             UtilitiesConfig.Data.INSTANCE.dailyReminder = System.currentTimeMillis() + 1800000;
             UtilitiesConfig.Data.INSTANCE.saveSettings(UtilitiesModule.getModule());

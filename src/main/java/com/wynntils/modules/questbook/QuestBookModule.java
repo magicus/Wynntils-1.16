@@ -33,9 +33,9 @@ public class QuestBookModule extends Module {
 
         registerKeyBinding("Open Quest Book", GLFW.GLFW_KEY_K, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.QUESTS.getPage().open(true));
         registerKeyBinding("Open Discoveries", GLFW.GLFW_KEY_U, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.DISCOVERIES.getPage().open(true));
-        registerKeyBinding("Open Item Guide", GLFW.GLFW_KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.ITEMGUIDE.getPage().open(true));
-        registerKeyBinding("Open Lootrun List", GLFW.GLFW_KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.LOOTRUNS.getPage().open(true));
-        registerKeyBinding("Open HUD configuration", GLFW.GLFW_KEY_NONE, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.HUDCONFIG.getPage().open(true));
+        registerKeyBinding("Open Item Guide", GLFW.GLFW_KEY_UNKNOWN, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.ITEMGUIDE.getPage().open(true));
+        registerKeyBinding("Open Lootrun List", GLFW.GLFW_KEY_UNKNOWN, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.LOOTRUNS.getPage().open(true));
+        registerKeyBinding("Open HUD configuration", GLFW.GLFW_KEY_UNKNOWN, "Wynntils", KeyConflictContext.IN_GAME, true, () -> QuestBookPages.HUDCONFIG.getPage().open(true));
         registerKeyBinding("Open Menu", GLFW.GLFW_KEY_I, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
             QuestBookPages.MAIN.getPage().open(true);
             QuestManager.readQuestBook();

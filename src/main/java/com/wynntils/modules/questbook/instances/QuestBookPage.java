@@ -216,7 +216,7 @@ public class QuestBookPage extends Screen {
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (keyCode == GLFW.GLFW_KEY_LSHIFT || keyCode == GLFW.GLFW_KEY_RSHIFT || keyCode == GLFW.GLFW_KEY_LCONTROL || keyCode == GLFW.GLFW_KEY_RCONTROL) return;
+        if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT || keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT || keyCode == GLFW.GLFW_KEY_LCONTROL || keyCode == GLFW.GLFW_KEY_RCONTROL) return;
         if (showSearchBar) {
             textField.textboxKeyTyped(typedChar, keyCode);
             currentPage = 1;

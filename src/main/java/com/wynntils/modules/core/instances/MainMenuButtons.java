@@ -20,7 +20,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -50,7 +50,7 @@ public class MainMenuButtons {
 
             // little pling when finished loading
             if (!alreadyLoaded) {
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1f));
                 alreadyLoaded = true;
             }
             return;

@@ -120,7 +120,7 @@ public class CharacterProfile {
         return enabledGameModes;
     }
 
-    public ItemStack getStack() {
+    public ItemStack getItem() {
         return stack;
     }
 

@@ -13,9 +13,9 @@ import com.wynntils.core.events.custom.WynncraftServerEvent;
 import com.wynntils.core.framework.interfaces.Listener;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.wynntils.modules.utilities.managers.*;
-import net.minecraft.network.play.client.CPacketResourcePackStatus;
-import net.minecraft.network.play.client.CPacketUseEntity;
-import net.minecraft.network.play.server.SPacketResourcePackSend;
+import net.minecraft.network.play.client.CResourcePackStatusPacket;
+import net.minecraft.network.play.client.CUseEntityPacket;
+import net.minecraft.network.play.server.SSendResourcePackPacket;
 import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -70,11 +70,11 @@ public class ServerEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onResourcePackReceive(PacketEvent<SPacketResourcePackSend> e) {
+    public void onResourcePackReceive(PacketEvent<SSendResourcePackPacket> e) {
         if (!ServerResourcePackManager.shouldCancelResourcePackLoad(e.getPacket())) return;
 
-        e.getPlayClient().send(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.ACCEPTED));
-        e.getPlayClient().send(new CPacketResourcePackStatus(CPacketResourcePackStatus.Action.SUCCESSFULLY_LOADED));
+        e.getPlayClient().send(new CResourcePackStatusPacket(CResourcePackStatusPacket.Action.ACCEPTED));
+        e.getPlayClient().send(new CResourcePackStatusPacket(CResourcePackStatusPacket.Action.SUCCESSFULLY_LOADED));
 
         e.setCanceled(true);
     }
@@ -85,7 +85,7 @@ public class ServerEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onClickEntity(PacketEvent<CPacketUseEntity> e) {
+    public void onClickEntity(PacketEvent<CUseEntityPacket> e) {
         if (WarManager.allowClick(e)) e.setCanceled(true);
     }
 

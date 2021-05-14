@@ -67,7 +67,7 @@ public class OverlayEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onTitle(PacketEvent<SPacketTitle> e) {
+    public void onTitle(PacketEvent<STitlePacket> e) {
         WarTimerOverlay.onTitle(e);
     }
 

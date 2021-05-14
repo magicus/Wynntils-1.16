@@ -112,7 +112,7 @@ public class GearViewerUI extends FakeGuiContainer {
 
         // replace lore with advanced ids if enabled
         if (this.getSlotUnderMouse() != null && this.getSlotUnderMouse().getHasStack())
-            ItemIdentificationOverlay.replaceLore(this.getSlotUnderMouse().getStack());
+            ItemIdentificationOverlay.replaceLore(this.getSlotUnderMouse().getItem());
     }
 
     @Override

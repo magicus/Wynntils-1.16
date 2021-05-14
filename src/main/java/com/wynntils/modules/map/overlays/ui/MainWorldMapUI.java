@@ -18,7 +18,7 @@ import com.wynntils.modules.music.managers.SoundTrackManager;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 
@@ -203,7 +203,7 @@ public class MainWorldMapUI extends WorldMapUI {
 
             forEachIcon(c -> {
                 if (c.mouseOver(mouseX, mouseY)) {
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1f));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1f));
 
                     CompassManager.setCompassLocation(new Location(c.getInfo().getPosX(), 0, c.getInfo().getPosZ()));
                     resetCompassMapIcon();

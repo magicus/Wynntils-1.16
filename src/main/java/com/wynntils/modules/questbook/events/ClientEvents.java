@@ -22,8 +22,8 @@ import com.wynntils.modules.questbook.managers.QuestManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Items;
 import net.minecraft.network.play.client.CPlayerTryUseItemPacket;
-import net.minecraft.network.play.client.CPacketPlayerTryUseItemOnBlock;
-import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.network.play.client.CPlayerTryUseItemOnBlockPacket;
+import net.minecraft.network.play.client.CUseEntityPacket;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.TickEvent;
@@ -113,7 +113,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void clickOnQuestBookItemOnBlock(PacketEvent<CPacketPlayerTryUseItemOnBlock> e) {
+    public void clickOnQuestBookItemOnBlock(PacketEvent<CPlayerTryUseItemOnBlockPacket> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
                 || Minecraft.getInstance().player.inventory.selected != 7) return;
@@ -123,7 +123,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void clickOnQuestBookEntity(PacketEvent<CPacketUseEntity> e) {
+    public void clickOnQuestBookEntity(PacketEvent<CUseEntityPacket> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
                 || Minecraft.getInstance().player.inventory.selected != 7) return;

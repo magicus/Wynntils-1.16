@@ -34,7 +34,7 @@ public class FavoriteTradesOverlay implements Listener {
         if (e.getKeyCode() != KeyManager.getFavoriteTradeKey().getKeyBinding().getKeyCode()) return;
 
         if (e.getGui().getSlotUnderMouse() != null && Minecraft.getInstance().player.inventory != e.getGui().getSlotUnderMouse().inventory) {
-            toggleLockState(e.getGui().getSlotUnderMouse().getStack());
+            toggleLockState(e.getGui().getSlotUnderMouse().getItem());
         }
     }
 
@@ -49,7 +49,7 @@ public class FavoriteTradesOverlay implements Listener {
 
         for (Slot s : e.getGui().inventorySlots.inventorySlots) {
             if (s.slotNumber >= e.getGui().getLowerInv().getContainerSize()) continue;
-            if (isNotMarketItem(s.getStack())) continue;
+            if (isNotMarketItem(s.getItem())) continue;
             renderFavoriteItem(s, e.getGui().getGuiLeft(), e.getGui().getGuiTop());
         }
     }
@@ -65,7 +65,7 @@ public class FavoriteTradesOverlay implements Listener {
     }
 
     private void renderFavoriteItem(Slot s, int guiLeft, int guiTop) {
-        ItemStack it = s.getStack();
+        ItemStack it = s.getItem();
         ItemIdentificationOverlay.replaceLore(it);
         String lore = Arrays.toString(ItemUtils.getLore(it).toArray());
         if (!favorites_trade_items_lore.contains(lore)) return;

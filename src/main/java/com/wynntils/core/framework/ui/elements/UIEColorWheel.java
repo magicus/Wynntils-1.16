@@ -18,7 +18,7 @@ import net.minecraft.client.gui.GuiPageButtonList;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.GuiSlider;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.text.WordUtils;
 import org.lwjgl.input.Mouse;
@@ -157,7 +157,7 @@ public class UIEColorWheel extends UIEClickZone {
                 color = toChange;
 
                 mc.displayGuiScreen(backGui);
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(clickSound, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(clickSound, 1f));
                 onAccept.accept(color);
                 if (colorText == null) {
                     textBox.setText(formatColourName(color));
@@ -166,7 +166,7 @@ public class UIEColorWheel extends UIEClickZone {
                 }
             } else if (button == cancelButton) {
                 mc.displayGuiScreen(backGui);
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(clickSound, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(clickSound, 1f));
             }
         }
 

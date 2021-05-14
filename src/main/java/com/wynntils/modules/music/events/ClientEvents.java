@@ -20,7 +20,7 @@ import com.wynntils.modules.utilities.overlays.hud.WarTimerOverlay;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.server.SPacketTitle;
+import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.network.play.server.SWindowItemsPacket;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -70,8 +70,8 @@ public class ClientEvents implements Listener {
 
     // special tracks
     @SubscribeEvent
-    public void dungeonTracks(PacketEvent<SPacketTitle> e) {
-        if (!MusicConfig.INSTANCE.replaceJukebox || e.getPacket().getType() != SPacketTitle.Type.TITLE) return;
+    public void dungeonTracks(PacketEvent<STitlePacket> e) {
+        if (!MusicConfig.INSTANCE.replaceJukebox || e.getPacket().getType() != STitlePacket.Type.TITLE) return;
 
         String title = TextFormatting.getTextWithoutFormattingCodes(e.getPacket().getMessage().getFormattedText());
         String songName = WebManager.getMusicLocations().getDungeonTrack(title);
@@ -110,9 +110,9 @@ public class ClientEvents implements Listener {
                 !chest.getLowerInv().getName().contains("Daily Rewards") &&
                 !chest.getLowerInv().getName().contains("Objective Rewards")) return;
 
-        int size = Math.min(chest.getLowerInv().getContainerSize(), e.getPacket().getItemStacks().size());
+        int size = Math.min(chest.getLowerInv().getContainerSize(), e.getPacket().getItems().size());
         for (int i = 0; i < size; i++) {
-            ItemStack stack = e.getPacket().getItemStacks().get(i);
+            ItemStack stack = e.getPacket().getItems().get(i);
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
             if (!stack.getDisplayName().contains(TextFormatting.DARK_PURPLE.toString())) continue;
             if (!stack.getDisplayName().contains("Unidentified")) continue;

@@ -29,7 +29,7 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
@@ -106,7 +106,7 @@ public class WorldMapUI extends GuiMovementScreen {
 
         // Opening SFX
         Minecraft.getInstance().getSoundManager().play(
-                SimpleSound.getMasterRecord(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f)
+                SimpleSound.forUI(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f)
         );
     }
 

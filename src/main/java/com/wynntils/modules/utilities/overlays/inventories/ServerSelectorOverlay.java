@@ -15,7 +15,7 @@ import com.wynntils.modules.core.enums.UpdateStream;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -34,7 +34,7 @@ public class ServerSelectorOverlay implements Listener {
         if (!Utils.isServerSelector(e.getGui())) return;
         if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
 
-        ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
+        ItemStack stack = e.getGui().getSlotUnderMouse().getItem();
         CompoundNBT nbt = stack.getTag();
         if (nbt.contains("wynntilsServerIgnore")) return;
         String itemName = StringUtils.normalizeBadString(TextFormatting.getTextWithoutFormattingCodes(stack.getDisplayName()));
@@ -83,13 +83,13 @@ public class ServerSelectorOverlay implements Listener {
     public void onSlotClicked(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (!Utils.isServerSelector(e.getGui())) return;
         if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
-        ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
+        ItemStack stack = e.getGui().getSlotUnderMouse().getItem();
         CompoundNBT nbt = stack.getTag();
         if (nbt.contains("wynntilsBlock")) {
             StringTextComponent text = new StringTextComponent("Your version of Wynntils is currently blocked from joining the Hero Beta due to instability. Trying changing update stream to cutting edge, or removing Wynntils while on the Hero Beta until support is added.");
             text.getStyle().setColor(TextFormatting.RED);
             Minecraft.getInstance().player.sendMessage(text);
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_BASS, 1f));
 
             e.setCanceled(true);
         } else if (nbt.contains("wynntilsWarn")) {
@@ -109,7 +109,7 @@ public class ServerSelectorOverlay implements Listener {
             }
             Minecraft.getInstance().player.sendMessage(text);
 
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_BASS, 1f));
         }
     }
 }

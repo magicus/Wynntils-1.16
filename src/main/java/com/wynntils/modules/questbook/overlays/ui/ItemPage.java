@@ -31,7 +31,7 @@ import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TextFormatting;
@@ -213,7 +213,7 @@ public class ItemPage extends QuestBookPage {
         checkForwardAndBackButtons(posX, posY);
 
         if (posX >= -157 && posX <= -147 && posY >= 89 && posY <= 99) { // search mode toggle button
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             if (QuestBookConfig.INSTANCE.advancedItemSearch) {
                 QuestBookConfig.INSTANCE.advancedItemSearch = false;
                 initBasicSearch();
@@ -235,7 +235,7 @@ public class ItemPage extends QuestBookPage {
         }
 
         if (selected < 0) { // an item in the guide is hovered
-            if (mouseButton != 1 || !(Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT))) return;
+            if (mouseButton != 1 || !(Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_SHIFT))) return;
 
             int selectedIndex = -(selected + 1);
             if (selectedIndex >= itemSearch.size()) return;
@@ -411,19 +411,19 @@ public class ItemPage extends QuestBookPage {
             switch (selected) { // is one of the sorting buttons hovered?
                 case 1:
                     if (sortFunction != SortFunction.ALPHABETICAL) {
-                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                         sortFunction = SortFunction.ALPHABETICAL;
                     }
                     return true;
                 case 2:
                     if (sortFunction != SortFunction.BY_LEVEL) {
-                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                         sortFunction = SortFunction.BY_LEVEL;
                     }
                     return true;
                 case 3:
                     if (sortFunction != SortFunction.BY_RARITY) {
-                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                         sortFunction = SortFunction.BY_RARITY;
                     }
                     return true;
@@ -432,7 +432,7 @@ public class ItemPage extends QuestBookPage {
             if (selected < 10) return false; // selected >= 10 means one of the item filter buttons is hovered
 
             ItemType selectedType = itemTypeArray.get(selected / 10 - 1);
-            if (Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT)) {
+            if (Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT)) {
                 if (allowedTypes.size() == 1 && allowedTypes.contains(selectedType)) {
                     allowedTypes.addAll(itemTypeArray);
                 } else {
@@ -444,7 +444,7 @@ public class ItemPage extends QuestBookPage {
             } else {
                 allowedTypes.add(selectedType);
             }
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
 
             return true;
         }
@@ -529,8 +529,8 @@ public class ItemPage extends QuestBookPage {
         static final AdvancedSearchHandler INSTANCE = new AdvancedSearchHandler();
 
         private static final ItemStack SCROLL_STACK = new ItemStack(Items.DIAMOND_AXE);
-        private static final ItemStack RED_POTION_STACK = new ItemStack(Items.POTIONITEM);
-        private static final ItemStack BLUE_POTION_STACK = new ItemStack(Items.POTIONITEM);
+        private static final ItemStack RED_POTION_STACK = new ItemStack(Items.POTION);
+        private static final ItemStack BLUE_POTION_STACK = new ItemStack(Items.POTION);
 
         private static final HelpCategory[] ADV_SEARCH_HELP = {
                 new HelpCategory.Builder(new ItemStack(Items.WRITABLE_BOOK), "Writing Filter Strings",
@@ -750,7 +750,7 @@ public class ItemPage extends QuestBookPage {
                         .with(ByStat.TYPE_SPRINT).with(ByStat.TYPE_SPRINT_REGEN)
                         .with(ByStat.TYPE_JUMP_HEIGHT)
                         .build(),
-                new HelpCategory.Builder(new ItemStack(Items.SIGN), "Miscellaneous Stats",
+                new HelpCategory.Builder(new ItemStack(Items.OAK_SIGN), "Miscellaneous Stats",
                         "Filters by stats that don't",
                         "fit into the other categories.",
                         "",

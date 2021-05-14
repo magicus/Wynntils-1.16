@@ -19,7 +19,7 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.item.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.container.Slot;
@@ -96,10 +96,10 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
     @Override
     protected void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) {
-        if (slotIn == null || slotIn.getStack().isEmpty()) return;
+        if (slotIn == null || slotIn.getItem().isEmpty()) return;
         if (slotId >= UtilitiesConfig.INSTANCE.skillPointLoadouts.size()) return;
 
-        String name = TextFormatting.getTextWithoutFormattingCodes(slotIn.getStack().getDisplayName());
+        String name = TextFormatting.getTextWithoutFormattingCodes(slotIn.getItem().getDisplayName());
         if (mouseButton == 0) { // left click <-> load
             SkillPointAllocation aloc = getLoadout(name);
             if (aloc == null) return;
@@ -114,18 +114,18 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
         }
 
         if (mouseButton == 1) { // right click <-> delete
-            List<String> lore = ItemUtils.getLore(slotIn.getStack());
+            List<String> lore = ItemUtils.getLore(slotIn.getItem());
             if (lore.get(lore.size() - 1).contains("confirm")) { // confirm deletion
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
 
                 removeLoadout(name);
                 this.initGui();
                 return;
             }
 
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_LAND, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_LAND, 1f));
             lore.set(lore.size() -1, TextFormatting.DARK_RED + "> Right-click to confirm deletion");
-            ItemUtils.replaceLore(slotIn.getStack(), lore);
+            ItemUtils.replaceLore(slotIn.getItem(), lore);
         }
     }
 

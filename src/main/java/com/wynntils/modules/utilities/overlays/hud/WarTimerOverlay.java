@@ -19,8 +19,8 @@ import com.wynntils.modules.utilities.configs.SoundEffectsConfig;
 import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.profiles.TerritoryProfile;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.network.play.server.SPacketTitle;
-import net.minecraft.network.play.server.SPacketTitle.Type;
+import net.minecraft.network.play.server.STitlePacket;
+import net.minecraft.network.play.server.STitlePacket.Type;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -181,7 +181,7 @@ public class WarTimerOverlay extends Overlay {
         }
     }
 
-    public static void onTitle(PacketEvent<SPacketTitle> event) {
+    public static void onTitle(PacketEvent<STitlePacket> event) {
         if (event.getPacket().getType() == Type.SUBTITLE && event.getPacket().getMessage().getUnformattedText().equals(TextFormatting.GOLD + "0 Mobs Left")) {
             lastTimePassed = System.currentTimeMillis() - time;
             lastTerritory = territory;

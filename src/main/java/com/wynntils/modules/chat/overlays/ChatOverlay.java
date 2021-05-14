@@ -17,7 +17,7 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.*;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -292,7 +292,7 @@ public class ChatOverlay extends GuiNewChat {
     public void switchTabs(int amount) {
         currentTab = Math.floorMod(currentTab + amount, TabManager.getAvailableTabs().size());
 
-        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
     }
 
     public void resetScroll() {

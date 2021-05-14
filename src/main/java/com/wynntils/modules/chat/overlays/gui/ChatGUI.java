@@ -19,7 +19,7 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiLabel;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.glfw.GLFW;
@@ -59,7 +59,7 @@ public class ChatGUI extends GuiChat {
                     tabButtons.values().stream().forEach(ChatButton::unselect);
                     tabButton.getValue().setSelected(true);
                 }
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             }
         }
 

@@ -30,7 +30,7 @@ import net.minecraft.client.audio.SimpleSound;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.container.Slot;
@@ -98,12 +98,12 @@ public class SkillPointOverlay implements Listener {
         ItemStack save = new ItemStack(Items.WRITABLE_BOOK);
         save.setStackDisplayName(TextFormatting.GOLD + "[>] Save current loadout");
         ItemUtils.replaceLore(save, Arrays.asList(TextFormatting.GRAY + "Allows you to save this loadout with a name."));
-        e.getGui().inventorySlots.getSlot(SAVE_SLOT).putStack(save);
+        e.getGui().inventorySlots.getSlot(SAVE_SLOT).set(save);
 
         ItemStack load = new ItemStack(Items.ENCHANTED_BOOK);
         load.setStackDisplayName(TextFormatting.GOLD + "[>] Load loadout");
         ItemUtils.replaceLore(load, Arrays.asList(TextFormatting.GRAY + "Allows you to load one of your saved loadouts."));
-        e.getGui().inventorySlots.getSlot(LOAD_SLOT).putStack(load);
+        e.getGui().inventorySlots.getSlot(LOAD_SLOT).set(load);
 
         // skill point allocating
         if (!itemsLoaded || startBuild) {
@@ -171,7 +171,7 @@ public class SkillPointOverlay implements Listener {
         if (!Reference.onWorld || !Utils.isCharacterInfoPage(e.getGui())) return;
 
         for (Slot s : e.getGui().inventorySlots.inventorySlots) {
-            String name = TextFormatting.getTextWithoutFormattingCodes(s.getStack().getDisplayName());
+            String name = TextFormatting.getTextWithoutFormattingCodes(s.getItem().getDisplayName());
             SkillPoint skillPoint = SkillPoint.findSkillPoint(name);
             if (skillPoint == null) continue;
 
@@ -243,7 +243,7 @@ public class SkillPointOverlay implements Listener {
             name = name.replaceAll("&([a-f0-9k-or])", "§$1");
             UtilitiesConfig.INSTANCE.skillPointLoadouts.put(name, getSkillPoints(e.getGui()));
             UtilitiesConfig.INSTANCE.saveSettings(UtilitiesModule.getModule());
-            ModCore.mc().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1f));
+            ModCore.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1f));
         } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
             nameField = null;
             loadedBuild = null;
@@ -353,7 +353,7 @@ public class SkillPointOverlay implements Listener {
             text.getStyle().setColor(TextFormatting.RED);
 
             ModCore.mc().player.sendMessage(text);
-            ModCore.mc().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
+            ModCore.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
             return;
         }
 
@@ -363,7 +363,7 @@ public class SkillPointOverlay implements Listener {
 
     private void allocateSkillPoints(ChestReplacer gui) {
         if (loadedBuild == null) return;
-        if (gui.inventorySlots.getSlot(9).getStack().isEmpty()) return;
+        if (gui.inventorySlots.getSlot(9).getItem().isEmpty()) return;
         itemsLoaded = true;
 
         int[] currentSp = getSkillPoints(gui).getAsArray();
@@ -378,17 +378,17 @@ public class SkillPointOverlay implements Listener {
             buildPercentage += perSkill * (button == 1 ? 5 : 0);
 
             CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, 9 + i, button,
-                    ClickType.PICKUP, gui.inventorySlots.getSlot(9 + i).getStack(),
+                    ClickType.PICKUP, gui.inventorySlots.getSlot(9 + i).getItem(),
                     gui.inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
 
             Minecraft.getInstance().getSoundManager().play(
-                    SimpleSound.getMasterRecord(SoundEvents.ENTITY_ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));
+                    SimpleSound.forUI(SoundEvents.ENTITY_ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));
 
             ModCore.mc().getConnection().send(packet);
             return; // can only click once at a time
         }
 
-        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.ENTITY_PLAYER_LEVELUP, 1f));
+        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_PLAYER_LEVELUP, 1f));
         loadedBuild = null; // we've fully loaded the build if we reach this point
         buildPercentage = 0.0f;
     }

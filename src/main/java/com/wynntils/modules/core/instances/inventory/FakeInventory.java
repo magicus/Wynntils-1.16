@@ -228,7 +228,7 @@ public class FakeInventory {
         }
 
         inventory.clear();
-        inventory.addAll(e.getPacket().getItemStacks());
+        inventory.addAll(e.getPacket().getItems());
 
         expectingResponse = false;
         lastAction = Minecraft.getSystemTime();

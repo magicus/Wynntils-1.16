@@ -29,7 +29,7 @@ public class ItemLevelOverlay implements Listener {
         if (!UtilitiesConfig.Items.INSTANCE.itemLevelOverlayOutsideGui && Minecraft.getInstance().screen == null) return;
         if (!KeyManager.getShowLevelOverlayKey().isKeyDown()) return;
 
-        ItemStack stack = event.getStack();
+        ItemStack stack = event.getItem();
         Item item = stack.getItem();
         String name = stack.getDisplayName();
 

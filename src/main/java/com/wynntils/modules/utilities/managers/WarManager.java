@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.network.play.client.CPacketUseEntity;
+import net.minecraft.network.play.client.CUseEntityPacket;
 import net.minecraft.network.play.server.SSpawnObjectPacket;
 
 public class WarManager {
@@ -36,7 +36,7 @@ public class WarManager {
      * @param e the packet use entity event
      * @return if the click should be allowed
      */
-    public static boolean allowClick(PacketEvent<CPacketUseEntity> e) {
+    public static boolean allowClick(PacketEvent<CUseEntityPacket> e) {
         if (!UtilitiesConfig.Wars.INSTANCE.blockWorkstations || !Reference.onWars) return false;
 
         Entity in = e.getPacket().getEntityFromWorld(Minecraft.getInstance().level);

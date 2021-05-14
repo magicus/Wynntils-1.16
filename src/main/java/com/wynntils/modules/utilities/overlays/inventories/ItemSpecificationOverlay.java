@@ -37,7 +37,7 @@ public class ItemSpecificationOverlay implements Listener {
         if (!Reference.onWorld) return;
 
         for (Slot s : gui.inventorySlots.inventorySlots) {
-            ItemStack stack = s.getStack();
+            ItemStack stack = s.getItem();
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue; // display name also checks for tag compound
 
             List<String> lore = ItemUtils.getLore(stack);

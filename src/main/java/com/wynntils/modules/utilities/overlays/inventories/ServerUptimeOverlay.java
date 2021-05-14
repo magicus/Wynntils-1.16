@@ -24,9 +24,9 @@ public class ServerUptimeOverlay implements Listener {
     @SubscribeEvent
     public void onChest(GuiOverlapEvent.ChestOverlap.DrawScreen.Post e) {
         if (!Reference.onLobby) return;
-        if (e.getGui().getSlotUnderMouse() == null || e.getGui().getSlotUnderMouse().getStack().isEmpty()) return;
+        if (e.getGui().getSlotUnderMouse() == null || e.getGui().getSlotUnderMouse().getItem().isEmpty()) return;
 
-        ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
+        ItemStack stack = e.getGui().getSlotUnderMouse().getItem();
         if (!ItemUtils.getStringLore(stack).contains("Click to join") || stack.getItem() == Items.CLOCK) return;
         CompoundNBT nbt = stack.getTag();
         if (nbt.contains("wynntils")) return;

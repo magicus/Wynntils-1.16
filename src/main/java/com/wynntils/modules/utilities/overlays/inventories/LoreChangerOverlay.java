@@ -29,26 +29,26 @@ public class LoreChangerOverlay implements Listener {
     public void onChest(GuiOverlapEvent.ChestOverlap.DrawScreen.Post e) {
         if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
 
-        replaceLore(e.getGui().getSlotUnderMouse().getStack());
+        replaceLore(e.getGui().getSlotUnderMouse().getItem());
     }
 
     @SubscribeEvent
     public void onInventory(GuiOverlapEvent.InventoryOverlap.DrawScreen e) {
         if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
 
-        replaceLore(e.getGui().getSlotUnderMouse().getStack());
+        replaceLore(e.getGui().getSlotUnderMouse().getItem());
     }
 
     @SubscribeEvent
     public void onHorse(GuiOverlapEvent.HorseOverlap.DrawScreen e) {
         if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
 
-        replaceLore(e.getGui().getSlotUnderMouse().getStack());
+        replaceLore(e.getGui().getSlotUnderMouse().getItem());
     }
 
     private static void replaceLore(ItemStack stack) {
         // Soul Point Timer
-        if ((stack.getItem() == Items.NETHER_STAR || stack.getItem() == Item.byBlock(Blocks.SNOW_LAYER)) && stack.getDisplayName().contains("Soul Point")) {
+        if ((stack.getItem() == Items.NETHER_STAR || stack.getItem() == Item.byBlock(Blocks.SNOW)) && stack.getDisplayName().contains("Soul Point")) {
             List<String> lore = ItemUtils.getLore(stack);
             if (lore != null && !lore.isEmpty()) {
                 if (lore.get(lore.size() - 1).contains("Time until next soul point: ")) {

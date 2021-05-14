@@ -48,7 +48,7 @@ public class ServerIcon {
         this.server = server;
         this.allowStale = allowStale;
 
-        serverIcon = new ResourceLocation("servers/" + server.serverIP + "/icon");
+        serverIcon = new ResourceLocation("servers/" + server.ip + "/icon");
         icon = (DynamicTexture) Minecraft.getInstance().getTextureManager().getTexture(serverIcon);
 
         synchronized (ServerIcon.class) {
@@ -150,7 +150,7 @@ public class ServerIcon {
         try {
             bufferedimage = parseServerIcon(lastIcon);
         } catch (Throwable throwable) {
-            Reference.LOGGER.error("Invalid icon for server " + server.serverName + " (" + server.serverIP + ")", throwable);
+            Reference.LOGGER.error("Invalid icon for server " + server.serverName + " (" + server.ip + ")", throwable);
             server.setBase64EncodedIconData(null);
             onDone();
             return null;

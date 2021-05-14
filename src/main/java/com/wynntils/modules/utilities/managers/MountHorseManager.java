@@ -16,7 +16,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.TextFormatting;
@@ -38,7 +38,7 @@ public class MountHorseManager {
     private static boolean ingamePrevention = false;
 
     public static boolean isPlayersHorse(Entity horse, String playerName) {
-        return (horse instanceof AbstractHorse) && isPlayersHorse(horse.getCustomNameTag(), playerName);
+        return (horse instanceof AbstractHorseEntity) && isPlayersHorse(horse.getCustomNameTag(), playerName);
     }
 
     public static boolean isPlayersHorse(String horseName, String playerName) {
@@ -51,7 +51,7 @@ public class MountHorseManager {
     private static Entity findHorseInRadius(Minecraft mc) {
         ClientPlayerEntity player = mc.player;
 
-        List<Entity> horses = mc.world.getEntitiesWithinAABB(AbstractHorse.class, new AxisAlignedBB(
+        List<Entity> horses = mc.world.getEntitiesWithinAABB(AbstractHorseEntity.class, new AxisAlignedBB(
                 player.getX() - searchRadius, player.getY() - searchRadius, player.getZ() - searchRadius,
                 player.getX() + searchRadius, player.getY() + searchRadius, player.getZ() + searchRadius
         ));
@@ -155,7 +155,7 @@ public class MountHorseManager {
                 String ridingEntityType;
                 if (ridingEntity == null) {
                     ridingEntityType = "nothing?";
-                } else if (ridingEntity instanceof AbstractHorse) {
+                } else if (ridingEntity instanceof AbstractHorseEntity) {
                     ridingEntityType = "a horse";
                 } else if (ridingEntity instanceof EntityBoat) {
                     ridingEntityType = "a boat";

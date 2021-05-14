@@ -130,7 +130,7 @@ public class ServerUtils {
         int i = 0, count = serverList.countServers();
         for (; i < count; ++i) {
             server = serverList.getServerData(i);
-            if (server.serverIP.toLowerCase(Locale.ROOT).contains("wynncraft")) {
+            if (server.ip.toLowerCase(Locale.ROOT).contains("wynncraft")) {
                 break;
             }
         }
@@ -151,7 +151,7 @@ public class ServerUtils {
     }
 
     /**
-     * Change the serverIP of a ServerData and save the results
+     * Change the ip of a ServerData and save the results
      *
      * @param list The server list
      * @param serverData The old server data
@@ -168,9 +168,9 @@ public class ServerUtils {
 
         for (int i = 0, length = list.countServers(); i < length; ++i) {
             ServerData fromList = list.getServerData(i);
-            if (Objects.equals(fromList.serverIP, serverData.serverIP) && Objects.equals(fromList.serverName, serverData.serverName)) {
+            if (Objects.equals(fromList.ip, serverData.ip) && Objects.equals(fromList.serverName, serverData.serverName)) {
                 // Found the server data; Replace the ip
-                fromList.serverIP = newIp;
+                fromList.ip = newIp;
                 list.saveServerList();
                 return fromList;
             }

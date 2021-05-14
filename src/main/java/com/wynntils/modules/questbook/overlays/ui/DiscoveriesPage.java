@@ -32,7 +32,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
@@ -317,19 +317,19 @@ public class DiscoveriesPage extends QuestBookPage {
                     case 0: // Left Click
                         if (QuestBookConfig.INSTANCE.spoilSecretDiscoveries.followsRule(overDiscovery.wasDiscovered())) {
                             locateSecretDiscovery(name, "compass");
-                            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
+                            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
                         }
                     break;
                     case 1: // Right Click
                         if (QuestBookConfig.INSTANCE.spoilSecretDiscoveries.followsRule(overDiscovery.wasDiscovered())) {
                             locateSecretDiscovery(name, "map");
-                            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                         }
                     break;
                     case 2: //Middle Click
                         String wikiUrl = "https://wynncraft.gamepedia.com/" + Utils.encodeForWikiTitle(name);
                         Utils.openUrl(wikiUrl);
-                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                     break;
                 }
             } else if (overDiscovery.getGuildTerritoryProfile() != null) { // Guild territory actions
@@ -341,16 +341,16 @@ public class DiscoveriesPage extends QuestBookPage {
                 switch(mouseButton) {
                     case 0: // Left Click
                         CompassManager.setCompassLocation(new Location(x, 50, z));
-                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
                     break;
                     case 1: // Right Click
                         Utils.displayGuiScreen(new MainWorldMapUI(x, z));
-                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                     break;
                     case 2: //Middle Click
                         Utils.displayGuiScreen(new MainWorldMapUI(x, z));
                         CompassManager.setCompassLocation(new Location(x, 50, z));
-                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                     break;
                 }
             }
@@ -360,37 +360,37 @@ public class DiscoveriesPage extends QuestBookPage {
         checkForwardAndBackButtons(posX, posY);
 
         if (posX >= 100 && posX <= 130 && posY >= -45 && posY <= -15) { // Discovered Territory
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             territory = !territory;
             updateSearch();
             return;
         } else if (posX >= 100 && posX <= 130 && posY >= -80 && posY <= -50) { // Undiscovered Territory
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             undiscoveredTerritory = !undiscoveredTerritory;
             updateSearch();
             return;
         } else if (posX >= 65 && posX <= 95 && posY >= -45 && posY <= -15) { // Discovered World
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             world = !world;
             updateSearch();
             return;
         } else if (posX >= 65 && posX <= 95 && posY >= -80 && posY <= -50) { // Undiscovered World
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             undiscoveredWorld = !undiscoveredWorld;
             updateSearch();
             return;
         } else if (posX >= 30 && posX <= 60 && posY >= -45 && posY <= -15) { // Discovered Secret
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             secret = !secret;
             updateSearch();
             return;
         } else if (posX >= 30 && posX <= 60 && posY >= -80 && posY <= -50) { // Undiscovered Secret
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             undiscoveredSecret = !undiscoveredSecret;
             updateSearch();
             return;
         } else if (posX >= -157 && posX <= -147 && posY >= 89 && posY <= 99) { // Update Button
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             QuestManager.updateAnalysis(EnumSet.of(AnalysePosition.DISCOVERIES, AnalysePosition.SECRET_DISCOVERIES), true, true);
             return;
         }

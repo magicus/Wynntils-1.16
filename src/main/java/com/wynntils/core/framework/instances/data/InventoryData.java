@@ -186,7 +186,7 @@ public class InventoryData extends PlayerData {
         if (currentClass == ClassType.NONE || player == null) return -1;
 
         ItemStack soulPoints = player.inventory.items.get(8);
-        if (soulPoints.getItem() != Items.NETHER_STAR && soulPoints.getItem() != Item.byBlock(Blocks.SNOW_LAYER)) {
+        if (soulPoints.getItem() != Items.NETHER_STAR && soulPoints.getItem() != Item.byBlock(Blocks.SNOW)) {
             return -1;
         }
 

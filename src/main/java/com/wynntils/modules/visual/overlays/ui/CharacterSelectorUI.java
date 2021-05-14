@@ -17,13 +17,14 @@ import com.wynntils.modules.visual.instances.CharacterProfile;
 import com.wynntils.webapi.profiles.player.PlayerStatsProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -134,7 +135,7 @@ public class CharacterSelectorUI extends Screen {
                         CharacterProfile profile = availableCharacters.get(i);
 
                         drawCharacterBadge(3, posY,
-                                profile.getStack(),
+                                profile.getItem(),
                                 profile.getClassName(),
                                 "Level " + profile.getLevel(),
                                 profile.getDeletion(),
@@ -191,7 +192,7 @@ public class CharacterSelectorUI extends Screen {
         lastClick = System.currentTimeMillis();
         lastButton = hoveredButton;
 
-        mc.getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        mc.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
         // character picking
         if (hoveredButton <= 50) {
@@ -286,7 +287,7 @@ public class CharacterSelectorUI extends Screen {
         if (receivedItems) return;
 
         for (Slot s : chest.inventorySlots.inventorySlots) {
-            ItemStack stack = s.getStack();
+            ItemStack stack = s.getItem();
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
 
             String displayName = stack.getDisplayName();

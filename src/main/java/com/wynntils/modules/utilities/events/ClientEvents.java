@@ -37,12 +37,12 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
@@ -52,10 +52,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.StringNBT;
 import net.minecraft.network.play.client.*;
-import net.minecraft.network.play.client.CPacketPlayerDigging.Action;
+import net.minecraft.network.play.client.CPlayerDiggingPacket.Action;
 import net.minecraft.network.play.server.SEntityMetadataPacket;
-import net.minecraft.network.play.server.SPacketSetSlot;
-import net.minecraft.network.play.server.SPacketTitle;
+import net.minecraft.network.play.server.SSetSlotPacket;
+import net.minecraft.network.play.server.STitlePacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
@@ -286,7 +286,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onSlotSet(PacketEvent<SPacketSetSlot> e) {
+    public void onSlotSet(PacketEvent<SSetSlotPacket> e) {
         if (Minecraft.getInstance().screen == null) return;
         if (!(Minecraft.getInstance().screen instanceof FakeGuiContainer)) return;
 
@@ -304,11 +304,11 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onTitle(PacketEvent<SPacketTitle> e) {
+    public void onTitle(PacketEvent<STitlePacket> e) {
         if (!OverlayConfig.GameUpdate.RedirectSystemMessages.INSTANCE.redirectPouch) return;
 
-        SPacketTitle packet = e.getPacket();
-        if (packet.getType() != SPacketTitle.Type.SUBTITLE) return;
+        STitlePacket packet = e.getPacket();
+        if (packet.getType() != STitlePacket.Type.SUBTITLE) return;
         if (!packet.getMessage().getUnformattedText().matches("^§a\\+\\d+ §7.+§a to pouch$")) return;
 
         e.setCanceled(true);
@@ -323,7 +323,7 @@ public class ClientEvents implements Listener {
         if (thisId == lastHorseId || ModCore.mc().level == null) return;
         Entity entity = ModCore.mc().level.getEntity(thisId);
 
-        if (!(entity instanceof AbstractHorse) || e.getPacket().getUnpackedData().isEmpty()) {
+        if (!(entity instanceof AbstractHorseEntity) || e.getPacket().getUnpackedData().isEmpty()) {
             return;
         }
 
@@ -387,8 +387,8 @@ public class ClientEvents implements Listener {
 
         Slot slot = e.getGui().inventorySlots.getSlot(20);
 
-        ItemStack stack = slot.getStack();
-        if (stack.getItem() == Item.byBlock(Blocks.SNOW_LAYER) || stack.getItem() == Items.CLOCK) {
+        ItemStack stack = slot.getItem();
+        if (stack.getItem() == Item.byBlock(Blocks.SNOW) || stack.getItem() == Items.CLOCK) {
             // There's no chest, create a clock with timer as lore
             CompoundNBT nbt = new CompoundNBT();
             ItemStack newStack = new ItemStack(Items.CLOCK);
@@ -411,7 +411,7 @@ public class ClientEvents implements Listener {
             }
 
             ItemUtils.replaceLore(newStack, lore);
-            slot.putStack(newStack);
+            slot.set(newStack);
             stack = newStack; // use this for next check
         }
 
@@ -456,7 +456,7 @@ public class ClientEvents implements Listener {
             }
 
             ItemUtils.replaceLore(stack, newLore);
-            slot.putStack(stack);
+            slot.set(stack);
         }
     }
 
@@ -505,7 +505,7 @@ public class ClientEvents implements Listener {
                         text.getStyle().setColor(TextFormatting.RED);
 
                         Minecraft.getInstance().player.sendMessage(text);
-                        Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_BASS, 1f));
+                        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_BASS, 1f));
                         e.setCanceled(true);
                         break;
                     }
@@ -594,24 +594,24 @@ public class ClientEvents implements Listener {
 
             } else { // putting on accessory
                 // verify it's an accessory
-                ItemType item = ItemUtils.getItemType(e.getSlotIn().getStack());
+                ItemType item = ItemUtils.getItemType(e.getSlotIn().getItem());
                 if (item != ItemType.RING && item != ItemType.BRACELET && item != ItemType.NECKLACE) return;
 
                 // check if the appropriate slot is open (snow layer = empty)
                 int openSlot = 0;
                 switch (item) {
                     case RING:
-                        if (e.getGui().inventorySlots.getSlot(9).getHasStack() && e.getGui().inventorySlots.getSlot(9).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER)))
+                        if (e.getGui().inventorySlots.getSlot(9).getHasStack() && e.getGui().inventorySlots.getSlot(9).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 9; // first ring slot
-                        else if (e.getGui().inventorySlots.getSlot(10).getHasStack() && e.getGui().inventorySlots.getSlot(10).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER)))
+                        else if (e.getGui().inventorySlots.getSlot(10).getHasStack() && e.getGui().inventorySlots.getSlot(10).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 10; // second ring slot
                         break;
                     case BRACELET:
-                        if (e.getGui().inventorySlots.getSlot(11).getHasStack() && e.getGui().inventorySlots.getSlot(11).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER)))
+                        if (e.getGui().inventorySlots.getSlot(11).getHasStack() && e.getGui().inventorySlots.getSlot(11).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 11; // bracelet slot
                         break;
                     case NECKLACE:
-                        if (e.getGui().inventorySlots.getSlot(12).getHasStack() && e.getGui().inventorySlots.getSlot(12).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER)))
+                        if (e.getGui().inventorySlots.getSlot(12).getHasStack() && e.getGui().inventorySlots.getSlot(12).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 12; // necklace slot
                         break;
                     default:
@@ -624,7 +624,7 @@ public class ClientEvents implements Listener {
             }
 
             // pick up accessory
-            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().inventorySlots.windowId, e.getSlot(), 0, ClickType.PICKUP, e.getSlotIn().getStack(), e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
+            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().inventorySlots.windowId, e.getSlot(), 0, ClickType.PICKUP, e.getSlotIn().getItem(), e.getGui().inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
             ModCore.mc().getConnection().send(packet);
         }
     }
@@ -646,7 +646,7 @@ public class ClientEvents implements Listener {
 
         // destination slot was filled in the meantime
         if (gui.inventorySlots.getSlot(accessoryDestinationSlot).getHasStack() &&
-                !gui.inventorySlots.getSlot(accessoryDestinationSlot).getStack().getItem().equals(Item.byBlock(Blocks.SNOW_LAYER))) {
+                !gui.inventorySlots.getSlot(accessoryDestinationSlot).getItem().getItem().equals(Item.byBlock(Blocks.SNOW))) {
             accessoryDestinationSlot = -1;
             return;
         }
@@ -671,7 +671,7 @@ public class ClientEvents implements Listener {
         if (UtilitiesConfig.Bank.INSTANCE.addBankConfirmation && e.getSlotIn() != null) {
             IInventory inventory = e.getSlotIn().inventory;
             if (inventory.getDisplayName().getUnformattedText().contains("Bank") && e.getSlotIn().getHasStack()) {
-                ItemStack item = e.getSlotIn().getStack();
+                ItemStack item = e.getSlotIn().getItem();
                 if (item.getDisplayName().contains(">" + TextFormatting.DARK_RED + ">" + TextFormatting.RED + ">" + TextFormatting.DARK_RED + ">" + TextFormatting.RED + ">")) {
                     String lore = TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(item));
                     String price = lore.substring(lore.indexOf(" Price: ") + 8, lore.length());
@@ -714,10 +714,10 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onSetSlot(PacketEvent<SPacketSetSlot> event) {
+    public void onSetSlot(PacketEvent<SSetSlotPacket> event) {
         if (bankPageConfirmed && event.getPacket().getSlot() == 8) {
             bankPageConfirmed = false;
-            CClickWindowPacket packet = new CClickWindowPacket(ModCore.mc().player.openContainer.windowId, 8, 0, ClickType.PICKUP, event.getPacket().getStack(), ModCore.mc().player.openContainer.getNextTransactionID(ModCore.mc().player.inventory));
+            CClickWindowPacket packet = new CClickWindowPacket(ModCore.mc().player.openContainer.windowId, 8, 0, ClickType.PICKUP, event.getPacket().getItem(), ModCore.mc().player.openContainer.getNextTransactionID(ModCore.mc().player.inventory));
             ModCore.mc().getConnection().send(packet);
         }
     }
@@ -732,7 +732,7 @@ public class ClientEvents implements Listener {
     private boolean lastWasDrop = false;
 
     @SubscribeEvent
-    public void keyPress(PacketEvent<CPacketPlayerDigging> e) {
+    public void keyPress(PacketEvent<CPlayerDiggingPacket> e) {
         if ((e.getPacket().getAction() != Action.DROP_ITEM && e.getPacket().getAction() != Action.DROP_ALL_ITEMS)
                 || !UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId()))
             return;
@@ -743,7 +743,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onConsumable(PacketEvent<SPacketSetSlot> e) {
+    public void onConsumable(PacketEvent<SSetSlotPacket> e) {
         if (!Reference.onWorld || e.getPacket().getWindowId() != 0) return;
 
         // the reason of the +36, is because in the client the hotbar is handled between 0-8
@@ -752,7 +752,7 @@ public class ClientEvents implements Listener {
 
         InventoryPlayer inventory = Minecraft.getInstance().player.inventory;
         ItemStack oldStack = inventory.getItem(e.getPacket().getSlot() - 36);
-        ItemStack newStack = e.getPacket().getStack();
+        ItemStack newStack = e.getPacket().getItem();
 
         if (lastWasDrop) {
             lastWasDrop = false;
@@ -833,7 +833,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onUseItemOnBlock(PacketEvent<CPacketPlayerTryUseItemOnBlock> e) {
+    public void onUseItemOnBlock(PacketEvent<CPlayerTryUseItemOnBlockPacket> e) {
         ItemStack item = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
 
         if (item.isEmpty() || !item.hasCustomHoverName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
@@ -846,7 +846,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onUseItemOnEntity(PacketEvent<CPacketUseEntity> e) {
+    public void onUseItemOnEntity(PacketEvent<CUseEntityPacket> e) {
         ItemStack item = Minecraft.getInstance().player.getHeldItem(Hand.MAIN_HAND);
 
         if (item.isEmpty() || !item.hasCustomHoverName() || !item.getDisplayName().contains(TextFormatting.RED + "Potion of Healing") || !UtilitiesConfig.INSTANCE.blockHealingPots) return;
@@ -867,7 +867,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onShiftClickPlayer(PacketEvent<CPacketUseEntity> e) {
+    public void onShiftClickPlayer(PacketEvent<CUseEntityPacket> e) {
         if (!UtilitiesConfig.INSTANCE.preventTradesDuels) return;
 
         ClientPlayerEntity player = ModCore.mc().player;
@@ -936,9 +936,9 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void clearEmptyTooltip(GuiOverlapEvent.ChestOverlap.HoveredToolTip.Pre e) {
-        if (e.getGui().getSlotUnderMouse() == null || e.getGui().getSlotUnderMouse().getStack().isEmpty()) return;
+        if (e.getGui().getSlotUnderMouse() == null || e.getGui().getSlotUnderMouse().getItem().isEmpty()) return;
 
-        ItemStack stack = e.getGui().getSlotUnderMouse().getStack();
+        ItemStack stack = e.getGui().getSlotUnderMouse().getItem();
         if (stack.hasCustomHoverName() && stack.getDisplayName().equals(" ")) {
             e.setCanceled(true);
         }

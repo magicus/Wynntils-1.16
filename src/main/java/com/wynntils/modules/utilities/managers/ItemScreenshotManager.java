@@ -50,7 +50,7 @@ public class ItemScreenshotManager {
 
         Slot slot = ((GuiContainer) gui).getSlotUnderMouse();
         if (slot == null || !slot.getHasStack()) return;
-        ItemStack stack = slot.getStack();
+        ItemStack stack = slot.getItem();
         if (!stack.hasCustomHoverName()) return;
 
         List<String> tooltip = stack.getTooltip(ModCore.mc().player, ITooltipFlag.TooltipFlags.NORMAL);

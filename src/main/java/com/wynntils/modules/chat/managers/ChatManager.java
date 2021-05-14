@@ -17,7 +17,7 @@ import com.wynntils.modules.utilities.configs.TranslationConfig;
 import com.wynntils.webapi.services.TranslationManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.*;
@@ -557,7 +557,7 @@ public class ChatManager {
                     components.add(afterComponent);
                 }
                 if (hasMention) {
-                    ModCore.mc().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_NOTE_PLING, 1.0F));
+                    ModCore.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1.0F));
                     in.getSiblings().clear();
                     in.getSiblings().addAll(components);
 

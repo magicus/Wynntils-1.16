@@ -99,7 +99,7 @@ public class RarityColorOverlay implements Listener {
     }
 
     private static void drawItemSlot(GuiContainer guiContainer, boolean isChest, Slot s) {
-        ItemStack is = s.getStack();
+        ItemStack is = s.getItem();
         String lore = ItemUtils.getStringLore(is);
         String name = StringUtils.normalizeBadString(is.getDisplayName());
 
@@ -120,7 +120,7 @@ public class RarityColorOverlay implements Listener {
             if (UtilitiesConfig.Items.INSTANCE.filterEnabled && !professionFilter.equals("-") && lore.contains(professionFilter)) {
                 return new CustomColor(0.078f, 0.35f, 0.8f);
             }
-            if (UtilitiesConfig.Items.INSTANCE.highlightCosmeticDuplicates && slotUnderMouse != null && lore.contains("Reward") && !lore.contains("Raid Reward") && slotUnderMouse.slotNumber != s.slotNumber && slotUnderMouse.getStack().getDisplayName().equals(name)) {
+            if (UtilitiesConfig.Items.INSTANCE.highlightCosmeticDuplicates && slotUnderMouse != null && lore.contains("Reward") && !lore.contains("Raid Reward") && slotUnderMouse.slotNumber != s.slotNumber && slotUnderMouse.getItem().getDisplayName().equals(name)) {
                 return new CustomColor(0f, 1f, 0f);
             }
             if (lore.contains("Reward")) {

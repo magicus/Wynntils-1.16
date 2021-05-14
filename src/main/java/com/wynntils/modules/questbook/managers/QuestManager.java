@@ -24,7 +24,7 @@ import com.wynntils.modules.questbook.instances.DiscoveryInfo;
 import com.wynntils.modules.questbook.instances.QuestInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.ContainerPlayer;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -80,7 +80,7 @@ public class QuestManager {
     public static void readQuestBook() {
         if (!Reference.onWorld) return;
 
-        if (ModCore.mc().player.openContainer != null && !(ModCore.mc().player.openContainer instanceof ContainerPlayer)) {
+        if (ModCore.mc().player.containerMenu != null && !(ModCore.mc().player.containerMenu instanceof PlayerContainer)) {
             interrupt();
             return;
         }

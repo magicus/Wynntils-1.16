@@ -42,7 +42,7 @@ public class TooltipScrollManager {
             return;
         }
 
-        ItemStack hoveredStack = hovered.getStack();
+        ItemStack hoveredStack = hovered.getItem();
         if (hoveredStack != lastItemStack) {
             lastItemStack = hoveredStack;
             resetScroll();
@@ -80,13 +80,13 @@ public class TooltipScrollManager {
     private static void onBeforeTooltipWrap(RenderTooltipEvent e) {
         updateHoveredItemStack();
 
-        if (lastItemStack == null || e.getStack() != lastItemStack) return;
+        if (lastItemStack == null || e.getItem() != lastItemStack) return;
 
         hasText = e.getLines().size() > 1;
     }
 
     private static void onBeforeTooltipRender(RenderTooltipEvent e, boolean updateMaxScroll) {
-        if (lastItemStack == null || e.getStack() != lastItemStack) return;
+        if (lastItemStack == null || e.getItem() != lastItemStack) return;
 
         if (updateMaxScroll) {
             calculateMaxScroll(e.getLines());
@@ -119,7 +119,7 @@ public class TooltipScrollManager {
     }
 
     private static void onAfterTooltipRender(RenderTooltipEvent e, boolean updateMaxScroll) {
-        if (lastItemStack == null || e.getStack() != lastItemStack) return;
+        if (lastItemStack == null || e.getItem() != lastItemStack) return;
 
         if (updateMaxScroll) {
             calculateMaxScroll(e.getLines());

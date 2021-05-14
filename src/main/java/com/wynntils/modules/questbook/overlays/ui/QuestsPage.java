@@ -28,7 +28,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
 
 import java.io.IOException;
@@ -267,14 +267,14 @@ public class QuestsPage extends QuestBookPage {
 
                 if (QuestManager.getTrackedQuest() != null && QuestManager.getTrackedQuest().getName().equals(overQuest.getName())) {
                     QuestManager.setTrackedQuest(null);
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
                     return;
                 }
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
                 QuestManager.setTrackedQuest(overQuest);
                 return;
             } else if (mouseButton == 1) { // right click
-                Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+                Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
 
                 final String baseUrl = "https://wynncraft.gamepedia.com/";
 
@@ -312,17 +312,17 @@ public class QuestsPage extends QuestBookPage {
         checkForwardAndBackButtons(posX, posY);
 
         if (posX >= 71 && posX <= 87 && posY >= 84 && posY <= 100) { // Mini-Quest Switcher
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             showingMiniQuests = !showingMiniQuests;
             textField.setText("");
             updateSearch();
             return;
         } else if (posX >= -157 && posX <= -147 && posY >= 89 && posY <= 99) { // Update Data
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             QuestManager.updateAllAnalyses(true);
             return;
         } else if (-11 <= posX && posX <= -1 && 89 <= posY && posY <= 99 && (mouseButton == 0 || mouseButton == 1)) { // Change Sort Method
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             sort = SortMethod.values()[(sort.ordinal() + (mouseButton == 0 ? 1 : SortMethod.values().length - 1)) % SortMethod.values().length];
             updateSearch();
             return;

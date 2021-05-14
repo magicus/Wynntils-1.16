@@ -25,7 +25,7 @@ import net.minecraft.client.MainWindow;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.opengl.GL11;
@@ -367,7 +367,7 @@ public class LootRunPage extends QuestBookPage {
                                     ChatOverlay.getChat().printChatMessageWithOptionalDeletion(new StringTextComponent(startingPointMsg), MESSAGE_ID)
                             );
 
-                            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
+                            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -380,7 +380,7 @@ public class LootRunPage extends QuestBookPage {
                 if (result) {
                     names.remove(selected);
                     updateSelected();
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
                 }
 
                 return;

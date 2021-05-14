@@ -23,7 +23,7 @@ public class BossTrackManager {
     private static QueuedTrack previousTrack = null;
 
     public static void update() {
-        for (Entity i : Minecraft.getInstance().level.loadedEntityList) {
+        for (Entity i : Minecraft.getInstance().level.entitiesForRendering()) {
             if (!i.hasCustomName()) continue;
 
             Matcher m = MOB_NAMETAG.matcher(TextFormatting.getTextWithoutFormattingCodes(i.getCustomNameTag()));

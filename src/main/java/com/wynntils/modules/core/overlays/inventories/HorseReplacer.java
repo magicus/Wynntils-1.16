@@ -7,8 +7,8 @@ package com.wynntils.modules.core.overlays.inventories;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.FrameworkManager;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.client.gui.screen.inventory.HorseInventoryScreen;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
@@ -17,11 +17,11 @@ import net.minecraft.item.ItemStack;
 import java.io.IOException;
 import java.util.List;
 
-public class HorseReplacer extends GuiScreenHorseInventory  {
+public class HorseReplacer extends HorseInventoryScreen  {
 
     IInventory lowerInv, upperInv;
 
-    public HorseReplacer(IInventory playerInv, IInventory horseInv, AbstractHorse horse) {
+    public HorseReplacer(IInventory playerInv, IInventory horseInv, AbstractHorseEntity horse) {
         super(playerInv, horseInv, horse);
 
         this.lowerInv = playerInv; this.upperInv = horseInv;

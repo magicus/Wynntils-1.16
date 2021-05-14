@@ -34,17 +34,17 @@ import com.wynntils.modules.utilities.UtilitiesModule;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiIngameMenu;
+import net.minecraft.client.gui.screen.IngameMenuScreen;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
+import net.minecraft.client.gui.screen.inventory.HorseInventoryScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.item.ItemFrameEntity;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.ChatVisibility;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -83,8 +83,8 @@ public class ClientEvents implements Listener {
      *
      * InventoryScreen -> InventoryReplacer
      * GuiChest -> ChestReplacer
-     * GuiScreenHorseInventory -> HorseReplacer
-     * GuiIngameMenu -> IngameMenuReplacer
+     * HorseInventoryScreen -> HorseReplacer
+     * IngameMenuScreen -> IngameMenuReplacer
      *
      * Since forge doesn't provides any way to intercept these guis, like events, we need to replace them
      * this may cause conflicts with other mods that does the same thing
@@ -112,12 +112,12 @@ public class ClientEvents implements Listener {
             e.setGui(new ChestReplacer(ModCore.mc().player.inventory, ReflectionFields.GuiChest_lowerChestInventory.getValue(e.getGui())));
             return;
         }
-        if (e.getGui() instanceof GuiScreenHorseInventory) {
+        if (e.getGui() instanceof HorseInventoryScreen) {
             if (e.getGui() instanceof HorseReplacer) return;
 
-            e.setGui(new HorseReplacer(ModCore.mc().player.inventory, ReflectionFields.GuiScreenHorseInventory_horseInventory.getValue(e.getGui()), (AbstractHorse) ReflectionFields.GuiScreenHorseInventory_horseEntity.getValue(e.getGui())));
+            e.setGui(new HorseReplacer(ModCore.mc().player.inventory, ReflectionFields.HorseInventoryScreen_horseInventory.getValue(e.getGui()), (AbstractHorseEntity) ReflectionFields.HorseInventoryScreen_horseEntity.getValue(e.getGui())));
         }
-        if (e.getGui() instanceof GuiIngameMenu) {
+        if (e.getGui() instanceof IngameMenuScreen) {
             if (e.getGui() instanceof IngameMenuReplacer) return;
 
             e.setGui(new IngameMenuReplacer());
@@ -379,13 +379,13 @@ public class ClientEvents implements Listener {
         if (e.getMouseButton() != 0
             || e.getSlotIn() == null
             || !e.getSlotIn().getHasStack()
-            || !e.getSlotIn().getStack().hasCustomHoverName()
-            || !e.getSlotIn().getStack().getDisplayName().contains("[>] Select")) return;
+            || !e.getSlotIn().getItem().hasCustomHoverName()
+            || !e.getSlotIn().getItem().getDisplayName().contains("[>] Select")) return;
 
 
         get(CharacterData.class).setClassId(e.getSlot());
 
-        String classLore = ItemUtils.getLore(e.getSlotIn().getStack()).get(1);
+        String classLore = ItemUtils.getLore(e.getSlotIn().getItem()).get(1);
         String className = classLore.substring(classLore.indexOf(TextFormatting.WHITE.toString()) + 2);
 
         ClassType selectedClass = ClassType.fromName(className);

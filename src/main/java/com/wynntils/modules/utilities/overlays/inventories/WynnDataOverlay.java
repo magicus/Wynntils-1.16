@@ -16,7 +16,7 @@ import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -63,7 +63,7 @@ public class WynnDataOverlay implements Listener {
         Slot slot = e.getGui().getSlotUnderMouse();
         if (slot == null || slot.inventory == null || !slot.getHasStack()) return;
 
-        ItemStack stack = slot.getStack();
+        ItemStack stack = slot.getItem();
         Utils.openUrl("https://www.wynndata.tk/i/" + Utils.encodeItemNameForUrl(stack));
         e.setCanceled(true);
     }
@@ -104,7 +104,7 @@ public class WynnDataOverlay implements Listener {
         e.getButtonList().forEach(gb -> {
             if (gb.id != 12 || !gb.isMouseOver() || e.getMouseButton() != 0) return;
 
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
 
             Map<String, String> urlData = new HashMap<>();
 

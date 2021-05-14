@@ -33,7 +33,7 @@ public class Reference {
 
     public static synchronized void setUserWorld(String uw) {
         ServerData currentServer = ModCore.mc().getCurrentServerData();
-        String lowerIP = currentServer == null || currentServer.serverIP == null ? null : currentServer.serverIP.toLowerCase(Locale.ROOT);
+        String lowerIP = currentServer == null || currentServer.ip == null ? null : currentServer.ip.toLowerCase(Locale.ROOT);
         onServer = !ModCore.mc().isSingleplayer() && lowerIP != null && !currentServer.isOnLAN() && lowerIP.contains("wynncraft");
         onServer &= lowerIP != null && !lowerIP.startsWith("beta.") || (!WebManager.blockHeroBetaCuttingEdge() && CoreDBConfig.INSTANCE.updateStream == UpdateStream.CUTTING_EDGE) || (!WebManager.blockHeroBetaStable() && CoreDBConfig.INSTANCE.updateStream == UpdateStream.STABLE);
         userWorld = uw;

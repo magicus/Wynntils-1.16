@@ -10,7 +10,7 @@ import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.inventory.GuiChest;
-import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
+import net.minecraft.client.gui.screen.inventory.HorseInventoryScreen;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.Entity;
@@ -30,8 +30,8 @@ public enum ReflectionFields {
     ItemFrameEntity_ITEM(ItemFrameEntity.class, "ITEM", "field_184525_c"),
     Event_phase(Event.class, "phase"),
     GuiScreen_buttonList(Screen.class, "buttonList", "field_146292_n"),
-    GuiScreenHorseInventory_horseEntity(GuiScreenHorseInventory.class, "horseEntity", "field_147034_x"),
-    GuiScreenHorseInventory_horseInventory(GuiScreenHorseInventory.class, "horseInventory", "field_147029_w"),
+    HorseInventoryScreen_horseEntity(HorseInventoryScreen.class, "horseEntity", "field_147034_x"),
+    HorseInventoryScreen_horseInventory(HorseInventoryScreen.class, "horseInventory", "field_147029_w"),
     GuiIngame_persistantChatGUI(GuiIngame.class, "persistantChatGUI", "field_73840_e"),
     GuiIngame_remainingHighlightTicks(GuiIngame.class, "remainingHighlightTicks", "field_92017_k"),
     GuiIngame_highlightingItemStack(GuiIngame.class, "highlightingItemStack", "field_92016_l"),

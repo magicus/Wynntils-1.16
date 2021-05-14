@@ -358,7 +358,7 @@ public class SettingsUI extends UI {
             hovering = mouseX >= position.getDrawingX() && mouseX <= position.getDrawingX()+width && mouseY >= position.getDrawingY() && mouseY <= position.getDrawingY()+height;
             if (visible && active && hovering) {
                 if (clickSound != null)
-                    Minecraft.getInstance().getSoundManager().play(SimpleSound.getMasterRecord(clickSound, 1f));
+                    Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(clickSound, 1f));
                 setCurrentSettingsPath(path);
             }
         }
