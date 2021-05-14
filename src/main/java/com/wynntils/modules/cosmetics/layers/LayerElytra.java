@@ -15,7 +15,7 @@ import net.minecraft.client.model.ModelBase;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -37,7 +37,7 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
      */
     private final CustomElytraModel modelElytra = new CustomElytraModel();
 
-    public LayerElytra(RenderPlayer playerRendererIn) {
+    public LayerElytra(PlayerRenderer playerRendererIn) {
         this.renderPlayer = playerRendererIn;
     }
 

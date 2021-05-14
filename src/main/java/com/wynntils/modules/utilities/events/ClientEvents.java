@@ -861,7 +861,7 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void rightClickItem(PlayerInteractEvent.RightClickItem e) {
         if (!e.getItemStack().hasCustomHoverName() || !e.getItemStack().getDisplayName().contains(TextFormatting.RED + "Potion of Healing")) return;
-        if (e.getEntityPlayer().getHealth() != e.getEntityPlayer().getMaxHealth()) return;
+        if (e.getPlayer().getHealth() != e.getPlayer().getMaxHealth()) return;
 
         e.setCanceled(true);
     }

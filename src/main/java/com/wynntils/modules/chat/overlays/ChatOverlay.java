@@ -97,7 +97,7 @@ public class ChatOverlay extends GuiNewChat {
                             if (!ChatConfig.INSTANCE.transparent) {
                                 drawRect(-2, j2 - 9, extraY, j2, l1 / 2 << 24);
                             }
-                            String s = ChatManager.renderMessage(chatline.getChatComponent()).getFormattedText();
+                            String s = ChatManager.renderMessage(chatline.getMessage()).getFormattedText();
                             GlStateManager._enableBlend();
                             mc.font.drawStringWithShadow(s, 0.0F, (float)(j2 - 8), 16777215 + (l1 << 24));
                             GlStateManager.disableAlpha();
@@ -315,7 +315,7 @@ public class ChatOverlay extends GuiNewChat {
     }
 
     @Nullable
-    public ITextComponent getChatComponent(int mouseX, int mouseY) {
+    public ITextComponent getMessage(int mouseX, int mouseY) {
         if (getChatOpen()) {
             MainWindow scaledresolution = new MainWindow(mc);
             int i = scaledresolution.getScaleFactor();
@@ -335,7 +335,7 @@ public class ChatOverlay extends GuiNewChat {
                         ChatLine chatline = getCurrentTab().getCurrentMessages().get(i1);
                         int j1 = 0;
 
-                        for (ITextComponent itextcomponent : chatline.getChatComponent()) {
+                        for (ITextComponent itextcomponent : chatline.getMessage()) {
                             if (itextcomponent instanceof StringTextComponent) {
                                 j1 += mc.font.width(GuiUtilRenderComponents.removeTextColorsIfConfigured(((StringTextComponent) itextcomponent).getText(), false));
 

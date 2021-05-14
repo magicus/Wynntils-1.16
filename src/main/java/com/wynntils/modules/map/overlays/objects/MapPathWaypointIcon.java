@@ -119,7 +119,7 @@ public class MapPathWaypointIcon extends MapIcon {
 
         GlStateManager.disableTexture2D();
         GlStateManager.enableAlpha();
-        GlStateManager.disableCull();
+        GlStateManager._disableCull();
 
         // Render outline
         CommonColors.BLACK.applyColor();
@@ -130,7 +130,7 @@ public class MapPathWaypointIcon extends MapIcon {
         renderPath(path, centreX, centreZ, pathWidth);
 
         CommonColors.WHITE.applyColor();
-        GlStateManager.enableCull();
+        GlStateManager._enableCull();
         GlStateManager.enableTexture2D();
     }
 

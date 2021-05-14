@@ -43,7 +43,7 @@ public class SpecialRendering {
                 GlStateManager._blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
                 GlStateManager._enableBlend();
                 GlStateManager._disableAlpha();
-                GlStateManager._disableCull();
+                GlStateManager.__disableCull();
                 GlStateManager._disableTexture2D();
                 GlStateManager._shadeModel(GL11.GL_SMOOTH);
                 GlStateManager._depthMask(false);

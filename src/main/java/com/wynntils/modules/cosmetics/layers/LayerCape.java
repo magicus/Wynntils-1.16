@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.item.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -24,10 +24,10 @@ import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
 
-    private final RenderPlayer playerRenderer;
+    private final PlayerRenderer playerRenderer;
     private final ModelRenderer bipedCape;
 
-    public LayerCape(RenderPlayer playerRendererIn) {
+    public LayerCape(PlayerRenderer playerRendererIn) {
         this.playerRenderer = playerRendererIn;
         this.bipedCape = new ModelRenderer(playerRendererIn.getMainModel());
     }

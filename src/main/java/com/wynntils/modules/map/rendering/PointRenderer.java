@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.map.rendering;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.wynntils.core.framework.rendering.colors.CommonColors;
 import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.framework.rendering.textures.Texture;
@@ -12,7 +13,7 @@ import com.wynntils.core.utils.objects.Pair;
 import com.wynntils.modules.map.instances.LootRunPath;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -49,7 +50,7 @@ public class PointRenderer {
             }
         }
 
-        GlStateManager.disableCull();
+        GlStateManager._disableCull();
         GlStateManager._enableBlend();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
@@ -76,7 +77,7 @@ public class PointRenderer {
                         boolean barrier = false;
                         boolean validBlock = false;
                         for (BlockPos blockInArea : blocks) {
-                            IBlockState blockStateInArea = world.getBlockState(blockInArea);
+                            BlockState blockStateInArea = world.getBlockState(blockInArea);
                             if (blockStateInArea.getBlock() == Blocks.BARRIER) {
                                 barrier = true;
                             } else if (blockStateInArea.getCollisionBoundingBox(world, blockInArea) != null) {
@@ -182,13 +183,13 @@ public class PointRenderer {
             }
         }
 
-        GlStateManager.enableCull();
+        GlStateManager._enableCull();
         GlStateManager._disableBlend();
         GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
     public static void drawTexturedLine(Texture texture, Point3d start, Point3d end, CommonColors color, float width) {
-        GlStateManager.disableCull();
+        GlStateManager._disableCull();
         GlStateManager._enableBlend();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
         color.applyColor();
@@ -197,7 +198,7 @@ public class PointRenderer {
 
         drawTexturedLine(start, end, width);
 
-        GlStateManager.enableCull();
+        GlStateManager._enableCull();
         GlStateManager._disableBlend();
         GlStateManager.color(1f, 1f, 1f, 1f);
     }
@@ -301,7 +302,7 @@ public class PointRenderer {
                                 boolean barrier = false;
                                 boolean validBlock = false;
                                 for (BlockPos blockInArea : blocks) {
-                                    IBlockState blockStateInArea = world.getBlockState(blockInArea);
+                                    BlockState blockStateInArea = world.getBlockState(blockInArea);
                                     if (blockStateInArea.getBlock() == Blocks.BARRIER) {
                                         barrier = true;
                                     } else if (blockStateInArea.getCollisionBoundingBox(world, blockInArea) != null) {

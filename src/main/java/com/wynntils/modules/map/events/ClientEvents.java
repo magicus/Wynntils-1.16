@@ -21,12 +21,13 @@ import com.wynntils.modules.utilities.instances.Toast;
 import com.wynntils.modules.utilities.overlays.hud.ToastOverlay;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.network.play.server.SPacketAdvancementInfo;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.network.play.server.SAdvancementInfoPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -65,9 +66,9 @@ public class ClientEvents implements Listener {
     public void openChest(PlayerInteractEvent.RightClickBlock e) {
         if (e.getPos() == null || e.isCanceled()) return;
         BlockPos pos = e.getPos();
-        IBlockState state = e.getEntityPlayer().world.getBlockState(pos);
-        if (!(state.getBlock() instanceof BlockContainer)) return;
-        lastLocation = pos.toImmutable();
+        BlockState state = e.getPlayer().level.getBlockState(pos);
+        if (!(state.getBlock() instanceof ContainerBlock)) return;
+        lastLocation = pos.immutable();
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -133,7 +134,7 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void receiveAdvancements(PacketEvent.Incoming<SPacketAdvancementInfo> event) {
+    public void receiveAdvancements(PacketEvent.Incoming<SAdvancementInfoPacket> event) {
         // can be done async without problems
         GuildResourceManager.processAdvancements(event.getPacket());
     }
@@ -194,7 +195,7 @@ public class ClientEvents implements Listener {
         Matcher m2 = HEALTH_LABEL.matcher(name);
         if (m2.find()) return;
 
-        if (!(entity instanceof EntityVillager)) return;
+        if (!(entity instanceof VillagerEntity)) return;
 
         LabelBake.handleNpc(name, event.getLabel(), location);
     }

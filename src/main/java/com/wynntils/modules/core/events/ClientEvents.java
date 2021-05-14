@@ -32,7 +32,7 @@ import com.wynntils.modules.core.overlays.inventories.IngameMenuReplacer;
 import com.wynntils.modules.core.overlays.inventories.InventoryReplacer;
 import com.wynntils.modules.utilities.UtilitiesModule;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -43,12 +43,13 @@ import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.entity.item.EntityItemFrame;
+import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.player.ChatVisibility;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.play.client.CPacketClientSettings;
+import net.minecraft.network.play.client.CClientSettingsPacket;
 import net.minecraft.network.play.client.CHeldItemChangePacket;
 import net.minecraft.network.play.server.*;
 import net.minecraft.scoreboard.ScorePlayerTeam;
@@ -159,10 +160,10 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void cancelSomeMovements(PacketEvent<SPacketMoveVehicle> e) {
+    public void cancelSomeMovements(PacketEvent<SMoveVehiclePacket> e) {
         // I'm not sure what this does, but the code has been here a long time,
         // just moving it here. /magicus, 2021
-        SPacketMoveVehicle moveVehicle = e.getPacket();
+        SMoveVehiclePacket moveVehicle = e.getPacket();
         Entity vehicle = Minecraft.getInstance().player.getLowestRidingEntity();
         if ((vehicle == Minecraft.getInstance().player) || (!vehicle.canPassengerSteer()) || (vehicle.distanceTo(moveVehicle.getX(), moveVehicle.getY(), moveVehicle.getZ()) <= 25D)) {
             e.setCanceled(true);
@@ -181,7 +182,7 @@ public class ClientEvents implements Listener {
         Entity i = Minecraft.getInstance().level.getEntity(e.getPacket().getId());
         if (i == null) return;
 
-        if (i instanceof EntityItemFrame) {
+        if (i instanceof ItemFrameEntity) {
             ItemStack item = Utils.getItemFromMetadata(e.getPacket().getUnpackedData());
             if (item.hasCustomHoverName()) {
                 FrameworkManager.getEventBus().post(new LocationEvent.LabelFoundEvent(item.getDisplayName(), new Location(i), i));
@@ -243,17 +244,17 @@ public class ClientEvents implements Listener {
                     i.getPosition().subtract(new Vec3i(+5, +3, +5)));
 
             for (BlockPos position : positions) {
-                if (i.world.isAirBlock(position)) continue;
+                if (Utils.isAirBlock(i.level, position)) continue;
 
-                IBlockState b = i.world.getBlockState(position);
+                BlockState b = i.level.getBlockState(position);
                 if (b.getMaterial() == Material.AIR || b.getMaterial() != Material.BARRIER) continue;
 
                 // checks if the barrier have blocks around itself
                 BlockPos north = position.north();
-                if (i.world.isAirBlock(position.north())
-                        || i.world.isAirBlock(position.south())
-                        || i.world.isAirBlock(position.east())
-                        || i.world.isAirBlock(position.west())) continue;
+                if (Utils.isAirBlock(i.level, position.north())
+                        || Utils.isAirBlock(i.level, position.south())
+                        || Utils.isAirBlock(i.level, position.east())
+                        || Utils.isAirBlock(i.level, position.west())) continue;
 
                 loc = new Location(position);
                 break;
@@ -287,18 +288,18 @@ public class ClientEvents implements Listener {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void updateActionBar(PacketEvent<SPacketChat> e) {
+    public void updateActionBar(PacketEvent<SChatPacket> e) {
         if (!Reference.onServer || e.getPacket().getType() != ChatType.GAME_INFO) return;
 
-        PlayerInfo.get(ActionBarData.class).updateActionBar(e.getPacket().getChatComponent().getUnformattedText());
+        PlayerInfo.get(ActionBarData.class).updateActionBar(e.getPacket().getMessage().getUnformattedText());
         if (UtilitiesModule.getModule().getActionBarOverlay().active) e.setCanceled(true); // only disable when the wynntils action bar is enabled
     }
 
     @SubscribeEvent
-    public void updateChatVisibility(PacketEvent<CPacketClientSettings> e) {
-        if (e.getPacket().getChatVisibility() != PlayerEntity.EnumChatVisibility.HIDDEN) return;
+    public void updateChatVisibility(PacketEvent<CClientSettingsPacket> e) {
+        if (e.getPacket().getChatVisibility() != ChatVisibility.HIDDEN) return;
 
-        ReflectionFields.CPacketClientSettings_chatVisibility.setValue(e.getPacket(), PlayerEntity.EnumChatVisibility.FULL);
+        ReflectionFields.CClientSettingsPacket_chatVisibility.setValue(e.getPacket(), PlayerEntity.EnumChatVisibility.FULL);
     }
 
     /**

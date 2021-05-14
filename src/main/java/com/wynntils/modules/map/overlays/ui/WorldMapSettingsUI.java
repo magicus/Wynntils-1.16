@@ -18,6 +18,8 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.input.Mouse;
@@ -34,6 +36,7 @@ public class WorldMapSettingsUI extends Screen {
     private Button textureButton, nextPageButton, previousPageButton;
 
     public WorldMapSettingsUI() {
+        super(StringTextComponent.EMPTY);
         enabledMapIcons = MapConfig.resetMapIcons(false);
         enabledMinimapIcons = MapConfig.resetMapIcons(true);
         for (String key : enabledMapIcons.keySet()) {

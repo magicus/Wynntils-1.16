@@ -47,7 +47,7 @@ public class CustomElytraModel extends ModelBase {
      */
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         GlStateManager.disableRescaleNormal();
-        GlStateManager.disableCull();
+        GlStateManager._disableCull();
 
         if (entityIn instanceof EntityLivingBase && ((EntityLivingBase)entityIn).isChild()) {
             GlStateManager._pushMatrix();

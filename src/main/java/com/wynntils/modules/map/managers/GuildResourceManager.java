@@ -7,7 +7,7 @@ package com.wynntils.modules.map.managers;
 import com.wynntils.modules.map.instances.GuildResourceContainer;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.network.play.server.SPacketAdvancementInfo;
+import net.minecraft.network.play.server.SAdvancementInfoPacket;
 import net.minecraft.util.StringUtils;
 
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class GuildResourceManager {
      * Proccess the advancement packet into resource containers
      * @param info the input packet
      */
-    public static void processAdvancements(SPacketAdvancementInfo info) {
+    public static void processAdvancements(SAdvancementInfoPacket info) {
         if (info.getAdvancementsToAdd().isEmpty()) return;
 
         for (Advancement.Builder advancement : info.getAdvancementsToAdd().values()) {

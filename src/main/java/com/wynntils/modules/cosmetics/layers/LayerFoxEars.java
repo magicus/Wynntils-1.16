@@ -9,7 +9,7 @@ import com.wynntils.modules.core.instances.account.WynntilsUser;
 import com.wynntils.modules.core.managers.UserManager;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import com.wynntils.modules.cosmetics.layers.models.EarModelRenderer;
 
@@ -17,11 +17,11 @@ import static com.mojang.blaze3d.platform.GlStateManager.*;
 
 public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
 
-    private final RenderPlayer playerRenderer;
+    private final PlayerRenderer playerRenderer;
     private final EarModelRenderer bipedFoxEarL;
     private final EarModelRenderer bipedFoxEarR;
 
-    public LayerFoxEars(RenderPlayer playerRendererIn) {
+    public LayerFoxEars(PlayerRenderer playerRendererIn) {
         this.playerRenderer = playerRendererIn;
         this.bipedFoxEarL = new EarModelRenderer(playerRendererIn.getMainModel(), 32, 0, 56, 0);
         this.bipedFoxEarR = new EarModelRenderer(playerRendererIn.getMainModel(), 32, 0, 56, 0);

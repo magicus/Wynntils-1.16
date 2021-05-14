@@ -18,6 +18,10 @@ public class Location extends Point3d {
         super(x, y, z);
     }
 
+    public Location(BlockPos pos) {
+        super(pos.getX(), pos.getY(), pos.getZ());
+    }
+
     public Location(Entity entity) {
         super(entity.getX(), entity.getY(), entity.getZ());
     }

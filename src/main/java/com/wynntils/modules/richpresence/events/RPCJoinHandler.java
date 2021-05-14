@@ -28,7 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.PlayerRendererEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.regex.Matcher;
@@ -83,7 +83,7 @@ public class RPCJoinHandler implements IDiscordActivityEvents.on_activity_join_c
     }
 
     @SubscribeEvent
-    public void onLobby(RenderPlayerEvent.Post e) {
+    public void onLobby(PlayerRendererEvent.Post e) {
         if (Reference.onWorld || !waitingLobby || delayTime > Minecraft.getSystemTime()) return;
 
         waitingLobby = false;

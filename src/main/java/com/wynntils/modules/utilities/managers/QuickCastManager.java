@@ -16,7 +16,7 @@ import net.minecraft.network.IPacket;
 import net.minecraft.network.play.client.CPacketAnimation;
 import net.minecraft.network.play.client.CPacketPlayerDigging;
 import net.minecraft.network.play.client.CPlayerTryUseItemPacket;
-import net.minecraft.network.play.server.SPacketChat;
+import net.minecraft.network.play.server.SChatPacket;
 import net.minecraft.network.play.server.SPacketTitle;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Hand;
@@ -41,7 +41,7 @@ public class QuickCastManager {
 
         int level = PlayerInfo.get(CharacterData.class).getLevel();
         boolean isLowLevel = level <= 11;
-        Class<?> packetClass = isLowLevel ? SPacketTitle.class : SPacketChat.class;
+        Class<?> packetClass = isLowLevel ? SPacketTitle.class : SChatPacket.class;
         PacketQueue.queueComplexPacket(a == SPELL_LEFT ? leftClick : rightClick, packetClass, e -> checkKey(e, 0, a, isLowLevel));
         PacketQueue.queueComplexPacket(b == SPELL_LEFT ? leftClick : rightClick, packetClass, e -> checkKey(e, 1, b, isLowLevel));
         PacketQueue.queueComplexPacket(c == SPELL_LEFT ? leftClick : rightClick, packetClass, e -> checkKey(e, 2, c, isLowLevel));
@@ -108,10 +108,10 @@ public class QuickCastManager {
 
             spell = data.parseSpellFromTitle(title.getMessage().getFormattedText());
         } else {
-            SPacketChat title = (SPacketChat) input;
+            SChatPacket title = (SChatPacket) input;
             if (title.getType() != ChatType.GAME_INFO) return false;
 
-            PlayerInfo.get(ActionBarData.class).updateActionBar(title.getChatComponent().getUnformattedText());
+            PlayerInfo.get(ActionBarData.class).updateActionBar(title.getMessage().getUnformattedText());
 
             spell = data.getLastSpell();
         }

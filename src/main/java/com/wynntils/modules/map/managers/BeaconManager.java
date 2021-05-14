@@ -69,7 +69,7 @@ public class BeaconManager {
 
             _disableLighting();
             enableDepth();
-            disableCull();
+            _disableCull();
             _enableBlend();
             tryBlendFuncSeparate(770, 771, 1, 0);
             color(1f, 1f, 1f, 1f);
@@ -100,7 +100,7 @@ public class BeaconManager {
             // resetting
             color(1f, 1f, 1f, 1f);
             _disableBlend();
-            enableCull();
+            _enableCull();
         }
         popAttrib();
     }

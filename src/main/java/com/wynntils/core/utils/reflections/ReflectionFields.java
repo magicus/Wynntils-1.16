@@ -14,8 +14,8 @@ import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItemFrame;
-import net.minecraft.network.play.client.CPacketClientSettings;
+import net.minecraft.entity.item.ItemFrameEntity;
+import net.minecraft.network.play.client.CClientSettingsPacket;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -27,7 +27,7 @@ public enum ReflectionFields {
     GuiChest_lowerChestInventory(GuiChest.class, "lowerChestInventory", "field_147015_w"),
     Entity_CUSTOM_NAME(Entity.class, "CUSTOM_NAME", "field_184242_az"),
     Entity_CUSTOM_NAME_VISIBLE(Entity.class, "CUSTOM_NAME_VISIBLE", "field_184233_aA"),
-    EntityItemFrame_ITEM(EntityItemFrame.class, "ITEM", "field_184525_c"),
+    ItemFrameEntity_ITEM(ItemFrameEntity.class, "ITEM", "field_184525_c"),
     Event_phase(Event.class, "phase"),
     GuiScreen_buttonList(Screen.class, "buttonList", "field_146292_n"),
     GuiScreenHorseInventory_horseEntity(GuiScreenHorseInventory.class, "horseEntity", "field_147034_x"),
@@ -40,7 +40,7 @@ public enum ReflectionFields {
     GuiChat_defaultInputFieldText(GuiChat.class, "defaultInputFieldText", "field_146409_v"),
     GuiPlayerTabOverlay_ENTRY_ORDERING(GuiPlayerTabOverlay.class, "ENTRY_ORDERING", "field_175252_a"),
     Minecraft_resourcePackRepository(Minecraft.class, "resourcePackRepository", "field_110448_aq"),
-    CPacketClientSettings_chatVisibility(CPacketClientSettings.class, "chatVisibility", "field_149529_c"),
+    CClientSettingsPacket_chatVisibility(CClientSettingsPacket.class, "chatVisibility", "field_149529_c"),
     ModelRenderer_compiled(ModelRenderer.class, "compiled", "field_78812_q"),
     Minecraft_renderItem(Minecraft.class, "renderItem", "field_175621_X"),
     RenderItem_itemModelMesher(ItemRenderer.class, "itemModelMesher", "field_175059_m");

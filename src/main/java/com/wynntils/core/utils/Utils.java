@@ -21,10 +21,12 @@ import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.LWJGLException;
@@ -49,7 +51,7 @@ public class Utils {
 
     private static final DataParameter<String> NAME_KEY = ReflectionFields.Entity_CUSTOM_NAME.getValue(Entity.class);
     private static final DataParameter<Boolean> NAME_VISIBLE_KEY = ReflectionFields.Entity_CUSTOM_NAME_VISIBLE.getValue(Entity.class);
-    private static final DataParameter<Boolean> ITEM_KEY = ReflectionFields.EntityItemFrame_ITEM.getValue(Entity.class);
+    private static final DataParameter<Boolean> ITEM_KEY = ReflectionFields.ItemFrameEntity_ITEM.getValue(Entity.class);
     public static final Pattern CHAR_INFO_PAGE_TITLE = Pattern.compile("§c([0-9]+)§4 skill points? remaining");
     public static final Pattern SERVER_SELECTOR_TITLE = Pattern.compile("Wynncraft Servers(: Page \\d+)?");
 
@@ -430,6 +432,10 @@ public class Utils {
         return (state == GLFW.GLFW_PRESS);
     }
 
+    public static boolean isAirBlock(World world, BlockPos pos)
+    {
+        return world.getBlockState(pos).getBlock().isAir(world.getBlockState(pos), this, pos);
+    }
 
     // Alias if using already imported org.apache.commons.lang3.StringUtils
     public static class StringUtils extends com.wynntils.core.utils.StringUtils { }
