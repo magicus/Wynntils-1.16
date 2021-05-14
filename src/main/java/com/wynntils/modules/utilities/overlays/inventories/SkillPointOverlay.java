@@ -4,7 +4,7 @@
 
 package com.wynntils.modules.utilities.overlays.inventories;
 
-import com.wynntils.ModCore;
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.events.custom.PacketEvent;
@@ -25,7 +25,6 @@ import com.wynntils.modules.utilities.UtilitiesModule;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.wynntils.modules.utilities.instances.SkillPointAllocation;
 import com.wynntils.modules.utilities.overlays.ui.SkillPointLoadoutUI;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -191,15 +190,15 @@ public class SkillPointOverlay implements Listener {
         if (!Reference.onWorld || !Utils.isCharacterInfoPage(e.getGui())) return;
 
         if (e.getSlot() == SAVE_SLOT) {
-            nameField = new GuiTextFieldWynn(200, Minecraft.getInstance().font, 8, 5, 130, 10);
+            nameField = new GuiTextFieldWynn(200, McIf.mc().font, 8, 5, 130, 10);
             nameField.setFocused(true);
             nameField.setText("Enter build name");
             Keyboard.enableRepeatEvents(true);
 
             e.setCanceled(true);
         } else if (e.getSlot() == LOAD_SLOT) {
-            ModCore.mc().displayGuiScreen(
-                    new SkillPointLoadoutUI(this, ModCore.mc().screen,
+            McIf.mc().displayGuiScreen(
+                    new SkillPointLoadoutUI(this, McIf.mc().screen,
                             new InventoryBasic("Skill Points Loadouts", false, 54))
             );
 
@@ -243,7 +242,7 @@ public class SkillPointOverlay implements Listener {
             name = name.replaceAll("&([a-f0-9k-or])", "§$1");
             UtilitiesConfig.INSTANCE.skillPointLoadouts.put(name, getSkillPoints(e.getGui()));
             UtilitiesConfig.INSTANCE.saveSettings(UtilitiesModule.getModule());
-            ModCore.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1f));
+            McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1f));
         } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
             nameField = null;
             loadedBuild = null;
@@ -352,8 +351,8 @@ public class SkillPointOverlay implements Listener {
             StringTextComponent text = new StringTextComponent("Not enough free skill points!");
             text.getStyle().setColor(TextFormatting.RED);
 
-            ModCore.mc().player.sendMessage(text);
-            ModCore.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
+            McIf.player().sendMessage(text);
+            McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
             return;
         }
 
@@ -379,16 +378,16 @@ public class SkillPointOverlay implements Listener {
 
             CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, 9 + i, button,
                     ClickType.PICKUP, gui.inventorySlots.getSlot(9 + i).getItem(),
-                    gui.inventorySlots.getNextTransactionID(ModCore.mc().player.inventory));
+                    gui.inventorySlots.getNextTransactionID(McIf.player().inventory));
 
-            Minecraft.getInstance().getSoundManager().play(
+            McIf.mc().getSoundManager().play(
                     SimpleSound.forUI(SoundEvents.ENTITY_ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));
 
-            ModCore.mc().getConnection().send(packet);
+            McIf.mc().getConnection().send(packet);
             return; // can only click once at a time
         }
 
-        Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_PLAYER_LEVELUP, 1f));
+        McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_PLAYER_LEVELUP, 1f));
         loadedBuild = null; // we've fully loaded the build if we reach this point
         buildPercentage = 0.0f;
     }

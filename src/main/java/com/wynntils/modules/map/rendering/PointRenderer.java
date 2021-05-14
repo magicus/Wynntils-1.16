@@ -5,6 +5,7 @@
 package com.wynntils.modules.map.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.wynntils.McIf;
 import com.wynntils.core.framework.rendering.colors.CommonColors;
 import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.framework.rendering.textures.Texture;
@@ -40,11 +41,11 @@ public class PointRenderer {
 
     public static void drawTexturedLines(Texture texture, Long2ObjectMap<List<List<LootRunPath.LootRunPathLocation>>> points, Long2ObjectMap<List<List<Vector3d>>> directions, CustomColor color, float width) {
         List<ChunkPos> chunks = new ArrayList<>();
-        int renderDistance = Minecraft.getInstance().options.renderDistanceChunks;
+        int renderDistance = McIf.mc().options.renderDistanceChunks;
         for (int x = -renderDistance; x <= renderDistance; x++) {
             for (int z = -renderDistance; z <= renderDistance; z++) {
-                int playerChunkX = Minecraft.getInstance().player.xChunk;
-                int playerChunkZ = Minecraft.getInstance().player.zChunk;
+                int playerChunkX = McIf.player().xChunk;
+                int playerChunkZ = McIf.player().zChunk;
                 ChunkPos chunk = new ChunkPos(x + playerChunkX, z + playerChunkZ);
                 chunks.add(chunk);
             }
@@ -57,7 +58,7 @@ public class PointRenderer {
         texture.bind();
 
         for (ChunkPos chunk : chunks) {
-            if (!Minecraft.getInstance().level.isChunkGeneratedAt(chunk.x, chunk.z)) {
+            if (!McIf.world().isChunkGeneratedAt(chunk.x, chunk.z)) {
                 continue;
             }
             List<List<LootRunPath.LootRunPathLocation>> pointsInChunk = points.get(ChunkPos.asLong(chunk.x, chunk.z));
@@ -70,7 +71,7 @@ public class PointRenderer {
                     List<Pair<LootRunPath.LootRunPathLocation, Vector3d>> toRender = new ArrayList<>();
                     for (int k = 0; k < pointsInRoute.size(); ++k) {
                         Point3d start = new Point3d(pointsInRoute.get(k).getLocation());
-                        World world = Minecraft.getInstance().level;
+                        World world = McIf.world();
                         BlockPos minPos = new BlockPos(start.x - 0.3D, start.y - 1D, start.z - 0.3D);
                         BlockPos maxPos = new BlockPos(start.x + 0.3D, start.y - 1D, start.z + 0.3D);
                         Iterable<BlockPos> blocks = BlockPos.getAllInBox(minPos, maxPos);
@@ -204,7 +205,7 @@ public class PointRenderer {
     }
 
     private static void drawTexturedLine(Point3d start, Point3d end, float width) {
-        RenderManager renderManager = Minecraft.getInstance().getRenderManager();
+        RenderManager renderManager = McIf.mc().getRenderManager();
 
         Vector3d direction = new Vector3d(start);
         direction.sub(end);
@@ -252,17 +253,17 @@ public class PointRenderer {
         if (locations.isEmpty()) return;
 
         List<ChunkPos> chunks = new ArrayList<>();
-        int renderDistance = Minecraft.getInstance().options.renderDistanceChunks;
+        int renderDistance = McIf.mc().options.renderDistanceChunks;
         for (int x = -renderDistance; x <= renderDistance; x++) {
             for (int z = -renderDistance; z <= renderDistance; z++) {
-                int playerChunkX = Minecraft.getInstance().player.xChunk;
-                int playerChunkZ = Minecraft.getInstance().player.zChunk;
+                int playerChunkX = McIf.player().xChunk;
+                int playerChunkZ = McIf.player().zChunk;
                 ChunkPos chunk = new ChunkPos(x + playerChunkX, z + playerChunkZ);
                 chunks.add(chunk);
             }
         }
 
-        RenderManager renderManager = Minecraft.getInstance().getRenderManager();
+        RenderManager renderManager = McIf.mc().getRenderManager();
 
         GlStateManager.glLineWidth(3f);
         GlStateManager._depthMask(false);
@@ -278,7 +279,7 @@ public class PointRenderer {
 
         {
             for (ChunkPos chunkPos : chunks) {
-                if (!Minecraft.getInstance().level.isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
+                if (!McIf.world().isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
                     continue;
                 }
                 List<List<LootRunPath.LootRunPathLocation>> locationsInChunk = locations.get(ChunkPos.asLong(chunkPos.x, chunkPos.z));
@@ -293,7 +294,7 @@ public class PointRenderer {
                             boolean pauseDraw = false;
                             BlockPos blockPos = loc.getLocation().toBlockPos();
 
-                            World world = Minecraft.getInstance().level;
+                            World world = McIf.world();
 
                             if (!blockPos.equals(lastBlockPos)) {
                                 BlockPos minPos = new BlockPos(loc.getLocation().x - 0.3D, loc.getLocation().y - 1D, loc.getLocation().z - 0.3D);
@@ -376,9 +377,9 @@ public class PointRenderer {
     }
 
     public static void drawCube(BlockPos point, CustomColor color) {
-        if (!Minecraft.getInstance().level.isBlockLoaded(point, false)) return;
+        if (!McIf.world().isBlockLoaded(point, false)) return;
 
-        RenderManager renderManager = Minecraft.getInstance().getRenderManager();
+        RenderManager renderManager = McIf.mc().getRenderManager();
 
         Location c = new Location(
             point.getX() - renderManager.viewerPosX,

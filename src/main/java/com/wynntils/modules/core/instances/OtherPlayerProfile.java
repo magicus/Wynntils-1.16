@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.core.instances;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.instances.PlayerInfo;
 import com.wynntils.core.framework.instances.data.SocialData;
 import com.wynntils.modules.core.managers.GuildAndFriendManager;
@@ -78,7 +79,7 @@ public class OtherPlayerProfile {
     }
 
     public NetworkPlayerInfo getPlayerInfo() {
-        ClientPlayNetHandler conn = Minecraft.getInstance().getConnection();
+        ClientPlayNetHandler conn = McIf.mc().getConnection();
         return conn == null ? null : conn.getPlayerInfo(uuid);
     }
 
@@ -108,7 +109,7 @@ public class OtherPlayerProfile {
 
         hasHat = e.isModelPartShown(PlayerModelPart.HAT);
 
-        if (!e.isAlive() || e.distanceTo(Minecraft.getInstance().player) >= 30) return false;
+        if (!e.isAlive() || e.distanceTo(McIf.player()) >= 30) return false;
         x = (int) e.getX();
         y = (int) e.getY();
         z = (int) e.getZ();

@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.core.managers;
 
+import com.wynntils.McIf;
 import com.wynntils.modules.core.instances.OtherPlayerProfile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -25,7 +26,7 @@ public class GuildAndFriendManager {
 
     public static void tryResolveNames() {
         // Try to resolve names from the connection map
-        ClientPlayerEntity player = Minecraft.getInstance().player;
+        ClientPlayerEntity player = McIf.player();
         if (player == null) return;
         ClientPlayNetHandler conn = player.connection;
         if (conn == null) return;

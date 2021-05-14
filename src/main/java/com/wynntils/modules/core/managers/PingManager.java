@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.core.managers;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.instances.PlayerInfo;
 import com.wynntils.core.framework.instances.data.CharacterData;
@@ -23,7 +24,7 @@ public class PingManager {
     public static void calculatePing() {
         if (!Reference.onWorld
             || !PlayerInfo.get(CharacterData.class).isLoaded()
-            || Minecraft.getInstance().screen instanceof GuiChat
+            || McIf.mc().screen instanceof GuiChat
             || System.currentTimeMillis() - lastCall < 15000) return;
 
         CommandResponse response = new CommandResponse("/toggle", (m, t) -> {

@@ -4,7 +4,7 @@
 
 package com.wynntils.modules.core.instances.inventory;
 
-import com.wynntils.ModCore;
+import com.wynntils.McIf;
 import com.wynntils.modules.core.interfaces.IInventoryOpenAction;
 import com.wynntils.modules.core.managers.PacketQueue;
 import net.minecraft.client.Minecraft;
@@ -27,16 +27,14 @@ public class InventoryOpenByItem implements IInventoryOpenAction {
 
     @Override
     public void onOpen(FakeInventory inv, Runnable onDrop) {
-        Minecraft mc = ModCore.mc();
-
         PacketQueue.queueComplexPacket(rightClick, SOpenWindowPacket.class).setSender((conn, pack) -> {
-            if (mc.player.inventory.selected != inputSlot) {
+            if (McIf.player().inventory.selected != inputSlot) {
                 conn.send(new CHeldItemChangePacket(inputSlot));
             }
 
             conn.send(pack);
-            if (mc.player.inventory.selected != inputSlot) {
-                conn.send(new CHeldItemChangePacket(mc.player.inventory.selected));
+            if (McIf.player().inventory.selected != inputSlot) {
+                conn.send(new CHeldItemChangePacket(McIf.player().inventory.selected));
             }
         }).onDrop(onDrop);
     }

@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import com.wynntils.ModCore;
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 
 import net.minecraft.client.gui.FontRenderer;
@@ -45,7 +45,7 @@ public class ItemScreenshotManager {
 
     public static void takeScreenshot() {
         if (!Reference.onWorld) return;
-        Screen gui = ModCore.mc().screen;
+        Screen gui = McIf.mc().screen;
         if (!(gui instanceof GuiContainer)) return;
 
         Slot slot = ((GuiContainer) gui).getSlotUnderMouse();
@@ -53,10 +53,10 @@ public class ItemScreenshotManager {
         ItemStack stack = slot.getItem();
         if (!stack.hasCustomHoverName()) return;
 
-        List<String> tooltip = stack.getTooltip(ModCore.mc().player, ITooltipFlag.TooltipFlags.NORMAL);
+        List<String> tooltip = stack.getTooltip(McIf.player(), ITooltipFlag.TooltipFlags.NORMAL);
         removeItemLore(tooltip);
 
-        FontRenderer fr = ModCore.mc().font;
+        FontRenderer fr = McIf.mc().font;
         int width = 0;
         int height = 16;
 
@@ -99,12 +99,11 @@ public class ItemScreenshotManager {
         BufferedImage bi = createScreenshot(width*2, height*2);
         fb.unbindFramebuffer();
         GlStateManager._popMatrix();
-
         // copy to clipboard
         ClipboardImage ci = new ClipboardImage(bi);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ci, null);
 
-        ModCore.mc().player.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Copied " + stack.getDisplayName() + TextFormatting.GREEN + " to the clipboard!"));
+        McIf.player().sendMessage(new StringTextComponent(TextFormatting.GREEN + "Copied " + stack.getDisplayName() + TextFormatting.GREEN + " to the clipboard!"));
     }
 
     private static void removeItemLore(List<String> tooltip) {

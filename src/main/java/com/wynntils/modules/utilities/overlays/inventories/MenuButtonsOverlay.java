@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.utilities.overlays.inventories;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.interfaces.Listener;
@@ -96,13 +97,13 @@ public class MenuButtonsOverlay implements Listener {
         int id = e.getButton().id;
         switch (id) {
             case 753:
-                Minecraft.getInstance().player.chat("/class");
+                McIf.player().chat("/class");
                 break;
             case 754:
-                Minecraft.getInstance().player.chat("/hub");
+                McIf.player().chat("/hub");
                 break;
             case 755:
-                Minecraft.getInstance().displayGuiScreen(SettingsUI.getInstance(Minecraft.getInstance().screen));
+                McIf.mc().displayGuiScreen(SettingsUI.getInstance(McIf.mc().screen));
                 break;
             case 756:
                 QuestBookPages.MAIN.getPage().open(true);

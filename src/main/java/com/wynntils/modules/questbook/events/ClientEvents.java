@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.questbook.events;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.events.custom.GameEvent;
 import com.wynntils.core.events.custom.PacketEvent;
@@ -106,7 +107,7 @@ public class ClientEvents implements Listener {
     public void clickOnQuestBookItem(PacketEvent<CPlayerTryUseItemPacket> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
-                || Minecraft.getInstance().player.inventory.selected != 7) return;
+                || McIf.player().inventory.selected != 7) return;
 
         openQuestBook = true;
         e.setCanceled(true);
@@ -116,7 +117,7 @@ public class ClientEvents implements Listener {
     public void clickOnQuestBookItemOnBlock(PacketEvent<CPlayerTryUseItemOnBlockPacket> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
-                || Minecraft.getInstance().player.inventory.selected != 7) return;
+                || McIf.player().inventory.selected != 7) return;
 
         openQuestBook = true;
         e.setCanceled(true);
@@ -126,7 +127,7 @@ public class ClientEvents implements Listener {
     public void clickOnQuestBookEntity(PacketEvent<CUseEntityPacket> e) {
         if (!QuestBookConfig.INSTANCE.allowCustomQuestbook
                 || !Reference.onWorld || Reference.onNether || Reference.onWars
-                || Minecraft.getInstance().player.inventory.selected != 7) return;
+                || McIf.player().inventory.selected != 7) return;
 
         openQuestBook = true;
         e.setCanceled(true);
@@ -134,8 +135,8 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void updateQuestBook(TickEvent.ClientTickEvent e) {
-        if (e.phase == TickEvent.Phase.START || !Reference.onWorld || Reference.onNether || Reference.onWars || Minecraft.getInstance().player.inventory == null) return;
-        if (Minecraft.getInstance().player.inventory.getItem(7).isEmpty() || Minecraft.getInstance().player.inventory.getItem(7).getItem() != Items.WRITTEN_BOOK) return;
+        if (e.phase == TickEvent.Phase.START || !Reference.onWorld || Reference.onNether || Reference.onWars || McIf.player().inventory == null) return;
+        if (McIf.player().inventory.getItem(7).isEmpty() || McIf.player().inventory.getItem(7).getItem() != Items.WRITTEN_BOOK) return;
 
         if (!openQuestBook) return;
         openQuestBook = false;

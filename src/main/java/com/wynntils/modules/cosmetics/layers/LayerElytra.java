@@ -4,12 +4,11 @@
 
 package com.wynntils.modules.cosmetics.layers;
 
-import com.wynntils.ModCore;
+import com.wynntils.McIf;
 import com.wynntils.modules.core.instances.account.WynntilsUser;
 import com.wynntils.modules.core.managers.UserManager;
 import com.wynntils.modules.cosmetics.configs.CosmeticsConfig;
 import com.wynntils.modules.cosmetics.layers.models.CustomElytraModel;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
@@ -44,8 +43,8 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
     @Override
     public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if (!CosmeticsConfig.INSTANCE.forceCapes
-                && !Minecraft.getInstance().options.getModelParts().toString().contains("CAPE")
-                && player.getUUID() == ModCore.mc().player.getUUID()) return;
+                && !McIf.mc().options.getModelParts().toString().contains("CAPE")
+                && player.getUUID() == McIf.player().getUUID()) return;
 
         WynntilsUser info = UserManager.getUser(player.getUUID());
         if (info == null || !info.getCosmetics().hasElytra()) return;

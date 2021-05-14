@@ -4,7 +4,7 @@
 
 package com.wynntils.modules.core.instances;
 
-import com.wynntils.ModCore;
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.events.custom.PacketEvent;
 import com.wynntils.core.events.custom.SpellEvent;
@@ -12,7 +12,6 @@ import com.wynntils.core.events.custom.WynnClassChangeEvent;
 import com.wynntils.core.framework.FrameworkManager;
 import com.wynntils.core.utils.Utils;
 import com.wynntils.core.utils.objects.Location;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ArmorStandEntity;
@@ -66,15 +65,15 @@ public class TotemTracker {
     }
 
     private void postEvent(Event event) {
-        ModCore.mc().submit(() -> FrameworkManager.getEventBus().post(event));
+        McIf.mc().submit(() -> FrameworkManager.getEventBus().post(event));
     }
 
     private Entity getBufferedEntity(int entityId) {
-        Entity entity = ModCore.mc().level.getEntity(entityId);
+        Entity entity = McIf.world().getEntity(entityId);
         if (entity != null) return entity;
 
         if (entityId == bufferedId) {
-            return new ArmorStandEntity(ModCore.mc().level, bufferedX, bufferedY, bufferedZ);
+            return new ArmorStandEntity(McIf.world(), bufferedX, bufferedY, bufferedZ);
         }
 
         return null;
@@ -139,9 +138,9 @@ public class TotemTracker {
             }
 
             // Is it created close to us? Then it's a potential new totem
-            if (isClose(e.getPacket().getX(), Minecraft.getInstance().player.getX()) &&
-                    isClose(e.getPacket().getY(), Minecraft.getInstance().player.getY() + 1.0) &&
-                    isClose(e.getPacket().getZ(), Minecraft.getInstance().player.getZ())) {
+            if (isClose(e.getPacket().getX(), McIf.player().getX()) &&
+                    isClose(e.getPacket().getY(), McIf.player().getY() + 1.0) &&
+                    isClose(e.getPacket().getZ(), McIf.player().getZ())) {
                 potentialId = e.getPacket().getId();
                 potentialX = e.getPacket().getX();
                 potentialY = e.getPacket().getY();
@@ -155,7 +154,7 @@ public class TotemTracker {
     public void onTotemSpellCast(SpellEvent.Cast e) {
         if (e.getSpell().equals("Totem") || e.getSpell().equals("Sky Emblem")) {
             totemCastTimestamp = System.currentTimeMillis();
-            heldWeaponSlot =  Minecraft.getInstance().player.inventory.selected;
+            heldWeaponSlot =  McIf.player().inventory.selected;
             checkTotemSummoned();
         } else if (e.getSpell().equals("Uproot") || e.getSpell().equals("Gale Funnel")) {
             totemCastTimestamp = System.currentTimeMillis();

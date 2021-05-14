@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.cosmetics;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.instances.Module;
 import com.wynntils.core.framework.interfaces.annotations.ModuleInfo;
 import com.wynntils.modules.cosmetics.configs.CosmeticsConfig;
@@ -22,9 +23,9 @@ public class CosmeticsModule extends Module {
     }
 
     public void postEnable() {
-        Minecraft.getInstance().options.setModelPart(PlayerModelPart.CAPE, true);
+        McIf.mc().options.setModelPart(PlayerModelPart.CAPE, true);
 
-        for (PlayerRenderer render : Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().values()) {
+        for (PlayerRenderer render : McIf.mc().getEntityRenderDispatcher().getSkinMap().values()) {
             render.addLayer(new LayerCape(render));
             render.addLayer(new LayerElytra(render));
             render.addLayer(new LayerFoxEars(render));

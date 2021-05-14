@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.core.commands;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.rendering.textures.Textures;
 import com.wynntils.core.utils.helpers.Delay;
@@ -163,7 +164,7 @@ public class CommandWynntils extends CommandBase implements IClientCommand {
                 if (!Reference.developmentEnvironment) {
                     ITextComponent message = new StringTextComponent(TextFormatting.RED + "You can't use this command outside a development environment");
 
-                    Minecraft.getInstance().player.sendMessage(message);
+                    McIf.player().sendMessage(message);
                     return;
                 }
 

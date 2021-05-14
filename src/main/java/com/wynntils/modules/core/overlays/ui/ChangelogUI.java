@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.core.overlays.ui;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.framework.rendering.SmartFontRenderer;
@@ -75,31 +76,30 @@ public class ChangelogUI extends Screen {
      * @param forceLatest {@link WebManager#getChangelog(boolean, boolean)}'s second argument (Latest or current changelog?)
      */
     public static void loadChangelogAndShow(Screen previousGui, boolean major, boolean forceLatest) {
-        Minecraft mc = Minecraft.getInstance();
 
         Screen loadingScreen = new ChangelogUI(previousGui, Collections.singletonList("Loading..."), major);
-        mc.displayGuiScreen(loadingScreen);
-        if (mc.screen != loadingScreen) {
+        McIf.mc().displayGuiScreen(loadingScreen);
+        if (McIf.mc().screen != loadingScreen) {
             // Changed by an event handler
             return;
         }
 
         new Thread(() -> {
-            if (mc.screen != loadingScreen) {
+            if (McIf.mc().screen != loadingScreen) {
                 return;
             }
             List<String> changelog = WebManager.getChangelog(major, forceLatest);
-            if (mc.screen != loadingScreen) {
+            if (McIf.mc().screen != loadingScreen) {
                 return;
             }
 
-            mc.submit(() -> {
-                if (mc.screen != loadingScreen) {
+            McIf.mc().submit(() -> {
+                if (McIf.mc().screen != loadingScreen) {
                     return;
                 }
 
                 ChangelogUI gui = new ChangelogUI(previousGui, changelog, major);
-                mc.displayGuiScreen(gui);
+                McIf.mc().displayGuiScreen(gui);
             });
 
         }, "wynntils-changelog").start();
@@ -129,7 +129,7 @@ public class ChangelogUI extends Screen {
 
         float scrollPositionOffset = scrollbarSize == 118 ? 0 : (((changelogContent.size() / 15.0f) * 159) * scrollPercent);
         for (String changelogLine : changelogContent) {
-            renderer.drawString(changelogLine.replace("%user%", Minecraft.getInstance().getSession().getUsername()), textX, baseY - scrollPositionOffset, CommonColors.BROWN, SmartFontRenderer.TextAlignment.LEFT_RIGHT, SmartFontRenderer.TextShadow.NONE);
+            renderer.drawString(changelogLine.replace("%user%", McIf.mc().getSession().getUsername()), textX, baseY - scrollPositionOffset, CommonColors.BROWN, SmartFontRenderer.TextAlignment.LEFT_RIGHT, SmartFontRenderer.TextShadow.NONE);
 
             baseY += 10;
         }
@@ -166,8 +166,8 @@ public class ChangelogUI extends Screen {
     @Override
     protected void keyTyped(char charType, int keyCode) throws IOException {
         if (keyCode == 1) {  // ESC
-            Minecraft.getInstance().displayGuiScreen(previousGui);
-            if (Minecraft.getInstance().screen == null) mc.setIngameFocus();
+            McIf.mc().displayGuiScreen(previousGui);
+            if (McIf.mc().screen == null) McIf.mc().setIngameFocus();
         }
     }
 

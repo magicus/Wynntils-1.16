@@ -5,6 +5,7 @@
 package com.wynntils.modules.core.managers;
 
 import com.google.gson.JsonObject;
+import com.wynntils.McIf;
 import com.wynntils.modules.core.enums.AccountType;
 import com.wynntils.modules.core.instances.account.CosmeticInfo;
 import com.wynntils.modules.core.instances.account.WynntilsUser;
@@ -51,8 +52,8 @@ public class UserManager {
 
                     // loading needs to occur inside the client thread
                     // otherwise some weird texture corruption WILL happen
-                    Minecraft.getInstance().submit(() -> {
-                        TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+                    McIf.mc().submit(() -> {
+                        TextureManager textureManager = McIf.mc().getTextureManager();
                         textureManager.loadTexture(rl, info);
 
                         users.put(uuid, new WynntilsUser(AccountType.valueOf(user.get("accountType").getAsString()), info));
@@ -73,11 +74,9 @@ public class UserManager {
     }
 
     public static void clearRegistry() {
-        Minecraft mc = Minecraft.getInstance();
-
         // needs to be run inside the client thread
         // otherwise some weird corrupting issues WILL happen
-        mc.submit(() -> {
+        McIf.mc().submit(() -> {
             Iterator<Map.Entry<UUID, WynntilsUser>> it = users.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<UUID, WynntilsUser> next = it.next();
@@ -86,7 +85,7 @@ public class UserManager {
                 }
 
                 // removes the texture from the texture registry as well
-                mc.getTextureManager().release(next.getValue().getCosmetics().getLocation());
+                McIf.mc().getTextureManager().release(next.getValue().getCosmetics().getLocation());
 
                 it.remove();
             }

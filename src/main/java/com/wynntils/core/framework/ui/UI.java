@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.ui;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.MouseButton;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.framework.rendering.textures.Textures;
@@ -151,7 +152,7 @@ public abstract class UI extends Screen {
 
     public void show() {
         setupUI(this);
-        Minecraft.getInstance().displayGuiScreen(this);
+        McIf.mc().displayGuiScreen(this);
     }
 
     public static abstract class CommonUIFeatures {

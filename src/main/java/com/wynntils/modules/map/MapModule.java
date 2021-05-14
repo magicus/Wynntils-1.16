@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.map;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.enums.Priority;
 import com.wynntils.core.framework.instances.KeyHolder;
@@ -63,7 +64,7 @@ public class MapModule extends Module {
 
         registerKeyBinding("New Waypoint", GLFW.GLFW_KEY_B, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
             if (Reference.onWorld)
-                Minecraft.getInstance().displayGuiScreen(new WaypointCreationMenu(null));
+                McIf.mc().displayGuiScreen(new WaypointCreationMenu(null));
         });
 
         mapKey = registerKeyBinding("Open Map", GLFW.GLFW_KEY_M, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {

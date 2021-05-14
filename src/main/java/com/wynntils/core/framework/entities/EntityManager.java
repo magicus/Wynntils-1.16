@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.entities;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.entities.instances.FakeEntity;
 import com.wynntils.core.utils.Utils;
 import net.minecraft.client.Minecraft;
@@ -46,7 +47,7 @@ public class EntityManager {
     public static void tickEntities() {
         if (entityList.isEmpty() && toSpawn.isEmpty()) return;
 
-        Minecraft.getInstance().getProfiler().push("fakeEntities");
+        McIf.mc().getProfiler().push("fakeEntities");
         {
             // adds all new entities to the set
             Iterator<FakeEntity> it = toSpawn.iterator();
@@ -55,10 +56,10 @@ public class EntityManager {
                 it.remove();
             }
 
-            RenderManager renderManager = Minecraft.getInstance().getRenderManager();
+            RenderManager renderManager = McIf.mc().getRenderManager();
             if (renderManager == null || renderManager.options == null) return;
 
-            ClientPlayerEntity player = Minecraft.getInstance().player;
+            ClientPlayerEntity player = McIf.player();
             // ticks each entity
             it = entityList.iterator();
             while (it.hasNext()) {
@@ -70,15 +71,15 @@ public class EntityManager {
                     continue;
                 }
 
-                Minecraft.getInstance().getProfiler().push(next.getName());
+                McIf.mc().getProfiler().push(next.getName());
                 { // render
                     next.livingTicks += 1;
                     next.tick(Utils.getRandom(), player);
                 }
-                Minecraft.getInstance().getProfiler().pop();
+                McIf.mc().getProfiler().pop();
             }
         }
-        Minecraft.getInstance().getProfiler().pop();
+        McIf.mc().getProfiler().pop();
     }
 
     /**
@@ -90,7 +91,7 @@ public class EntityManager {
     public static void renderEntities(float partialTicks, WorldRenderer context) {
         if (entityList.isEmpty() && toSpawn.isEmpty()) return;
 
-        Minecraft.getInstance().getProfiler().push("fakeEntities");
+        McIf.mc().getProfiler().push("fakeEntities");
         {
             // adds all new entities to the set
             Iterator<FakeEntity> it = toSpawn.iterator();
@@ -99,16 +100,16 @@ public class EntityManager {
                 it.remove();
             }
 
-            RenderManager renderManager = Minecraft.getInstance().getRenderManager();
+            RenderManager renderManager = McIf.mc().getRenderManager();
             if (renderManager == null || renderManager.options == null) return;
 
-            ClientPlayerEntity player = Minecraft.getInstance().player;
+            ClientPlayerEntity player = McIf.player();
             // ticks each entity
             it = entityList.iterator();
             while (it.hasNext()) {
                 FakeEntity next = it.next();
 
-                Minecraft.getInstance().getProfiler().push(next.getName());
+                McIf.mc().getProfiler().push(next.getName());
                 {
                     _pushMatrix();
                     {
@@ -124,10 +125,10 @@ public class EntityManager {
                     }
                     _popMatrix();
                 }
-                Minecraft.getInstance().getProfiler().pop();
+                McIf.mc().getProfiler().pop();
             }
         }
-        Minecraft.getInstance().getProfiler().pop();
+        McIf.mc().getProfiler().pop();
     }
 
 }

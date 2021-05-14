@@ -4,6 +4,7 @@
 
 package com.wynntils.webapi.profiles.item;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.ClassType;
 import com.wynntils.core.framework.enums.DamageType;
 import com.wynntils.core.utils.StringUtils;
@@ -269,7 +270,7 @@ public class ItemProfile {
 
             // item lore
             if (lore != null && !lore.isEmpty()) {
-                itemLore.addAll(Minecraft.getInstance().font.getSplitter().splitLines(DARK_GRAY + this.getLore(), 150, Style.EMPTY));
+                itemLore.addAll(McIf.mc().font.getSplitter().splitLines(DARK_GRAY + this.getLore(), 150, Style.EMPTY));
             }
         }
 

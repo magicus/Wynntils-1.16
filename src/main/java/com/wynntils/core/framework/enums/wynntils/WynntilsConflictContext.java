@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.enums.wynntils;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.instances.GuiMovementScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.settings.IKeyConflictContext;
@@ -18,7 +19,7 @@ public enum WynntilsConflictContext implements IKeyConflictContext {
     ALLOW_MOVEMENTS {
         @Override
         public boolean isActive() {
-            return Minecraft.getInstance().screen == null || Minecraft.getInstance().screen instanceof GuiMovementScreen;
+            return McIf.mc().screen == null || McIf.mc().screen instanceof GuiMovementScreen;
         }
 
         @Override

@@ -5,7 +5,7 @@
 package com.wynntils.modules.questbook.managers;
 
 
-import com.wynntils.ModCore;
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.FrameworkManager;
 import com.wynntils.core.framework.enums.FilterType;
@@ -22,7 +22,6 @@ import com.wynntils.modules.questbook.enums.QuestStatus;
 import com.wynntils.modules.questbook.events.custom.QuestBookUpdateEvent;
 import com.wynntils.modules.questbook.instances.DiscoveryInfo;
 import com.wynntils.modules.questbook.instances.QuestInfo;
-import net.minecraft.client.Minecraft;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.item.ItemStack;
@@ -80,7 +79,7 @@ public class QuestManager {
     public static void readQuestBook() {
         if (!Reference.onWorld) return;
 
-        if (ModCore.mc().player.containerMenu != null && !(ModCore.mc().player.containerMenu instanceof PlayerContainer)) {
+        if (McIf.player().containerMenu != null && !(McIf.player().containerMenu instanceof PlayerContainer)) {
             interrupt();
             return;
         }
@@ -465,7 +464,7 @@ public class QuestManager {
 
     private static void sendMessage(String msg) {
         // Can be called from nio thread by FakeInventory
-        Minecraft.getInstance().submit(() ->
+        McIf.mc().submit(() ->
             ChatOverlay.getChat().printChatMessageWithOptionalDeletion(new StringTextComponent(msg), MESSAGE_ID)
         );
     }

@@ -5,6 +5,7 @@
 package com.wynntils.modules.map.overlays.ui;
 
 import com.google.common.collect.Iterables;
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.instances.GuiMovementScreen;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
@@ -82,12 +83,10 @@ public class WorldMapUI extends GuiMovementScreen {
     protected float outsideTextOpacity = 0f;
 
     protected WorldMapUI() {
-        this((float) Minecraft.getInstance().player.getX(), (float) Minecraft.getInstance().player.getZ());
+        this((float) McIf.player().getX(), (float) McIf.player().getZ());
     }
 
     protected WorldMapUI(float startX, float startZ) {
-        mc = Minecraft.getInstance();
-
         // HeyZeer0: Handles the territories
         for (TerritoryProfile territory : WebManager.getTerritories().values()) {
             territories.put(territory.getFriendlyName(), new MapTerritory(territory).setRenderer(renderer));
@@ -105,7 +104,7 @@ public class WorldMapUI extends GuiMovementScreen {
         this.animationEnd = System.currentTimeMillis() + MapConfig.WorldMap.INSTANCE.animationLength;
 
         // Opening SFX
-        Minecraft.getInstance().getSoundManager().play(
+        McIf.mc().getSoundManager().play(
                 SimpleSound.forUI(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f)
         );
     }
@@ -179,8 +178,8 @@ public class WorldMapUI extends GuiMovementScreen {
     }
 
     protected void updateCenterPositionWithPlayerPosition() {
-        float newX = (float) mc.player.getX();
-        float newZ = (float) mc.player.getZ();
+        float newX = (float) McIf.player().getX();
+        float newZ = (float) McIf.player().getZ();
         if (newX == centerPositionX && newZ == centerPositionZ) return;
         updateCenterPosition(newX, newZ);
     }
@@ -313,8 +312,8 @@ public class WorldMapUI extends GuiMovementScreen {
 
         if (needToReset[0]) resetAllIcons();
 
-        float playerPositionX = (map.getTextureXPosition(mc.player.getX()) - minX) / (maxX - minX);
-        float playerPositionZ = (map.getTextureZPosition(mc.player.getZ()) - minZ) / (maxZ - minZ);
+        float playerPositionX = (map.getTextureXPosition(McIf.player().getX()) - minX) / (maxX - minX);
+        float playerPositionZ = (map.getTextureZPosition(McIf.player().getZ()) - minZ) / (maxZ - minZ);
 
         if (playerPositionX > 0 && playerPositionX < 1 && playerPositionZ > 0 && playerPositionZ < 1) {  // <--- player position
             playerPositionX = width * playerPositionX;
@@ -324,7 +323,7 @@ public class WorldMapUI extends GuiMovementScreen {
 
             _pushMatrix();
             translate(drawingOrigin.x + playerPositionX, drawingOrigin.y + playerPositionZ, 0);
-            rotate(180 + MathHelper.fastFloor(mc.player.rotationYaw), 0, 0, 1);
+            rotate(180 + MathHelper.fastFloor(McIf.player().rotationYaw), 0, 0, 1);
             translate(-drawingOrigin.x - playerPositionX, -drawingOrigin.y - playerPositionZ, 0);
 
             MapConfig.PointerType type = MapConfig.Textures.INSTANCE.pointerStyle;

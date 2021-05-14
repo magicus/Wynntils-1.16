@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.core.overlays.ui;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.modules.core.CoreModule;
 import com.wynntils.modules.core.config.CoreDBConfig;
@@ -56,7 +57,7 @@ public class UpdatingScreen extends Screen {
                 if (!failed) {
                     UpdateOverlay.scheduleCopyUpdateAtShutdown(jarName);
                     if (restartNow) {
-                        mc.shutdown();
+                        McIf.mc().shutdown();
                     }
                     complete = true;
                     updateText();
@@ -103,7 +104,7 @@ public class UpdatingScreen extends Screen {
                 int count;
 
                 while ((count = fis.read(data)) != -1) {
-                    if (mc.screen != UpdatingScreen.this) {
+                    if (McIf.mc().screen != UpdatingScreen.this) {
                         // Cancelled
                         fos.close();
                         fis.close();
@@ -120,7 +121,7 @@ public class UpdatingScreen extends Screen {
             }
             fis.close();
 
-            if (mc.screen != UpdatingScreen.this) {
+            if (McIf.mc().screen != UpdatingScreen.this) {
                 failed = true;
                 setChangelogs();
             }
@@ -135,7 +136,7 @@ public class UpdatingScreen extends Screen {
     @Override
     public void actionPerformed(Button button) {
         if (button.id == 0) {
-            mc.displayGuiScreen(null);
+            McIf.mc().displayGuiScreen(null);
         }
     }
 
@@ -154,24 +155,24 @@ public class UpdatingScreen extends Screen {
 
         if (failed) {
             setChangelogs();
-            drawCenteredString(mc.font, TextFormatting.RED + "Update download failed", this.width/2, this.height/2, 0xFFFFFFFF);
+            drawCenteredString(McIf.mc().font, TextFormatting.RED + "Update download failed", this.width/2, this.height/2, 0xFFFFFFFF);
         } else if (complete) {
-            drawCenteredString(mc.font, TextFormatting.GREEN + "Update download complete", this.width/2, this.height/2, 0xFFFFFF);
+            drawCenteredString(McIf.mc().font, TextFormatting.GREEN + "Update download complete", this.width/2, this.height/2, 0xFFFFFF);
         } else {
             int left = Math.max(this.width/2 - 100, 10);
             int right = Math.min(this.width/2 + 100, this.width - 10);
-            int top = this.height/2 - 2 - MathHelper.ceil(mc.font.FONT_HEIGHT / 2f);
-            int bottom = this.height/2 + 2 + MathHelper.floor(mc.font.FONT_HEIGHT / 2f);
+            int top = this.height/2 - 2 - MathHelper.ceil(McIf.mc().font.FONT_HEIGHT / 2f);
+            int bottom = this.height/2 + 2 + MathHelper.floor(McIf.mc().font.FONT_HEIGHT / 2f);
             drawRect(left - 1, top - 1, right + 1, bottom + 1, 0xFFC0C0C0);
             int progressPoint = MathHelper.clamp(MathHelper.floor(progress * (right - left) + left), left, right);
             drawRect(left, top, progressPoint, bottom, 0xFFCB3D35);
             drawRect(progressPoint, top, right, bottom, 0xFFFFFFFF);
 
             String label = String.format("%d%%", MathHelper.clamp(MathHelper.floor(progress * 100), 0, 100));
-            mc.font.drawString(label, (this.width - mc.font.width(label))/2, top + 3, 0xFF000000);
-            int x = (this.width - mc.font.width(String.format("Downloading %s", DOTS[DOTS.length - 1]))) / 2;
+            McIf.mc().font.drawString(label, (this.width - McIf.mc().font.width(label))/2, top + 3, 0xFF000000);
+            int x = (this.width - McIf.mc().font.width(String.format("Downloading %s", DOTS[DOTS.length - 1]))) / 2;
             String title = String.format("Downloading %s", DOTS[((int) (System.currentTimeMillis() % (DOT_TIME * DOTS.length))) / DOT_TIME]);
-            drawString(mc.font, title, x, top - mc.font.FONT_HEIGHT - 2, 0xFFFFFFFF);
+            drawString(McIf.mc().font, title, x, top - McIf.mc().font.FONT_HEIGHT - 2, 0xFFFFFFFF);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);

@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.visual.overlays.ui;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.CharacterGameMode;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.framework.rendering.SmartFontRenderer;
@@ -63,7 +64,7 @@ public class CharacterSelectorUI extends Screen {
 
     // scroll bar
     float scrollPosition = 0f;
-    long scrollDelay = Minecraft.getSystemTime();
+    long scrollDelay = McIf.getSystemTime();
 
     // scaled positions
     int mouseX, mouseY;
@@ -100,7 +101,7 @@ public class CharacterSelectorUI extends Screen {
         hoveredButton = -1;
         hoveredText = null;
 
-        mc.player.setInvisible(false); // removes invisibility from character selection
+        McIf.player().setInvisible(false); // removes invisibility from character selection
         updateItems(); // tries to get the inventory items
 
         float animationPercentage = Math.max((animationEnd - System.currentTimeMillis()) / 100f, 0f);
@@ -192,7 +193,7 @@ public class CharacterSelectorUI extends Screen {
         lastClick = System.currentTimeMillis();
         lastButton = hoveredButton;
 
-        mc.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+        McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
         // character picking
         if (hoveredButton <= 50) {
@@ -268,16 +269,16 @@ public class CharacterSelectorUI extends Screen {
 
         float jump = availableCharacters.size() <= 7 ? 0 : 32 / (availableCharacters.size() - 7) * 32;
 
-        if (mDWheel <= -1 && (Minecraft.getSystemTime() - scrollDelay >= 15)) {
+        if (mDWheel <= -1 && (McIf.getSystemTime() - scrollDelay >= 15)) {
             if (scrollPosition >= 1f || availableCharacters.size() <= 7) return;
 
-            scrollDelay = Minecraft.getSystemTime();
+            scrollDelay = McIf.getSystemTime();
             if (scrollPosition + jump >= 1f) scrollPosition = 1f;
             else scrollPosition += jump;
-        } else if (mDWheel >= 1 && (Minecraft.getSystemTime() - scrollDelay >= 15)) {
+        } else if (mDWheel >= 1 && (McIf.getSystemTime() - scrollDelay >= 15)) {
             if (scrollPosition <= 0f || availableCharacters.size() <= 7) return;
 
-            scrollDelay = Minecraft.getSystemTime();
+            scrollDelay = McIf.getSystemTime();
             if (scrollPosition - jump <= 0f) scrollPosition = 0f;
             else scrollPosition -= jump;
         }
@@ -433,7 +434,7 @@ public class CharacterSelectorUI extends Screen {
             _enableBlend();
         }
 
-        InventoryScreen.drawEntityOnScreen(middleX, 210, 60, 0, 0, Minecraft.getInstance().player);
+        InventoryScreen.drawEntityOnScreen(middleX, 210, 60, 0, 0, McIf.player());
     }
 
     private void drawCharacterBadge(int posX, int posY, ItemStack item, String name, String level, String deletion, float xp, boolean selected, int id) {
@@ -554,11 +555,11 @@ public class CharacterSelectorUI extends Screen {
     }
 
     @Override
-    public void setWorldAndResolution(Minecraft mc, int width, int height) {
+    public void setWorldAndResolution(Minecraft minecraft, int width, int height) {
         scaledWidth = (int)(width / scale);
         scaledHeight = (int)(height / scale);
 
-        super.setWorldAndResolution(mc, width, height);
+        super.setWorldAndResolution(minecraft, width, height);
     }
 
 }

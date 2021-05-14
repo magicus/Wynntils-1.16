@@ -4,7 +4,7 @@
 
 package com.wynntils.core.framework.enums.wynntils;
 
-import com.wynntils.ModCore;
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.util.ResourceLocation;
@@ -34,8 +34,8 @@ public enum WynntilsSound {
     }
 
     public void play(float volume, float pitch) {
-        ModCore.mc().submit(() ->
-                ModCore.mc().getSoundManager().play(SimpleSound.forUI(event, pitch, volume)));
+        McIf.mc().submit(() ->
+                McIf.mc().getSoundManager().play(SimpleSound.forUI(event, pitch, volume)));
     }
 
     public void play() {

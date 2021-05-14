@@ -19,47 +19,38 @@ import com.wynntils.modules.map.configs.MapConfig;
 import com.wynntils.modules.map.overlays.objects.MapApiIcon;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.SimpleReloadableResourceManager;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.CrashReportExtender;
-import net.minecraftforge.fml.ModContainer;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-
+@Mod(
+        name = Reference.NAME,
+        modid = Reference.MOD_ID,
+        acceptedMinecraftVersions = "[" + Reference.MINECRAFT_VERSIONS + "]",
+        guiFactory = "com.wynntils.core.framework.settings.ui.ModConfigFactory",
+        clientSideOnly = true
+)
 public class ModCore {
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class GatherDataSubscriber {
-        @SubscribeEvent
-        public static void gatherData(GatherDataEvent event) {
-            System.out.println("Got DATA event " + event.getModContainer().getModInfo().getDisplayName());
-        }
-    }
     public static File jarFile = null;
 
     @Mod.EventHandler
-    public void preInit(FMLCommonSetupEvent e) {
-        Reference.VERSION = null; // e.getModMetadata().version;
-        String[] splitDescription = "1 0".split(" "); // e.getModMetadata().description.split(" ");
+    public void preInit(FMLPreInitializationEvent e) {
+        Reference.VERSION = e.getModMetadata().version;
+        String[] splitDescription = e.getModMetadata().description.split(" ");
         try {
             Reference.BUILD_NUMBER = Integer.parseInt(splitDescription[splitDescription.length - 1]);
         } catch (NumberFormatException ignored) {}
 
-        jarFile = null; //e.getSourceFile();
+        jarFile = e.getSourceFile();
 
-        boolean isFmlDevEnv = true; //(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")
-        Reference.developmentEnvironment = (isFmlDevEnv)
+        Reference.developmentEnvironment = ((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"))
                 || (System.getProperty("wynntils.development") != null && System.getProperty("wynntils.development").equals("true"));
         // Reference.developmentEnvironment = false;  // Uncomment to test updater
 
@@ -80,10 +71,10 @@ public class ModCore {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         Map<String, String> conflicts = new HashMap<>();
-        Optional<? extends ModContainer> modOpt = ModList.get().getModContainerById("labymod");
-        if (modOpt.isPresent()) {
-            ModContainer mod = modOpt.get();
-            conflicts.put(mod.getModInfo().getDisplayName(), mod.getModInfo().getVersion().toString());
+        for (ModContainer mod : Loader.instance().getActiveModList()) {
+            if (!mod.getModId().equalsIgnoreCase("labymod")) continue;
+
+            conflicts.put(mod.getName(), mod.getVersion());
         }
 
         if (!conflicts.isEmpty()) throw new ModConflictScreen(conflicts);
@@ -94,7 +85,7 @@ public class ModCore {
 
         // HeyZeer0: This will reload our cache if a texture or similar is applied
         // This also immediately loads it
-        ((SimpleReloadableResourceManager)Minecraft.getInstance().getResourceManager()).registerReloadListener(resourceManager -> {
+        ((SimpleReloadableResourceManager)McIf.mc().getResourceManager()).registerReloadListener(resourceManager -> {
             Textures.loadTextures();
             Mappings.loadMappings();
             MapApiIcon.resetApiMarkers();
@@ -105,7 +96,7 @@ public class ModCore {
             MapConfig.INSTANCE.saveSettings(MapModule.getModule());
         }
 
-        CrashReportExtender.registerCrashCallable(new ICrashCallable() {
+        FMLCommonHandler.instance().registerCrashCallable(new ICrashCallable() {
             @Override
             public String getLabel() {
                 return "Wynntils Details";
@@ -119,10 +110,6 @@ public class ModCore {
         });
 
         FrameworkManager.getEventBus().post(new ClientEvent.Ready());
-    }
-
-    public static Minecraft mc() {
-        return Minecraft.getInstance();
     }
 
 }

@@ -4,7 +4,7 @@
 
 package com.wynntils.modules.richpresence.events;
 
-import com.wynntils.ModCore;
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.events.custom.*;
 import com.wynntils.core.framework.enums.ClassType;
@@ -43,7 +43,7 @@ public class ServerEvents implements Listener {
 
     @SubscribeEvent
     public void onServerJoin(WynncraftServerEvent.Login e) {
-        if (!ModCore.mc().hasSingleplayerServer() && ModCore.mc().getCurrentServer() != null && Objects.requireNonNull(ModCore.mc().getCurrentServer()).ip.contains("wynncraft") && RichPresenceConfig.INSTANCE.enableRichPresence) {
+        if (!McIf.mc().hasSingleplayerServer() && McIf.mc().getCurrentServer() != null && Objects.requireNonNull(McIf.mc().getCurrentServer()).ip.contains("wynncraft") && RichPresenceConfig.INSTANCE.enableRichPresence) {
             String state = "In Lobby";
             RichPresenceModule.getModule().getRichPresence().updateRichPresence(state, null, null, OffsetDateTime.now());
         }
@@ -104,7 +104,7 @@ public class ServerEvents implements Listener {
         if (!RichPresenceConfig.INSTANCE.enableRichPresence || !Reference.onWorld
                 || !PlayerInfo.get(CharacterData.class).isLoaded()) return;
 
-        if (e.getPacket().getExperienceLevel() != Minecraft.getInstance().player.experienceLevel) {
+        if (e.getPacket().getExperienceLevel() != McIf.player().experienceLevel) {
             forceUpdate = true;
         }
     }
@@ -166,8 +166,7 @@ public class ServerEvents implements Listener {
      * @return RichPresence largeImageText
      */
     public static String getPlayerInfo() {
-        Minecraft mc = Minecraft.getInstance();
-        return RichPresenceConfig.INSTANCE.showUserInformation ? mc.player.getName() + " | Level " + mc.player.experienceLevel + " " + PlayerInfo.get(CharacterData.class).getCurrentClass().toString() : null;
+        return RichPresenceConfig.INSTANCE.showUserInformation ? McIf.player().getName() + " | Level " + McIf.player().experienceLevel + " " + PlayerInfo.get(CharacterData.class).getCurrentClass().toString() : null;
     }
 
 }

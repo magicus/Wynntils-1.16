@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.core.overlays.ui;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.utils.ServerUtils;
 import com.wynntils.modules.core.CoreModule;
@@ -45,10 +46,10 @@ public class UpdateAvailableScreen extends Screen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
-        int yOffset = Math.min(this.height / 2, this.height / 4 + 80 - mc.font.FONT_HEIGHT * 2);
-        drawCenteredString(mc.font, text, this.width/2, yOffset - mc.font.FONT_HEIGHT - 2, 0xFFFFFFFF);
-        drawCenteredString(mc.font, "Update now or when leaving Minecraft?", this.width/2, yOffset, 0xFFFFFFFF);
-        drawCenteredString(mc.font, "(Updating now will exit Minecraft after downloading update)", this.width/2, yOffset + mc.font.FONT_HEIGHT + 2, 0xFFFFFFFF);
+        int yOffset = Math.min(this.height / 2, this.height / 4 + 80 - McIf.mc().font.FONT_HEIGHT * 2);
+        drawCenteredString(McIf.mc().font, text, this.width/2, yOffset - McIf.mc().font.FONT_HEIGHT - 2, 0xFFFFFFFF);
+        drawCenteredString(McIf.mc().font, "Update now or when leaving Minecraft?", this.width/2, yOffset, 0xFFFFFFFF);
+        drawCenteredString(McIf.mc().font, "(Updating now will exit Minecraft after downloading update)", this.width/2, yOffset + McIf.mc().font.FONT_HEIGHT + 2, 0xFFFFFFFF);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -60,14 +61,14 @@ public class UpdateAvailableScreen extends Screen {
             CoreDBConfig.INSTANCE.showChangelogs = true;
             CoreDBConfig.INSTANCE.lastVersion = Reference.VERSION;
             CoreDBConfig.INSTANCE.saveSettings(CoreModule.getModule());
-            mc.displayGuiScreen(new UpdatingScreen(button.id == 1));
+            McIf.mc().displayGuiScreen(new UpdatingScreen(button.id == 1));
         } else if (button.id == 3) {
             // Ignore
             WebManager.skipJoinUpdate();
             ServerUtils.connect(null, server);
         } else if (button.id == 4) {
             // Cancel
-            mc.displayGuiScreen(null);
+            McIf.mc().displayGuiScreen(null);
         } else if (button.id == 0) {
             // View changelog
             boolean major = CoreDBConfig.INSTANCE.updateStream == UpdateStream.STABLE;

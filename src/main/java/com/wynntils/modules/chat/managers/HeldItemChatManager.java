@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.chat.managers;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.instances.PlayerInfo;
 import com.wynntils.core.framework.instances.data.CharacterData;
 import com.wynntils.core.framework.instances.data.InventoryData;
@@ -46,29 +47,28 @@ public class HeldItemChatManager {
     }
 
     private static ITextComponent getMessage() {
-        Minecraft mc = Minecraft.getInstance();
         if (
             !ChatConfig.INSTANCE.heldItemChat ||
-            mc.player == null || mc.world == null ||
-            mc.player.inventory.items.get(6).getItem() != Items.COMPASS ||
-            mc.player.inventory.items.get(7).getItem() != Items.WRITTEN_BOOK ||
-            mc.player.inventory.items.get(8).getItem() != Items.NETHER_STAR &&
-            mc.player.inventory.items.get(8).getItem() != Item.byBlock(Blocks.SNOW) ||
+            McIf.player() == null || McIf.world() == null ||
+            McIf.player().inventory.items.get(6).getItem() != Items.COMPASS ||
+            McIf.player().inventory.items.get(7).getItem() != Items.WRITTEN_BOOK ||
+            McIf.player().inventory.items.get(8).getItem() != Items.NETHER_STAR &&
+            McIf.player().inventory.items.get(8).getItem() != Item.byBlock(Blocks.SNOW) ||
             !PlayerInfo.get(CharacterData.class).isLoaded()
         ) {
             reset();
             return null;
         }
 
-        if (lastHolding != mc.player.inventory.selected) {
-            lastHolding = mc.player.inventory.selected;
+        if (lastHolding != McIf.player().inventory.selected) {
+            lastHolding = McIf.player().inventory.selected;
             startedHolding = System.currentTimeMillis();
             return null;
         }
 
         if (System.currentTimeMillis() < startedHolding + DISPLAY_TIME) return null;
 
-        switch (mc.player.inventory.selected) {
+        switch (McIf.player().inventory.selected) {
             case 6: return getCompassMessage();
             // case 7: return getQuestBookMessage();
             case 8: return getSoulPointsMessage();
@@ -124,8 +124,8 @@ public class HeldItemChatManager {
 
         double compassX = compass.getX();
         double compassZ = compass.getZ();
-        double playerX = Minecraft.getInstance().player.getX();
-        double playerZ = Minecraft.getInstance().player.getZ();
+        double playerX = McIf.player().getX();
+        double playerZ = McIf.player().getZ();
 
         int distance = MathHelper.floor(MathHelper.sqrt((compassX - playerX) * (compassX - playerX) + (compassZ - playerZ) * (compassZ - playerZ)));
 
@@ -193,7 +193,7 @@ public class HeldItemChatManager {
             ChatConfig.INSTANCE.saveSettings(ChatModule.getModule());
 
             ITextComponent message = new StringTextComponent("Enable §bMod options > Chat > Held Item Chat Messages§r to undo (or click this)");
-            Minecraft.getInstance().player.sendMessage(TextAction.withStaticEvent(message, OnUnhideClick.class));
+            McIf.player().sendMessage(TextAction.withStaticEvent(message, OnUnhideClick.class));
         }
     }
 
