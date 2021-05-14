@@ -5,10 +5,10 @@
 package com.wynntils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
-import org.lwjgl.Sys;
 
 /**
  * The Wynntils Minecraft Interface (MC IF).
@@ -18,27 +18,33 @@ import org.lwjgl.Sys;
  */
 public class McIf {
     public static String getUnformattedText(ITextComponent msg) {
-        return msg.getUnformattedText();
+        // FIXME: Need better implementation!
+        return msg.toString();
     }
 
     public static String getFormattedText(ITextComponent msg) {
-        return msg.getFormattedText();
+        // FIXME: Need better implementation!
+        return msg.toString();
     }
 
     public static Minecraft mc() {
-        return Minecraft.getMinecraft();
+        return Minecraft.getInstance();
     }
 
-    public static WorldClient world() {
-        return mc().world;
+    public static ClientWorld world() {
+        return mc().level;
     }
 
-    public static EntityPlayerSP player() {
+    public static ClientPlayerEntity player() {
         return mc().player;
     }
 
+    /**
+     * Return the system time in milliseconds
+     * @return
+     */
     public static long getSystemTime()
     {
-        return Minecraft.getSystemTime();
+        return Util.getMillis();
     }
 }
