@@ -715,17 +715,17 @@ public class OverlayEvents implements Listener {
     }
 
     @SubscribeEvent
-    public void onDisplayObjective(PacketEvent<SPacketDisplayObjective> e) {
+    public void onDisplayObjective(PacketEvent<SDisplayObjectivePacket> e) {
         ObjectivesOverlay.checkForSidebar(e.getPacket());
     }
 
     @SubscribeEvent
-    public void onScoreboardObjective(PacketEvent<SPacketScoreboardObjective> e) {
+    public void onScoreboardObjective(PacketEvent<SScoreboardObjectivePacket> e) {
         ObjectivesOverlay.checkSidebarRemoved(e.getPacket());
     }
 
     @SubscribeEvent
-    public void onUpdateScore(PacketEvent<SPacketUpdateScore> e) {
+    public void onUpdateScore(PacketEvent<SUpdateScorePacket> e) {
         ObjectivesOverlay.checkObjectiveUpdate(e.getPacket());
     }
 

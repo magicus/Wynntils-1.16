@@ -109,7 +109,7 @@ public class ServerSelectorOverlay implements Listener {
             }
             Minecraft.getInstance().player.sendMessage(text);
 
-            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_BASS, 1f));
+            Minecraft.getInstance().getSoundManager().play(SimpleSound.forUI(SoundEvents.NOTE_BLOCK_BASS, 1f));
         }
     }
 }

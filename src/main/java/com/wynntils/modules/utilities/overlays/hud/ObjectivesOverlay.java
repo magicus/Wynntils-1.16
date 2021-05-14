@@ -15,9 +15,9 @@ import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.framework.rendering.textures.Textures;
 import com.wynntils.modules.utilities.configs.OverlayConfig;
 
-import net.minecraft.network.play.server.SPacketDisplayObjective;
-import net.minecraft.network.play.server.SPacketScoreboardObjective;
-import net.minecraft.network.play.server.SPacketUpdateScore;
+import net.minecraft.network.play.server.SDisplayObjectivePacket;
+import net.minecraft.network.play.server.SScoreboardObjectivePacket;
+import net.minecraft.network.play.server.SUpdateScorePacket;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
@@ -41,7 +41,7 @@ public class ObjectivesOverlay extends Overlay {
         super("Objectives", WIDTH, HEIGHT, true, 1f, 1f, -1, -1, OverlayGrowFrom.BOTTOM_RIGHT);
     }
 
-    public static void checkForSidebar(SPacketDisplayObjective displayObjective) {
+    public static void checkForSidebar(SDisplayObjectivePacket displayObjective) {
         // Find the objective that is displayed in the sidebar (slot 1)
         // We're basically looking for "sb" + username. Ignore the "fb" + username scoreboard.
         if (displayObjective.getPosition() != 1) return;
@@ -51,7 +51,7 @@ public class ObjectivesOverlay extends Overlay {
         sidebarObjectiveName = name;
     }
 
-    public static void checkSidebarRemoved(SPacketScoreboardObjective scoreboardObjective) {
+    public static void checkSidebarRemoved(SScoreboardObjectivePacket scoreboardObjective) {
         if (scoreboardObjective.getAction() != 1 || !scoreboardObjective.getObjectiveName().equals(sidebarObjectiveName)) {
             return;
         }
@@ -109,9 +109,9 @@ public class ObjectivesOverlay extends Overlay {
         }
     }
 
-    public static boolean checkObjectiveUpdate(SPacketUpdateScore updateScore) {
+    public static boolean checkObjectiveUpdate(SUpdateScorePacket updateScore) {
         if (updateScore.getObjectiveName().equals(sidebarObjectiveName)) {
-            if (updateScore.getScoreAction() == SPacketUpdateScore.Action.REMOVE) {
+            if (updateScore.getScoreAction() == SUpdateScorePacket.Action.REMOVE) {
                 String objectiveLine = TextFormatting.getTextWithoutFormattingCodes(updateScore.getPlayerName());
                 if (objectiveLine.equals("Objective" + (objectives[1] != null ? "s" : "") + ":") || objectiveLine.equals("Daily Objective" + (objectives[1] != null ? "s" : "") + ":")) {
                     objectivesPosition = 0;
