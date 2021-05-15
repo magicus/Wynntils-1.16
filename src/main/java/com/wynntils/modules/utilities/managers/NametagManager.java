@@ -27,7 +27,7 @@ import com.wynntils.webapi.profiles.item.ItemProfile;
 import com.wynntils.webapi.profiles.item.enums.ItemTier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.screen.FontRenderer;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;

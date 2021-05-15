@@ -840,7 +840,7 @@ public class ScreenRenderer {
         if (!rendering) return;
         RenderHelper.enableGUIStandardItemLighting();
         itemRenderer.zLevel = 200.0F;
-        net.minecraft.client.gui.screen.FontRenderer font = is.getItem().getFontRenderer(is);
+        net.minecraft.client.gui.FontRenderer font = is.getItem().getFont(is);
         if (font == null) font = font;
         if (effects)
             itemRenderer.renderItemAndEffectIntoGUI(is, x + drawingOrigin.x, y + drawingOrigin.y);

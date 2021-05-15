@@ -51,7 +51,7 @@ public class MainMenuButtons {
 
             // little pling when finished loading
             if (!alreadyLoaded) {
-                McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1f));
+                McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.NOTE_BLOCK_PLING, 1f));
                 alreadyLoaded = true;
             }
             return;

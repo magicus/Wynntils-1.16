@@ -4,7 +4,7 @@
 
 package com.wynntils.modules.core.overlays.ui;
 
-import net.minecraft.client.gui.screen.FontRenderer;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.GuiErrorScreen;
 import net.minecraftforge.fml.client.CustomModLoadingErrorDisplayException;
 

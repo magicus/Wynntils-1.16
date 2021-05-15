@@ -6,7 +6,7 @@ package com.wynntils.core.framework.ui.elements;
 
 import java.awt.Color;
 
-import net.minecraft.client.gui.screen.FontRenderer;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.GuiTextField;
 
 public class GuiTextFieldWynn extends GuiTextField {

@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
 import com.wynntils.McIf;
 import com.wynntils.Reference;
 
-import net.minecraft.client.gui.screen.FontRenderer;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;

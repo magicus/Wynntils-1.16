@@ -7,7 +7,7 @@ package com.wynntils.modules.core.enums;
 import com.wynntils.McIf;
 import com.wynntils.core.utils.helpers.CommandResponse;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.text.TextComponentBase;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
@@ -60,7 +60,7 @@ public enum ToggleSetting {
             // show message is false when the option was already on the value status
             if (!showMessage) return;
 
-            McIf.player().sendMessage(getToggleText(value));
+            McIf.player().sendMessage(getToggleText(value), null);
         }, TOGGLE_MESSAGE_PATTERN);
 
         response.setCancel(true);
@@ -68,7 +68,7 @@ public enum ToggleSetting {
         response.executeCommand();
     }
 
-    private TextComponentBase getToggleText(boolean value) {
+    private ITextComponent getToggleText(boolean value) {
         String function = value ? "enabled" : "disabled";
         String callback = value ? "disable" : "enable";
 
