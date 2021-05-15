@@ -208,10 +208,10 @@ public class NametagManager {
                 BufferBuilder vertexBuffer = tesselator.getBuilder();
                 {
                     vertexBuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-                    vertexBuffer.vertex(-9.5 - horizontalShift, -8.5 + verticalShift, 0).tex(texMinX, texMinY).endVertex();
-                    vertexBuffer.vertex(-9.5 - horizontalShift, +8.5 + verticalShift, 0).tex(texMinX, texMaxY).endVertex();
-                    vertexBuffer.vertex(+9.5 - horizontalShift, +8.5 + verticalShift, 0).tex(texMaxX, texMaxY).endVertex();
-                    vertexBuffer.vertex(+9.5 - horizontalShift, -8.5 + verticalShift, 0).tex(texMaxX, texMinY).endVertex();
+                    vertexBuffer.vertex(-9.5 - horizontalShift, -8.5 + verticalShift, 0).uv(texMinX, texMinY).endVertex();
+                    vertexBuffer.vertex(-9.5 - horizontalShift, +8.5 + verticalShift, 0).uv(texMinX, texMaxY).endVertex();
+                    vertexBuffer.vertex(+9.5 - horizontalShift, +8.5 + verticalShift, 0).uv(texMaxX, texMaxY).endVertex();
+                    vertexBuffer.vertex(+9.5 - horizontalShift, -8.5 + verticalShift, 0).uv(texMaxX, texMinY).endVertex();
                 }
                 tesselator.draw();
 

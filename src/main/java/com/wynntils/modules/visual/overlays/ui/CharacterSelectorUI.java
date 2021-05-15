@@ -540,10 +540,10 @@ public class CharacterSelectorUI extends Screen {
             // original
             builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
             {
-                builder.vertex(0, height, 0).tex(0, 1).endVertex();
-                builder.vertex(width, height, 0).tex(1, 1).endVertex();
-                builder.vertex(width, 0, 0).tex(1, 0).endVertex();
-                builder.vertex(0, 0, 0).tex(0, 0).endVertex();
+                builder.vertex(0, height, 0).uv(0, 1).endVertex();
+                builder.vertex(width, height, 0).uv(1, 1).endVertex();
+                builder.vertex(width, 0, 0).uv(1, 0).endVertex();
+                builder.vertex(0, 0, 0).uv(0, 0).endVertex();
             }
             tes.end();
         }

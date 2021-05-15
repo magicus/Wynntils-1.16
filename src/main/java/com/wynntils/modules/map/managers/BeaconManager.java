@@ -79,22 +79,22 @@ public class BeaconManager {
             tessellator.getBuilder().begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
             BufferBuilder builder = tessellator.getBuilder();
             {
-                builder.vertex(x + .2d, y + d1, z + .2d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .2d, y, z + .2d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .8d, y, z + .2d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .8d, y + d1, z + .2d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .8d, y + d1, z + .8d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .8d, y, z + .8d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .2d, y, z + .8d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .2d, y + d1, z + .8d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .8d, y + d1, z + .2d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .8d, y, z + .2d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .8d, y, z + .8d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .8d, y + d1, z + .8d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .2d, y + d1, z + .8d).tex(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .2d, y, z + .8d).tex(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .2d, y, z + .2d).tex(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
-                builder.vertex(x + .2d, y + d1, z + .2d).tex(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y + d1, z + .2d).uv(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y, z + .2d).uv(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y, z + .2d).uv(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y + d1, z + .2d).uv(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y + d1, z + .8d).uv(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y, z + .8d).uv(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y, z + .8d).uv(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y + d1, z + .8d).uv(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y + d1, z + .2d).uv(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y, z + .2d).uv(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y, z + .8d).uv(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .8d, y + d1, z + .8d).uv(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y + d1, z + .8d).uv(1d, d3).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y, z + .8d).uv(1d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y, z + .2d).uv(0d, d2).color(color.r, color.g, color.b, alpha).endVertex();
+                builder.vertex(x + .2d, y + d1, z + .2d).uv(0d, d3).color(color.r, color.g, color.b, alpha).endVertex();
             }
             tessellator.end();
 

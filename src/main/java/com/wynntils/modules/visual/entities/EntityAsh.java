@@ -109,10 +109,10 @@ public class EntityAsh extends FakeEntity {
         { // drawing
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
 
-            buffer.vertex(-.5, .5, 0).tex(0, 1f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
-            buffer.vertex(.5, .5, 0).tex(1f, 1f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
-            buffer.vertex(.5, -.5, 0).tex(1f, 0f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
-            buffer.vertex(-.5, -.5, 0).tex(0, 0f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
+            buffer.vertex(-.5, .5, 0).uv(0, 1f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
+            buffer.vertex(.5, .5, 0).uv(1f, 1f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
+            buffer.vertex(.5, -.5, 0).uv(1f, 0f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
+            buffer.vertex(-.5, -.5, 0).uv(0, 0f).color(color, color, color, alpha).lightmap(0, 15728880).endVertex();
 
             tes.end();
         }

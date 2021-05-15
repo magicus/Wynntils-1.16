@@ -277,10 +277,10 @@ public class WorldMapUI extends GuiMovementScreen {
             {
                 bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
 
-                bufferbuilder.vertex(0, height, 0).tex(minX, maxZ).endVertex();
-                bufferbuilder.vertex(width, height, 0).tex(maxX, maxZ).endVertex();
-                bufferbuilder.vertex(width, 0, 0).tex(maxX, minZ).endVertex();
-                bufferbuilder.vertex(0, 0, 0).tex(minX, minZ).endVertex();
+                bufferbuilder.vertex(0, height, 0).uv(minX, maxZ).endVertex();
+                bufferbuilder.vertex(width, height, 0).uv(maxX, maxZ).endVertex();
+                bufferbuilder.vertex(width, 0, 0).uv(maxX, minZ).endVertex();
+                bufferbuilder.vertex(0, 0, 0).uv(minX, minZ).endVertex();
                 tessellator.end();
             }
 

@@ -225,14 +225,14 @@ public class WorldMapSettingsUI extends Screen {
         float miniScale;
         CustomColor disabledColour = new CustomColor(CommonColors.GRAY).setA(0.5f);
 
-        Button(int id, int xPos, int yPos, int width, int height, String displayString, String key, int page, IconTexture tex, boolean onMainMap, boolean onMiniMap) {
+        Button(int id, int xPos, int yPos, int width, int height, String displayString, String key, int page, IconTexture uv, boolean onMainMap, boolean onMiniMap) {
             super(id, xPos, yPos, width, height, displayString);
             this.key = key;
             this.page = page;
             if (onMainMap) selectionState |= ON_MAINMAP;
             if (onMiniMap) selectionState |= ON_MINIMAP;
             updatePage(0);
-            updateTexture(tex);
+            updateTexture(uv);
         }
 
         boolean onMainMap() {

@@ -238,13 +238,13 @@ public class PointRenderer {
         { buffer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_TEX);
 
             buffer.vertex(p1.x - renderManager.viewerPosX, p1.y - renderManager.viewerPosY, p1.z - renderManager.viewerPosZ)
-                    .tex(0f, 0f).endVertex();
+                    .uv(0f, 0f).endVertex();
             buffer.vertex(p3.x - renderManager.viewerPosX, p3.y - renderManager.viewerPosY, p3.z - renderManager.viewerPosZ)
-                    .tex(1f, 0f).endVertex();
+                    .uv(1f, 0f).endVertex();
             buffer.vertex(p4.x - renderManager.viewerPosX, p4.y - renderManager.viewerPosY, p4.z - renderManager.viewerPosZ)
-                    .tex(1f, 1f).endVertex();
+                    .uv(1f, 1f).endVertex();
             buffer.vertex(p2.x - renderManager.viewerPosX, p2.y - renderManager.viewerPosY, p2.z - renderManager.viewerPosZ)
-                    .tex(0f, 1f).endVertex();
+                    .uv(0f, 1f).endVertex();
 
         } tess.end();
     }

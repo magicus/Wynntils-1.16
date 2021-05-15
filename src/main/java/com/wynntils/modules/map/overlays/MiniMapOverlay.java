@@ -115,10 +115,10 @@ public class MiniMapOverlay extends Overlay {
             {
                 bufferbuilder.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_TEX);
 
-                bufferbuilder.vertex(position.getDrawingX() - extraSize, position.getDrawingY() + mapSize + extraSize, 0).tex(minX, maxZ).endVertex();
-                bufferbuilder.vertex(position.getDrawingX() + mapSize + extraSize, position.getDrawingY() + mapSize + extraSize, 0).tex(maxX, maxZ).endVertex();
-                bufferbuilder.vertex(position.getDrawingX() + mapSize + extraSize, position.getDrawingY() - extraSize, 0).tex(maxX, minZ).endVertex();
-                bufferbuilder.vertex(position.getDrawingX() - extraSize, position.getDrawingY() - extraSize, 0).tex(minX, minZ).endVertex();
+                bufferbuilder.vertex(position.getDrawingX() - extraSize, position.getDrawingY() + mapSize + extraSize, 0).uv(minX, maxZ).endVertex();
+                bufferbuilder.vertex(position.getDrawingX() + mapSize + extraSize, position.getDrawingY() + mapSize + extraSize, 0).uv(maxX, maxZ).endVertex();
+                bufferbuilder.vertex(position.getDrawingX() + mapSize + extraSize, position.getDrawingY() - extraSize, 0).uv(maxX, minZ).endVertex();
+                bufferbuilder.vertex(position.getDrawingX() - extraSize, position.getDrawingY() - extraSize, 0).uv(minX, minZ).endVertex();
 
                 tessellator.end();
             }

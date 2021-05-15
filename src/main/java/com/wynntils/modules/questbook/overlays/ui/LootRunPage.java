@@ -142,10 +142,10 @@ public class LootRunPage extends QuestBookPage {
                         {
                             bufferbuilder.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_TEX);
 
-                            bufferbuilder.vertex(mapX, mapY + mapHeight, 0).tex(minX, maxZ).endVertex();
-                            bufferbuilder.vertex(mapX + mapWidth, mapY + mapHeight, 0).tex(maxX, maxZ).endVertex();
-                            bufferbuilder.vertex(mapX + mapWidth, mapY, 0).tex(maxX, minZ).endVertex();
-                            bufferbuilder.vertex(mapX, mapY, 0).tex(minX, minZ).endVertex();
+                            bufferbuilder.vertex(mapX, mapY + mapHeight, 0).uv(minX, maxZ).endVertex();
+                            bufferbuilder.vertex(mapX + mapWidth, mapY + mapHeight, 0).uv(maxX, maxZ).endVertex();
+                            bufferbuilder.vertex(mapX + mapWidth, mapY, 0).uv(maxX, minZ).endVertex();
+                            bufferbuilder.vertex(mapX, mapY, 0).uv(minX, minZ).endVertex();
 
                             tessellator.end();
                         }

@@ -142,10 +142,10 @@ public class MapPlayerIcon extends MapIcon {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferbuilder = tessellator.getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.vertex(x, y + height, 0.0D).tex(u * f, (v + vHeight) * f1).endVertex();
-        bufferbuilder.vertex(x + width, y + height, 0.0D).tex((u + uWidth) * f, (v + vHeight) * f1).endVertex();
-        bufferbuilder.vertex(x + width, y, 0.0D).tex((u + uWidth) * f, v * f1).endVertex();
-        bufferbuilder.vertex(x, y, 0.0D).tex(u * f, v * f1).endVertex();
+        bufferbuilder.vertex(x, y + height, 0.0D).uv(u * f, (v + vHeight) * f1).endVertex();
+        bufferbuilder.vertex(x + width, y + height, 0.0D).uv((u + uWidth) * f, (v + vHeight) * f1).endVertex();
+        bufferbuilder.vertex(x + width, y, 0.0D).uv((u + uWidth) * f, v * f1).endVertex();
+        bufferbuilder.vertex(x, y, 0.0D).uv(u * f, v * f1).endVertex();
         tessellator.end();
     }
 

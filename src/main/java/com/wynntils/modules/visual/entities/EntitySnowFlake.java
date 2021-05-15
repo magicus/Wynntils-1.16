@@ -76,10 +76,10 @@ public class EntitySnowFlake extends FakeEntity {
         { // drawing
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 
-            buffer.vertex(-.5,  .5, 0).tex(0, 1).color(color, color, color, alpha).endVertex();
-            buffer.vertex( .5,  .5, 0).tex(1, 1).color(color, color, color, alpha).endVertex();
-            buffer.vertex( .5, -.5, 0).tex(1, 0).color(color, color, color, alpha).endVertex();
-            buffer.vertex(-.5, -.5, 0).tex(0, 0).color(color, color, color, alpha).endVertex();
+            buffer.vertex(-.5,  .5, 0).uv(0, 1).color(color, color, color, alpha).endVertex();
+            buffer.vertex( .5,  .5, 0).uv(1, 1).color(color, color, color, alpha).endVertex();
+            buffer.vertex( .5, -.5, 0).uv(1, 0).color(color, color, color, alpha).endVertex();
+            buffer.vertex(-.5, -.5, 0).uv(0, 0).color(color, color, color, alpha).endVertex();
 
             tes.end();
         }
