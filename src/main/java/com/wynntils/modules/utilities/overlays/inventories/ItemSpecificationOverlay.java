@@ -23,7 +23,7 @@ import com.wynntils.core.utils.StringUtils;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.wynntils.webapi.profiles.item.enums.ItemType;
 
-import net.minecraft.client.gui.screen.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import com.wynntils.transition.GlStateManager;
 import com.wynntils.transition.RenderHelper;
 import net.minecraft.inventory.container.Slot;
@@ -33,10 +33,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ItemSpecificationOverlay implements Listener {
 
-    private void renderOverlay(GuiContainer gui) {
+    private void renderOverlay(ContainerScreen gui) {
         if (!Reference.onWorld) return;
 
-        for (Slot s : gui.inventorySlots.inventorySlots) {
+        for (Slot s : gui.getMenu().getMenu()) {
             ItemStack stack = s.getItem();
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue; // display name also checks for tag compound
 

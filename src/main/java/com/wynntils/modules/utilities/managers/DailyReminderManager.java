@@ -10,7 +10,7 @@ import com.wynntils.core.utils.Utils;
 import com.wynntils.modules.utilities.UtilitiesModule;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import net.minecraft.client.audio.SimpleSound;
-import net.minecraft.client.gui.screen.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.StringTextComponent;
@@ -63,7 +63,7 @@ public class DailyReminderManager {
         if (!UtilitiesConfig.INSTANCE.dailyReminder || !Reference.onWorld) return;
 
         if (Utils.isCharacterInfoPage(e.getGui())) {
-            if (!((GuiContainer) e.getGui()).inventorySlots.getSlot(22).getHasStack()) {
+            if (!((ContainerScreen) e.getGui()).getMenu().getSlot(22).getHasStack()) {
                 UtilitiesConfig.Data.INSTANCE.dailyReminder = System.currentTimeMillis() + 86400000;
                 UtilitiesConfig.Data.INSTANCE.saveSettings(UtilitiesModule.getModule());
             }

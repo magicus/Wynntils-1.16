@@ -122,7 +122,7 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void classDialog(GuiOverlapEvent.ChestOverlap.DrawGuiContainerBackgroundLayer e) {
-        if (!e.getGui().getLowerInv().getName().contains("Select a Class")) return;
+        if (!McIf.toText(e.getGui().getTitle()).contains("Select a Class")) return;
         if (!afkProtectionActivated) return;
 
         InventoryBasic inv = (InventoryBasic) e.getGui().getLowerInv();
@@ -384,7 +384,7 @@ public class ClientEvents implements Listener {
         if (!Reference.onWorld) return;
         if (!Utils.isCharacterInfoPage(e.getGui())) return;
 
-        Slot slot = e.getGui().inventorySlots.getSlot(20);
+        Slot slot = e.getGui().getMenu().getSlot(20);
 
         ItemStack stack = slot.getItem();
         if (stack.getItem() == Item.byBlock(Blocks.SNOW) || stack.getItem() == Items.CLOCK) {
@@ -574,14 +574,14 @@ public class ClientEvents implements Listener {
             if (e.getSlot() >= 9 && e.getSlot() <= 12) { // taking off accessory
                 // check if hotbar has open slot; if so, no action required
                 for (int i = 36; i < 45; i++) {
-                    if (!e.getGui().inventorySlots.getSlot(i).getHasStack()) return;
+                    if (!e.getGui().getMenu().getSlot(i).getHasStack()) return;
                 }
 
                 // move accessory into inventory
                 // find first open slot
                 int openSlot = 0;
                 for (int i = 14; i < 36; i++) {
-                    if (!e.getGui().inventorySlots.getSlot(i).getHasStack()) {
+                    if (!e.getGui().getMenu().getSlot(i).getHasStack()) {
                         openSlot = i;
                         break;
                     }
@@ -600,17 +600,17 @@ public class ClientEvents implements Listener {
                 int openSlot = 0;
                 switch (item) {
                     case RING:
-                        if (e.getGui().inventorySlots.getSlot(9).getHasStack() && e.getGui().inventorySlots.getSlot(9).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
+                        if (e.getGui().getMenu().getSlot(9).getHasStack() && e.getGui().getMenu().getSlot(9).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 9; // first ring slot
-                        else if (e.getGui().inventorySlots.getSlot(10).getHasStack() && e.getGui().inventorySlots.getSlot(10).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
+                        else if (e.getGui().getMenu().getSlot(10).getHasStack() && e.getGui().getMenu().getSlot(10).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 10; // second ring slot
                         break;
                     case BRACELET:
-                        if (e.getGui().inventorySlots.getSlot(11).getHasStack() && e.getGui().inventorySlots.getSlot(11).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
+                        if (e.getGui().getMenu().getSlot(11).getHasStack() && e.getGui().getMenu().getSlot(11).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 11; // bracelet slot
                         break;
                     case NECKLACE:
-                        if (e.getGui().inventorySlots.getSlot(12).getHasStack() && e.getGui().inventorySlots.getSlot(12).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
+                        if (e.getGui().getMenu().getSlot(12).getHasStack() && e.getGui().getMenu().getSlot(12).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 12; // necklace slot
                         break;
                     default:
@@ -623,7 +623,7 @@ public class ClientEvents implements Listener {
             }
 
             // pick up accessory
-            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().inventorySlots.windowId, e.getSlot(), 0, ClickType.PICKUP, e.getSlotIn().getItem(), e.getGui().inventorySlots.getNextTransactionID(McIf.player().inventory));
+            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().getMenu().windowId, e.getSlot(), 0, ClickType.PICKUP, e.getSlotIn().getItem(), e.getGui().getMenu().getNextTransactionID(McIf.player().inventory));
             McIf.mc().getConnection().send(packet);
         }
     }
@@ -644,14 +644,14 @@ public class ClientEvents implements Listener {
         if (McIf.player().inventory.getItemStack().isEmpty()) return;
 
         // destination slot was filled in the meantime
-        if (gui.inventorySlots.getSlot(accessoryDestinationSlot).getHasStack() &&
-                !gui.inventorySlots.getSlot(accessoryDestinationSlot).getItem().getItem().equals(Item.byBlock(Blocks.SNOW))) {
+        if (gui.getMenu().getSlot(accessoryDestinationSlot).getHasStack() &&
+                !gui.getMenu().getSlot(accessoryDestinationSlot).getItem().getItem().equals(Item.byBlock(Blocks.SNOW))) {
             accessoryDestinationSlot = -1;
             return;
         }
 
         // move accessory
-        gui.slotClicked(gui.inventorySlots.getSlot(accessoryDestinationSlot), accessoryDestinationSlot, 0, ClickType.PICKUP);
+        gui.slotClicked(gui.getMenu().getSlot(accessoryDestinationSlot), accessoryDestinationSlot, 0, ClickType.PICKUP);
         accessoryDestinationSlot = -1;
     }
 
@@ -672,7 +672,7 @@ public class ClientEvents implements Listener {
             if (McIf.getUnformattedText(inventory.getDisplayName()).contains("Bank") && e.getSlotIn().getHasStack()) {
                 ItemStack item = e.getSlotIn().getItem();
                 if (item.getDisplayName().contains(">" + TextFormatting.DARK_RED + ">" + TextFormatting.RED + ">" + TextFormatting.DARK_RED + ">" + TextFormatting.RED + ">")) {
-                    String lore = TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(item));
+                    String lore = McIf.getTextWithoutFormattingCodes(ItemUtils.getStringLore(item));
                     String price = lore.substring(lore.indexOf(" Price: ") + 8, lore.length());
                     String priceDisplay;
                     if (price.matches("\\d+" + EmeraldSymbols.EMERALDS)) {
@@ -698,7 +698,7 @@ public class ClientEvents implements Listener {
                     String itemName = item.getDisplayName();
                     String pageNumber = itemName.substring(9, itemName.indexOf(TextFormatting.RED + " >"));
                     ChestReplacer gui = e.getGui();
-                    CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, e.getSlot(), e.getMouseButton(), e.getType(), item, e.getGui().inventorySlots.getNextTransactionID(McIf.player().inventory));
+                    CClickWindowPacket packet = new CClickWindowPacket(gui.getMenu().windowId, e.getSlot(), e.getMouseButton(), e.getType(), item, e.getGui().getMenu().getNextTransactionID(McIf.player().inventory));
                     McIf.mc().setScreen(new GuiYesNo((result, parentButtonID) -> {
                         McIf.mc().setScreen(gui);
                         if (result) {
@@ -761,14 +761,14 @@ public class ClientEvents implements Listener {
         if (oldStack.isEmpty() || !newStack.isEmpty() && !oldStack.isItemEqual(newStack)) return; // invalid move
         if (!oldStack.hasCustomHoverName()) return; // old item is not a valid item
 
-        String oldName = TextFormatting.getTextWithoutFormattingCodes(oldStack.getDisplayName());
+        String oldName = McIf.getTextWithoutFormattingCodes(oldStack.getDisplayName());
         Matcher oldMatcher = CRAFTED_USES.matcher(oldName);
         if (!oldMatcher.matches()) return;
         int oldUses = Integer.parseInt(oldMatcher.group(1));
 
         int newUses = 0;
         if (!newStack.isEmpty()) {
-            String newName = TextFormatting.getTextWithoutFormattingCodes(StringUtils.normalizeBadString(newStack.getDisplayName()));
+            String newName = McIf.getTextWithoutFormattingCodes(StringUtils.normalizeBadString(newStack.getDisplayName()));
             Matcher newMatcher = CRAFTED_USES.matcher(newName);
             if (newMatcher.matches()) {
                 newUses = Integer.parseInt(newMatcher.group(1));

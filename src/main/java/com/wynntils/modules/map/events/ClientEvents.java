@@ -75,7 +75,7 @@ public class ClientEvents implements Listener {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void guiOpen(GuiOverlapEvent.ChestOverlap.InitGui e) {
         if (lastLocation == null) return;
-        if (!e.getGui().getLowerInv().getName().contains("Loot Chest")) {
+        if (!McIf.toText(e.getGui().getTitle()).contains("Loot Chest")) {
             lastLocation = null;
             return;
         }
@@ -83,7 +83,7 @@ public class ClientEvents implements Listener {
         if (LootRunManager.isRecording())
             LootRunManager.addChest(lastLocation); // add chest to the current lootrun recording
 
-        String tier = e.getGui().getLowerInv().getName().replace("Loot Chest ", "");
+        String tier = McIf.toText(e.getGui().getTitle()).replace("Loot Chest ", "");
         if (!MapConfig.Waypoints.INSTANCE.chestTiers.isTierAboveThis(tier)) return;
 
         WaypointProfile wp = null;
@@ -145,7 +145,7 @@ public class ClientEvents implements Listener {
         if (!MapConfig.Telemetry.INSTANCE.enableLocationDetection) return;
 
         String formattedLabel = event.getLabel();
-        String label = TextFormatting.getTextWithoutFormattingCodes(formattedLabel);
+        String label = McIf.getTextWithoutFormattingCodes(formattedLabel);
         Location location = event.getLocation();
 
         Matcher m = MOB_LABEL.matcher(label);
@@ -186,7 +186,7 @@ public class ClientEvents implements Listener {
     public void labelDetectEntity(LocationEvent.EntityLabelFoundEvent event) {
         if (!MapConfig.Telemetry.INSTANCE.enableLocationDetection) return;
 
-        String name = TextFormatting.getTextWithoutFormattingCodes(event.getLabel());
+        String name = McIf.getTextWithoutFormattingCodes(event.getLabel());
         Location location = event.getLocation();
         Entity entity = event.getEntity();
 

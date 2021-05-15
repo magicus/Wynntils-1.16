@@ -83,7 +83,7 @@ public class BankOverlay implements Listener {
 
     @SubscribeEvent
     public void onBankInit(GuiOverlapEvent.ChestOverlap.InitGui e) {
-        Matcher m = PAGE_PATTERN.matcher(TextFormatting.getTextWithoutFormattingCodes(e.getGui().getLowerInv().getName()));
+        Matcher m = PAGE_PATTERN.matcher(McIf.getTextWithoutFormattingCodes(e.getGui().getLowerInv().getName()));
         if (!m.matches()) return;
 
         inBank = true;
@@ -111,7 +111,7 @@ public class BankOverlay implements Listener {
         if (!inBank) return;
 
         // searched item highlight
-        for (Slot s : e.getGui().inventorySlots.inventorySlots) {
+        for (Slot s : e.getGui().getMenu().getMenu()) {
             if (s.getItem().isEmpty() || !s.getItem().hasCustomHoverName()) continue;
             if (!searchedItems.contains(s.getItem())) continue;
 
@@ -124,7 +124,7 @@ public class BankOverlay implements Listener {
 
         // quick access icons
         for (int i = 0; i < QA_BUTTONS; i++) {
-            Slot s = e.getGui().inventorySlots.getSlot(QA_SLOTS[i]);
+            Slot s = e.getGui().getMenu().getSlot(QA_SLOTS[i]);
 
             s.set(new ItemStack(Blocks.SNOW));
             McIf.mc().getTextureManager().bind(COLUMN_ARROW);
@@ -157,7 +157,7 @@ public class BankOverlay implements Listener {
             { // quick access numbers
                 int[] destinations = getQuickAccessDestinations();
                 for (int i = 0; i < QA_BUTTONS; i++) {
-                    Slot s = e.getGui().inventorySlots.getSlot(QA_SLOTS[i]);
+                    Slot s = e.getGui().getMenu().getSlot(QA_SLOTS[i]);
                     int destination = destinations[i];
 
                     if (UtilitiesConfig.Bank.INSTANCE.showQuickAccessNumbers) {
@@ -325,7 +325,7 @@ public class BankOverlay implements Listener {
         if (itemsLoaded) return;
 
         // if one of these is in inventory, items have loaded in
-        if(!bankGui.inventorySlots.getSlot(PAGE_FORWARD).getItem().isEmpty() || !bankGui.inventorySlots.getSlot(PAGE_BACK).getItem().isEmpty()) {
+        if(!bankGui.getMenu().getSlot(PAGE_FORWARD).getItem().isEmpty() || !bankGui.getMenu().getSlot(PAGE_BACK).getItem().isEmpty()) {
             itemsLoaded = true;
             searchBank(bankGui);
             if (destinationPage != 0 && destinationPage != page)
@@ -357,7 +357,7 @@ public class BankOverlay implements Listener {
         CClickWindowPacket packet = null;
         if (Math.abs(destinationPage - hop) >= Math.abs(destinationPage - page)) { // we already hopped, or started from a better/equivalent spot
             if (page < destinationPage) { // destination is in front of us
-                ItemStack is = bankGui.inventorySlots.getSlot(PAGE_FORWARD).getItem();
+                ItemStack is = bankGui.getMenu().getSlot(PAGE_FORWARD).getItem();
 
                 // ensure arrow is there
                 if (!is.hasCustomHoverName() || !is.getDisplayName().contains(">" + TextFormatting.DARK_GREEN + ">" + TextFormatting.GREEN + ">" + TextFormatting.DARK_GREEN + ">" + TextFormatting.GREEN + ">")) {
@@ -365,10 +365,10 @@ public class BankOverlay implements Listener {
                     searching = 0;
                     return;
                 }
-                packet = new CClickWindowPacket(bankGui.inventorySlots.windowId, PAGE_FORWARD, 0, ClickType.PICKUP, is,
-                                bankGui.inventorySlots.getNextTransactionID(McIf.player().inventory));
+                packet = new CClickWindowPacket(bankGui.getMenu().windowId, PAGE_FORWARD, 0, ClickType.PICKUP, is,
+                                bankGui.getMenu().getNextTransactionID(McIf.player().inventory));
             } else {
-                ItemStack is = bankGui.inventorySlots.getSlot(PAGE_BACK).getItem();
+                ItemStack is = bankGui.getMenu().getSlot(PAGE_BACK).getItem();
 
                 // ensure arrow is there
                 if (!is.hasCustomHoverName() || !is.getDisplayName().contains("<" + TextFormatting.DARK_GREEN + "<" + TextFormatting.GREEN + "<" + TextFormatting.DARK_GREEN + "<" + TextFormatting.GREEN + "<")) {
@@ -376,13 +376,13 @@ public class BankOverlay implements Listener {
                     searching = 0;
                     return;
                 }
-                packet = new CClickWindowPacket(bankGui.inventorySlots.windowId, PAGE_BACK, 0, ClickType.PICKUP, is,
-                                bankGui.inventorySlots.getNextTransactionID(McIf.player().inventory));
+                packet = new CClickWindowPacket(bankGui.getMenu().windowId, PAGE_BACK, 0, ClickType.PICKUP, is,
+                                bankGui.getMenu().getNextTransactionID(McIf.player().inventory));
             }
         } else { // attempt to hop using default quick access buttons
             int slotId = QA_SLOTS[(hop / 4)];
-            packet = new CClickWindowPacket(bankGui.inventorySlots.windowId, slotId, 0, ClickType.PICKUP, bankGui.inventorySlots.getSlot(slotId).getItem(),
-                            bankGui.inventorySlots.getNextTransactionID(McIf.player().inventory));
+            packet = new CClickWindowPacket(bankGui.getMenu().windowId, slotId, 0, ClickType.PICKUP, bankGui.getMenu().getSlot(slotId).getItem(),
+                            bankGui.getMenu().getNextTransactionID(McIf.player().inventory));
         }
 
         McIf.mc().getConnection().send(packet);
@@ -397,7 +397,7 @@ public class BankOverlay implements Listener {
             if (i % 9 > 6) continue; // ignore sidebar items
 
             ItemStack is = bankGui.getLowerInv().getItem(i);
-            if (TextFormatting.getTextWithoutFormattingCodes(is.getDisplayName()).toLowerCase().contains(searchText)) searchedItems.add(is);
+            if (McIf.getTextWithoutFormattingCodes(is.getDisplayName()).toLowerCase().contains(searchText)) searchedItems.add(is);
         }
     }
 

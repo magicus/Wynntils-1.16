@@ -38,7 +38,7 @@ public class ServerSelectorOverlay implements Listener {
         ItemStack stack = e.getGui().getSlotUnderMouse().getItem();
         CompoundNBT nbt = stack.getTag();
         if (nbt.contains("wynntilsServerIgnore")) return;
-        String itemName = StringUtils.normalizeBadString(TextFormatting.getTextWithoutFormattingCodes(stack.getDisplayName()));
+        String itemName = StringUtils.normalizeBadString(McIf.getTextWithoutFormattingCodes(stack.getDisplayName()));
 
         if (itemName.startsWith("World") && Reference.onBeta) {
             nbt.putBoolean("wynntilsServerIgnore", true);

@@ -64,7 +64,7 @@ public class ObjectivesOverlay extends Overlay {
     }
 
     private static Objective parseObjectiveLine(String objectiveLine) {
-        Matcher matcher = OBJECTIVE_PATTERN.matcher(TextFormatting.getTextWithoutFormattingCodes(objectiveLine));
+        Matcher matcher = OBJECTIVE_PATTERN.matcher(McIf.getTextWithoutFormattingCodes(objectiveLine));
         String goal = null;
         int score = 0;
         int maxScore = 0;
@@ -113,7 +113,7 @@ public class ObjectivesOverlay extends Overlay {
     public static boolean checkObjectiveUpdate(SUpdateScorePacket updateScore) {
         if (updateScore.getObjectiveName().equals(sidebarObjectiveName)) {
             if (updateScore.getScoreAction() == SUpdateScorePacket.Action.REMOVE) {
-                String objectiveLine = TextFormatting.getTextWithoutFormattingCodes(updateScore.getPlayerName());
+                String objectiveLine = McIf.getTextWithoutFormattingCodes(updateScore.getPlayerName());
                 if (objectiveLine.equals("Objective" + (objectives[1] != null ? "s" : "") + ":") || objectiveLine.equals("Daily Objective" + (objectives[1] != null ? "s" : "") + ":")) {
                     objectivesPosition = 0;
                     return true;
@@ -123,7 +123,7 @@ public class ObjectivesOverlay extends Overlay {
                 return true;
             }
 
-            String text = TextFormatting.getTextWithoutFormattingCodes(updateScore.getPlayerName());
+            String text = McIf.getTextWithoutFormattingCodes(updateScore.getPlayerName());
             if (text.matches("Objectives?:") || text.matches("Daily Objectives?:")) {
                 objectivesPosition = updateScore.getScoreValue();
                 return true;
@@ -175,7 +175,7 @@ public class ObjectivesOverlay extends Overlay {
     }
 
     public static void checkRewardsClaimed(GuiOverlapEvent.ChestOverlap.InitGui e) {
-        if (!e.getGui().getLowerInv().getName().equals("Objective Rewards")) return;
+        if (!McIf.toText(e.getGui().getTitle()).equals("Objective Rewards")) return;
 
         // When opening reward, remove reminder
         objectives[0] = null;

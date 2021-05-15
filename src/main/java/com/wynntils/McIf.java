@@ -11,7 +11,9 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * The Wynntils Minecraft Interface (MC IF).
@@ -20,6 +22,8 @@ import java.util.UUID;
  * depend on directly, for instance due to version disparity.
  */
 public class McIf {
+    private static final Pattern FORMATTING_CODE_PATTERN = Pattern.compile("(?i)\u00a7[0-9A-FK-OR]");
+
     public static String getUnformattedText(ITextComponent msg) {
         // FIXME: Need better implementation!
         return msg.toString();
@@ -39,6 +43,11 @@ public class McIf {
     public static String toText(ITextComponent msg) {
         // FIXME: Need better implementation!
         return msg.toString();
+    }
+
+    public static String getTextWithoutFormattingCodes(@Nullable String text)
+    {
+        return text == null ? null : FORMATTING_CODE_PATTERN.matcher(text).replaceAll("");
     }
 
     public static Minecraft mc() {

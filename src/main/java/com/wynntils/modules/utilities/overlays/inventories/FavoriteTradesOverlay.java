@@ -48,7 +48,7 @@ public class FavoriteTradesOverlay implements Listener {
             return;
         }
 
-        for (Slot s : e.getGui().inventorySlots.inventorySlots) {
+        for (Slot s : e.getGui().getMenu().getMenu()) {
             if (s.slotNumber >= e.getGui().getLowerInv().getContainerSize()) continue;
             if (isNotMarketItem(s.getItem())) continue;
             renderFavoriteItem(s, e.getGui().getGuiLeft(), e.getGui().getGuiTop());

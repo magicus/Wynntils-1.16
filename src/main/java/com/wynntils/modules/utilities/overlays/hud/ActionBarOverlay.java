@@ -79,7 +79,7 @@ public class ActionBarOverlay extends Overlay {
             String[] spaces = lastActionBar.split(" ");
             middle = spaces[5].replace(TextFormatting.UNDERLINE.toString(), "").replace(TextFormatting.RESET.toString(), "");
             preference = true;
-        } else if (TextFormatting.getTextWithoutFormattingCodes(lastActionBar).contains("Sprint") && McIf.player().isSprinting()) {
+        } else if (McIf.getTextWithoutFormattingCodes(lastActionBar).contains("Sprint") && McIf.player().isSprinting()) {
             String[] spaces = lastActionBar.split(" ");
             middle = spaces[5];
         } else if (OverlayConfig.INSTANCE.actionBarCoordinates && !OverlayConfig.INSTANCE.splitCoordinates) {

@@ -17,7 +17,7 @@ import net.minecraft.util.text.TextFormatting;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraft.util.text.TextFormatting.getTextWithoutFormattingCodes;
+import static net.minecraft.util.text.McIf.getTextWithoutFormattingCodes;
 
 public class DiscoveryInfo {
 
@@ -67,7 +67,7 @@ public class DiscoveryInfo {
 
         // Guild territory profile
         if (type == DiscoveryType.TERRITORY || type == DiscoveryType.WORLD) {
-            String apiName = TextFormatting.getTextWithoutFormattingCodes(name);
+            String apiName = McIf.getTextWithoutFormattingCodes(name);
             guildTerritory = WebManager.getTerritories().get(apiName);
             if (guildTerritory == null) {
                 guildTerritory = WebManager.getTerritories().get(apiName.replace('\'', '’'));
@@ -97,7 +97,7 @@ public class DiscoveryInfo {
 
         // Guild territory profile
         if (type == DiscoveryType.TERRITORY || type == DiscoveryType.WORLD) {
-            String apiName = TextFormatting.getTextWithoutFormattingCodes(name);
+            String apiName = McIf.getTextWithoutFormattingCodes(name);
             guildTerritory = WebManager.getTerritories().get(apiName);
             if (guildTerritory == null) {
                 guildTerritory = WebManager.getTerritories().get(apiName.replace('\'', '’'));

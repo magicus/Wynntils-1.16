@@ -92,9 +92,9 @@ public class ScoreboardOverlay extends Overlay {
     }
 
     private void removeObjectiveLines(List<Score> scores) {
-        scores.removeIf(s -> TextFormatting.getTextWithoutFormattingCodes(s.getPlayerName()).matches(ObjectivesOverlay.OBJECTIVE_PATTERN.pattern()));
-        scores.removeIf(s -> TextFormatting.getTextWithoutFormattingCodes(s.getPlayerName()).matches("- All done"));
-        scores.removeIf(s -> TextFormatting.getTextWithoutFormattingCodes(s.getPlayerName()).matches("(Daily )?Objectives?:"));
+        scores.removeIf(s -> McIf.getTextWithoutFormattingCodes(s.getPlayerName()).matches(ObjectivesOverlay.OBJECTIVE_PATTERN.pattern()));
+        scores.removeIf(s -> McIf.getTextWithoutFormattingCodes(s.getPlayerName()).matches("- All done"));
+        scores.removeIf(s -> McIf.getTextWithoutFormattingCodes(s.getPlayerName()).matches("(Daily )?Objectives?:"));
     }
 
     private void removeCompassLines(List<Score> scores) {
@@ -105,15 +105,15 @@ public class ScoreboardOverlay extends Overlay {
         List<Score> toRemove = new ArrayList<>();
         for (int i = scores.size()-1; i >= 0; i--) {
             Score score = scores.get(i);
-            if (!TextFormatting.getTextWithoutFormattingCodes(score.getPlayerName()).isEmpty()) continue;
-            if (i == 0 || TextFormatting.getTextWithoutFormattingCodes(scores.get(i-1).getPlayerName()).isEmpty())
+            if (!McIf.getTextWithoutFormattingCodes(score.getPlayerName()).isEmpty()) continue;
+            if (i == 0 || McIf.getTextWithoutFormattingCodes(scores.get(i-1).getPlayerName()).isEmpty())
                 toRemove.add(score);
         }
 
         scores.removeAll(toRemove);
 
         // remove title spacer if title is disabled
-        if (!OverlayConfig.Scoreboard.INSTANCE.showTitle && !scores.isEmpty() && TextFormatting.getTextWithoutFormattingCodes(scores.get(scores.size()-1).getPlayerName()).isEmpty())
+        if (!OverlayConfig.Scoreboard.INSTANCE.showTitle && !scores.isEmpty() && McIf.getTextWithoutFormattingCodes(scores.get(scores.size()-1).getPlayerName()).isEmpty())
             scores.remove(scores.size()-1);
     }
 

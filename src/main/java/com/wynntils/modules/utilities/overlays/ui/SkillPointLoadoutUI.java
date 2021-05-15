@@ -98,7 +98,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
         if (slotIn == null || slotIn.getItem().isEmpty()) return;
         if (slotId >= UtilitiesConfig.INSTANCE.skillPointLoadouts.size()) return;
 
-        String name = TextFormatting.getTextWithoutFormattingCodes(slotIn.getItem().getDisplayName());
+        String name = McIf.getTextWithoutFormattingCodes(slotIn.getItem().getDisplayName());
         if (mouseButton == 0) { // left click <-> load
             SkillPointAllocation aloc = getLoadout(name);
             if (aloc == null) return;
@@ -159,7 +159,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
     private static SkillPointAllocation getLoadout(String name) {
         for (Entry<String, SkillPointAllocation> e : UtilitiesConfig.INSTANCE.skillPointLoadouts.entrySet()) {
-            if (TextFormatting.getTextWithoutFormattingCodes(e.getKey()).equals(name))
+            if (McIf.getTextWithoutFormattingCodes(e.getKey()).equals(name))
                 return e.getValue();
         }
         return null;
@@ -167,7 +167,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
     private static void removeLoadout(String name) {
         for (Entry<String, SkillPointAllocation> e : UtilitiesConfig.INSTANCE.skillPointLoadouts.entrySet()) {
-            if (TextFormatting.getTextWithoutFormattingCodes(e.getKey()).equals(name)) {
+            if (McIf.getTextWithoutFormattingCodes(e.getKey()).equals(name)) {
                 UtilitiesConfig.INSTANCE.skillPointLoadouts.remove(e.getKey());
                 UtilitiesConfig.INSTANCE.saveSettings(UtilitiesModule.getModule());
                 return;

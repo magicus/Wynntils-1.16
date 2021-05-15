@@ -25,7 +25,7 @@ import com.wynntils.Reference;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import com.wynntils.transition.GlStateManager;
 import com.wynntils.transition.RenderHelper;
@@ -46,9 +46,9 @@ public class ItemScreenshotManager {
     public static void takeScreenshot() {
         if (!Reference.onWorld) return;
         Screen gui = McIf.mc().screen;
-        if (!(gui instanceof GuiContainer)) return;
+        if (!(gui instanceof ContainerScreen)) return;
 
-        Slot slot = ((GuiContainer) gui).getSlotUnderMouse();
+        Slot slot = ((ContainerScreen) gui).getSlotUnderMouse();
         if (slot == null || !slot.getHasStack()) return;
         ItemStack stack = slot.getItem();
         if (!stack.hasCustomHoverName()) return;
@@ -112,7 +112,7 @@ public class ItemScreenshotManager {
         boolean lore = false;
         for (String s : tooltip) {
             // only remove text after the item type indicator
-            Matcher m = ITEM_PATTERN.matcher(TextFormatting.getTextWithoutFormattingCodes(s));
+            Matcher m = ITEM_PATTERN.matcher(McIf.getTextWithoutFormattingCodes(s));
             if (!lore && m.matches()) lore = true;
 
             if (lore && s.contains("" + TextFormatting.DARK_GRAY)) temp.add(s);

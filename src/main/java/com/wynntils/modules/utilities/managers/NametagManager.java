@@ -320,7 +320,7 @@ public class NametagManager {
 
         for (ItemStack is : player.getEquipmentAndArmor()) {
             if (!is.hasCustomHoverName()) continue;
-            String itemName = WebManager.getTranslatedItemName(TextFormatting.getTextWithoutFormattingCodes(is.getDisplayName())).replace("֎", "");
+            String itemName = WebManager.getTranslatedItemName(McIf.getTextWithoutFormattingCodes(is.getDisplayName())).replace("֎", "");
 
             CustomColor color;
             String displayName;
@@ -339,7 +339,7 @@ public class NametagManager {
                 displayName = itemName;
             } else continue;
 
-            labels.add(new NametagLabel(color, TextFormatting.getTextWithoutFormattingCodes(displayName), 0.4f));
+            labels.add(new NametagLabel(color, McIf.getTextWithoutFormattingCodes(displayName), 0.4f));
         }
 
         return labels;

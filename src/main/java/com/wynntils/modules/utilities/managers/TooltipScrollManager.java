@@ -7,7 +7,7 @@ package com.wynntils.modules.utilities.managers;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import com.wynntils.transition.GlStateManager;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public class TooltipScrollManager {
     private static void updateHoveredItemStack() {
         if (!isGuiContainer) return;
 
-        Slot hovered = ((GuiContainer) lastGuiScreen).getSlotUnderMouse();
+        Slot hovered = ((ContainerScreen) lastGuiScreen).getSlotUnderMouse();
         if (hovered == null) {
             lastItemStack = null;
             return;
@@ -65,7 +65,7 @@ public class TooltipScrollManager {
     public static void onBeforeDrawScreen(Screen on) {
         if (on != lastGuiScreen) {
             lastGuiScreen = on;
-            isGuiContainer = on instanceof GuiContainer;
+            isGuiContainer = on instanceof ContainerScreen;
             lastItemStack = null;
             resetScroll();
         }

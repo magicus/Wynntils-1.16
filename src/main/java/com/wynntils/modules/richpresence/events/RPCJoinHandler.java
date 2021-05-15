@@ -124,8 +124,8 @@ public class RPCJoinHandler implements IDiscordActivityEvents.on_activity_join_c
 
             if (!m.matches()) return;
 
-            String content = TextFormatting.getTextWithoutFormattingCodes(m.group(4).substring(1));
-            String user = TextFormatting.getTextWithoutFormattingCodes(m.group(2));
+            String content = McIf.getTextWithoutFormattingCodes(m.group(4).substring(1));
+            String user = McIf.getTextWithoutFormattingCodes(m.group(2));
 
             if (!RichPresenceModule.getModule().getRichPresence().validSecrent(content.substring(0, content.length() - 1)))
                 return;

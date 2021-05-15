@@ -312,7 +312,7 @@ public class DiscoveriesPage extends QuestBookPage {
         // Handle discovery click
         if (overDiscovery != null) {
             if (overDiscovery.getType() == DiscoveryType.SECRET) { // Secret discovery actions
-                String name = TextFormatting.getTextWithoutFormattingCodes(overDiscovery.getName());
+                String name = McIf.getTextWithoutFormattingCodes(overDiscovery.getName());
 
                 switch (mouseButton) {
                     case 0: // Left Click
@@ -443,7 +443,7 @@ public class DiscoveriesPage extends QuestBookPage {
 
                         boolean requirementsMet = true;
                         for (String requirement : c.getRequirements()) {
-                            requirementsMet &= QuestManager.getCurrentDiscoveries().stream().anyMatch(foundDiscovery -> TextFormatting.getTextWithoutFormattingCodes(foundDiscovery.getName()).equals(requirement));
+                            requirementsMet &= QuestManager.getCurrentDiscoveries().stream().anyMatch(foundDiscovery -> McIf.getTextWithoutFormattingCodes(foundDiscovery.getName()).equals(requirement));
                         }
                         if (!requirementsMet) {
                             return false;
@@ -459,7 +459,7 @@ public class DiscoveriesPage extends QuestBookPage {
 
                     // Checks if already in list
                     if (QuestManager.getCurrentDiscoveries().stream().anyMatch(foundDiscovery -> {
-                        boolean nameMatch = TextFormatting.getTextWithoutFormattingCodes(foundDiscovery.getName()).equals(c.getName());
+                        boolean nameMatch = McIf.getTextWithoutFormattingCodes(foundDiscovery.getName()).equals(c.getName());
                         boolean levelMatch = foundDiscovery.getMinLevel() == c.getLevel();
                         boolean typeMatch = foundDiscovery.getType().name().toLowerCase(Locale.ROOT).equals(c.getType());
 

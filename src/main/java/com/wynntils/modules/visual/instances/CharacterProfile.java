@@ -36,10 +36,10 @@ public class CharacterProfile {
         this.slot = slot;
 
         String name = stack.getDisplayName();
-        className = TextFormatting.getTextWithoutFormattingCodes(name).replace("[>] Select ", "");
+        className = McIf.getTextWithoutFormattingCodes(name).replace("[>] Select ", "");
 
         for (String line : ItemUtils.getLore(stack)) {
-            line = TextFormatting.getTextWithoutFormattingCodes(line);
+            line = McIf.getTextWithoutFormattingCodes(line);
 
             if (line.contains("Deletion in ")) {
                 deletion = line.replace("Deletion in ", "");

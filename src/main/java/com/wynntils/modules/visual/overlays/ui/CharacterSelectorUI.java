@@ -207,21 +207,21 @@ public class CharacterSelectorUI extends Screen {
         }
 
         if (hoveredButton == 51 && createCharacterSlot != -1) { // create character
-            chest.slotClicked(chest.inventorySlots.getSlot(createCharacterSlot), createCharacterSlot, 0, ClickType.PICKUP);
+            chest.slotClicked(chest.getMenu().getSlot(createCharacterSlot), createCharacterSlot, 0, ClickType.PICKUP);
         } else if (hoveredButton == 52) { // edit menu
-            chest.slotClicked(chest.inventorySlots.getSlot(8), 8, 0, ClickType.PICKUP);
+            chest.slotClicked(chest.getMenu().getSlot(8), 8, 0, ClickType.PICKUP);
         } else if (hoveredButton == 53) { // delete character
             if (selectedCharacter == -1) return;
 
             CharacterProfile selected = availableCharacters.get(selectedCharacter);
-            chest.slotClicked(chest.inventorySlots.getSlot(selected.getSlot()), selected.getSlot(), 1, ClickType.PICKUP);
+            chest.slotClicked(chest.getMenu().getSlot(selected.getSlot()), selected.getSlot(), 1, ClickType.PICKUP);
         } else if (hoveredButton == 57) { // play button
             if (selectedCharacter == -1) return;
 
             CharacterProfile selected = availableCharacters.get(selectedCharacter);
-            chest.slotClicked(chest.inventorySlots.getSlot(selected.getSlot()), selected.getSlot(), 0, ClickType.PICKUP);
+            chest.slotClicked(chest.getMenu().getSlot(selected.getSlot()), selected.getSlot(), 0, ClickType.PICKUP);
         } else if (hoveredButton == 58) { // character deletion
-            chest.slotClicked(chest.inventorySlots.getSlot(26), 26, 0, ClickType.PICKUP);
+            chest.slotClicked(chest.getMenu().getSlot(26), 26, 0, ClickType.PICKUP);
         } else if (hoveredButton == 59 && availableCharacters.size() > 7) {
             scrollPosition = (this.mouseY - 3) / 245f;
         }
@@ -288,7 +288,7 @@ public class CharacterSelectorUI extends Screen {
     private void updateItems() {
         if (receivedItems) return;
 
-        for (Slot s : chest.inventorySlots.inventorySlots) {
+        for (Slot s : chest.getMenu().getMenu()) {
             ItemStack stack = s.getItem();
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
 
@@ -299,7 +299,7 @@ public class CharacterSelectorUI extends Screen {
                 continue;
             }
 
-            if (!TextFormatting.getTextWithoutFormattingCodes(displayName).matches("\\[>\\] Select [a-zA-Z0-9_ ]+") && !displayName.contains("Deleting")) continue;
+            if (!McIf.getTextWithoutFormattingCodes(displayName).matches("\\[>\\] Select [a-zA-Z0-9_ ]+") && !displayName.contains("Deleting")) continue;
 
             receivedItems = true;
             availableCharacters.add(new CharacterProfile(stack, s.slotNumber));

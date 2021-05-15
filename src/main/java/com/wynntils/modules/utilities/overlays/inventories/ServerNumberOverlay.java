@@ -21,7 +21,7 @@ public class ServerNumberOverlay implements Listener {
     public void onItemOverlay(RenderEvent.DrawItemOverlay event) {
 
         ItemStack serverStack = event.getItem();
-        String serverName = TextFormatting.getTextWithoutFormattingCodes(serverStack.getDisplayName());
+        String serverName = McIf.getTextWithoutFormattingCodes(serverStack.getDisplayName());
 
         if (serverName == null) return;
 

@@ -211,7 +211,7 @@ public class ClientEvents implements Listener {
         Entity i = event.getEntity();
 
         if (value.contains("Combat") || value.contains("Guild")) return;
-        value = TextFormatting.getTextWithoutFormattingCodes(value);
+        value = McIf.getTextWithoutFormattingCodes(value);
 
         Matcher m = GATHERING_STATUS.matcher(value);
         if (m.matches()) { // first, gathering status
@@ -269,7 +269,7 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void checkDamageLabelFound(LocationEvent.LabelFoundEvent event) {
-        String value = TextFormatting.getTextWithoutFormattingCodes(event.getLabel());
+        String value = McIf.getTextWithoutFormattingCodes(event.getLabel());
         Entity i = event.getEntity();
         Map<DamageType, Integer> damageList = new HashMap<>();
 
@@ -372,7 +372,7 @@ public class ClientEvents implements Listener {
      */
     @SubscribeEvent
     public void changeClass(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
-        if (!e.getGui().getLowerInv().getName().contains("Select a Class")) return;
+        if (!McIf.toText(e.getGui().getTitle()).contains("Select a Class")) return;
 
         if (e.getMouseButton() != 0
             || e.getSlotIn() == null

@@ -116,7 +116,7 @@ public class EntityManager {
                         next.preRender(partialTicks, context, renderManager);
                         // translates to the correctly entity position
                         // subtracting the viewer position offset
-                        translated(
+                        translate(
                                 next.currentLocation.x - renderManager.viewerPosX,
                                 next.currentLocation.y - renderManager.viewerPosY,
                                 next.currentLocation.z - renderManager.viewerPosZ

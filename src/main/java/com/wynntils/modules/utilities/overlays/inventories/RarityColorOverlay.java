@@ -15,7 +15,7 @@ import com.wynntils.core.utils.StringUtils;
 import com.wynntils.core.utils.objects.IntRange;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.wynntils.webapi.profiles.item.enums.ItemTier;
-import net.minecraft.client.gui.screen.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.BufferBuilder;
 import com.wynntils.transition.GlStateManager;
 import com.wynntils.transition.RenderHelper;
@@ -61,9 +61,9 @@ public class RarityColorOverlay implements Listener {
 
     @SubscribeEvent
     public void onPlayerInventory(GuiOverlapEvent.InventoryOverlap.DrawGuiContainerBackgroundLayer e) {
-        GuiContainer guiContainer = e.getGui();
+        ContainerScreen guiContainer = e.getGui();
 
-        for (Slot s : guiContainer.inventorySlots.inventorySlots) {
+        for (Slot s : guiContainer.getMenu().getMenu()) {
             if (!UtilitiesConfig.Items.INSTANCE.accesoryHighlight && s.slotNumber >= 9 && s.slotNumber <= 12)
                 continue;
             if (!UtilitiesConfig.Items.INSTANCE.hotbarHighlight && s.slotNumber >= 36 && s.slotNumber <= 41)
@@ -77,10 +77,10 @@ public class RarityColorOverlay implements Listener {
         }
     }
 
-    public static void drawChest(GuiContainer guiContainer, IInventory lowerInv, IInventory upperInv, boolean emeraldsUpperInv, boolean emeraldsLowerInv) {
+    public static void drawChest(ContainerScreen guiContainer, IInventory lowerInv, IInventory upperInv, boolean emeraldsUpperInv, boolean emeraldsLowerInv) {
         int playerInvSlotNumber = 0;
 
-        for (Slot s : guiContainer.inventorySlots.inventorySlots) {
+        for (Slot s : guiContainer.getMenu().getMenu()) {
             if (s.inventory.getDisplayName().equals(McIf.player().inventory.getDisplayName())) {
                 playerInvSlotNumber++;
                 if (playerInvSlotNumber <= 4 && playerInvSlotNumber >= 1 && !UtilitiesConfig.Items.INSTANCE.accesoryHighlight)
@@ -98,7 +98,7 @@ public class RarityColorOverlay implements Listener {
         }
     }
 
-    private static void drawItemSlot(GuiContainer guiContainer, boolean isChest, Slot s) {
+    private static void drawItemSlot(ContainerScreen guiContainer, boolean isChest, Slot s) {
         ItemStack is = s.getItem();
         String lore = ItemUtils.getStringLore(is);
         String name = StringUtils.normalizeBadString(is.getDisplayName());
@@ -197,7 +197,7 @@ public class RarityColorOverlay implements Listener {
 
     }
 
-    private static void drawDurabilityArc(GuiContainer guiContainer, Slot s, float durability){
+    private static void drawDurabilityArc(ContainerScreen guiContainer, Slot s, float durability){
     	if (!UtilitiesConfig.Items.INSTANCE.craftedDurabilityBars) return;
     	if (durability == -1) return;
 
@@ -234,7 +234,7 @@ public class RarityColorOverlay implements Listener {
         Tessellator.getInstance().draw();
     }
 
-    private static void drawLevelArc(GuiContainer guiContainer, Slot s, IntRange level) {
+    private static void drawLevelArc(ContainerScreen guiContainer, Slot s, IntRange level) {
         if (!UtilitiesConfig.Items.INSTANCE.itemLevelArc) return;
         if (level == null) return;
 
@@ -260,7 +260,7 @@ public class RarityColorOverlay implements Listener {
         GlStateManager.enableLighting();
     }
 
-    private static void drawHighlightColor(GuiContainer guiContainer, Slot s, CustomColor colour) {
+    private static void drawHighlightColor(ContainerScreen guiContainer, Slot s, CustomColor colour) {
         if (colour == null) return;
 
         ScreenRenderer renderer = new ScreenRenderer();
@@ -280,7 +280,7 @@ public class RarityColorOverlay implements Listener {
 
     private static boolean isPowder(ItemStack is) {
         return (is.getItem() == Items.DYE && is.hasCustomHoverName() && is.getDisplayName().contains("Powder") &&
-                TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(is)).contains("Effect on Weapons"));
+                McIf.getTextWithoutFormattingCodes(ItemUtils.getStringLore(is)).contains("Effect on Weapons"));
     }
 
     private static int getPowderTier(ItemStack is) {

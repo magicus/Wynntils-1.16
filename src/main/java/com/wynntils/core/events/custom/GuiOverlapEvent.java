@@ -10,6 +10,7 @@ import com.wynntils.modules.core.overlays.inventories.HorseReplacer;
 import com.wynntils.modules.core.overlays.inventories.IngameMenuReplacer;
 import com.wynntils.modules.core.overlays.inventories.InventoryReplacer;
 import com.wynntils.modules.core.overlays.ui.PlayerInfoReplacer;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
@@ -20,7 +21,7 @@ import net.minecraftforge.eventbus.api.Event;
 
 import java.util.List;
 
-public class GuiOverlapEvent<T extends Screen> extends Event {
+public class GuiOverlapEvent<T extends AbstractGui> extends Event {
 
     protected T gui;
 

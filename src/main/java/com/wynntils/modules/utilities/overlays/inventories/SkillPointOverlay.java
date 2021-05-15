@@ -97,12 +97,12 @@ public class SkillPointOverlay implements Listener {
         ItemStack save = new ItemStack(Items.WRITABLE_BOOK);
         save.setStackDisplayName(TextFormatting.GOLD + "[>] Save current loadout");
         ItemUtils.replaceLore(save, Arrays.asList(TextFormatting.GRAY + "Allows you to save this loadout with a name."));
-        e.getGui().inventorySlots.getSlot(SAVE_SLOT).set(save);
+        e.getGui().getMenu().getSlot(SAVE_SLOT).set(save);
 
         ItemStack load = new ItemStack(Items.ENCHANTED_BOOK);
         load.setStackDisplayName(TextFormatting.GOLD + "[>] Load loadout");
         ItemUtils.replaceLore(load, Arrays.asList(TextFormatting.GRAY + "Allows you to load one of your saved loadouts."));
-        e.getGui().inventorySlots.getSlot(LOAD_SLOT).set(load);
+        e.getGui().getMenu().getSlot(LOAD_SLOT).set(load);
 
         // skill point allocating
         if (!itemsLoaded || startBuild) {
@@ -114,8 +114,8 @@ public class SkillPointOverlay implements Listener {
             ItemStack stack = e.getGui().getLowerInv().getItem(i);
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue; // display name also checks for tag compound
 
-            String lore = TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack));
-            String name = TextFormatting.getTextWithoutFormattingCodes(stack.getDisplayName());
+            String lore = McIf.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack));
+            String name = McIf.getTextWithoutFormattingCodes(stack.getDisplayName());
             int value = 0;
 
             if (name.contains("Upgrade")) {// Skill Points
@@ -169,8 +169,8 @@ public class SkillPointOverlay implements Listener {
     public void onChestGui(GuiOverlapEvent.ChestOverlap.HoveredToolTip.Pre e) {
         if (!Reference.onWorld || !Utils.isCharacterInfoPage(e.getGui())) return;
 
-        for (Slot s : e.getGui().inventorySlots.inventorySlots) {
-            String name = TextFormatting.getTextWithoutFormattingCodes(s.getItem().getDisplayName());
+        for (Slot s : e.getGui().getMenu().getMenu()) {
+            String name = McIf.getTextWithoutFormattingCodes(s.getItem().getDisplayName());
             SkillPoint skillPoint = SkillPoint.findSkillPoint(name);
             if (skillPoint == null) continue;
 
@@ -267,7 +267,7 @@ public class SkillPointOverlay implements Listener {
     }
 
     private int getIntelligencePoints(ItemStack stack) {
-        String lore = TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack));
+        String lore = McIf.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack));
         int start = lore.indexOf(" points ") - 3;
 
         return (start < 0) ? 0 : Integer.parseInt(lore.substring(start, start + 3).trim());
@@ -324,7 +324,7 @@ public class SkillPointOverlay implements Listener {
 
         for (int i = 0; i < 5; i++) {
             ItemStack stack = gui.getLowerInv().getItem(i + 9); // sp indicators start at 9
-            Matcher m = SKILLPOINT_PATTERN.matcher(TextFormatting.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack)));
+            Matcher m = SKILLPOINT_PATTERN.matcher(McIf.getTextWithoutFormattingCodes(ItemUtils.getStringLore(stack)));
             if (!m.find()) continue;
 
             sp[i] = Integer.parseInt(m.group(1));
@@ -333,7 +333,7 @@ public class SkillPointOverlay implements Listener {
         // following code subtracts gear sp from total sp to find player-allocated sp
         ItemStack info = gui.getLowerInv().getItem(6); // player info slot
         for (String line : ItemUtils.getLore(info)) {
-            String unformattedLine = TextFormatting.getTextWithoutFormattingCodes(line);
+            String unformattedLine = McIf.getTextWithoutFormattingCodes(line);
             for (int i = 0; i < 5; i++) {
                 Matcher m = MODIFIER_PATTERNS[i].matcher(unformattedLine);
                 if (!m.find()) continue;
@@ -362,7 +362,7 @@ public class SkillPointOverlay implements Listener {
 
     private void allocateSkillPoints(ChestReplacer gui) {
         if (loadedBuild == null) return;
-        if (gui.inventorySlots.getSlot(9).getItem().isEmpty()) return;
+        if (gui.getMenu().getSlot(9).getItem().isEmpty()) return;
         itemsLoaded = true;
 
         int[] currentSp = getSkillPoints(gui).getAsArray();
@@ -376,9 +376,9 @@ public class SkillPointOverlay implements Listener {
 
             buildPercentage += perSkill * (button == 1 ? 5 : 0);
 
-            CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, 9 + i, button,
-                    ClickType.PICKUP, gui.inventorySlots.getSlot(9 + i).getItem(),
-                    gui.inventorySlots.getNextTransactionID(McIf.player().inventory));
+            CClickWindowPacket packet = new CClickWindowPacket(gui.getMenu().windowId, 9 + i, button,
+                    ClickType.PICKUP, gui.getMenu().getSlot(9 + i).getItem(),
+                    gui.getMenu().getNextTransactionID(McIf.player().inventory));
 
             McIf.mc().getSoundManager().play(
                     SimpleSound.forUI(SoundEvents.ENTITY_ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));

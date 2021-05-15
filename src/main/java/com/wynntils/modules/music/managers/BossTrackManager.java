@@ -27,7 +27,7 @@ public class BossTrackManager {
         for (Entity i : McIf.world().entitiesForRendering()) {
             if (!i.hasCustomName()) continue;
 
-            Matcher m = MOB_NAMETAG.matcher(TextFormatting.getTextWithoutFormattingCodes(i.getCustomNameTag()));
+            Matcher m = MOB_NAMETAG.matcher(McIf.getTextWithoutFormattingCodes(i.getCustomNameTag()));
             if (!m.matches()) continue;
             if (checkEntity(i, m.group(1))) return;
         }

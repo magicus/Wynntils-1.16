@@ -24,7 +24,7 @@ public class ItemLockOverlay implements Listener {
     public void onInventoryGui(GuiOverlapEvent.InventoryOverlap.HoveredToolTip.Pre e) {
         if (!Reference.onWorld) return;
 
-        for (Slot s : e.getGui().inventorySlots.inventorySlots) {
+        for (Slot s : e.getGui().getMenu().getMenu()) {
             if (s.slotNumber <= 4) continue;
 
             renderItemLock(s, e.getGui().getGuiLeft(), e.getGui().getGuiTop());
@@ -35,7 +35,7 @@ public class ItemLockOverlay implements Listener {
     public void onChestGui(GuiOverlapEvent.ChestOverlap.HoveredToolTip.Pre e) {
         if (!Reference.onWorld) return;
 
-        for (Slot s : e.getGui().inventorySlots.inventorySlots) {
+        for (Slot s : e.getGui().getMenu().getMenu()) {
             if (s.slotNumber < e.getGui().getLowerInv().getContainerSize()) continue;
 
             renderItemLock(s, e.getGui().getGuiLeft(), e.getGui().getGuiTop());
@@ -46,7 +46,7 @@ public class ItemLockOverlay implements Listener {
     public void onHorseGui(GuiOverlapEvent.HorseOverlap.HoveredToolTip.Pre e) {
         if (!Reference.onWorld) return;
 
-        for (Slot s : e.getGui().inventorySlots.inventorySlots) {
+        for (Slot s : e.getGui().getMenu().getMenu()) {
             if (s.slotNumber < e.getGui().getUpperInv().getContainerSize()) continue; // it's upper in horse!
 
             renderItemLock(s, e.getGui().getGuiLeft(), e.getGui().getGuiTop());

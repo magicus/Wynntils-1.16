@@ -97,7 +97,7 @@ public class ItemUtils {
         if (loreTag == null) return lore;
 
         for (int i = 0; i < loreTag.size(); ++i) {
-            lore.add(TextFormatting.getTextWithoutFormattingCodes(loreTag.getString(i)));
+            lore.add(McIf.getTextWithoutFormattingCodes(loreTag.getString(i)));
         }
 
         return lore;

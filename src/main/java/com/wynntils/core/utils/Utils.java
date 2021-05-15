@@ -8,11 +8,11 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.wynntils.McIf;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.GuiScreen;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.MainWindow;
-import net.minecraft.client.gui.screen.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -146,8 +146,8 @@ public class Utils {
      * Return true if the Screen is the character information page (selected from the compass)
      */
     public static boolean isCharacterInfoPage(Screen gui) {
-        if (!(gui instanceof GuiContainer)) return false;
-        Matcher m = CHAR_INFO_PAGE_TITLE.matcher(((GuiContainer)gui).inventorySlots.getSlot(0).inventory.getName());
+        if (!(gui instanceof ContainerScreen)) return false;
+        Matcher m = CHAR_INFO_PAGE_TITLE.matcher(((ContainerScreen)gui).getMenu().getSlot(0).container.getName());
         return m.find();
     }
 
@@ -155,8 +155,8 @@ public class Utils {
      * @return true if the Screen is the server selection, false otherwise
      */
     public static boolean isServerSelector(Screen gui) {
-        if (!(gui instanceof GuiContainer)) return false;
-        Matcher m = SERVER_SELECTOR_TITLE.matcher(((GuiContainer) gui).inventorySlots.getSlot(0).inventory.getName());
+        if (!(gui instanceof ContainerScreen)) return false;
+        Matcher m = SERVER_SELECTOR_TITLE.matcher(((ContainerScreen) gui).getMenu().getSlot(0).container.getName());
         return m.find();
     }
 
@@ -169,12 +169,12 @@ public class Utils {
      */
     public static ScorePlayerTeam createFakeScoreboard(String name, Team.CollisionRule rule) {
         Scoreboard scoreboard = McIf.world().getScoreboard();
-        if (scoreboard.getTeam(name) != null) return scoreboard.getTeam(name);
+        if (scoreboard.getPlayerTeam(name) != null) return scoreboard.getPlayerTeam(name);
 
-        String player = McIf.player().getName();
+        String player = McIf.toText(McIf.player().getName());
         if (scoreboard.getPlayersTeam(player) != null) previousTeam = scoreboard.getPlayersTeam(player).getName();
 
-        ScorePlayerTeam team = scoreboard.createTeam(name);
+        ScorePlayerTeam team = scoreboard.addPlayerTeam(name);
         team.setCollisionRule(rule);
 
         scoreboard.addPlayerToTeam(player, name);
@@ -269,7 +269,7 @@ public class Utils {
         final Pattern INGREDIENT_PATTERN = Pattern.compile(" +\\[✫+\\]");
 
         String name = stack.getDisplayName();
-        name = TextFormatting.getTextWithoutFormattingCodes(name);
+        name = McIf.getTextWithoutFormattingCodes(name);
         name = PERCENTAGE_PATTERN.matcher(name).replaceAll("");
         name = INGREDIENT_PATTERN.matcher(name).replaceAll("");
         if (name.startsWith("Perfect ")) {

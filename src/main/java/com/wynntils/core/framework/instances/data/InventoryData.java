@@ -59,7 +59,7 @@ public class InventoryData extends PlayerData {
         List<String> lore = ItemUtils.getLore(pouch);
 
         for (int i = 4; i < lore.size(); i++) {
-            String line = TextFormatting.getTextWithoutFormattingCodes(lore.get(i));
+            String line = McIf.getTextWithoutFormattingCodes(lore.get(i));
 
             int end = line.indexOf(" x ");
 
