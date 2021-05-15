@@ -10,7 +10,7 @@ import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.framework.rendering.math.MatrixMath;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
@@ -37,17 +37,17 @@ public class SpecialRendering {
         Random rand = new Random(142L);
 
         boolean isRainbow = color == CommonColors.RAINBOW;
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         {
             { // gl setting
-                GlStateManager._translate(x, y, z);
-                GlStateManager._blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-                GlStateManager._enableBlend();
-                GlStateManager._disableAlpha();
-                GlStateManager.__disableCull();
-                GlStateManager._disableTexture2D();
-                GlStateManager._shadeModel(GL11.GL_SMOOTH);
-                GlStateManager._depthMask(false);
+                GlStateManager.translate(x, y, z);
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+                GlStateManager.enableBlend();
+                GlStateManager.disableAlpha();
+                GlStateManager.disableCull();
+                GlStateManager.disableTexture2D();
+                GlStateManager.shadeModel(GL11.GL_SMOOTH);
+                GlStateManager.depthMask(false);
             }
 
             Matrix4f matrix = new Matrix4f();
@@ -104,16 +104,16 @@ public class SpecialRendering {
             }
 
             { // gl resetting
-                GlStateManager._enableTexture2D();
-                GlStateManager._blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GlStateManager._enableBlend();
-                GlStateManager._depthMask(true);
-                GlStateManager._color(1.0F, 1.0F, 1.0F, 1.0F);
-                GlStateManager._enableAlpha();
+                GlStateManager.enableTexture2D();
+                GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GlStateManager.enableBlend();
+                GlStateManager.depthMask(true);
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                GlStateManager.enableAlpha();
             }
 
         }
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
 
     }
 

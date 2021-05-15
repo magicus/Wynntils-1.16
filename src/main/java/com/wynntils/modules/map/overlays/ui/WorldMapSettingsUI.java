@@ -17,7 +17,7 @@ import com.wynntils.modules.map.overlays.objects.MapApiIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -96,13 +96,13 @@ public class WorldMapSettingsUI extends Screen {
         this.font.drawString(TextFormatting.WHITE + "Map Icon Textures:", (this.width - 349) / 2, this.height-60, 0xffFFFFFF);
 
         // Draw labels rotated 45 degrees
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         GlStateManager.translate((this.width-399) / 2.0f + 286, 29f, 0f);
         GlStateManager.rotate(-45, 0, 0, 1);
         this.font.drawString("Main map", 0, 0, 0xFFFFFFFF);
         GlStateManager.translate(11 / MathHelper.SQRT_2, 17 / MathHelper.SQRT_2, 0f);
         this.font.drawString("Minimap", 0, 0, 0xFFFFFFFF);
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
 
         ScreenRenderer.beginGL(0, 0);
         super.drawScreen(mouseX, mouseY, partialTicks);

@@ -11,7 +11,7 @@ import com.wynntils.core.framework.rendering.colors.MinecraftChatColors;
 import com.wynntils.core.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.GameSettings;
 import net.minecraft.util.ResourceLocation;
@@ -52,7 +52,7 @@ public class SmartFontRenderer extends FontRenderer {
             default:
                 GlStateManager.enableTexture2D();
                 GlStateManager.enableAlpha();
-                GlStateManager._enableBlend();
+                GlStateManager.enableBlend();
                 int colour = customColor.toInt();
                 posX = x;
                 posY = y;

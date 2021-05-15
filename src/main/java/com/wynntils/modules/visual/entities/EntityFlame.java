@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class EntityFlame extends FakeEntity {
 
@@ -53,8 +53,8 @@ public class EntityFlame extends FakeEntity {
 
         { // setting up rotation
             translate(0, 10 * percentage * (10 * percentage), 0);
-            _depthMask(false);
-            _enableBlend();
+            depthMask(false);
+            enableBlend();
             enableAlpha();
             //disableTexture2D();
             color(1f, 1f, 1f, alpha);
@@ -81,9 +81,9 @@ public class EntityFlame extends FakeEntity {
         }
 
         { // reset to default
-            _disableBlend();
+            disableBlend();
             enableTexture2D();
-            _depthMask(true);
+            depthMask(true);
             color(1f, 1f, 1f, 1f);
         }
     }

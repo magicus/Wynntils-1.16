@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class EntityManager {
 
@@ -111,19 +111,19 @@ public class EntityManager {
 
                 McIf.mc().getProfiler().push(next.getName());
                 {
-                    _pushMatrix();
+                    pushMatrix();
                     {
                         next.preRender(partialTicks, context, renderManager);
                         // translates to the correctly entity position
                         // subtracting the viewer position offset
-                        _translated(
+                        translated(
                                 next.currentLocation.x - renderManager.viewerPosX,
                                 next.currentLocation.y - renderManager.viewerPosY,
                                 next.currentLocation.z - renderManager.viewerPosZ
                         );
                         next.render(partialTicks, context, renderManager);
                     }
-                    _popMatrix();
+                    popMatrix();
                 }
                 McIf.mc().getProfiler().pop();
             }

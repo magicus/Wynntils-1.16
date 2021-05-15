@@ -35,7 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class LootRunPage extends QuestBookPage {
 
@@ -135,7 +135,7 @@ public class LootRunPage extends QuestBookPage {
 
                         glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-                        _enableBlend();
+                        enableBlend();
                         enableTexture2D();
                         Tessellator tessellator = Tessellator.getInstance();
                         BufferBuilder bufferbuilder = tessellator.getBuilder();
@@ -167,7 +167,7 @@ public class LootRunPage extends QuestBookPage {
 
                     //reset settings
                     disableAlpha();
-                    _disableBlend();
+                    disableBlend();
                     ScreenRenderer.disableScissorTest();
                     ScreenRenderer.clearMask();
                 }
@@ -233,7 +233,7 @@ public class LootRunPage extends QuestBookPage {
                             render.drawRectF(background_2, x + 9, y - 96 + currentY, x + 146, y - 87 + currentY);
                         }
 
-                        _disableLighting();
+                        disableLighting();
 
                         if (LootRunManager.getActivePathName() != null && LootRunManager.getActivePathName().equals(currentName)) {
                             hoveredText = Arrays.asList(TextFormatting.BOLD + names.get(i), TextFormatting.YELLOW + "Loaded", TextFormatting.GOLD + "Middle click to open lootrun in folder",  TextFormatting.GREEN + "Left click to unload this lootrun");

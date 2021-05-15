@@ -22,7 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.GuiPageButtonList;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.GuiTextField;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
@@ -237,7 +237,7 @@ public class QuestBookPage extends Screen {
     protected void renderHoveredText(int mouseX, int mouseY) {
         ScreenRenderer.beginGL(0, 0);
         {
-            GlStateManager._disableLighting();
+            GlStateManager.disableLighting();
             if (hoveredText != null) drawHoveringText(hoveredText, mouseX, mouseY);
         }
         ScreenRenderer.endGL();

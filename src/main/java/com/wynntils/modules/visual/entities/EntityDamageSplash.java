@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.WeakHashMap;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class EntityDamageSplash extends FakeEntity {
 

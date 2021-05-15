@@ -16,7 +16,7 @@ import com.wynntils.modules.chat.managers.TabManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.*;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
@@ -66,7 +66,7 @@ public class ChatOverlay extends GuiNewChat {
 
             float chatScale = getChatScale();
             int extraY = MathHelper.ceil((float)getChatWidth() / chatScale) + 4;
-            GlStateManager._pushMatrix();
+            GlStateManager.pushMatrix();
             GlStateManager.translate(2.0F, 0.0F, 0.0F);
             GlStateManager.scale(chatScale, chatScale, 1.0F);
             int l = 0;
@@ -98,10 +98,10 @@ public class ChatOverlay extends GuiNewChat {
                                 drawRect(-2, j2 - 9, extraY, j2, l1 / 2 << 24);
                             }
                             String s = McIf.getFormattedText(ChatManager.renderMessage(chatline.getMessage()));
-                            GlStateManager._enableBlend();
+                            GlStateManager.enableBlend();
                             McIf.mc().font.drawStringWithShadow(s, 0.0F, (float)(j2 - 8), 16777215 + (l1 << 24));
                             GlStateManager.disableAlpha();
-                            GlStateManager._disableBlend();
+                            GlStateManager.disableBlend();
                         }
                     }
                 }
@@ -126,7 +126,7 @@ public class ChatOverlay extends GuiNewChat {
                 }
             }
 
-            GlStateManager._popMatrix();
+            GlStateManager.popMatrix();
         }
     }
 

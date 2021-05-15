@@ -26,8 +26,8 @@ import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import com.wynntils.modules.utilities.instances.SkillPointAllocation;
 import com.wynntils.modules.utilities.overlays.ui.SkillPointLoadoutUI;
 import net.minecraft.client.audio.SimpleSound;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
+import com.wynntils.transition.GlStateManager;
+import com.wynntils.transition.RenderHelper;
 import net.minecraft.item.Items;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
@@ -159,10 +159,10 @@ public class SkillPointOverlay implements Listener {
         if (!Utils.isCharacterInfoPage(e.getGui())) return;
 
         // draw name field
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         GlStateManager.translate(0, 0, 500);
         if (nameField != null) nameField.drawTextBox();
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

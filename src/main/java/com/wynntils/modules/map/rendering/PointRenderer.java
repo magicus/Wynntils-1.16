@@ -17,7 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -51,8 +51,8 @@ public class PointRenderer {
             }
         }
 
-        GlStateManager._disableCull();
-        GlStateManager._enableBlend();
+        GlStateManager.disableCull();
+        GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
         texture.bind();
@@ -184,14 +184,14 @@ public class PointRenderer {
             }
         }
 
-        GlStateManager._enableCull();
-        GlStateManager._disableBlend();
+        GlStateManager.enableCull();
+        GlStateManager.disableBlend();
         GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
     public static void drawTexturedLine(Texture texture, Point3d start, Point3d end, CommonColors color, float width) {
-        GlStateManager._disableCull();
-        GlStateManager._enableBlend();
+        GlStateManager.disableCull();
+        GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
         color.applyColor();
 
@@ -199,8 +199,8 @@ public class PointRenderer {
 
         drawTexturedLine(start, end, width);
 
-        GlStateManager._enableCull();
-        GlStateManager._disableBlend();
+        GlStateManager.enableCull();
+        GlStateManager.disableBlend();
         GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
@@ -266,15 +266,15 @@ public class PointRenderer {
         EntityRendererManager renderManager = McIf.mc().getEntityRenderDispatcher();
 
         GlStateManager.glLineWidth(3f);
-        GlStateManager._depthMask(false);
-        GlStateManager._enableBlend();
+        GlStateManager.depthMask(false);
+        GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
 
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         GlStateManager.translate(-renderManager.viewerPosX, -renderManager.viewerPosY, -renderManager.viewerPosZ);
 
         {
@@ -368,11 +368,11 @@ public class PointRenderer {
             }
         }
 
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
 
-        GlStateManager._disableBlend();
+        GlStateManager.disableBlend();
         GlStateManager.enableTexture2D();
-        GlStateManager._depthMask(true);
+        GlStateManager.depthMask(true);
         GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
@@ -387,21 +387,21 @@ public class PointRenderer {
             point.getZ() - renderManager.viewerPosZ
         );
 
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
 
         GlStateManager.glLineWidth(3f);
-        GlStateManager._depthMask(false);
-        GlStateManager._enableBlend();
+        GlStateManager.depthMask(false);
+        GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
 
         WorldRenderer.drawBoundingBox(c.x, c.y, c.z, c.x + 1, c.y + 1, c.z + 1, color.r, color.g, color.b, color.a);
 
-        GlStateManager._disableBlend();
+        GlStateManager.disableBlend();
         GlStateManager.enableTexture2D();
-        GlStateManager._depthMask(true);
+        GlStateManager.depthMask(true);
 
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
     }
 
 }

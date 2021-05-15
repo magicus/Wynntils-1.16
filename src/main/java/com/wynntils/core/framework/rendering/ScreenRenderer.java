@@ -10,8 +10,8 @@ import com.wynntils.core.framework.rendering.textures.Texture;
 import com.wynntils.core.utils.StringUtils;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import net.minecraft.client.MainWindow;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
+import com.wynntils.transition.GlStateManager;
+import com.wynntils.transition.RenderHelper;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.VirtualScreen;
 import net.minecraft.item.ItemStack;
@@ -87,14 +87,14 @@ public class ScreenRenderer {
     public static void beginGL(int x, int y) {
         if (rendering) return;
         rendering = true;
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         drawingOrigin = new Point(x, y);
         transformationOrigin = new Point(0, 0);
         resetScale();
         resetRotation();
         GlStateManager.enableAlpha();
         GlStateManager.color(1, 1, 1);
-        GlStateManager._enableBlend();
+        GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     }
 
@@ -112,7 +112,7 @@ public class ScreenRenderer {
 
         drawingOrigin = new Point(0, 0);
         transformationOrigin = new Point(0, 0);
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
         GlStateManager.color(1, 1, 1);
         rendering = false;
     }
@@ -196,7 +196,7 @@ public class ScreenRenderer {
         resetScale();
 
         GlStateManager.enableDepth();
-        GlStateManager._colorMask(false, false, false, true);
+        GlStateManager.colorMask(false, false, false, true);
         texture.bind();
         GlStateManager.glBegin(GL_QUADS);
         GlStateManager.glTexCoord2f(0, 0);
@@ -208,9 +208,9 @@ public class ScreenRenderer {
         GlStateManager.glTexCoord2f(1, 0);
         GlStateManager.glVertex3f(x2 + drawingOrigin.x, y1 + drawingOrigin.y, 1000.0F);
         GlStateManager.glEnd();
-        GlStateManager._colorMask(true, true, true, true);
-        GlStateManager._depthMask(false);
-        GlStateManager._depthFunc(GL_GREATER);
+        GlStateManager.colorMask(true, true, true, true);
+        GlStateManager.depthMask(false);
+        GlStateManager.depthFunc(GL_GREATER);
 
         mask = true;
 
@@ -236,7 +236,7 @@ public class ScreenRenderer {
         resetScale();
 
         GlStateManager.enableDepth();
-        GlStateManager._colorMask(false, false, false, true);
+        GlStateManager.colorMask(false, false, false, true);
         color.applyColor();
         GlStateManager.glBegin(GL_QUADS);
         GlStateManager.glVertex3f(x1 + drawingOrigin.x, y1 + drawingOrigin.y, 1000.0F);
@@ -244,9 +244,9 @@ public class ScreenRenderer {
         GlStateManager.glVertex3f(x2 + drawingOrigin.x, y2 + drawingOrigin.y, 1000.0F);
         GlStateManager.glVertex3f(x2 + drawingOrigin.x, y1 + drawingOrigin.y, 1000.0F);
         GlStateManager.glEnd();
-        GlStateManager._colorMask(true, true, true, true);
-        GlStateManager._depthMask(false);
-        GlStateManager._depthFunc(GL_GREATER);
+        GlStateManager.colorMask(true, true, true, true);
+        GlStateManager.depthMask(false);
+        GlStateManager.depthFunc(GL_GREATER);
 
         mask = true;
 
@@ -282,7 +282,7 @@ public class ScreenRenderer {
                 tyMax = ty2 / texture.height;
 
         GlStateManager.enableDepth();
-        GlStateManager._colorMask(false, false, false, true);
+        GlStateManager.colorMask(false, false, false, true);
         texture.bind();
 
         GlStateManager.glBegin(GL_QUADS);
@@ -295,9 +295,9 @@ public class ScreenRenderer {
         GlStateManager.glTexCoord2f(txMax, tyMin);
         GlStateManager.glVertex3f(xMax, yMin, 1000.0F);
         GlStateManager.glEnd();
-        GlStateManager._colorMask(true, true, true, true);
-        GlStateManager._depthMask(false);
-        GlStateManager._depthFunc(GL_GREATER);
+        GlStateManager.colorMask(true, true, true, true);
+        GlStateManager.depthMask(false);
+        GlStateManager.depthFunc(GL_GREATER);
 
         mask = true;
 
@@ -311,10 +311,10 @@ public class ScreenRenderer {
     public static void clearMask() {
         if (!mask || !rendering) return;
 
-        GlStateManager._depthMask(true);
+        GlStateManager.depthMask(true);
         GlStateManager.clear(GL_DEPTH_BUFFER_BIT);
         GlStateManager.enableDepth();
-        GlStateManager._depthFunc(GL_LEQUAL);
+        GlStateManager.depthFunc(GL_LEQUAL);
         GlStateManager.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
         mask = false;
     }
@@ -572,7 +572,7 @@ public class ScreenRenderer {
     public void drawRectF(Texture texture, float x1, float y1, float x2, float y2, float tx1, float ty1, float tx2, float ty2) {
         if (!rendering || !texture.loaded) return;
         GlStateManager.enableAlpha();
-        GlStateManager._enableBlend();
+        GlStateManager.enableBlend();
         GlStateManager.enableTexture2D();
 
         texture.bind();
@@ -764,11 +764,11 @@ public class ScreenRenderer {
      */
     public void drawProgressBar(Texture texture, int x1, int y1, int x2, int y2, int tx1, int ty1, int tx2, int ty2, float progress, float alpha) {
         int half = (ty1 + ty2) / 2;
-        GlStateManager._enableBlend();
+        GlStateManager.enableBlend();
         GlStateManager.color(1, 1, 1, alpha);
         drawProgressBar(texture, x1, y1, x2, y2, tx1, ty1, tx2, half + 1, progress, true);
         drawProgressBar(texture, x1, y1, x2, y2, tx1, half + 1, tx2, ty2, progress, false);
-        GlStateManager._disableBlend();
+        GlStateManager.disableBlend();
     }
 
     /** drawProgressBar

@@ -18,7 +18,7 @@ import com.wynntils.core.framework.rendering.textures.Texture;
 import com.wynntils.core.utils.ItemUtils;
 import com.wynntils.core.utils.reference.EmeraldSymbols;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraft.inventory.IInventory;
@@ -31,8 +31,8 @@ import org.lwjgl.glfw.GLFW;
 
 import java.text.DecimalFormat;
 
-import static com.mojang.blaze3d.platform.GlStateManager.color;
-import static com.mojang.blaze3d.platform.GlStateManager._disableLighting;
+import static com.wynntils.transition.GlStateManager.color;
+import static com.wynntils.transition.GlStateManager.disableLighting;
 
 public class EmeraldCountOverlay implements Listener {
 
@@ -97,7 +97,7 @@ public class EmeraldCountOverlay implements Listener {
      */
     private static void drawTextMoneyAmount(int x, int y, int moneyAmount, ScreenRenderer renderer, CustomColor color) {
         // rendering setup
-        _disableLighting();
+        disableLighting();
         color(1F, 1F, 1F, 1F);
 
         // generating text
@@ -182,18 +182,18 @@ public class EmeraldCountOverlay implements Listener {
         int textWidth = ScreenRenderer.font.width(text);
         renderer.drawItemStack(new ItemStack(i), x + 4, y + 4, textWidth > 18 ? "" : text);
         if (textWidth <= 18) return;
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         {
             GlStateManager.translate(x + 4 + 17, y + 4 + 18, 0);
             GlStateManager.scale(18f / textWidth, 18f / textWidth, 1);
-            GlStateManager._disableLighting();
+            GlStateManager.disableLighting();
             GlStateManager.disableDepth();
-            GlStateManager._disableBlend();
+            GlStateManager.disableBlend();
             ScreenRenderer.font.drawStringWithShadow(text, -textWidth, -ScreenRenderer.font.FONT_HEIGHT, 0xFFFFFFFF);
             GlStateManager.enableDepth();
-            GlStateManager._enableBlend();
+            GlStateManager.enableBlend();
         }
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
     }
 
     private static String formatAmount(int value) {

@@ -32,7 +32,7 @@ import com.wynntils.webapi.request.RequestHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.MainWindow;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -213,7 +213,7 @@ public class DiscoveriesPage extends QuestBookPage {
 
                         overDiscovery = selected;
                         hoveredText = lore;
-                        GlStateManager._disableLighting();
+                        GlStateManager.disableLighting();
                     } else {
                         if (this.selected == i) {
                             animationCompleted = false;

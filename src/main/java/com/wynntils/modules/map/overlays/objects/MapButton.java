@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class MapButton {
 
@@ -50,7 +50,7 @@ public class MapButton {
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        _pushMatrix();
+        pushMatrix();
         {
             if (isEnabled.apply(null)) {
                 color(1f, 1f, 1f, 1f);
@@ -62,7 +62,7 @@ public class MapButton {
             renderer.drawRect(Textures.Map.map_buttons, startX, startY, endX, endY,
                     type.getStartX(), type.getStartY(), type.getEndX(), type.getEndY());
         }
-        _popMatrix();
+        popMatrix();
     }
 
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {

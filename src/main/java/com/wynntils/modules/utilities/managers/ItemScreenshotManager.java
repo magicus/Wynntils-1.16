@@ -27,8 +27,8 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
+import com.wynntils.transition.GlStateManager;
+import com.wynntils.transition.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -91,14 +91,14 @@ public class ItemScreenshotManager {
         float scalew = (float) gui.width/width;
 
         // draw tooltip to framebuffer, create image from it
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         Framebuffer fb = new Framebuffer((int) (gui.width*(1/scalew)*2), (int) (gui.height*(1/scaleh)*2), true);
         fb.bindFramebuffer(false);
         GlStateManager.scale(scalew, scaleh, 1);
         drawTooltip(tooltip, gui.width/2, fr);
         BufferedImage bi = createScreenshot(width*2, height*2);
         fb.unbindFramebuffer();
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
         // copy to clipboard
         ClipboardImage ci = new ClipboardImage(bi);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ci, null);
@@ -123,7 +123,7 @@ public class ItemScreenshotManager {
     private static void drawTooltip(List<String> textLines, int maxTextWidth, FontRenderer font) {
         GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
-        GlStateManager._disableLighting();
+        GlStateManager.disableLighting();
         GlStateManager.disableDepth();
         GlStateManager.color(1f, 1f, 1f, 1f);
         int tooltipTextWidth = 0;
@@ -199,7 +199,7 @@ public class ItemScreenshotManager {
             tooltipY += 10;
         }
 
-        GlStateManager._enableLighting();
+        GlStateManager.enableLighting();
         GlStateManager.enableDepth();
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableRescaleNormal();
@@ -216,7 +216,7 @@ public class ItemScreenshotManager {
         float endBlue    = (float)(endColor         & 255) / 255.0F;
 
         GlStateManager.disableTexture2D();
-        GlStateManager._enableBlend();
+        GlStateManager.enableBlend();
         GlStateManager.disableAlpha();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -231,7 +231,7 @@ public class ItemScreenshotManager {
         tessellator.end();
 
         GlStateManager.shadeModel(GL11.GL_FLAT);
-        GlStateManager._disableBlend();
+        GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
     }

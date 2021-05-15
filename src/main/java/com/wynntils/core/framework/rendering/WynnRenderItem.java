@@ -10,7 +10,7 @@ import com.wynntils.core.framework.FrameworkManager;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -50,10 +50,10 @@ public class WynnRenderItem extends ItemRenderer {
         }
 
         super.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, "");
-        GlStateManager._disableLighting();
+        GlStateManager.disableLighting();
         GlStateManager.disableDepth();
-        GlStateManager._disableBlend();
-        GlStateManager._pushMatrix();
+        GlStateManager.disableBlend();
+        GlStateManager.pushMatrix();
 
         int width = ScreenRenderer.font.width(event.getOverlayText());
         GlStateManager.translate(xPosition + 17f, yPosition + 9f, 0f);
@@ -66,10 +66,10 @@ public class WynnRenderItem extends ItemRenderer {
         ScreenRenderer.font.drawString(event.getOverlayText(), 0, 0, event.getOverlayTextColor(),
                 SmartFontRenderer.TextAlignment.RIGHT_LEFT, SmartFontRenderer.TextShadow.NORMAL);
 
-        GlStateManager._popMatrix();
-        GlStateManager._enableLighting();
+        GlStateManager.popMatrix();
+        GlStateManager.enableLighting();
         GlStateManager.enableDepth();
-        GlStateManager._enableBlend();
+        GlStateManager.enableBlend();
     }
 
 }

@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class BeaconManager {
 
@@ -68,10 +68,10 @@ public class BeaconManager {
             double d2 = -1f + offset;
             double d3 = 256.0F * alpha + d2;
 
-            _disableLighting();
+            disableLighting();
             enableDepth();
-            _disableCull();
-            _enableBlend();
+            disableCull();
+            enableBlend();
             tryBlendFuncSeparate(770, 771, 1, 0);
             color(1f, 1f, 1f, 1f);
 
@@ -100,8 +100,8 @@ public class BeaconManager {
 
             // resetting
             color(1f, 1f, 1f, 1f);
-            _disableBlend();
-            _enableCull();
+            disableBlend();
+            enableCull();
         }
         popAttrib();
     }

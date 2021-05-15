@@ -13,6 +13,7 @@ import com.wynntils.core.framework.rendering.SmartFontRenderer;
 import com.wynntils.core.framework.rendering.colors.CommonColors;
 import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.framework.rendering.textures.Textures;
+import com.wynntils.core.utils.Utils;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.core.managers.CompassManager;
 import com.wynntils.modules.map.MapModule;
@@ -45,7 +46,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class WorldMapUI extends GuiMovementScreen {
 
@@ -300,7 +301,7 @@ public class WorldMapUI extends GuiMovementScreen {
         float scale = getScaleFactor();
         // draw map icons
         boolean[] needToReset = { false };
-        _enableBlend();
+        enableBlend();
         forEachIcon(i -> {
             if (i.getInfo().hasDynamicLocation()) resetIcon(i);
             if (!i.getInfo().isEnabled(false)) {
@@ -321,7 +322,7 @@ public class WorldMapUI extends GuiMovementScreen {
 
             Point drawingOrigin = ScreenRenderer.drawingOrigin();
 
-            _pushMatrix();
+            pushMatrix();
             translate(drawingOrigin.x + playerPositionX, drawingOrigin.y + playerPositionZ, 0);
             rotate(180 + MathHelper.fastFloor(McIf.player().rotationYaw), 0, 0, 1);
             translate(-drawingOrigin.x - playerPositionX, -drawingOrigin.y - playerPositionZ, 0);
@@ -333,10 +334,10 @@ public class WorldMapUI extends GuiMovementScreen {
             renderer.drawRectF(Textures.Map.map_pointers, playerPositionX - type.dWidth * 1.5f, playerPositionZ - type.dHeight * 1.5f, playerPositionX + type.dWidth * 1.5f, playerPositionZ + type.dHeight * 1.5f, 0, type.yStart, type.width, type.yStart + type.height);
             color(1, 1, 1, 1);
 
-            _popMatrix();
+            popMatrix();
         }
 
-        if (MapConfig.WorldMap.INSTANCE.keepTerritoryVisible || Utils.isKeyDown(GLFW.GLFW_KEY_LCONTROL) || Utils.isKeyDown(GLFW.GLFW_KEY_RCONTROL)) {
+        if (MapConfig.WorldMap.INSTANCE.keepTerritoryVisible || Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_CONTROL)) {
             territories.values().forEach(c -> c.drawScreen(mouseX, mouseY, partialTicks,
                     MapConfig.WorldMap.INSTANCE.territoryArea, false, false, true));
         }
@@ -399,7 +400,7 @@ public class WorldMapUI extends GuiMovementScreen {
         OUTSIDE_MAP_COLOR_1.setA(outsideTextOpacity);
         OUTSIDE_MAP_COLOR_2.setA(outsideTextOpacity);
 
-        _pushMatrix();
+        pushMatrix();
         {
             translate(width / 2, height / 2, 0);
             scale(2, 2, 2);
@@ -411,7 +412,7 @@ public class WorldMapUI extends GuiMovementScreen {
                     SmartFontRenderer.TextAlignment.MIDDLE, SmartFontRenderer.TextShadow.NORMAL
             );
         }
-        _popMatrix();
+        popMatrix();
     }
 
     private void zoomBy(int by) {

@@ -19,7 +19,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
 
@@ -67,7 +67,7 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
         playerRenderer.bind(rl);
 
         // rendering
-        { _pushMatrix();
+        { pushMatrix();
             this.playerRenderer.getMainModel().bipedBody.postRender(scale);
             translate(0.0F, 0.0F, 0.125F);
             if (player.isSneaking()) {
@@ -101,15 +101,15 @@ public class LayerCape implements LayerRenderer<AbstractClientPlayer> {
             rotate(180.0F, 0.0F, 1.0F, 0.0F);
 
             enableAlpha();
-            _enableBlend();
+            enableBlend();
 
             // Find out size of cape
             int frameCount = info.getCosmetics().getImage().getHeight() / (info.getCosmetics().getImage().getWidth() / 2);
             renderModel(player, playerRenderer.getMainModel(), 0.0625f, frameCount);
 
-            _disableBlend();
+            disableBlend();
             disableAlpha();
-        } _popMatrix();
+        } popMatrix();
     }
 
     public boolean shouldCombineTextures() {

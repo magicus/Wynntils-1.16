@@ -8,7 +8,7 @@ import com.wynntils.McIf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.GuiButtonImage;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
@@ -75,14 +75,14 @@ public class GuiButtonImageBetter extends GuiButtonImage {
         setColour(this.highlight && mouseX >= scaledStartX && mouseY >= scaledStartY && mouseX < scaledEndX && mouseY < scaledEndY, this.enabled);
 
         if (scaleFactor != 1f) {
-            GlStateManager._pushMatrix();
+            GlStateManager.pushMatrix();
             GlStateManager.translate(-scaleFromX, -scaleFromY, 0);
             GlStateManager.scale(scaleFactor, scaleFactor, 1);
             GlStateManager.translate(scaleFromX, scaleFromY, 0);
         }
         super.drawButton(minecraft, mouseX, mouseY, partialTicks);
         if (scaleFactor != 1f) {
-            GlStateManager._popMatrix();
+            GlStateManager.popMatrix();
         }
 
         setColour(false, true);

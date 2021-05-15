@@ -8,7 +8,7 @@ import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.GuiContainer;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -101,7 +101,7 @@ public class TooltipScrollManager {
             float offscreenHeight = maxScroll * ((float) scrollAmount / maxScroll);
             float scaleFactor = (lastGuiScreen.height + offscreenHeight) / tooltipHeight;
             int xOffset = e.getX() - 4;
-            GlStateManager._pushMatrix();
+            GlStateManager.pushMatrix();
             GlStateManager.translate(+xOffset, +lastGuiScreen.height, 0);
             GlStateManager.scale(scaleFactor, scaleFactor, 0);
             if (UtilitiesConfig.INSTANCE.renderTooltipsFromTop) {
@@ -127,7 +127,7 @@ public class TooltipScrollManager {
 
         if (UtilitiesConfig.INSTANCE.renderTooltipsScaled) {
             if (maxScroll == 0 || (scrollAmount == maxScroll && !UtilitiesConfig.INSTANCE.renderTooltipsFromTop)) return;
-            GlStateManager._popMatrix();
+            GlStateManager.popMatrix();
             return;
         }
 

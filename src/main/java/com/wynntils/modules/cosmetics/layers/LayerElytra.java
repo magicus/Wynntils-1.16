@@ -11,15 +11,15 @@ import com.wynntils.modules.cosmetics.configs.CosmeticsConfig;
 import com.wynntils.modules.cosmetics.layers.models.CustomElytraModel;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
-import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
-import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
+import com.wynntils.transition.GlStateManager.DestFactor;
+import com.wynntils.transition.GlStateManager.SourceFactor;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClientPlayer> {
 
@@ -64,13 +64,13 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
 
         color(1.0F, 1.0F, 1.0F, 1.0F);
         enableAlpha();
-        _enableBlend();
+        enableBlend();
         blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
 
         renderPlayer.bind(elytra);
 
         // rendering
-        { _pushMatrix();
+        { pushMatrix();
             translate(0.0F, 0.0F, 0.125F);
 
             double d0 = player.prevChasingPosX + (player.chasingPosX - player.prevChasingPosX) * (double) partialTicks - (player.prevPosX + (player.getX() - player.prevPosX) * (double) partialTicks);
@@ -108,8 +108,8 @@ public class LayerElytra extends ModelBase implements LayerRenderer<AbstractClie
             modelElytra.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, player);
             modelElytra.render(player, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
-            _disableBlend();
-        } _popMatrix();
+            disableBlend();
+        } popMatrix();
     }
 
     public boolean shouldCombineTextures() {

@@ -19,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class EntityAsh extends FakeEntity {
 
@@ -88,8 +88,8 @@ public class EntityAsh extends FakeEntity {
         boolean thirdPerson = render.options.thirdPersonView == 2;
 
         { // setting up
-            _depthMask(false);
-            _enableBlend();
+            depthMask(false);
+            enableBlend();
             enableAlpha();
             disableTexture2D();
             color(1f, 1f, 1f, alpha);
@@ -118,9 +118,9 @@ public class EntityAsh extends FakeEntity {
         }
 
         { // reset to default
-            _disableBlend();
+            disableBlend();
             enableTexture2D();
-            _depthMask(true);
+            depthMask(true);
             color(1f, 1f, 1f, 1f);
         }
     }

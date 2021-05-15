@@ -14,7 +14,7 @@ import com.wynntils.core.framework.ui.elements.UIEList;
 import com.wynntils.core.framework.ui.elements.UIETextBox;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -137,7 +137,7 @@ public abstract class UI extends Screen {
     @Override
     protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {  // fix for alpha problems after doing default background
         super.drawGradientRect(left, top, right, bottom, startColor, endColor);
-        GlStateManager._enableBlend();
+        GlStateManager.enableBlend();
     }
 
     public static void setupUI(UI ui) {

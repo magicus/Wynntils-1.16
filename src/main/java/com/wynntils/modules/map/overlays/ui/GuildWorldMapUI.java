@@ -17,7 +17,7 @@ import com.wynntils.modules.map.overlays.enums.MapButtonType;
 import com.wynntils.modules.map.overlays.objects.MapTerritory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
@@ -126,7 +126,7 @@ public class GuildWorldMapUI extends WorldMapUI {
 
             Point drawingOrigin = ScreenRenderer.drawingOrigin();
 
-            GlStateManager._pushMatrix();
+            GlStateManager.pushMatrix();
             GlStateManager.translate(drawingOrigin.x + playerPositionX, drawingOrigin.y + playerPositionZ, 0);
             GlStateManager.rotate(180 + MathHelper.fastFloor(McIf.player().rotationYaw), 0, 0, 1);
             GlStateManager.translate(-drawingOrigin.x - playerPositionX, -drawingOrigin.y - playerPositionZ, 0);
@@ -138,7 +138,7 @@ public class GuildWorldMapUI extends WorldMapUI {
             renderer.drawRectF(Textures.Map.map_pointers, playerPositionX - type.dWidth * 1.5f, playerPositionZ - type.dHeight * 1.5f, playerPositionX + type.dWidth * 1.5f, playerPositionZ + type.dHeight * 1.5f, 0, type.yStart, type.width, type.yStart + type.height);
             GlStateManager.color(1, 1, 1, 1);
 
-            GlStateManager._popMatrix();
+            GlStateManager.popMatrix();
         }
 
         if (showTradeRoutes) generateTradeRoutes();
@@ -168,7 +168,7 @@ public class GuildWorldMapUI extends WorldMapUI {
     }
 
     protected void drawTradeRoute(MapTerritory origin, MapTerritory destination) {
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         {
             GlStateManager.disableTexture2D();
             GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, 1, 0);
@@ -196,7 +196,7 @@ public class GuildWorldMapUI extends WorldMapUI {
 
             GlStateManager.enableTexture2D();
         }
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
     }
 
     private static boolean isHoldingMapKey() {

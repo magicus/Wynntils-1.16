@@ -17,7 +17,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.GuiPageButtonList;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.GuiSlider;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.text.WordUtils;

@@ -9,7 +9,7 @@ import com.wynntils.core.framework.rendering.colors.CommonColors;
 import com.wynntils.modules.map.configs.MapConfig;
 import com.wynntils.modules.map.instances.PathWaypointProfile;
 import com.wynntils.modules.map.instances.PathWaypointProfile.PathPoint;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -119,7 +119,7 @@ public class MapPathWaypointIcon extends MapIcon {
 
         GlStateManager.disableTexture2D();
         GlStateManager.enableAlpha();
-        GlStateManager._disableCull();
+        GlStateManager.disableCull();
 
         // Render outline
         CommonColors.BLACK.applyColor();
@@ -130,7 +130,7 @@ public class MapPathWaypointIcon extends MapIcon {
         renderPath(path, centreX, centreZ, pathWidth);
 
         CommonColors.WHITE.applyColor();
-        GlStateManager._enableCull();
+        GlStateManager.enableCull();
         GlStateManager.enableTexture2D();
     }
 

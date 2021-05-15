@@ -11,7 +11,7 @@ import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.framework.rendering.textures.Textures;
 import com.wynntils.modules.utilities.configs.OverlayConfig;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -35,13 +35,13 @@ public class LowHealthVignetteOverlay extends Overlay {
             return;
         }
 
-        GlStateManager._pushMatrix();
+        GlStateManager.pushMatrix();
         {
             ScreenRenderer.transformationOrigin(0, 0);
             GlStateManager.color(1, 0, 0, value);
             GlStateManager.disableDepth();
-            GlStateManager._enableBlend();
-            GlStateManager._depthMask(false);
+            GlStateManager.enableBlend();
+            GlStateManager.depthMask(false);
             GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
             GlStateManager.disableAlpha();
 
@@ -58,12 +58,12 @@ public class LowHealthVignetteOverlay extends Overlay {
             }
             tessellator.end();
 
-            GlStateManager._depthMask(true);
+            GlStateManager.depthMask(true);
             GlStateManager.enableDepth();
             GlStateManager.enableAlpha();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        GlStateManager._popMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

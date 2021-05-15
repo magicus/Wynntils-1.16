@@ -27,7 +27,7 @@ import com.wynntils.modules.utilities.UtilitiesModule;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 
 import net.minecraft.client.gui.screen.AbstractGui;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -129,17 +129,17 @@ public class BankOverlay implements Listener {
             s.set(new ItemStack(Blocks.SNOW));
             McIf.mc().getTextureManager().bind(COLUMN_ARROW);
 
-            GlStateManager._pushMatrix();
+            GlStateManager.pushMatrix();
             {
                 { // gl setting
                     GlStateManager.scale(1.1f, 1.1f, 1.1f);
                     GlStateManager.color(1f, 1f, 1f);
-                    GlStateManager._disableLighting();
+                    GlStateManager.disableLighting();
                 }
 
                 AbstractGui.drawModalRectWithCustomSizedTexture((int) ((e.getGui().getGuiLeft() + s.xPos - 8) / 1.1f) - 1, (int) ((e.getGui().getGuiTop() + s.yPos - 8) / 1.1f) - 1, 0, 0, 32, 32, 32, 32);
             }
-            GlStateManager._popMatrix();
+            GlStateManager.popMatrix();
         }
     }
 

@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import com.wynntils.modules.cosmetics.layers.models.EarModelRenderer;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
 
@@ -38,8 +38,8 @@ public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
         float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;
 
 
-        _pushMatrix();
-        _enableBlend();
+        pushMatrix();
+        enableBlend();
         {
             rotate(f, 0.0F, 1.0F, 0.0F);
             rotate(f1, 1.0F, 0.0F, 0.0F);
@@ -51,11 +51,11 @@ public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
 
             renderModelR(player, playerRenderer.getMainModel(), 0.0625f);
         }
-        _disableBlend();
-        _popMatrix();
+        disableBlend();
+        popMatrix();
 
-        _pushMatrix();
-        _enableBlend();
+        pushMatrix();
+        enableBlend();
         {
             rotate(f, 0.0F, 1.0F, 0.0F);
             rotate(f1, 1.0F, 0.0F, 0.0F);
@@ -66,8 +66,8 @@ public class LayerFoxEars implements LayerRenderer<AbstractClientPlayer> {
 
             renderModelL(player, playerRenderer.getMainModel(), 0.0625f);
         }
-        _disableBlend();
-        _popMatrix();
+        disableBlend();
+        popMatrix();
     }
 
     public void renderModelL(AbstractClientPlayer player, ModelBase model, float scale) {

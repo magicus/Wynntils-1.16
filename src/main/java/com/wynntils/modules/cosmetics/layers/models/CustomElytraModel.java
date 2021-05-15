@@ -8,7 +8,7 @@ import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.Vec3d;
@@ -47,15 +47,15 @@ public class CustomElytraModel extends ModelBase {
      */
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         GlStateManager.disableRescaleNormal();
-        GlStateManager._disableCull();
+        GlStateManager.disableCull();
 
         if (entityIn instanceof EntityLivingBase && ((EntityLivingBase)entityIn).isChild()) {
-            GlStateManager._pushMatrix();
+            GlStateManager.pushMatrix();
             GlStateManager.scale(0.5F, 0.5F, 0.5F);
             GlStateManager.translate(0.0F, 1.5F, -0.1F);
             this.leftWing.render(scale);
             this.rightWing.render(scale);
-            GlStateManager._popMatrix();
+            GlStateManager.popMatrix();
         }
         else {
             this.leftWing.render(scale);

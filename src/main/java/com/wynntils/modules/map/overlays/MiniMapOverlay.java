@@ -20,7 +20,7 @@ import com.wynntils.modules.map.managers.LootRunManager;
 import com.wynntils.modules.map.overlays.objects.MapCompassIcon;
 import com.wynntils.modules.map.overlays.objects.MapIcon;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
@@ -108,7 +108,7 @@ public class MiniMapOverlay extends Overlay {
             int option = MapConfig.INSTANCE.renderUsingLinear ? GL11.GL_LINEAR : GL11.GL_NEAREST;
             GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, option);
 
-            GlStateManager._enableBlend();
+            GlStateManager.enableBlend();
             GlStateManager.enableTexture2D();
             Tessellator tessellator = Tessellator.getInstance();
             BufferBuilder bufferbuilder = tessellator.getBuilder();
@@ -166,7 +166,7 @@ public class MiniMapOverlay extends Overlay {
                     if (MapConfig.INSTANCE.followPlayerRotation) {
                         // Rotate dx and dz
                         if (followRotation = c.followRotation()) {
-                            GlStateManager._pushMatrix();
+                            GlStateManager.pushMatrix();
                             Point drawingOrigin = MiniMapOverlay.drawingOrigin();
                             GlStateManager.translate(drawingOrigin.x + halfMapSize, drawingOrigin.y + halfMapSize, 0);
                             GlStateManager.rotate(180 - McIf.player().rotationYaw, 0, 0, 1);
@@ -180,7 +180,7 @@ public class MiniMapOverlay extends Overlay {
 
                     c.renderAt(this, dx + halfMapSize, dz + halfMapSize, sizeMultiplier, scaleFactor);
                     if (followRotation) {
-                        GlStateManager._popMatrix();
+                        GlStateManager.popMatrix();
                     }
                 };
 
@@ -242,14 +242,14 @@ public class MiniMapOverlay extends Overlay {
 
                         Point drawingOrigin = MiniMapOverlay.drawingOrigin();
 
-                        GlStateManager._pushMatrix();
+                        GlStateManager.pushMatrix();
                         GlStateManager.translate(drawingOrigin.x + dx, drawingOrigin.y + dz, 0);
                         GlStateManager.rotate(angle, 0, 0, 1);
                         GlStateManager.translate(-drawingOrigin.x - dx, -drawingOrigin.y - dz, 0);
 
                         MapCompassIcon.pointer.renderAt(this, dx, dz, sizeMultiplier, 1f);
 
-                        GlStateManager._popMatrix();
+                        GlStateManager.popMatrix();
 
                         if (MapConfig.INSTANCE.compassDistanceType == MapConfig.DistanceMarkerType.ALWAYS ||
                                 MapConfig.INSTANCE.compassDistanceType == MapConfig.DistanceMarkerType.OFF_MAP)
@@ -264,7 +264,7 @@ public class MiniMapOverlay extends Overlay {
             }
 
             GlStateManager.disableAlpha();
-            GlStateManager._disableBlend();
+            GlStateManager.disableBlend();
             disableScissorTest();
             clearMask();
 

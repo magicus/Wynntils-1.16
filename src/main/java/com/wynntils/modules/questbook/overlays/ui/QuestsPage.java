@@ -27,7 +27,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.MainWindow;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
@@ -138,7 +138,7 @@ public class QuestsPage extends QuestBookPage {
 
                         overQuest = selected;
                         hoveredText = lore;
-                        GlStateManager._disableLighting();
+                        GlStateManager.disableLighting();
                     } else {
                         if (this.selected == i) {
                             animationCompleted = false;

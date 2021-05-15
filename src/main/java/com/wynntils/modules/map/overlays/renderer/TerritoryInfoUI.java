@@ -17,7 +17,7 @@ import net.minecraft.util.text.TextFormatting;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class TerritoryInfoUI {
 
@@ -53,7 +53,7 @@ public class TerritoryInfoUI {
     }
 
     public void render(int posX, int posY) {
-        _pushMatrix();
+        pushMatrix();
         {
             translate(posX - 200, posY, 0);
             color(1f, 1f, 1f, 1f);
@@ -81,7 +81,7 @@ public class TerritoryInfoUI {
 
             translate(-posX + 200, -posY, 0);
         }
-        _popMatrix();
+        popMatrix();
     }
 
 }

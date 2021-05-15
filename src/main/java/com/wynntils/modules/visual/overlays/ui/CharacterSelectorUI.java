@@ -22,7 +22,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.SoundEvents;
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class CharacterSelectorUI extends Screen {
 
@@ -431,7 +431,7 @@ public class CharacterSelectorUI extends Screen {
     private void drawPlayer(int middleX) {
         {
             enableAlpha();
-            _enableBlend();
+            enableBlend();
         }
 
         InventoryScreen.drawEntityOnScreen(middleX, 210, 60, 0, 0, McIf.player());
@@ -530,7 +530,7 @@ public class CharacterSelectorUI extends Screen {
 
     private void drawBackground(BufferBuilder builder, Tessellator tes) {
         {
-            _enableBlend();
+            enableBlend();
             color(1f, 1f, 1f, 1f);
         }
 
@@ -549,7 +549,7 @@ public class CharacterSelectorUI extends Screen {
         }
 
         {
-            _disableBlend();
+            disableBlend();
             color(1f, 1f, 1f, 1f);
         }
     }

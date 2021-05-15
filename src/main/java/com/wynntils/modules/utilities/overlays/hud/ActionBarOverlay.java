@@ -14,7 +14,7 @@ import com.wynntils.core.framework.rendering.colors.CommonColors;
 import com.wynntils.core.utils.Utils;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import com.wynntils.modules.utilities.configs.OverlayConfig;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
@@ -136,12 +136,12 @@ public class ActionBarOverlay extends Overlay {
             }
 
             if (k > 0) {
-                GlStateManager._pushMatrix();
-                GlStateManager._enableBlend();
+                GlStateManager.pushMatrix();
+                GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                 McIf.mc().font.drawStringWithShadow(s, (float) i, (float) j, 16777215 + (k << 24));
-                GlStateManager._disableBlend();
-                GlStateManager._popMatrix();
+                GlStateManager.disableBlend();
+                GlStateManager.popMatrix();
                 return true;
             }
         }

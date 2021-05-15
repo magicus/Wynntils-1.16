@@ -19,7 +19,7 @@ import com.wynntils.modules.map.overlays.objects.WorldMapIcon;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.GuiLabel;
 import net.minecraft.client.gui.screen.GuiTextField;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiCheckBox;
 import org.lwjgl.glfw.GLFW;
 
@@ -285,7 +285,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
             drawIcons(mouseX, mouseY, partialTicks);
         } else {
             createMask();
-            GlStateManager._enableBlend();
+            GlStateManager.enableBlend();
             wmIcon.drawScreen(mouseX, mouseY, partialTicks, getScaleFactor(), renderer);
             clearMask();
         }

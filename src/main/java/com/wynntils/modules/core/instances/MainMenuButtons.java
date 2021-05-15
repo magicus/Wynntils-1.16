@@ -20,7 +20,7 @@ import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -108,17 +108,17 @@ public class MainMenuButtons {
 
             boolean hasUpdate = hasUpdate();
 
-            GlStateManager._pushMatrix();
+            GlStateManager.pushMatrix();
 
             GlStateManager.translate(x + 2, y + 2, 0);
             GlStateManager.scale(0.5f, 0.5f, 0);
-            GlStateManager._enableBlend();
+            GlStateManager.enableBlend();
             drawModalRectWithCustomSizedTexture(0, 0, 0.0F, 0.0F, 32, 32, 32.0F, 32.0F);
             if (!hasUpdate) {
-                GlStateManager._disableBlend();
+                GlStateManager.disableBlend();
             }
 
-            GlStateManager._popMatrix();
+            GlStateManager.popMatrix();
 
             if (hasUpdate) {
                 Textures.UIs.main_menu.bind();
@@ -126,7 +126,7 @@ public class MainMenuButtons {
                 drawTexturedModalRect(x, y, 0, 0, 20, 20);
             }
 
-            GlStateManager._disableBlend();
+            GlStateManager.disableBlend();
         }
 
     }

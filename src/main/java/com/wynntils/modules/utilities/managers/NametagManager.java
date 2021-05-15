@@ -29,7 +29,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.wynntils.transition.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.mojang.blaze3d.platform.GlStateManager.*;
+import static com.wynntils.transition.GlStateManager.*;
 
 public class NametagManager {
 
@@ -183,7 +183,7 @@ public class NametagManager {
     }
 
     private static void drawBadge(ProfessionType profession, int tier, float x, float y, float z, double horizontalShift, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal, boolean isSneaking) {
-        _pushMatrix();
+        pushMatrix();
         {
             ScreenRenderer.beginGL(0, 0);
             {
@@ -192,8 +192,8 @@ public class NametagManager {
                 rotate(-viewerYaw, 0f, 1f, 0f);
                 rotate((float) (isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
                 scale(-0.025F, -0.025F, 0.025F);
-                _disableLighting();
-                _depthMask(true);
+                disableLighting();
+                depthMask(true);
                 color(1.0f, 1.0f, 1.0f, 1.0f);
 
                 AssetsTexture texture = Textures.World.leaderboard_badges;
@@ -216,11 +216,11 @@ public class NametagManager {
                 tesselator.draw();
 
                 enableDepth();
-                _enableLighting();
-                _disableBlend();
+                enableLighting();
+                disableBlend();
             }
         }
-        _popMatrix();
+        popMatrix();
     }
 
     /**
@@ -229,7 +229,7 @@ public class NametagManager {
     private static void drawNametag(String input, CustomColor color, float x, float y, float z, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal, boolean isSneaking, float scale) {
         FontRenderer font = McIf.mc().font;  // since our fontrender ignores bold or italic texts we need to use the mc one
 
-        _pushMatrix();
+        pushMatrix();
         {
             if (scale != 1) scale(scale, scale, scale);
             verticalShift = (int)(verticalShift/scale);
@@ -242,8 +242,8 @@ public class NametagManager {
                 rotate(-viewerYaw, 0.0F, 1.0F, 0.0F);
                 rotate((float) (isThirdPersonFrontal ? -1 : 1) * viewerPitch, 1.0F, 0.0F, 0.0F);
                 scale(-0.025F, -0.025F, 0.025F);
-                _disableLighting();
-                _depthMask(false);
+                disableLighting();
+                depthMask(false);
 
                 // disable depth == will be visible through walls
                 if (!isSneaking && !UtilitiesConfig.INSTANCE.hideNametags) {
@@ -254,7 +254,7 @@ public class NametagManager {
 
                 // Nametag Box
                 if (!UtilitiesConfig.INSTANCE.hideNametagBox) {
-                    _enableBlend();
+                    enableBlend();
                     tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
                     disableTexture2D();
                     Tessellator tesselator = Tessellator.getInstance();
@@ -276,7 +276,7 @@ public class NametagManager {
                     enableTexture2D();
                 }
 
-                _depthMask(true);
+                depthMask(true);
 
                 // draws the label
                 if (!isSneaking && color != null) {
@@ -297,13 +297,13 @@ public class NametagManager {
 
                 // returns back to normal
                 enableDepth();
-                _enableLighting();
-                _disableBlend();
+                enableLighting();
+                disableBlend();
                 color(1.0f, 1.0f, 1.0f, 1.0f);
             }
             ScreenRenderer.endGL();
         }
-        _popMatrix();
+        popMatrix();
     }
 
     /**
