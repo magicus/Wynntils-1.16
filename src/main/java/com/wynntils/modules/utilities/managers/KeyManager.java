@@ -48,7 +48,7 @@ public class KeyManager {
 
         checkForUpdatesKey = CoreModule.getModule().registerKeyBinding("Check for Updates", GLFW.GLFW_KEY_L, "Wynntils", true, WebManager::checkForUpdates);
 
-        CoreModule.getModule().registerKeyBinding("Open Settings", GLFW.GLFW_KEY_P, "Wynntils", KeyConflictContext.IN_GAME, true, () -> McIf.mc().displayGuiScreen(SettingsUI.getInstance(McIf.mc().screen)));
+        CoreModule.getModule().registerKeyBinding("Open Settings", GLFW.GLFW_KEY_P, "Wynntils", KeyConflictContext.IN_GAME, true, () -> McIf.mc().setScreen(SettingsUI.getInstance(McIf.mc().screen)));
 
         lockInventoryKey = UtilitiesModule.getModule().registerKeyBinding("Lock Slot", GLFW.GLFW_KEY_H, "Wynntils", KeyConflictContext.GUI, true, () -> {});
         favoriteTradeKey = UtilitiesModule.getModule().registerKeyBinding("Favorite Trade", GLFW.GLFW_KEY_F, "Wynntils", KeyConflictContext.GUI, true, () -> {});

@@ -8,7 +8,7 @@ import com.wynntils.core.framework.enums.MouseButton;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.framework.rendering.SmartFontRenderer;
 import com.wynntils.core.framework.ui.UI;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.screen.GuiTextField;
 
 import java.util.function.BiConsumer;
 

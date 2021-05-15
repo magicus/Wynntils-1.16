@@ -19,9 +19,9 @@ import com.wynntils.modules.map.instances.WaypointProfile.WaypointType;
 import com.wynntils.modules.map.overlays.objects.MapWaypointIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.GuiLabel;
+import net.minecraft.client.gui.screen.GuiLabel;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.screen.GuiTextField;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
@@ -278,9 +278,9 @@ public class WaypointCreationMenu extends UI {
                 MapConfig.Waypoints.INSTANCE.waypoints.add(newWp);
             }
             MapConfig.Waypoints.INSTANCE.saveSettings(MapModule.getModule());
-            Utils.displayGuiScreen(previousGui == null ? new MainWorldMapUI() : previousGui);
+            Utils.setScreen(previousGui == null ? new MainWorldMapUI() : previousGui);
         } else if (button == cancelButton) {
-            Utils.displayGuiScreen(previousGui == null ? new MainWorldMapUI() : previousGui);
+            Utils.setScreen(previousGui == null ? new MainWorldMapUI() : previousGui);
         } else if (button == waypointTypeNext) {
             setWaypointType(WaypointType.values()[(getWaypointType().ordinal() + 1) % WaypointType.values().length]);
         } else if (button == waypointTypeBack) {

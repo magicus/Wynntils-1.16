@@ -7,7 +7,7 @@ package com.wynntils.modules.utilities.managers;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.utilities.configs.UtilitiesConfig;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.GuiContainer;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;

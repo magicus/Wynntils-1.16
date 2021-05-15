@@ -8,8 +8,8 @@ import com.wynntils.core.utils.StringUtils;
 import com.wynntils.core.utils.objects.Location;
 
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.gui.screen.FontRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 
 import static com.mojang.blaze3d.platform.GlStateManager.*;
 
@@ -42,7 +42,7 @@ public class LootRunNote {
     }
 
     public void drawNote(CustomColor color) {
-        RenderManager render = McIf.mc().getRenderManager();
+        EntityRendererManager render = McIf.mc().getEntityRenderDispatcher();
         FontRenderer fr = render.getFontRenderer();
 
         if (McIf.player().getDistanceSq(location.x, location.y, location.z) > 4096f)

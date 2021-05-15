@@ -19,9 +19,9 @@ import com.wynntils.modules.core.enums.UpdateStream;
 import com.wynntils.modules.questbook.configs.QuestBookConfig;
 import com.wynntils.modules.questbook.enums.QuestBookPages;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiPageButtonList;
+import net.minecraft.client.gui.screen.GuiPageButtonList;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.screen.GuiTextField;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.glfw.GLFW;
@@ -274,7 +274,7 @@ public class QuestBookPage extends Screen {
         this.showAnimation = showAnimation;
 
         if (showAnimation) WynntilsSound.QUESTBOOK_OPENING.play(); // sfx
-        McIf.mc().displayGuiScreen(this);
+        McIf.mc().setScreen(this);
     }
 
     public void updateSearch() {

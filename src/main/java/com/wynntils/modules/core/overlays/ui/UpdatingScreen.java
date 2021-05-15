@@ -136,7 +136,7 @@ public class UpdatingScreen extends Screen {
     @Override
     public void actionPerformed(Button button) {
         if (button.id == 0) {
-            McIf.mc().displayGuiScreen(null);
+            McIf.mc().setScreen(null);
         }
     }
 

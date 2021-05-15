@@ -115,7 +115,7 @@ public class SettingsUI extends UI {
         Keyboard.enableRepeatEvents(false);
 
         McIf.mc().screen = null;
-        McIf.mc().displayGuiScreen(parentScreen);
+        McIf.mc().setScreen(parentScreen);
     }
 
     @Override

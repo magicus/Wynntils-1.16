@@ -8,7 +8,7 @@ import com.google.common.collect.Ordering;
 import com.wynntils.Reference;
 import com.wynntils.core.utils.StringUtils;
 import com.wynntils.core.utils.reflections.ReflectionFields;
-import net.minecraft.client.gui.GuiPlayerTabOverlay;
+import net.minecraft.client.gui.screen.GuiPlayerTabOverlay;
 import net.minecraft.client.network.play.NetworkPlayerInfo;
 
 import java.util.Arrays;

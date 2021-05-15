@@ -39,7 +39,7 @@ public class WindowIconManager {
         try {
             bufferedimage = ServerIcon.parseServerIcon(base64);
         } catch (Throwable throwable) {
-            Reference.LOGGER.error("Invalid icon for server " + server.serverName + " (" + server.ip + ")", throwable);
+            Reference.LOGGER.error("Invalid icon for server " + server.name + " (" + server.ip + ")", throwable);
             serverIconInvalid = true;
             return;
         }

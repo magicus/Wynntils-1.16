@@ -14,9 +14,9 @@ import com.wynntils.core.framework.ui.UI;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.GuiPageButtonList;
+import net.minecraft.client.gui.screen.GuiPageButtonList;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.GuiSlider;
+import net.minecraft.client.gui.screen.GuiSlider;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TextFormatting;
@@ -111,7 +111,7 @@ public class UIEColorWheel extends UIEClickZone {
     public void click(int mouseX, int mouseY, MouseButton button, UI ui) {
         textBox.click(mouseX, mouseY, button, ui);
 
-        if (hovering) McIf.mc().displayGuiScreen(new ColorPickerGUI());
+        if (hovering) McIf.mc().setScreen(new ColorPickerGUI());
     }
 
     public void keyTyped(char c, int i, UI ui) {
@@ -156,7 +156,7 @@ public class UIEColorWheel extends UIEClickZone {
             if (button == applyButton) {
                 color = toChange;
 
-                McIf.mc().displayGuiScreen(backGui);
+                McIf.mc().setScreen(backGui);
                 McIf.mc().getSoundManager().play(SimpleSound.forUI(clickSound, 1f));
                 onAccept.accept(color);
                 if (colorText == null) {
@@ -165,7 +165,7 @@ public class UIEColorWheel extends UIEClickZone {
                     textBox.setText(colorText);
                 }
             } else if (button == cancelButton) {
-                McIf.mc().displayGuiScreen(backGui);
+                McIf.mc().setScreen(backGui);
                 McIf.mc().getSoundManager().play(SimpleSound.forUI(clickSound, 1f));
             }
         }

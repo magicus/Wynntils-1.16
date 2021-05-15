@@ -108,7 +108,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
             parent.loadBuild(aloc); // sends the allocated loadout into
 
-            McIf.mc().displayGuiScreen(spMenu);
+            McIf.mc().setScreen(spMenu);
             return;
         }
 
@@ -131,7 +131,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == McIf.mc().options.keyBindInventory.getKeyCode()) {
-            McIf.mc().displayGuiScreen(spMenu);
+            McIf.mc().setScreen(spMenu);
         }
     }
 

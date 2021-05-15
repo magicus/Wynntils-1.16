@@ -10,7 +10,7 @@ import com.wynntils.core.utils.objects.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -24,7 +24,7 @@ public class BeaconManager {
     private static final ResourceLocation beamResource = new ResourceLocation("textures/entity/beacon_beam.png");
 
     public static void drawBeam(Location loc, CustomColor color, float partialTicks) {
-        RenderManager renderManager = McIf.mc().getRenderManager();
+        EntityRendererManager renderManager = McIf.mc().getEntityRenderDispatcher();
         if (renderManager.renderViewEntity == null) return;
 
         float alpha = 1f;

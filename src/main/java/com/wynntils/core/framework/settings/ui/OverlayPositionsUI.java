@@ -111,7 +111,7 @@ public class OverlayPositionsUI extends UI {
     @Override
     public void onClose() {
         McIf.mc().screen = null;
-        McIf.mc().displayGuiScreen(parentScreen);
+        McIf.mc().setScreen(parentScreen);
     }
 
     @Override

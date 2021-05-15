@@ -6,7 +6,7 @@ package com.wynntils.modules.chat.instances;
 
 import com.wynntils.McIf;
 import com.wynntils.core.utils.objects.Pair;
-import net.minecraft.client.gui.ChatLine;
+import net.minecraft.client.gui.screen.ChatLine;
 import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;

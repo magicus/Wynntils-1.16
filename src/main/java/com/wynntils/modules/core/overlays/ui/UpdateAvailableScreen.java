@@ -61,14 +61,14 @@ public class UpdateAvailableScreen extends Screen {
             CoreDBConfig.INSTANCE.showChangelogs = true;
             CoreDBConfig.INSTANCE.lastVersion = Reference.VERSION;
             CoreDBConfig.INSTANCE.saveSettings(CoreModule.getModule());
-            McIf.mc().displayGuiScreen(new UpdatingScreen(button.id == 1));
+            McIf.mc().setScreen(new UpdatingScreen(button.id == 1));
         } else if (button.id == 3) {
             // Ignore
             WebManager.skipJoinUpdate();
             ServerUtils.connect(null, server);
         } else if (button.id == 4) {
             // Cancel
-            McIf.mc().displayGuiScreen(null);
+            McIf.mc().setScreen(null);
         } else if (button.id == 0) {
             // View changelog
             boolean major = CoreDBConfig.INSTANCE.updateStream == UpdateStream.STABLE;

@@ -10,7 +10,7 @@ import com.wynntils.core.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -56,7 +56,7 @@ public class EntityManager {
                 it.remove();
             }
 
-            RenderManager renderManager = McIf.mc().getRenderManager();
+            EntityRendererManager renderManager = McIf.mc().getEntityRenderDispatcher();
             if (renderManager == null || renderManager.options == null) return;
 
             ClientPlayerEntity player = McIf.player();
@@ -100,7 +100,7 @@ public class EntityManager {
                 it.remove();
             }
 
-            RenderManager renderManager = McIf.mc().getRenderManager();
+            EntityRendererManager renderManager = McIf.mc().getEntityRenderDispatcher();
             if (renderManager == null || renderManager.options == null) return;
 
             ClientPlayerEntity player = McIf.player();

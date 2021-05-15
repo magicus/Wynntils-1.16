@@ -34,7 +34,7 @@ import com.wynntils.webapi.profiles.player.PlayerStatsProfile;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.GuiYesNo;
+import net.minecraft.client.gui.screen.GuiYesNo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -699,8 +699,8 @@ public class ClientEvents implements Listener {
                     String pageNumber = itemName.substring(9, itemName.indexOf(TextFormatting.RED + " >"));
                     ChestReplacer gui = e.getGui();
                     CClickWindowPacket packet = new CClickWindowPacket(gui.inventorySlots.windowId, e.getSlot(), e.getMouseButton(), e.getType(), item, e.getGui().inventorySlots.getNextTransactionID(McIf.player().inventory));
-                    McIf.mc().displayGuiScreen(new GuiYesNo((result, parentButtonID) -> {
-                        McIf.mc().displayGuiScreen(gui);
+                    McIf.mc().setScreen(new GuiYesNo((result, parentButtonID) -> {
+                        McIf.mc().setScreen(gui);
                         if (result) {
                             McIf.mc().getConnection().send(packet);
                             bankPageConfirmed = true;

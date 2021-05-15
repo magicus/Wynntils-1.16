@@ -8,13 +8,13 @@ import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiMultiplayer;
+import net.minecraft.client.gui.screen.MainMenuScreen;
+import net.minecraft.client.gui.screen.MultiplayerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.resources.ResourcePackRepository;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.resources.ResourcePackList;
 import net.minecraft.realms.RealmsBridge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -28,7 +28,7 @@ public class ServerUtils {
     }
 
     public static void connect(ServerData serverData, boolean unloadCurrentServerResourcePack) {
-        connect(new GuiMultiplayer(new GuiMainMenu()), serverData, unloadCurrentServerResourcePack);
+        connect(new MultiplayerScreen(new MainMenuScreen()), serverData, unloadCurrentServerResourcePack);
     }
 
     public static void connect(Screen backGui, ServerData serverData) {
@@ -62,13 +62,13 @@ public class ServerUtils {
      * @param unloadServerPack if false, disconnect without refreshing resources by unloading the server resource pack
      */
     public static void disconnect(boolean switchGui, boolean unloadServerPack) {
-        WorldClient world = McIf.world();
+        ClientWorld world = McIf.world();
         if (world == null) return;
 
-        boolean singlePlayer = McIf.mc().isIntegratedServerRunning();
+        boolean singlePlayer = McIf.mc().isLocalServer();
         boolean realms = !singlePlayer && McIf.mc().isConnectedToRealms();
 
-        world.sendQuittingDisconnectingPacket();
+        world.disconnect();
         if (unloadServerPack) {
             McIf.mc().loadWorld(null);
         } else {
@@ -77,23 +77,23 @@ public class ServerUtils {
 
         if (!switchGui) return;
         if (singlePlayer) {
-            McIf.mc().displayGuiScreen(new GuiMainMenu());
+            McIf.mc().setScreen(new MainMenuScreen());
         } else if (realms) {
             // Should not be possible because Wynntils will
             // never be running on the latest version of Minecraft
-            new RealmsBridge().switchToRealms(new GuiMainMenu());
+            new RealmsBridge().switchToRealms(new MainMenuScreen());
         } else {
-            McIf.mc().displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
+            McIf.mc().setScreen(new MultiplayerScreen(new MainMenuScreen()));
         }
     }
 
-    public static void loadWorldWithoutUnloadingServerResourcePack(WorldClient world) {
+    public static void loadWorldWithoutUnloadingServerResourcePack(ClientWorld world) {
         loadWorldWithoutUnloadingServerResourcePack(world, "");
     }
 
     private static class FakeResourcePackRepositoryHolder {
         // Will only be created by classloader when used
-        static final ResourcePackRepository instance = new ResourcePackRepository(McIf.mc().getResourcePackRepository().getDirResourcepacks(), null, null, null, McIf.mc().options) {
+        static final ResourcePackList instance = new ResourcePackList(McIf.mc().getResourcePackRepository().getDirResourcepacks(), null, null, null, McIf.mc().options) {
             @Override
             public void clearResourcePack() {
                 // Don't
@@ -101,8 +101,8 @@ public class ServerUtils {
         };
     }
 
-    public static synchronized void loadWorldWithoutUnloadingServerResourcePack(WorldClient world, String loadingMessage) {
-        ResourcePackRepository original = McIf.mc().getResourcePackRepository();
+    public static synchronized void loadWorldWithoutUnloadingServerResourcePack(ClientWorld world, String loadingMessage) {
+        ResourcePackList original = McIf.mc().getResourcePackRepository();
 
         ReflectionFields.Minecraft_resourcePackRepository.setValue(McIf.mc(), FakeResourcePackRepositoryHolder.instance);
         McIf.mc().loadWorld(world, loadingMessage);
@@ -126,9 +126,9 @@ public class ServerUtils {
     public static ServerData getWynncraftServerData(ServerList serverList, boolean addNew, String ip) {
         ServerData server = null;
 
-        int i = 0, count = serverList.countServers();
+        int i = 0, count = serverList.size();
         for (; i < count; ++i) {
-            server = serverList.getServerData(i);
+            server = serverList.get(i);
             if (server.ip.toLowerCase(Locale.ROOT).contains("wynncraft")) {
                 break;
             }
@@ -137,8 +137,8 @@ public class ServerUtils {
         if (i >= count) {
             server = new ServerData("Wynncraft", ip, false);
             if (addNew) {
-                serverList.addServerData(server);
-                serverList.saveServerList();
+                serverList.add(server);
+                serverList.save();
             }
         }
 
@@ -160,24 +160,24 @@ public class ServerUtils {
      */
     public static ServerData changeServerIP(ServerList list, ServerData serverData, String newIp, String defaultName) {
         if (serverData == null) {
-            list.addServerData(serverData = new ServerData(defaultName, newIp, false));
-            list.saveServerList();
+            list.add(serverData = new ServerData(defaultName, newIp, false));
+            list.save();
             return serverData;
         }
 
-        for (int i = 0, length = list.countServers(); i < length; ++i) {
-            ServerData fromList = list.getServerData(i);
-            if (Objects.equals(fromList.ip, serverData.ip) && Objects.equals(fromList.serverName, serverData.serverName)) {
+        for (int i = 0, length = list.size(); i < length; ++i) {
+            ServerData fromList = list.get(i);
+            if (Objects.equals(fromList.ip, serverData.ip) && Objects.equals(fromList.name, serverData.name)) {
                 // Found the server data; Replace the ip
                 fromList.ip = newIp;
-                list.saveServerList();
+                list.save();
                 return fromList;
             }
         }
 
         // Not found
-        list.addServerData(serverData = new ServerData(defaultName, newIp, false));
-        list.saveServerList();
+        list.add(serverData = new ServerData(defaultName, newIp, false));
+        list.save();
         return serverData;
     }
 

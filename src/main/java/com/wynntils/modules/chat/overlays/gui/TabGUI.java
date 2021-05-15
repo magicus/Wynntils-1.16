@@ -140,22 +140,22 @@ public class TabGUI extends Screen {
     protected void actionPerformed(Button button) throws IOException {
         super.actionPerformed(button);
 
-        if (button == closeButton) McIf.mc().displayGuiScreen(new ChatGUI());
+        if (button == closeButton) McIf.mc().setScreen(new ChatGUI());
         else if (button == saveButton) {
             if (id == -2) {
                 TabManager.registerNewTab(new ChatTab(nameTextField.getText(), regexTextField.getText(), regexSettingsCreator(), autoCommandField.getText(), lowPriority.isChecked(), orderNbField.getText().matches("[0-9]+") ? Integer.parseInt(orderNbField.getText()) : 0));
             } else {
                 TabManager.updateTab(id, nameTextField.getText(), regexTextField.getText(), regexSettingsCreator(), autoCommandField.getText(), lowPriority.isChecked(), orderNbField.getText().matches("[0-9]+") ? Integer.parseInt(orderNbField.getText()) : 0);
             }
-            McIf.mc().displayGuiScreen(new ChatGUI());
+            McIf.mc().setScreen(new ChatGUI());
         } else if (button == deleteButton) {
-            McIf.mc().displayGuiScreen(new GuiYesNo((result, cc) -> {
+            McIf.mc().setScreen(new GuiYesNo((result, cc) -> {
                 if (result) {
                     int c = TabManager.deleteTab(id);
                     if (ChatOverlay.getChat().getCurrentTabId() == id) ChatOverlay.getChat().setCurrentTab(c);
-                    McIf.mc().displayGuiScreen(new ChatGUI());
+                    McIf.mc().setScreen(new ChatGUI());
                 } else {
-                    McIf.mc().displayGuiScreen(this);
+                    McIf.mc().setScreen(this);
                 }
             }, WHITE + (BOLD + "Do you really want to delete this chat tab?"), RED + "This action is irreversible!", 0));
         } else if (button == advancedButton) {

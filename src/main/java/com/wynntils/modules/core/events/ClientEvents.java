@@ -34,9 +34,9 @@ import com.wynntils.modules.utilities.UtilitiesModule;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.screen.IngameMenuScreen;
-import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.client.gui.screen.inventory.ChestScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.screen.inventory.HorseInventoryScreen;
 import net.minecraft.entity.Entity;
@@ -80,7 +80,7 @@ public class ClientEvents implements Listener {
      * This replace these GUIS into a "provided" format to make it more modular
      *
      * InventoryScreen -> InventoryReplacer
-     * GuiChest -> ChestReplacer
+     * ChestScreen -> ChestReplacer
      * HorseInventoryScreen -> HorseReplacer
      * IngameMenuScreen -> IngameMenuReplacer
      *
@@ -104,7 +104,7 @@ public class ClientEvents implements Listener {
             e.setGui(new InventoryReplacer(McIf.player()));
             return;
         }
-        if (e.getGui() instanceof GuiChest) {
+        if (e.getGui() instanceof ChestScreen) {
             if (e.getGui() instanceof ChestReplacer) return;
 
             e.setGui(new ChestReplacer(McIf.player().inventory, ReflectionFields.GuiChest_lowerChestInventory.getValue(e.getGui())));
@@ -335,9 +335,9 @@ public class ClientEvents implements Listener {
     public void addMainMenuButtons(GuiScreenEvent.InitGuiEvent.Post e) {
         Screen gui = e.getGui();
 
-        if (gui instanceof GuiMainMenu) {
-            boolean resize = lastScreen != null && lastScreen instanceof GuiMainMenu;
-            MainMenuButtons.addButtons((GuiMainMenu) gui, e.getButtonList(), resize);
+        if (gui instanceof MainMenuScreen) {
+            boolean resize = lastScreen != null && lastScreen instanceof MainMenuScreen;
+            MainMenuButtons.addButtons((MainMenuScreen) gui, e.getButtonList(), resize);
         }
 
         lastScreen = gui;
@@ -349,9 +349,9 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void mainMenuActionPerformed(GuiScreenEvent.ActionPerformedEvent.Post e) {
         Screen gui = e.getGui();
-        if (gui != McIf.mc().screen || !(gui instanceof GuiMainMenu)) return;
+        if (gui != McIf.mc().screen || !(gui instanceof MainMenuScreen)) return;
 
-        MainMenuButtons.actionPerformed((GuiMainMenu) gui, e.getButton(), e.getButtonList());
+        MainMenuButtons.actionPerformed((MainMenuScreen) gui, e.getButton(), e.getButtonList());
     }
 
     @SubscribeEvent

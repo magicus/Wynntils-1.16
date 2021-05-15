@@ -304,7 +304,7 @@ public class QuestsPage extends QuestBookPage {
                 if (!overQuest.hasTargetLocation()) return;
 
                 Location loc = overQuest.getTargetLocation();
-                Utils.displayGuiScreen(new MainWorldMapUI((float) loc.x, (float) loc.z));
+                Utils.setScreen(new MainWorldMapUI((float) loc.x, (float) loc.z));
                 return;
             }
         }

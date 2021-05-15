@@ -10,10 +10,10 @@ import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.framework.rendering.colors.MinecraftChatColors;
 import com.wynntils.core.utils.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.screen.FontRenderer;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.GameSettings;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.Color;
@@ -33,6 +33,10 @@ public class SmartFontRenderer extends FontRenderer {
     }
 
     public SmartFontRenderer() {
+        super((p_238552_1_) -> {
+            return this.fontSets.getOrDefault(this.renames.getOrDefault(p_238552_1_, p_238552_1_), this.missingFontSet);
+        });
+
         super(McIf.mc().options, new ResourceLocation("textures/font/ascii.png"), McIf.mc().getTextureManager(), false);
     }
 

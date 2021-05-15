@@ -16,7 +16,7 @@ import com.wynntils.modules.map.instances.WaypointProfile;
 import com.wynntils.modules.map.overlays.objects.MapWaypointIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.GuiButtonImage;
+import net.minecraft.client.gui.screen.GuiButtonImage;
 import net.minecraft.client.gui.screen.Screen;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
@@ -208,7 +208,7 @@ public class WaypointOverviewUI extends Screen {
             checkAvailablePages();
             setEditButtons();
         } else if (b == exitBtn) {
-            Utils.displayGuiScreen(new MainWorldMapUI());
+            Utils.setScreen(new MainWorldMapUI());
         } else if (b == exportBtn) {
             Utils.copyToClipboard(WaypointProfile.encode(getWaypoints(), WaypointProfile.currentFormat));
             exportText = Arrays.asList(
@@ -267,7 +267,7 @@ public class WaypointOverviewUI extends Screen {
                 onWaypointChange();
             }
         } else if (b.id % 10 == 3) {
-            McIf.mc().displayGuiScreen(new WaypointCreationMenu(getWaypoints().get(b.id / 10 + page * pageHeight), this));
+            McIf.mc().setScreen(new WaypointCreationMenu(getWaypoints().get(b.id / 10 + page * pageHeight), this));
         } else if (b.id % 10 == 5) {
             MapConfig.Waypoints.INSTANCE.waypoints.remove(getWaypoints().get(b.id / 10 + page * pageHeight));
             onWaypointChange();

@@ -152,7 +152,7 @@ public abstract class UI extends Screen {
 
     public void show() {
         setupUI(this);
-        McIf.mc().displayGuiScreen(this);
+        McIf.mc().setScreen(this);
     }
 
     public static abstract class CommonUIFeatures {

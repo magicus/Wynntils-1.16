@@ -125,7 +125,7 @@ public class WorldMapSettingsUI extends Screen {
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         if (keyCode == McIf.mc().options.keyBindInventory.getKeyCode() ||  // DEFAULT: E
                 keyCode == MapModule.getModule().getMapKey().getKeyBinding().getKeyCode()) {  // DEFAULT: M
-            Utils.displayGuiScreen(new MainWorldMapUI());
+            Utils.setScreen(new MainWorldMapUI());
         }
         super.keyTyped(typedChar, keyCode);
     }
@@ -158,7 +158,7 @@ public class WorldMapSettingsUI extends Screen {
     @Override
     protected void actionPerformed(Button button) {
         if (button.id == 100) {
-            Utils.displayGuiScreen(new MainWorldMapUI());
+            Utils.setScreen(new MainWorldMapUI());
         } else if (button.id == 102) {
             MapConfig.INSTANCE.enabledMapIcons = MapConfig.resetMapIcons(false);
             MapConfig.INSTANCE.enabledMinimapIcons = MapConfig.resetMapIcons(true);
@@ -171,7 +171,7 @@ public class WorldMapSettingsUI extends Screen {
                 }
             }
             MapConfig.INSTANCE.saveSettings(MapModule.getModule());
-            Utils.displayGuiScreen(new MainWorldMapUI());
+            Utils.setScreen(new MainWorldMapUI());
         } else if (button.id == 101) {
             this.enabledMapIcons = MapConfig.resetMapIcons(false);
             this.enabledMinimapIcons = MapConfig.resetMapIcons(true);

@@ -20,7 +20,7 @@ public class SettingsPage extends QuestBookPage {
 
     @Override
     public void open(boolean showAnimation) {
-        McIf.mc().displayGuiScreen(SettingsUI.getInstance(McIf.mc().screen));
+        McIf.mc().setScreen(SettingsUI.getInstance(McIf.mc().screen));
     }
 
     @Override

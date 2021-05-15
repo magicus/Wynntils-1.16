@@ -133,7 +133,7 @@ public class ServerIcon {
         }
     }
 
-    // Modified from net.minecraft.client.gui.ServerListEntryNormal$prepareServerIcon
+    // Modified from net.minecraft.client.gui.screen.ServerListEntryNormal$prepareServerIcon
     public synchronized ResourceLocation getServerIcon() {
         String currentIcon = server.getBase64EncodedIconData();
         if (Objects.equals(currentIcon, lastIcon)) return icon == null ? null : serverIcon;

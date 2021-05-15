@@ -12,7 +12,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -85,7 +85,7 @@ public class EntityFirefly extends FakeEntity {
     }
 
     @Override
-    public void preRender(float partialTicks, WorldRenderer context, RenderManager render) {
+    public void preRender(float partialTicks, WorldRenderer context, EntityRendererManager render) {
         if (nextGoal == null) return;
         float percentage = Math.min(1f, ((currentPosition + partialTicks) / nextChange) * velocity);
 
@@ -96,10 +96,10 @@ public class EntityFirefly extends FakeEntity {
     }
 
     @Override
-    public void render(float partialTicks, WorldRenderer context, RenderManager render) {
+    public void render(float partialTicks, WorldRenderer context, EntityRendererManager render) {
         float alpha = (1 - (livingTicks / (float)lifespan));
         boolean thirdPerson = render.options.thirdPersonView == 2;
-
+        //FIXME: use render.options.getCameraType(), but what does the code mean? 3rd person is 1 & 2
         boolean threeDimensions = VisualConfig.Fireflies.INSTANCE.threeDimensions;
 
         { // setting up

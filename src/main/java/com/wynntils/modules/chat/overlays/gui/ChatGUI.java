@@ -18,8 +18,8 @@ import com.wynntils.modules.chat.overlays.ChatOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiLabel;
+import net.minecraft.client.gui.screen.GuiChat;
+import net.minecraft.client.gui.screen.GuiLabel;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -54,7 +54,7 @@ public class ChatGUI extends GuiChat {
         for (Map.Entry<ChatTab, ChatButton> tabButton : tabButtons.entrySet()) {
             if (tabButton.getValue().isMouseOver()) {
                 if (mouseButton == 1) {
-                    McIf.mc().displayGuiScreen(new TabGUI(TabManager.getAvailableTabs().indexOf(tabButton.getKey())));
+                    McIf.mc().setScreen(new TabGUI(TabManager.getAvailableTabs().indexOf(tabButton.getKey())));
                 } else {
                     ChatOverlay.getChat().setCurrentTab(TabManager.getAvailableTabs().indexOf(tabButton.getKey()));
                     tabButtons.values().stream().forEach(ChatButton::unselect);
@@ -70,7 +70,7 @@ public class ChatGUI extends GuiChat {
     @Override
     protected void actionPerformed(Button button) throws IOException {
         if (button == addTab) {
-            McIf.mc().displayGuiScreen(new TabGUI(-2));
+            McIf.mc().setScreen(new TabGUI(-2));
         } else if (button instanceof ChatButton) {
             ChatButton chatButton = (ChatButton) button;
             if (chatButton.getLanguage() != null) {

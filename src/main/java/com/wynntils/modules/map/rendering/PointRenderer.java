@@ -20,7 +20,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -205,7 +205,7 @@ public class PointRenderer {
     }
 
     private static void drawTexturedLine(Point3d start, Point3d end, float width) {
-        RenderManager renderManager = McIf.mc().getRenderManager();
+        EntityRendererManager renderManager = McIf.mc().getEntityRenderDispatcher();
 
         Vector3d direction = new Vector3d(start);
         direction.sub(end);
@@ -263,7 +263,7 @@ public class PointRenderer {
             }
         }
 
-        RenderManager renderManager = McIf.mc().getRenderManager();
+        EntityRendererManager renderManager = McIf.mc().getEntityRenderDispatcher();
 
         GlStateManager.glLineWidth(3f);
         GlStateManager._depthMask(false);
@@ -379,7 +379,7 @@ public class PointRenderer {
     public static void drawCube(BlockPos point, CustomColor color) {
         if (!McIf.world().isBlockLoaded(point, false)) return;
 
-        RenderManager renderManager = McIf.mc().getRenderManager();
+        EntityRendererManager renderManager = McIf.mc().getEntityRenderDispatcher();
 
         Location c = new Location(
             point.getX() - renderManager.viewerPosX,

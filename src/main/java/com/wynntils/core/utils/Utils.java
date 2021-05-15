@@ -8,11 +8,11 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.wynntils.McIf;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.GuiScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.screen.GuiTextField;
 import net.minecraft.client.MainWindow;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.screen.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -199,7 +199,7 @@ public class Utils {
      *
      * @param screen the provided screen
      */
-    public static void displayGuiScreen(Screen screen) {
+    public static void setScreen(Screen screen) {
         Screen oldScreen = McIf.mc().screen;
 
         GuiOpenEvent event = new GuiOpenEvent(screen);
@@ -427,7 +427,7 @@ public class Utils {
 
 
     public static boolean isKeyDown(int keycode) {
-        int state = GLFW.glfwGetKey(ModCore.mc().getWindow().getWindow(), keycode) == GLFW.GLFW_PRESS
+        int state = GLFW.glfwGetKey(McIf.mc().getWindow().getWindow(), keycode);
         return (state == GLFW.GLFW_PRESS);
     }
 

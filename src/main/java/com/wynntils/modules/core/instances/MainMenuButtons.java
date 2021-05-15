@@ -16,7 +16,7 @@ import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -36,7 +36,7 @@ public class MainMenuButtons {
 
     private static boolean alreadyLoaded = false;
 
-    public static void addButtons(GuiMainMenu to, List<Button> buttonList, boolean resize) {
+    public static void addButtons(MainMenuScreen to, List<Button> buttonList, boolean resize) {
         if (!CoreDBConfig.INSTANCE.addMainMenuButton) return;
 
         if (lastButton == null || !resize) {
@@ -61,7 +61,7 @@ public class MainMenuButtons {
         buttonList.add(lastButton);
     }
 
-    public static void actionPerformed(GuiMainMenu on, Button button, List<Button> buttonList) {
+    public static void actionPerformed(MainMenuScreen on, Button button, List<Button> buttonList) {
         if (button.id == WYNNCRAFT_BUTTON_ID) {
             clickedWynncraftButton(((WynncraftButton) button).serverIcon.getServer(), on);
         }
@@ -69,7 +69,7 @@ public class MainMenuButtons {
 
     private static void clickedWynncraftButton(ServerData server, Screen backGui) {
         if (hasUpdate()) {
-            McIf.mc().displayGuiScreen(new UpdateAvailableScreen(server));
+            McIf.mc().setScreen(new UpdateAvailableScreen(server));
         } else {
             WebManager.skipJoinUpdate();
             ServerUtils.connect(backGui, server);
@@ -92,7 +92,7 @@ public class MainMenuButtons {
             super(buttonId, x, y, 20, 20, "");
 
             serverIcon = new ServerIcon(server, true);
-            serverIcon.onDone(r -> serverList.saveServerList());
+            serverIcon.onDone(r -> serverList.save());
         }
 
         @Override

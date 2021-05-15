@@ -197,7 +197,7 @@ public class SkillPointOverlay implements Listener {
 
             e.setCanceled(true);
         } else if (e.getSlot() == LOAD_SLOT) {
-            McIf.mc().displayGuiScreen(
+            McIf.mc().setScreen(
                     new SkillPointLoadoutUI(this, McIf.mc().screen,
                             new InventoryBasic("Skill Points Loadouts", false, 54))
             );

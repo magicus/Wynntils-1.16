@@ -345,11 +345,11 @@ public class DiscoveriesPage extends QuestBookPage {
                         McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
                     break;
                     case 1: // Right Click
-                        Utils.displayGuiScreen(new MainWorldMapUI(x, z));
+                        Utils.setScreen(new MainWorldMapUI(x, z));
                         McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                     break;
                     case 2: //Middle Click
-                        Utils.displayGuiScreen(new MainWorldMapUI(x, z));
+                        Utils.setScreen(new MainWorldMapUI(x, z));
                         CompassManager.setCompassLocation(new Location(x, 50, z));
                         McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
                     break;
@@ -551,10 +551,10 @@ public class DiscoveriesPage extends QuestBookPage {
                     CompassManager.setCompassLocation(new Location(x, 50, z));
                 break;
                 case "map":
-                    Utils.displayGuiScreen(new MainWorldMapUI(x, z));
+                    Utils.setScreen(new MainWorldMapUI(x, z));
                 break;
                 case "both":
-                    Utils.displayGuiScreen(new MainWorldMapUI(x, z));
+                    Utils.setScreen(new MainWorldMapUI(x, z));
                     CompassManager.setCompassLocation(new Location(x, 50, z));
                 break;
             }

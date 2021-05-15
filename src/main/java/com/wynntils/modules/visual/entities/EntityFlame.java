@@ -12,7 +12,7 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 
@@ -45,7 +45,7 @@ public class EntityFlame extends FakeEntity {
     }
 
     @Override
-    public void render(float partialTicks, WorldRenderer context, RenderManager render) {
+    public void render(float partialTicks, WorldRenderer context, EntityRendererManager render) {
         float percentage = ((livingTicks + partialTicks) / lifespan);
 
         float alpha = (1f - percentage);

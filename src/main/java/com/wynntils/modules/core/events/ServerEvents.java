@@ -35,7 +35,7 @@ import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.downloader.DownloaderManager;
 import com.wynntils.webapi.profiles.TerritoryProfile;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.GuiIngame;
+import net.minecraft.client.gui.screen.GuiIngame;
 import net.minecraft.network.play.server.SWorldSpawnChangedPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
@@ -269,7 +269,7 @@ public class ServerEvents implements Listener {
             if (changelog == null) return;
 
             McIf.mc().submit(() -> {
-                McIf.mc().displayGuiScreen(new ChangelogUI(changelog, major));
+                McIf.mc().setScreen(new ChangelogUI(changelog, major));
 
                 // Showed changelog; Don't show next time.
                 CoreDBConfig.INSTANCE.showChangelogs = false;

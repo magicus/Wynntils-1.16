@@ -81,11 +81,11 @@ public class HeldItemChatManager {
         public void run() {
             Location compass = CompassManager.getCompassLocation();
             if (compass == null) {
-                Utils.displayGuiScreen(new MainWorldMapUI());
+                Utils.setScreen(new MainWorldMapUI());
                 return;
             }
 
-            Utils.displayGuiScreen(new MainWorldMapUI((float) compass.getX(), (float) compass.getZ()));
+            Utils.setScreen(new MainWorldMapUI((float) compass.getX(), (float) compass.getZ()));
         }
     }
 

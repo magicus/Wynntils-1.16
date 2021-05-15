@@ -103,7 +103,7 @@ public class MenuButtonsOverlay implements Listener {
                 McIf.player().chat("/hub");
                 break;
             case 755:
-                McIf.mc().displayGuiScreen(SettingsUI.getInstance(McIf.mc().screen));
+                McIf.mc().setScreen(SettingsUI.getInstance(McIf.mc().screen));
                 break;
             case 756:
                 QuestBookPages.MAIN.getPage().open(true);

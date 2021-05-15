@@ -5,6 +5,7 @@
 package com.wynntils.core.events;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.events.custom.*;
@@ -17,13 +18,13 @@ import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import com.wynntils.core.utils.reflections.ReflectionMethods;
 import com.wynntils.modules.core.managers.GuildAndFriendManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiDisconnected;
-import net.minecraft.client.multiplayer.GuiConnecting;
+import net.minecraft.client.gui.screen.DisconnectedScreen;
+import net.minecraft.client.gui.screen.ConnectingScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SPlayerListItemPacket;
 import net.minecraft.network.play.server.SPlayerListItemPacket.Action;
 import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.Color;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.*;
@@ -33,7 +34,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import net.minecraftforge.fml.network.FMLNetworkConstants;
 
 import java.util.List;
 import java.util.UUID;
@@ -57,23 +57,22 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onConnectScreen(GuiOpenEvent e) {
-        if (!(e.getGui() instanceof GuiConnecting)) return;
+        if (!(e.getGui() instanceof ConnectingScreen)) return;
 
         setLoadingStatusMsg("Trying to connect...");
     }
 
     @SubscribeEvent
     public void onScreenDraw(GuiScreenEvent.DrawScreenEvent.Post e) {
-        if (!(e.getGui() instanceof GuiConnecting)) return;
+        if (!(e.getGui() instanceof ConnectingScreen)) return;
 
-        e.getGui().drawCenteredString(McIf.mc().font, statusMsg, e.getGui().width / 2, e.getGui().height / 2 - 20, 16777215);
+        McIf.mc().font.drawShadow(new MatrixStack(), statusMsg, (float)(e.getGui().width / 2 - McIf.mc().font.width(statusMsg) / 2), (float)(e.getGui().height / 2 - 20), 16777215);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onServerJoin(FMLNetworkEvent.ClientConnectedToServerEvent e) {
         setLoadingStatusMsg("Connected...");
         Reference.setUserWorld(null);
-        FMLNetworkConstants
 
         if (Reference.onServer) MinecraftForge.EVENT_BUS.post(new WynncraftServerEvent.Login());
     }
@@ -128,10 +127,10 @@ public class ClientEvents {
         else if (message.contains("You are now combat level") && !message.contains(":"))
             toDispatch = new GameEvent.LevelUp(Integer.parseInt(message.substring(message.indexOf("level")+6)));
         else if (message.contains("Area Discovered")) {
-            for (ITextComponent part : e.getMessage()) {
-                if (part.getStyle().getColor() == TextFormatting.GRAY) {
+            for (ITextComponent part : e.getMessage().getSiblings()) {
+                if (part.getStyle().getColor() == Color.fromLegacyFormat(TextFormatting.GRAY)) {
                     toDispatch = new GameEvent.DiscoveryFound();
-                } else if (part.getStyle().getColor() == TextFormatting.GOLD) {
+                } else if (part.getStyle().getColor() == Color.fromLegacyFormat(TextFormatting.GOLD)) {
                     toDispatch = new GameEvent.DiscoveryFound.World();
                 }
             }
@@ -234,7 +233,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public void onWorldLeave(GuiOpenEvent e) {
-        if (Reference.onServer && e.getGui() instanceof GuiDisconnected) {
+        if (Reference.onServer && e.getGui() instanceof DisconnectedScreen) {
             if (Reference.onWorld) {
                 Reference.setUserWorld(null);
                 MinecraftForge.EVENT_BUS.post(new WynnWorldEvent.Leave());
@@ -254,7 +253,7 @@ public class ClientEvents {
         if (remainingHighlightTicks == 0 || highlightingItemStack.isEmpty()) {
             heldItem = "";
         } else {
-            String newHeldItem = highlightingItemStack.getDisplayName();
+            String newHeldItem = McIf.toText(highlightingItemStack.getDisplayName());
             if (!heldItem.equals(newHeldItem)) {
                 heldItem = newHeldItem;
                 Matcher m = SPELL_CAST.matcher(heldItem);

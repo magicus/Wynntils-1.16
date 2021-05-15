@@ -27,11 +27,11 @@ import com.wynntils.webapi.profiles.item.ItemProfile;
 import com.wynntils.webapi.profiles.item.enums.ItemTier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.screen.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -75,7 +75,7 @@ public class NametagManager {
     public static boolean checkForNametags(RenderLivingEvent.Specials.Pre e) {
         Entity entity =  e.getEntity();
 
-        if (!canRender(e.getEntity(), e.getRenderer().getRenderManager())) return true;
+        if (!canRender(e.getEntity(), e.getRenderer().getEntityRenderDispatcher())) return true;
 
         List<NametagLabel> customLabels = new ArrayList<>();
 
@@ -97,13 +97,13 @@ public class NametagManager {
             if (UtilitiesConfig.INSTANCE.showArmors) customLabels.addAll(getUserArmorLabels((PlayerEntity)entity));  // armors
         } else if (!UtilitiesConfig.INSTANCE.hideNametags && !UtilitiesConfig.INSTANCE.hideNametagBox) return false;
 
-        double distance = entity.getDistanceSq(e.getRenderer().getRenderManager().renderViewEntity);
+        double distance = entity.getDistanceSq(e.getRenderer().getEntityRenderDispatcher().renderViewEntity);
         double range = entity.isSneaking() ? 1024.0d : 4096.0d;
 
         if (distance > range) return true;
 
         alphaFunc(516, 0.1F);
-        drawLabels(entity, McIf.getFormattedText(entity.getDisplayName()), e.getX(), e.getY(), e.getZ(), e.getRenderer().getRenderManager(), customLabels);
+        drawLabels(entity, McIf.getFormattedText(entity.getDisplayName()), e.getX(), e.getY(), e.getZ(), e.getRenderer().getEntityRenderDispatcher(), customLabels);
 
         return true;
     }
@@ -111,7 +111,7 @@ public class NametagManager {
     /**
      * Check if the nametag should be rendered, used over checkForNametags
      */
-    private static boolean canRender(Entity entity, RenderManager manager) {
+    private static boolean canRender(Entity entity, EntityRendererManager manager) {
         if (entity.isBeingRidden()) return false;
         if (!(entity instanceof PlayerEntity)) return entity.getAlwaysRenderNameTagForRender() && entity.hasCustomName();
 
@@ -140,7 +140,7 @@ public class NametagManager {
     /**
      * Handles the nametags drawing, if you want to add more tags use checkForNametags
      */
-    private static void drawLabels(Entity entity, String entityName, double x, double y, double z, RenderManager renderManager, List<NametagLabel> labels) {
+    private static void drawLabels(Entity entity, String entityName, double x, double y, double z, EntityRendererManager renderManager, List<NametagLabel> labels) {
         double distance = entity.getDistanceSq(renderManager.renderViewEntity);
 
         if (distance >= 4096.0d || entityName.isEmpty() || entityName.contains("\u0001")) return;

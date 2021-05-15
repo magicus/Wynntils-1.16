@@ -17,8 +17,8 @@ import com.wynntils.modules.map.instances.PathWaypointProfile.PathPoint;
 import com.wynntils.modules.map.overlays.objects.MapPathWaypointIcon;
 import com.wynntils.modules.map.overlays.objects.WorldMapIcon;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.GuiLabel;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.screen.GuiLabel;
+import net.minecraft.client.gui.screen.GuiTextField;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiCheckBox;
 import org.lwjgl.glfw.GLFW;
@@ -318,11 +318,11 @@ public class PathWaypointCreationUI extends WorldMapUI {
                 MapConfig.Waypoints.INSTANCE.pathWaypoints.add(profile);
             }
             MapConfig.Waypoints.INSTANCE.saveSettings(MapModule.getModule());
-            McIf.mc().displayGuiScreen(new PathWaypointOverwiewUI());
+            McIf.mc().setScreen(new PathWaypointOverwiewUI());
         } else if (btn == cancelButton) {
-            McIf.mc().displayGuiScreen(new PathWaypointOverwiewUI());
+            McIf.mc().setScreen(new PathWaypointOverwiewUI());
         } else if (btn == resetButton) {
-            McIf.mc().displayGuiScreen(new PathWaypointCreationUI(originalProfile));
+            McIf.mc().setScreen(new PathWaypointCreationUI(originalProfile));
         } else if (btn == clearButton) {
             int sz;
             while ((sz = profile.size()) != 0) profile.removePoint(sz - 1);

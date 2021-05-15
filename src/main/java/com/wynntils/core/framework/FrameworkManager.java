@@ -35,7 +35,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.util.*;
 
-import static net.minecraft.client.gui.AbstractGui.GUI_ICONS_LOCATION;
+import static net.minecraft.client.gui.screen.AbstractGui.GUI_ICONS_LOCATION;
 
 public class FrameworkManager {
 

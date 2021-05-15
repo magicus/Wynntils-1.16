@@ -7,13 +7,13 @@ package com.wynntils.core.framework.ui.elements;
 import com.wynntils.McIf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.GuiButtonImage;
+import net.minecraft.client.gui.screen.GuiButtonImage;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
 /**
- * Fixes net.minecraft.client.gui.GuiButtonImage so that it highlights properly
+ * Fixes net.minecraft.client.gui.screen.GuiButtonImage so that it highlights properly
  * and can also be scaled
  */
 public class GuiButtonImageBetter extends GuiButtonImage {

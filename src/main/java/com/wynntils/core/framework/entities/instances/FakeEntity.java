@@ -7,7 +7,7 @@ package com.wynntils.core.framework.entities.instances;
 import com.wynntils.core.utils.objects.Location;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 
 import java.util.Random;
 import java.util.UUID;
@@ -58,7 +58,7 @@ public class FakeEntity {
      * @param context the rendering context
      * @param render the Minecraft Render Manager
      */
-    public void render(float partialTicks, WorldRenderer context, RenderManager render) {
+    public void render(float partialTicks, WorldRenderer context, EntityRendererManager render) {
 
     }
 
@@ -70,7 +70,7 @@ public class FakeEntity {
      * @param context the rendering context
      * @param render the Minecraft Render Manager
      */
-    public void preRender(float partialTicks, WorldRenderer context, RenderManager render) {
+    public void preRender(float partialTicks, WorldRenderer context, EntityRendererManager render) {
 
     }
 

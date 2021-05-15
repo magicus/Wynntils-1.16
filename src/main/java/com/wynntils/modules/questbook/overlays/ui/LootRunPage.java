@@ -404,7 +404,7 @@ public class LootRunPage extends QuestBookPage {
                     WebManager.tryReloadApiUrls(true);
                 } else {
                     Location start = LootRunManager.getActivePath().getPoints().get(0);
-                    Utils.displayGuiScreen(new MainWorldMapUI((int) start.x, (int) start.z));
+                    Utils.setScreen(new MainWorldMapUI((int) start.x, (int) start.z));
                 }
             }
         }

@@ -11,12 +11,10 @@ import com.wynntils.core.framework.instances.data.HorseData;
 import com.wynntils.core.utils.helpers.Delay;
 import com.wynntils.modules.utilities.events.ClientEvents;
 import com.wynntils.modules.utilities.overlays.hud.GameUpdateOverlay;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.client.multiplayer.PlayerController;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.entity.item.BoatEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -37,7 +35,7 @@ public class MountHorseManager {
     private static boolean ingamePrevention = false;
 
     public static boolean isPlayersHorse(Entity horse, String playerName) {
-        return (horse instanceof AbstractHorseEntity) && isPlayersHorse(horse.getCustomNameTag(), playerName);
+        return (horse instanceof AbstractHorseEntity) && isPlayersHorse(McIf.toText(horse.getCustomName()), playerName);
     }
 
     public static boolean isPlayersHorse(String horseName, String playerName) {
@@ -50,12 +48,12 @@ public class MountHorseManager {
     private static Entity findHorseInRadius() {
         ClientPlayerEntity player = McIf.player();
 
-        List<Entity> horses = McIf.world().getEntitiesWithinAABB(AbstractHorseEntity.class, new AxisAlignedBB(
+        List<Entity> horses = McIf.world().getEntitiesOfClass(AbstractHorseEntity.class, new AxisAlignedBB(
                 player.getX() - searchRadius, player.getY() - searchRadius, player.getZ() - searchRadius,
                 player.getX() + searchRadius, player.getY() + searchRadius, player.getZ() + searchRadius
         ));
 
-        String playerName = player.getName();
+        String playerName = McIf.toText(player.getName());
 
         for (Entity h : horses) {
             if (isPlayersHorse(h, playerName)) {
@@ -81,7 +79,7 @@ public class MountHorseManager {
         int prev = McIf.player().inventory.selected;
         new Delay(() -> {
             McIf.player().inventory.selected = horse.getInventorySlot();
-            McIf.mc().gameMode.processRightClick(McIf.player(), McIf.player().level, Hand.MAIN_HAND);
+            McIf.mc().gameMode.useItem(McIf.player(), McIf.player().level, Hand.MAIN_HAND);
             McIf.player().inventory.selected = prev;
 
             if (findHorseInRadius() != null) {
@@ -97,8 +95,8 @@ public class MountHorseManager {
     }
 
     public static MountHorseStatus mountHorse(boolean allowRetry) {
-        EntityPlayerSP player = McIf.player();
-        PlayerControllerMP gameMode = McIf.mc().gameMode;
+        ClientPlayerEntity player = McIf.player();
+        PlayerController gameMode = McIf.mc().gameMode;
 
         HorseData horse = PlayerInfo.get(HorseData.class);
 
@@ -106,7 +104,7 @@ public class MountHorseManager {
             return MountHorseStatus.NO_HORSE;
         }
 
-        if (player.isRiding()) {
+        if (player.isPassenger()) {
             return MountHorseStatus.ALREADY_RIDING;
         }
 
@@ -115,8 +113,8 @@ public class MountHorseManager {
         int prev = player.inventory.selected;
         boolean far = false;
         if (playersHorse != null) {
-            double maxDistance = player.canEntityBeSeen(playersHorse) ? 36.0D : 9.0D;
-            far = player.getDistanceSq(playersHorse) > maxDistance;
+            double maxDistance = player.canSee(playersHorse) ? 36.0D : 9.0D;
+            far = player.distanceToSqr(playersHorse) > maxDistance;
         }
 
         if (playersHorse == null || far) {
@@ -125,7 +123,7 @@ public class MountHorseManager {
             }
 
             player.inventory.selected = horse.getInventorySlot();
-            gameMode.processRightClick(player, player.level, Hand.MAIN_HAND);
+            gameMode.useItem(player, player.level, Hand.MAIN_HAND);
             player.inventory.selected = prev;
             if (far) {
                 tryDelayedSpawnMount(horse, spawnAttempts);
@@ -141,7 +139,7 @@ public class MountHorseManager {
         }
 
         player.inventory.selected = 8; // swap to soul points to avoid any right-click conflicts
-        gameMode.interactWithEntity(player, playersHorse, Hand.MAIN_HAND);
+        gameMode.interact(player, playersHorse, Hand.MAIN_HAND);
         player.inventory.selected = prev;
         return MountHorseStatus.SUCCESS;
     }
@@ -149,16 +147,16 @@ public class MountHorseManager {
     public static String getMountHorseErrorMessage(MountHorseStatus status) {
         switch (status) {
             case ALREADY_RIDING:
-                Entity ridingEntity = McIf.player().getRidingEntity();
+                Entity ridingEntity = McIf.player().getVehicle();
                 String ridingEntityType;
                 if (ridingEntity == null) {
                     ridingEntityType = "nothing?";
                 } else if (ridingEntity instanceof AbstractHorseEntity) {
                     ridingEntityType = "a horse";
-                } else if (ridingEntity instanceof EntityBoat) {
+                } else if (ridingEntity instanceof BoatEntity) {
                     ridingEntityType = "a boat";
                 } else {
-                    String name = ridingEntity.getName();
+                    String name = McIf.toText(ridingEntity.getName());
                     if (name == null) {
                         ridingEntityType = "something";
                     } else {

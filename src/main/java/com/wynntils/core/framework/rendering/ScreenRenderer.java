@@ -13,6 +13,7 @@ import net.minecraft.client.MainWindow;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.VirtualScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 
@@ -29,6 +30,7 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class ScreenRenderer {
 
+    private static VirtualScreen virtualScreen;
     public static SmartFontRenderer font = null;
     public static MainWindow screen = null;
     private static boolean rendering = false;
@@ -54,7 +56,12 @@ public class ScreenRenderer {
      * except {@link com.wynntils.core.events.ClientEvents#onTick(TickEvent.ClientTickEvent)} !
      */
     public static void refresh() {
-        screen = new MainWindow(McIf.mc());
+        // FIXME: Probably wrong, possibly screen is not needed
+        if (virtualScreen == null) {
+            virtualScreen = new VirtualScreen(McIf.mc());
+        }
+        screen = virtualScreen.newWindow(null, McIf.mc().options.fullscreenVideoModeString, "Wynntils Renderer");
+
         if (font == null) {
             font = new SmartFontRenderer();
             font.onResourceManagerReload(McIf.mc().getResourceManager());
@@ -833,7 +840,7 @@ public class ScreenRenderer {
         if (!rendering) return;
         RenderHelper.enableGUIStandardItemLighting();
         itemRenderer.zLevel = 200.0F;
-        net.minecraft.client.gui.FontRenderer font = is.getItem().getFontRenderer(is);
+        net.minecraft.client.gui.screen.FontRenderer font = is.getItem().getFontRenderer(is);
         if (font == null) font = font;
         if (effects)
             itemRenderer.renderItemAndEffectIntoGUI(is, x + drawingOrigin.x, y + drawingOrigin.y);

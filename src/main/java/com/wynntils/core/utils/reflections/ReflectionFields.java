@@ -5,11 +5,11 @@
 package com.wynntils.core.utils.reflections;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.GuiPlayerTabOverlay;
+import net.minecraft.client.gui.screen.GuiChat;
+import net.minecraft.client.gui.screen.GuiIngame;
+import net.minecraft.client.gui.screen.GuiPlayerTabOverlay;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.inventory.GuiChest;
+import net.minecraft.client.gui.screen.inventory.ChestScreen;
 import net.minecraft.client.gui.screen.inventory.HorseInventoryScreen;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -24,7 +24,7 @@ import java.lang.reflect.Modifier;
 
 public enum ReflectionFields {
 
-    GuiChest_lowerChestInventory(GuiChest.class, "lowerChestInventory", "field_147015_w"),
+    GuiChest_lowerChestInventory(ChestScreen.class, "lowerChestInventory", "field_147015_w"),
     Entity_CUSTOM_NAME(Entity.class, "CUSTOM_NAME", "field_184242_az"),
     Entity_CUSTOM_NAME_VISIBLE(Entity.class, "CUSTOM_NAME_VISIBLE", "field_184233_aA"),
     ItemFrameEntity_ITEM(ItemFrameEntity.class, "ITEM", "field_184525_c"),

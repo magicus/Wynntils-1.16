@@ -353,7 +353,7 @@ public class GearViewerUI extends FakeGuiContainer {
         PlayerEntity ep = (PlayerEntity) e;
         if (ep.getTeam() == null) return; // player model npc
 
-        McIf.mc().displayGuiScreen(new GearViewerUI(new InventoryBasic("", false, 5), ep));
+        McIf.mc().setScreen(new GearViewerUI(new InventoryBasic("", false, 5), ep));
     }
 
 }

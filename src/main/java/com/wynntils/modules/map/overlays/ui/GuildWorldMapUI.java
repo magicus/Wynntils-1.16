@@ -86,7 +86,7 @@ public class GuildWorldMapUI extends WorldMapUI {
 
         // HeyZeer0: This close the map if the user was pressing the map key and after a moment dropped it
         if (holdingMapKey && !isHoldingMapKey()) {
-            McIf.mc().displayGuiScreen(null);
+            McIf.mc().setScreen(null);
             return;
         }
 
@@ -213,7 +213,7 @@ public class GuildWorldMapUI extends WorldMapUI {
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         if (!holdingMapKey && keyCode == MapModule.getModule().getGuildMapKey().getKeyBinding().getKeyCode()) {
-            McIf.mc().displayGuiScreen(null);
+            McIf.mc().setScreen(null);
             return;
         }
 

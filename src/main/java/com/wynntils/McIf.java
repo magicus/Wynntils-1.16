@@ -27,6 +27,17 @@ public class McIf {
         return msg.toString();
     }
 
+    /**
+     * This is a wrapper for methods that returned a String in 1.12.
+     * FIXME: will need individual consideration to figure out proper replacement.
+     * @param msg
+     * @return
+     */
+    public static String toText(ITextComponent msg) {
+        // FIXME: Need better implementation!
+        return msg.toString();
+    }
+
     public static Minecraft mc() {
         return Minecraft.getInstance();
     }

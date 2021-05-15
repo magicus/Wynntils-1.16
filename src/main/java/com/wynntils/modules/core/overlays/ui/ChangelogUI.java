@@ -78,7 +78,7 @@ public class ChangelogUI extends Screen {
     public static void loadChangelogAndShow(Screen previousGui, boolean major, boolean forceLatest) {
 
         Screen loadingScreen = new ChangelogUI(previousGui, Collections.singletonList("Loading..."), major);
-        McIf.mc().displayGuiScreen(loadingScreen);
+        McIf.mc().setScreen(loadingScreen);
         if (McIf.mc().screen != loadingScreen) {
             // Changed by an event handler
             return;
@@ -99,7 +99,7 @@ public class ChangelogUI extends Screen {
                 }
 
                 ChangelogUI gui = new ChangelogUI(previousGui, changelog, major);
-                McIf.mc().displayGuiScreen(gui);
+                McIf.mc().setScreen(gui);
             });
 
         }, "wynntils-changelog").start();
@@ -166,7 +166,7 @@ public class ChangelogUI extends Screen {
     @Override
     protected void keyTyped(char charType, int keyCode) throws IOException {
         if (keyCode == 1) {  // ESC
-            McIf.mc().displayGuiScreen(previousGui);
+            McIf.mc().setScreen(previousGui);
             if (McIf.mc().screen == null) McIf.mc().setIngameFocus();
         }
     }

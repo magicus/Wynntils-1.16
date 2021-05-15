@@ -64,7 +64,7 @@ public class MapModule extends Module {
 
         registerKeyBinding("New Waypoint", GLFW.GLFW_KEY_B, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
             if (Reference.onWorld)
-                McIf.mc().displayGuiScreen(new WaypointCreationMenu(null));
+                McIf.mc().setScreen(new WaypointCreationMenu(null));
         });
 
         mapKey = registerKeyBinding("Open Map", GLFW.GLFW_KEY_M, "Wynntils", KeyConflictContext.IN_GAME, true, () -> {
@@ -72,7 +72,7 @@ public class MapModule extends Module {
                 if (WebManager.getApiUrls() == null) {
                     WebManager.tryReloadApiUrls(true);
                 } else {
-                    Utils.displayGuiScreen(new MainWorldMapUI());
+                    Utils.setScreen(new MainWorldMapUI());
                 }
             }
         });
@@ -82,7 +82,7 @@ public class MapModule extends Module {
                 if (WebManager.getApiUrls() == null) {
                     WebManager.tryReloadApiUrls(true);
                 } else {
-                    Utils.displayGuiScreen(new GuildWorldMapUI());
+                    Utils.setScreen(new GuildWorldMapUI());
                 }
             }
         });
