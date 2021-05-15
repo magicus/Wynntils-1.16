@@ -21,7 +21,7 @@ public class IngredientFilterOverlay implements Listener {
     private final static List<String> professionArray = new ArrayList<>(Arrays.asList("-", "None", "Ⓐ", "Cooking", "Ⓓ", "Jeweling", "Ⓔ", "Scribing", "Ⓕ", "Tailoring", "Ⓖ", "Weapon smithing", "Ⓗ", "Armouring", "Ⓘ", "Woodworking", "Ⓛ", "Alchemism"));
 
     @SubscribeEvent
-    public void initGui(GuiOverlapEvent.ChestOverlap.InitGui e) {
+    public void init(GuiOverlapEvent.ChestOverlap.InitGui e) {
         if (!Reference.onWorld || !UtilitiesConfig.Items.INSTANCE.filterEnabled) return;
 
         e.getButtonList().add(
@@ -35,7 +35,7 @@ public class IngredientFilterOverlay implements Listener {
     }
 
     @SubscribeEvent
-    public void drawScreen(GuiOverlapEvent.ChestOverlap.DrawScreen.Post e) {
+    public void render(MatrixStack matrix, GuiOverlapEvent.ChestOverlap.DrawScreen.Post e) {
         e.getButtonList().forEach(gb -> {
             if (gb.id == 11 && gb.isMouseOver()) {
                 e.getGui().drawHoveringText(professionArray.get(professionArray.indexOf(gb.displayString) + 1), e.getMouseX(), e.getMouseY());

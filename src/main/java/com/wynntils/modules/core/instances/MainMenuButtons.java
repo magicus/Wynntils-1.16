@@ -137,7 +137,7 @@ public class MainMenuButtons {
         }
 
         @Override
-        public void initGui() {
+        public void init() {
             doAction();
         }
 

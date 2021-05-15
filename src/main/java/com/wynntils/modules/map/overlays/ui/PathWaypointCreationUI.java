@@ -18,7 +18,7 @@ import com.wynntils.modules.map.overlays.objects.MapPathWaypointIcon;
 import com.wynntils.modules.map.overlays.objects.WorldMapIcon;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.GuiLabel;
-import net.minecraft.client.gui.screen.GuiTextField;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import com.wynntils.transition.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiCheckBox;
 import org.lwjgl.glfw.GLFW;
@@ -33,7 +33,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
     private Button clearButton;
 
     private GuiLabel nameFieldLabel;
-    private GuiTextField nameField;
+    private TextFieldWidget nameField;
     private GuiCheckBox hiddenBox;
     private GuiCheckBox circularBox;
 
@@ -72,10 +72,10 @@ public class PathWaypointCreationUI extends WorldMapUI {
     }
 
     @Override
-    public void initGui() {
+    public void init() {
         buttonList.clear();
 
-        super.initGui();
+        super.init();
 
         buttonList.add(saveButton = new Button(1, 22, 23, 60, 18, "Save"));
         buttonList.add(cancelButton = new Button(3, 22, 46, 60, 18, "Cancel"));
@@ -85,7 +85,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
         boolean returning = nameField != null;
         String name = returning ? nameField.getText() : profile.name;
 
-        nameField = new GuiTextField(0, McIf.mc().font, this.width - 183, 23, 160, 20);
+        nameField = new TextFieldWidget(0, McIf.mc().font, this.width - 183, 23, 160, 20);
         nameField.setText(name);
         nameFieldLabel = new GuiLabel(McIf.mc().font, 0, this.width - 218, 30, 40, 10, 0xFFFFFF);
         nameFieldLabel.addLine("Name");
@@ -239,10 +239,11 @@ public class PathWaypointCreationUI extends WorldMapUI {
     }
 
     @Override
-    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-        if (handleMouse(mouseX, mouseY, clickedMouseButton)) return;
+    public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double d1, double d2) {
+        if (handleMouse((int) mouseX, (int) mouseY, mouseButton)) return true;
 
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        super.mouseDragged(mouseX, mouseY, mouseButton, d1, d2);
+        return true;
     }
 
     @Override
@@ -266,7 +267,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         boolean isShiftKeyDown = isShiftKeyDown();
 
         updatePosition(mouseX, mouseY, !nameField.isFocused() && isShiftKeyDown && clicking[0] && !clicking[1]);
@@ -303,7 +304,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
         nameFieldLabel.drawLabel(McIf.mc(), mouseX, mouseY);
         helpText.drawLabel(McIf.mc(), mouseX, mouseY);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
     }
 
     @Override

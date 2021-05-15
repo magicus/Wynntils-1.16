@@ -91,7 +91,7 @@ public class CharacterSelectorUI extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         Tessellator tes = Tessellator.getInstance();
         BufferBuilder builder = tes.getBuilder();
 
@@ -207,31 +207,32 @@ public class CharacterSelectorUI extends Screen {
         }
 
         if (hoveredButton == 51 && createCharacterSlot != -1) { // create character
-            chest.handleMouseClick(chest.inventorySlots.getSlot(createCharacterSlot), createCharacterSlot, 0, ClickType.PICKUP);
+            chest.slotClicked(chest.inventorySlots.getSlot(createCharacterSlot), createCharacterSlot, 0, ClickType.PICKUP);
         } else if (hoveredButton == 52) { // edit menu
-            chest.handleMouseClick(chest.inventorySlots.getSlot(8), 8, 0, ClickType.PICKUP);
+            chest.slotClicked(chest.inventorySlots.getSlot(8), 8, 0, ClickType.PICKUP);
         } else if (hoveredButton == 53) { // delete character
             if (selectedCharacter == -1) return;
 
             CharacterProfile selected = availableCharacters.get(selectedCharacter);
-            chest.handleMouseClick(chest.inventorySlots.getSlot(selected.getSlot()), selected.getSlot(), 1, ClickType.PICKUP);
+            chest.slotClicked(chest.inventorySlots.getSlot(selected.getSlot()), selected.getSlot(), 1, ClickType.PICKUP);
         } else if (hoveredButton == 57) { // play button
             if (selectedCharacter == -1) return;
 
             CharacterProfile selected = availableCharacters.get(selectedCharacter);
-            chest.handleMouseClick(chest.inventorySlots.getSlot(selected.getSlot()), selected.getSlot(), 0, ClickType.PICKUP);
+            chest.slotClicked(chest.inventorySlots.getSlot(selected.getSlot()), selected.getSlot(), 0, ClickType.PICKUP);
         } else if (hoveredButton == 58) { // character deletion
-            chest.handleMouseClick(chest.inventorySlots.getSlot(26), 26, 0, ClickType.PICKUP);
+            chest.slotClicked(chest.inventorySlots.getSlot(26), 26, 0, ClickType.PICKUP);
         } else if (hoveredButton == 59 && availableCharacters.size() > 7) {
             scrollPosition = (this.mouseY - 3) / 245f;
         }
     }
 
     @Override
-    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-        if (hoveredButton != 59 || availableCharacters.size() <= 7) return;
+    public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double d1, double d2) {
+        if (hoveredButton != 59 || availableCharacters.size() <= 7) return true;
 
         scrollPosition = (this.mouseY - 3) / 245f;
+        return true;
     }
 
     @Override

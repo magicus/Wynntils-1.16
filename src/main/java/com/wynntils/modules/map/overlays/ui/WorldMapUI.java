@@ -422,8 +422,8 @@ public class WorldMapUI extends GuiMovementScreen {
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
 
         updateCenterPosition(centerPositionX, centerPositionZ);
         Keyboard.enableRepeatEvents(true);

@@ -43,10 +43,10 @@ public class TabGUI extends Screen {
     GuiCheckBox partyRegex;
     GuiCheckBox shoutsRegex;
     GuiCheckBox pmRegex;
-    GuiTextField nameTextField;
-    GuiTextField regexTextField;
-    GuiTextField autoCommandField;
-    GuiTextField orderNbField;
+    TextFieldWidget nameTextField;
+    TextFieldWidget regexTextField;
+    TextFieldWidget autoCommandField;
+    TextFieldWidget orderNbField;
 
     // labels
     GuiLabel nameLabel;
@@ -56,7 +56,7 @@ public class TabGUI extends Screen {
     GuiLabel simpleSettings;
 
     @Override
-    public void initGui() {
+    public void init() {
         labelList.clear();
         simpleRegexSettings.clear();
 
@@ -70,19 +70,19 @@ public class TabGUI extends Screen {
 
         deleteButton.enabled = (id != -2) && TabManager.getAvailableTabs().size() > 1;
 
-        nameTextField = new GuiTextField(3, McIf.mc().font, x - 110, y - 90, 80, 20);
+        nameTextField = new TextFieldWidget(3, McIf.mc().font, x - 110, y - 90, 80, 20);
         nameTextField.setVisible(true);
         nameTextField.setEnabled(true);
         nameTextField.setEnableBackgroundDrawing(true);
         nameTextField.setMaxStringLength(10);
 
-        autoCommandField = new GuiTextField(3, McIf.mc().font, x - 12, y - 90, 80, 20);
+        autoCommandField = new TextFieldWidget(3, McIf.mc().font, x - 12, y - 90, 80, 20);
         autoCommandField.setVisible(true);
         autoCommandField.setEnabled(true);
         autoCommandField.setEnableBackgroundDrawing(true);
         autoCommandField.setMaxStringLength(10);
 
-        orderNbField = new GuiTextField(3, McIf.mc().font, x + 85, y - 90, 25, 20);
+        orderNbField = new TextFieldWidget(3, McIf.mc().font, x + 85, y - 90, 25, 20);
         orderNbField.setVisible(true);
         orderNbField.setEnabled(true);
         orderNbField.setEnableBackgroundDrawing(true);
@@ -103,7 +103,7 @@ public class TabGUI extends Screen {
         buttonList.addAll(simpleRegexSettings);
         applyRegexSettings();
         // Advanced
-        regexTextField = new GuiTextField(3, McIf.mc().font, x - 100, y - 20, 200, 20);
+        regexTextField = new TextFieldWidget(3, McIf.mc().font, x - 100, y - 20, 200, 20);
         regexTextField.setVisible(false);
         regexTextField.setEnabled(true);
         regexTextField.setEnableBackgroundDrawing(true);
@@ -181,10 +181,10 @@ public class TabGUI extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
 
         if (nameTextField != null) nameTextField.drawTextBox();
         if (regexTextField != null) regexTextField.drawTextBox();

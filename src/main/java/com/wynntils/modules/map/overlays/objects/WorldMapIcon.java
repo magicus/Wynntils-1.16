@@ -75,7 +75,7 @@ public class WorldMapIcon {
         return mouseX >= (axisX - sizeX) && mouseX <= (axisX + sizeX) && mouseY >= (axisZ - sizeZ) && mouseY <= (axisZ + sizeZ);
     }
 
-    public void drawScreen(int mouseX, int mouseY, float partialTicks, float blockScale, ScreenRenderer renderer) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, float blockScale, ScreenRenderer renderer) {
         if (!shouldRender || renderer == null) return;
 
         GlStateManager.color(1, 1, 1, alpha);

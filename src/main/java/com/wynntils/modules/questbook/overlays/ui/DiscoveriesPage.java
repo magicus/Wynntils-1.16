@@ -59,8 +59,8 @@ public class DiscoveriesPage extends QuestBookPage {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrix, mouseX, mouseY, partialTicks);
         int x = width / 2;
         int y = height / 2;
         int posX = (x - mouseX);
@@ -518,7 +518,7 @@ public class DiscoveriesPage extends QuestBookPage {
 
         handler.addAndDispatch(query.handleJsonObject(jsonOutput -> {
             if (jsonOutput.has("error")) { // Returns error if page does not exist
-                McIf.player().sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki page not found)"));
+                McIf.sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki page not found)"));
                 return true;
             }
 
@@ -537,12 +537,12 @@ public class DiscoveriesPage extends QuestBookPage {
                 x = Integer.parseInt(xlocation.substring(12, xend));
                 z = Integer.parseInt(zlocation.substring(12, zend));
             } catch (NumberFormatException e) {
-                McIf.player().sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki template not located)"));
+                McIf.sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki template not located)"));
                 return true;
             }
 
             if (x == 0 && z == 0) {
-                McIf.player().sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki coordinates not located)"));
+                McIf.sendMessage(new StringTextComponent(TextFormatting.RED + "Unable to find discovery coordinates. (Wiki coordinates not located)"));
                 return true;
             }
 

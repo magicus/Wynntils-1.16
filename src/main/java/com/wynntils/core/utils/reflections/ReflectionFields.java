@@ -6,8 +6,8 @@ package com.wynntils.core.utils.reflections;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.GuiChat;
-import net.minecraft.client.gui.screen.GuiIngame;
-import net.minecraft.client.gui.screen.GuiPlayerTabOverlay;
+import net.minecraft.client.gui.IngameGui;
+import net.minecraft.client.gui.overlay.PlayerTabOverlayGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.ChestScreen;
 import net.minecraft.client.gui.screen.inventory.HorseInventoryScreen;
@@ -32,13 +32,14 @@ public enum ReflectionFields {
     GuiScreen_buttonList(Screen.class, "buttonList", "field_146292_n"),
     HorseInventoryScreen_horseEntity(HorseInventoryScreen.class, "horseEntity", "field_147034_x"),
     HorseInventoryScreen_horseInventory(HorseInventoryScreen.class, "horseInventory", "field_147029_w"),
-    GuiIngame_persistantChatGUI(GuiIngame.class, "persistantChatGUI", "field_73840_e"),
-    GuiIngame_remainingHighlightTicks(GuiIngame.class, "remainingHighlightTicks", "field_92017_k"),
-    GuiIngame_highlightingItemStack(GuiIngame.class, "highlightingItemStack", "field_92016_l"),
-    GuiIngame_displayedSubTitle(GuiIngame.class, "displayedSubTitle", "field_175200_y"),
-    GuiIngame_overlayPlayerList(GuiIngame.class, "overlayPlayerList", "field_175196_v"),
+    IngameGui_persistantChatGUI(IngameGui.class, "persistantChatGUI", "field_73840_e"),
+    IngameGui_remainingHighlightTicks(IngameGui.class, "remainingHighlightTicks", "field_92017_k"),
+    IngameGui_highlightingItemStack(IngameGui.class, "highlightingItemStack", "field_92016_l"),
+    IngameGui_displayedSubTitle(IngameGui.class, "displayedSubTitle", "field_175200_y"),
+    // FIXME: protected final PlayerTabOverlayGui tabList;
+    IngameGui_overlayPlayerList(IngameGui.class, "overlayPlayerList", "field_175196_v"),
     GuiChat_defaultInputFieldText(GuiChat.class, "defaultInputFieldText", "field_146409_v"),
-    GuiPlayerTabOverlay_ENTRY_ORDERING(GuiPlayerTabOverlay.class, "ENTRY_ORDERING", "field_175252_a"),
+    PlayerTabOverlayGui_ENTRY_ORDERING(PlayerTabOverlayGui.class, "ENTRY_ORDERING", "field_175252_a"),
     Minecraft_resourcePackRepository(Minecraft.class, "resourcePackRepository", "field_110448_aq"),
     CClientSettingsPacket_chatVisibility(CClientSettingsPacket.class, "chatVisibility", "field_149529_c"),
     ModelRenderer_compiled(ModelRenderer.class, "compiled", "field_78812_q"),
@@ -46,7 +47,7 @@ public enum ReflectionFields {
     RenderItem_itemModelMesher(ItemRenderer.class, "itemModelMesher", "field_175059_m");
 
     static {
-        GuiPlayerTabOverlay_ENTRY_ORDERING.removeFinal();
+        PlayerTabOverlayGui_ENTRY_ORDERING.removeFinal();
     }
 
     final Field field;

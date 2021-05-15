@@ -176,7 +176,7 @@ public class OverlayEvents implements Listener {
             if (!wynnExpTimestampNotified) {
                 StringTextComponent text = new StringTextComponent("[" + Reference.NAME + "] WynnExpansion's chat timestamps detected, please use " + Reference.NAME + "' chat timestamps for full compatibility.");
                 text.getStyle().setColor(DARK_RED);
-                McIf.player().sendMessage(text);
+                McIf.sendMessage(text);
                 wynnExpTimestampNotified = true;
             }
         }

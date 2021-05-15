@@ -139,7 +139,7 @@ public class ChatOverlay extends GuiNewChat {
     }
 
     public void printChatMessageWithOptionalDeletion(ITextComponent chatComponent, int chatLineId) {
-        setChatLine(chatComponent, chatLineId, McIf.mc().ingameGUI.getUpdateCounter(), false, false);
+        setChatLine(chatComponent, chatLineId, McIf.mc().gui.getUpdateCounter(), false, false);
         LOGGER.info("[CHAT] " + McIf.getUnformattedText(chatComponent).replaceAll("\r", "\\\\r").replaceAll("\n", "\\\\n"));
     }
 
@@ -148,7 +148,7 @@ public class ChatOverlay extends GuiNewChat {
     }
 
     public void printUnloggedChatMessage(ITextComponent chatComponent, int chatLineId) {
-        setChatLine(chatComponent, chatLineId, McIf.mc().ingameGUI.getUpdateCounter(), false, true);
+        setChatLine(chatComponent, chatLineId, McIf.mc().gui.getUpdateCounter(), false, true);
     }
 
     private void setChatLine(ITextComponent chatComponent, int chatLineId, int updateCounter, boolean displayOnly, boolean noEvent) {

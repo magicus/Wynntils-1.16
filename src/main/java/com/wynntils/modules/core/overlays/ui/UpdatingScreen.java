@@ -37,7 +37,7 @@ public class UpdatingScreen extends Screen {
     }
 
     @Override
-    public void initGui() {
+    public void init() {
         this.buttonList.add(backButton = new Button(0, this.width / 2 - 100, this.height / 4 + 132, 200, 20, ""));
         updateText();
     }
@@ -150,7 +150,7 @@ public class UpdatingScreen extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
         if (failed) {
@@ -175,6 +175,6 @@ public class UpdatingScreen extends Screen {
             drawString(McIf.mc().font, title, x, top - McIf.mc().font.FONT_HEIGHT - 2, 0xFFFFFFFF);
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
     }
 }

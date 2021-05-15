@@ -52,7 +52,7 @@ public class ActionBarOverlay extends Overlay {
         int padding = 3;
         int y = 0;
 
-        BlockPos blockPos = new BlockPos(McIf.player());
+        BlockPos blockPos = new BlockPos(McIf.player().position());
         String lCoord = TextFormatting.GRAY.toString() + blockPos.getX();
         String middleCoord;
         if (!OverlayConfig.INSTANCE.replaceDirection) {
@@ -101,14 +101,14 @@ public class ActionBarOverlay extends Overlay {
     }
 
     private boolean renderItemName() {
-        int newHighlightTicks = ReflectionFields.GuiIngame_remainingHighlightTicks.getValue(McIf.mc().ingameGUI);
-        ItemStack newHighlightItem = ReflectionFields.GuiIngame_highlightingItemStack.getValue(McIf.mc().ingameGUI);
+        int newHighlightTicks = ReflectionFields.IngameGui_remainingHighlightTicks.getValue(McIf.mc().gui);
+        ItemStack newHighlightItem = ReflectionFields.IngameGui_highlightingItemStack.getValue(McIf.mc().gui);
 
         if (newHighlightTicks > 0) { // update item
             highlightTicks = newHighlightTicks*5; // this method ticks 5 times as fast as the default
             highlightItem = newHighlightItem;
 
-            ReflectionFields.GuiIngame_remainingHighlightTicks.setValue(McIf.mc().ingameGUI, 0);
+            ReflectionFields.IngameGui_remainingHighlightTicks.setValue(McIf.mc().gui, 0);
         } else if (newHighlightItem.isEmpty()) { // clear highlight when player switches to an empty hand
             highlightTicks = 0;
         }

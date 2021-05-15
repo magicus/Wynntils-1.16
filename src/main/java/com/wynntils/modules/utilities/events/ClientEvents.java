@@ -503,7 +503,7 @@ public class ClientEvents implements Listener {
                         StringTextComponent text = new StringTextComponent("You cannot close this loot chest while there is a mythic in it!");
                         text.getStyle().setColor(TextFormatting.RED);
 
-                        McIf.player().sendMessage(text);
+                        McIf.sendMessage(text);
                         McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_BASS, 1f));
                         e.setCanceled(true);
                         break;
@@ -651,7 +651,7 @@ public class ClientEvents implements Listener {
         }
 
         // move accessory
-        gui.handleMouseClick(gui.inventorySlots.getSlot(accessoryDestinationSlot), accessoryDestinationSlot, 0, ClickType.PICKUP);
+        gui.slotClicked(gui.inventorySlots.getSlot(accessoryDestinationSlot), accessoryDestinationSlot, 0, ClickType.PICKUP);
         accessoryDestinationSlot = -1;
     }
 

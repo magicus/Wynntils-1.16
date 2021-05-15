@@ -8,7 +8,7 @@ import com.google.common.collect.Ordering;
 import com.wynntils.Reference;
 import com.wynntils.core.utils.StringUtils;
 import com.wynntils.core.utils.reflections.ReflectionFields;
-import net.minecraft.client.gui.screen.GuiPlayerTabOverlay;
+import net.minecraft.client.gui.overlay.PlayerTabOverlayGui;
 import net.minecraft.client.network.play.NetworkPlayerInfo;
 
 import java.util.Arrays;
@@ -76,10 +76,10 @@ public class TabManager {
     public static void replaceTabOrderer() {
         try {
             entryOrdering = new FastEntryOrdering(
-                    (Ordering<NetworkPlayerInfo>) ReflectionFields.GuiPlayerTabOverlay_ENTRY_ORDERING
-                            .getValue(GuiPlayerTabOverlay.class));
+                    (Ordering<NetworkPlayerInfo>) ReflectionFields.PlayerTabOverlayGui_ENTRY_ORDERING
+                            .getValue(PlayerTabOverlayGui.class));
 
-            ReflectionFields.GuiPlayerTabOverlay_ENTRY_ORDERING.setValue(GuiPlayerTabOverlay.class, entryOrdering);
+            ReflectionFields.PlayerTabOverlayGui_ENTRY_ORDERING.setValue(PlayerTabOverlayGui.class, entryOrdering);
         } catch (Throwable e) {
             e.printStackTrace();
         }

@@ -164,7 +164,7 @@ public class CommandWynntils extends CommandBase implements IClientCommand {
                 if (!Reference.developmentEnvironment) {
                     ITextComponent message = new StringTextComponent(TextFormatting.RED + "You can't use this command outside a development environment");
 
-                    McIf.player().sendMessage(message);
+                    McIf.sendMessage(message);
                     return;
                 }
 

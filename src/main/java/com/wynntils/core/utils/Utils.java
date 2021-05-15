@@ -10,7 +10,7 @@ import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.GuiScreen;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.GuiTextField;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.gui.screen.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -321,7 +321,7 @@ public class Utils {
         urlComponent.getStyle().setUnderlined(true);
         text.appendSibling(urlComponent);
 
-        McIf.player().sendMessage(text);
+        McIf.sendMessage(text);
     }
 
     public static String encodeUrl(String url) {
@@ -360,7 +360,7 @@ public class Utils {
         }
     }
 
-    public static void tab(int amount, GuiTextField... tabList) {
+    public static void tab(int amount, TextFieldWidget... tabList) {
         tab(amount, Arrays.asList(tabList));
     }
 
@@ -369,10 +369,10 @@ public class Utils {
      * next one (or previous one if amount is -1), wrapping around.
      * Focuses the first one if there is no focused field.
      */
-    public static void tab(int amount, List<GuiTextField> tabList) {
+    public static void tab(int amount, List<TextFieldWidget> tabList) {
         int focusIndex = -1;
         for (int i = 0; i < tabList.size(); ++i) {
-            GuiTextField field = tabList.get(i);
+            TextFieldWidget field = tabList.get(i);
             if (field.isFocused()) {
                 focusIndex = i;
                 field.setCursorPosition(0);
@@ -382,7 +382,7 @@ public class Utils {
             }
         }
         focusIndex = focusIndex == -1 ? 0 : Math.floorMod(focusIndex + amount, tabList.size());
-        GuiTextField selected = tabList.get(focusIndex);
+        TextFieldWidget selected = tabList.get(focusIndex);
         selected.setFocused(true);
         selected.setCursorPosition(0);
         selected.setSelectionPos(selected.getText().length());

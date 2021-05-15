@@ -21,20 +21,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.GuiLabel;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.GuiTextField;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
 
 public class WaypointCreationMenu extends UI {
     private GuiLabel nameFieldLabel;
-    private GuiTextField nameField;
+    private TextFieldWidget nameField;
     private GuiLabel xCoordFieldLabel;
-    private GuiTextField xCoordField;
+    private TextFieldWidget xCoordField;
     private GuiLabel yCoordFieldLabel;
-    private GuiTextField yCoordField;
+    private TextFieldWidget yCoordField;
     private GuiLabel zCoordFieldLabel;
-    private GuiTextField zCoordField;
+    private TextFieldWidget zCoordField;
     private GuiLabel coordinatesLabel;
     private Button defaultVisibilityButton;
     private Button alwaysVisibleButton;
@@ -81,10 +81,10 @@ public class WaypointCreationMenu extends UI {
     @Override public void onWindowUpdate() {
         buttonList.clear();
 
-        nameField = new GuiTextField(0, McIf.mc().font, this.width/2 - 80, this.height/2 - 70, 160, 20);
-        xCoordField = new GuiTextField(1, McIf.mc().font, this.width/2 - 65, this.height/2 - 30, 40, 20);
-        zCoordField = new GuiTextField(2, McIf.mc().font, this.width/2 - 5, this.height/2 - 30, 40, 20);
-        yCoordField = new GuiTextField(3, McIf.mc().font, this.width/2 + 55, this.height/2 - 30, 25, 20);
+        nameField = new TextFieldWidget(0, McIf.mc().font, this.width/2 - 80, this.height/2 - 70, 160, 20);
+        xCoordField = new TextFieldWidget(1, McIf.mc().font, this.width/2 - 65, this.height/2 - 30, 40, 20);
+        zCoordField = new TextFieldWidget(2, McIf.mc().font, this.width/2 - 5, this.height/2 - 30, 40, 20);
+        yCoordField = new TextFieldWidget(3, McIf.mc().font, this.width/2 + 55, this.height/2 - 30, 25, 20);
         buttonList.add(waypointTypeNext = new Button(97, this.width/2 - 40, this.height/2 + 10, 18, 18, ">"));
         buttonList.add(waypointTypeBack = new Button(98, this.width/2 - 80, this.height/2 + 10, 18, 18, "<"));
 
@@ -205,10 +205,10 @@ public class WaypointCreationMenu extends UI {
     @Override public void onRenderPreUIE(ScreenRenderer renderer) {}
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
     }
 
     @Override

@@ -247,8 +247,8 @@ public class ClientEvents {
     public void checkSpellCast(TickEvent.ClientTickEvent e) {
         if (!Reference.onWorld) return;
 
-        int remainingHighlightTicks = ReflectionFields.GuiIngame_remainingHighlightTicks.getValue(McIf.mc().ingameGUI);
-        ItemStack highlightingItemStack = ReflectionFields.GuiIngame_highlightingItemStack.getValue(McIf.mc().ingameGUI);
+        int remainingHighlightTicks = ReflectionFields.IngameGui_remainingHighlightTicks.getValue(McIf.mc().gui);
+        ItemStack highlightingItemStack = ReflectionFields.IngameGui_highlightingItemStack.getValue(McIf.mc().gui);
 
         if (remainingHighlightTicks == 0 || highlightingItemStack.isEmpty()) {
             heldItem = "";

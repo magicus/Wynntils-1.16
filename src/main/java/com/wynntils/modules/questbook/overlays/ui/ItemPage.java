@@ -62,9 +62,9 @@ public class ItemPage extends QuestBookPage {
     }
 
     @Override
-    public void initGui() {
+    public void init() {
         ItemSearchState oldSearchState = searchState;
-        super.initGui();
+        super.init();
         if (QuestBookConfig.INSTANCE.advancedItemSearch) {
             initAdvancedSearch();
             if (oldSearchState != null) {
@@ -99,8 +99,8 @@ public class ItemPage extends QuestBookPage {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrix, mouseX, mouseY, partialTicks);
         int x = width / 2;
         int y = height / 2;
         int posX = (x - mouseX);

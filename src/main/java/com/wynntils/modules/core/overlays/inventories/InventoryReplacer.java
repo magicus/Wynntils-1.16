@@ -33,16 +33,16 @@ public class InventoryReplacer extends InventoryScreen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrix, mouseX, mouseY, partialTicks);
 
         FrameworkManager.getEventBus().post(new GuiOverlapEvent.InventoryOverlap.DrawScreen(this, mouseX, mouseY, partialTicks));
     }
 
     @Override
-    public void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) {
+    public void slotClicked(Slot slotIn, int slotId, int mouseButton, ClickType type) {
         if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.InventoryOverlap.HandleMouseClick(this, slotIn, slotId, mouseButton, type)))
-            super.handleMouseClick(slotIn, slotId, mouseButton, type);
+            super.slotClicked(slotIn, slotId, mouseButton, type);
     }
 
     @Override

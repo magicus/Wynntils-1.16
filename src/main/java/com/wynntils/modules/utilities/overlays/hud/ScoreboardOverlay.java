@@ -17,7 +17,7 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.client.GuiIngameForge;
+import net.minecraftforge.client.IngameGuiForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 
 public class ScoreboardOverlay extends Overlay {
@@ -118,7 +118,7 @@ public class ScoreboardOverlay extends Overlay {
     }
 
     public static void enableCustomScoreboard(boolean enabled) {
-        GuiIngameForge.renderObjective = !enabled;
+        IngameGuiForge.renderObjective = !enabled;
     }
 
 }

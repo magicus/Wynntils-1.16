@@ -49,7 +49,7 @@ public class WorldMapSettingsUI extends Screen {
     }
 
     @Override
-    public void initGui() {
+    public void init() {
         int rightAlign = 7 + (this.width-399)/2;
         int yOffset = 35;
         int maxHeight = Math.max(this.height - 90, yOffset + 17);
@@ -89,7 +89,7 @@ public class WorldMapSettingsUI extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         int topY = this.buttonList.get(0).y;
         this.font.drawString(TextFormatting.WHITE + "Enable/Disable Map Icons", (this.width - 349) / 2, topY - 15, 0xffFFFFFF);
@@ -105,7 +105,7 @@ public class WorldMapSettingsUI extends Screen {
         GlStateManager.popMatrix();
 
         ScreenRenderer.beginGL(0, 0);
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
         ScreenRenderer.endGL();
 
         for (Button btn : settingButtons) {

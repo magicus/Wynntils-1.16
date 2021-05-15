@@ -22,7 +22,7 @@ import java.util.List;
 public class MenuButtonsOverlay implements Listener {
 
     @SubscribeEvent
-    public void initGui(GuiOverlapEvent.IngameMenuOverlap.InitGui e) {
+    public void init(GuiOverlapEvent.IngameMenuOverlap.InitGui e) {
         if (!Reference.onServer) return;
 
         int numButtonRows = 0;

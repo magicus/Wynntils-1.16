@@ -101,8 +101,8 @@ public class ChatGUI extends GuiChat {
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
         int buttonId = 0;
         int tabX = 0;
         for (ChatTab tab : TabManager.getAvailableTabs()) {
@@ -130,11 +130,11 @@ public class ChatGUI extends GuiChat {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         if (!ChatConfig.INSTANCE.useBrackets) {
             drawRect(2, this.height - 14, this.inputField.width + 2, this.height - 2, Integer.MIN_VALUE);
             this.inputField.drawTextBox();
-            ITextComponent itextcomponent = McIf.mc().ingameGUI.getChatGUI().getMessage(Mouse.getX(), Mouse.getY());
+            ITextComponent itextcomponent = McIf.mc().gui.getChatGUI().getMessage(Mouse.getX(), Mouse.getY());
 
             for (int i = 0; i < this.buttonList.size(); ++i) {
                 ((Button) this.buttonList.get(i)).drawButton(McIf.mc(), mouseX, mouseY, partialTicks);
@@ -148,7 +148,7 @@ public class ChatGUI extends GuiChat {
                 this.handleComponentHover(itextcomponent, mouseX, mouseY);
             }
         } else {
-            super.drawScreen(mouseX, mouseY, partialTicks);
+            super.render(matrix, mouseX, mouseY, partialTicks);
         }
     }
 

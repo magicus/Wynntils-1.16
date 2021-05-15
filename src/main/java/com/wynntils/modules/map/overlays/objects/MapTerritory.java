@@ -80,7 +80,7 @@ public class MapTerritory {
         return territory;
     }
 
-    public void drawScreen(int mouseX, int mouseY, float partialTicks, boolean territoryArea, boolean resourceColor, boolean showHeadquarters, boolean showNames) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, boolean territoryArea, boolean resourceColor, boolean showHeadquarters, boolean showNames) {
         if (!shouldRender || renderer == null) return;
 
         CustomColor color;

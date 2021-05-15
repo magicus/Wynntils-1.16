@@ -4,11 +4,11 @@
 
 package com.wynntils.modules.core.overlays.inventories;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.FrameworkManager;
 import net.minecraft.client.gui.screen.inventory.ChestScreen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.screen.inventory.ChestScreen;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
@@ -38,31 +38,33 @@ public class ChestReplacer extends ChestScreen {
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
         FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.InitGui(this, this.buttonList));
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         if (FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.DrawScreen.Pre(this, mouseX, mouseY, partialTicks))) {
             return;
         }
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
         FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.DrawScreen.Post(this, mouseX, mouseY, partialTicks));
     }
 
     @Override
-    public void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) {
+    public void slotClicked(Slot slotIn, int slotId, int mouseButton, ClickType type) {
         if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.HandleMouseClick(this, slotIn, slotId, mouseButton, type)))
-            super.handleMouseClick(slotIn, slotId, mouseButton, type);
+            super.slotClicked(slotIn, slotId, mouseButton, type);
     }
 
     @Override
-    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-        if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.MouseClickMove(this, mouseX, mouseY, clickedMouseButton, timeSinceLastClick)))
-            super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+    public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double d1, double d2) {
+        // FIXME: the event class needs fields that match the new reality
+        if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.MouseClickMove(this, (int) mouseX, (int) mouseY, mouseButton, (long) d1)))
+            return super.mouseDragged(mouseX, mouseY, mouseButton, d1, d2);
+        return false;
     }
 
     @Override

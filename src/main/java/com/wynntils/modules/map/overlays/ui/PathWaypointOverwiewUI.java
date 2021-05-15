@@ -35,8 +35,8 @@ public class PathWaypointOverwiewUI extends Screen {
     private int pageHeight;
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
         paths = MapConfig.Waypoints.INSTANCE.pathWaypoints;
 
         pageHeight = (this.height - 100) / 25;
@@ -49,9 +49,9 @@ public class PathWaypointOverwiewUI extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
         font.drawString(TextFormatting.BOLD + "Icon", this.width/2 - 185, 39, 0xFFFFFF);
         font.drawString(TextFormatting.BOLD + "Name", this.width/2 - 150, 39, 0xFFFFFF);
         drawCenteredString(font, TextFormatting.BOLD + "X", this.width/2 + 20, 39, 0xFFFFFF);

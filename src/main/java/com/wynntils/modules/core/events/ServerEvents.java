@@ -35,7 +35,7 @@ import com.wynntils.webapi.WebManager;
 import com.wynntils.webapi.downloader.DownloaderManager;
 import com.wynntils.webapi.profiles.TerritoryProfile;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.gui.screen.GuiIngame;
+import net.minecraft.client.gui.IngameGui;
 import net.minecraft.network.play.server.SWorldSpawnChangedPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ChatType;
@@ -75,8 +75,8 @@ public class ServerEvents implements Listener {
         e.getManager().channel().pipeline().addBefore("fml:packet_handler", Reference.MOD_ID + ":packet_filter", new PacketIncomingFilter());
         e.getManager().channel().pipeline().addBefore("fml:packet_handler", Reference.MOD_ID + ":outgoingFilter", new PacketOutgoingFilter());
 
-        GuiIngame ingameGui = McIf.mc().ingameGUI;
-        ReflectionFields.GuiIngame_overlayPlayerList.setValue(ingameGui, new PlayerInfoReplacer(McIf.mc(), ingameGui));
+        IngameGui ingameGui = McIf.mc().gui;
+        ReflectionFields.IngameGui_overlayPlayerList.setValue(ingameGui, new PlayerInfoReplacer(McIf.mc(), ingameGui));
 
         WebManager.tryReloadApiUrls(true);
         WebManager.checkForUpdatesOnJoin();
@@ -243,7 +243,7 @@ public class ServerEvents implements Listener {
         StringTextComponent msg = new StringTextComponent("The Wynntils servers are currently down! You can still use Wynntils, but some features may not work. Our servers should be back soon.");
         msg.getStyle().setColor(TextFormatting.RED);
         msg.getStyle().setBold(true);
-        new Delay(() -> McIf.player().sendMessage(msg), 30); // delay so the player actually loads in
+        new Delay(() -> McIf.sendMessage(msg), 30); // delay so the player actually loads in
     }
 
     private static boolean triedToShowChangelog = false;

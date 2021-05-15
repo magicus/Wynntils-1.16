@@ -54,8 +54,8 @@ public class WaypointOverviewUI extends Screen {
     private int groupScroll = 0;
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
         waypoints = MapConfig.Waypoints.INSTANCE.waypoints;
 
         pageHeight = (this.height - 100) / 25;
@@ -79,9 +79,9 @@ public class WaypointOverviewUI extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
 
         font.drawString(TextFormatting.BOLD + "Group", this.width/2 - 205, 43, 0xFFFFFF);
         font.drawString(TextFormatting.BOLD + "Icon", this.width / 2 - 165, 43, 0xFFFFFF);

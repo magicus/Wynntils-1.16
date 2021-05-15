@@ -37,9 +37,9 @@ public abstract class UI extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         if (!initiated) { initiated = true; onInit(); }
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
         this.mouseX = mouseX;
         this.mouseY = mouseY;
 
@@ -65,7 +65,7 @@ public abstract class UI extends Screen {
         for (UIElement uie : UIElements)
             uie.tick(ticks);
     }
-    @Override public void initGui() { if (!initiated) { initiated = true; onInit(); } onWindowUpdate(); }
+    @Override public void init() { if (!initiated) { initiated = true; onInit(); } onWindowUpdate(); }
     @Override public void onGuiClosed() {onClose();}
 
     @Override
@@ -98,16 +98,17 @@ public abstract class UI extends Screen {
     }
 
     @Override
-    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
+    public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double d1, double d2) {
         for (UIElement uie : UIElements) {
             if (uie instanceof UIEList) {
                 List<UIElement> UIElements_old = this.UIElements;
                 this.UIElements = ((UIEList) uie).elements;
-                mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+                mouseDragged(mouseX, mouseY, mouseButton, d1, d2);
                 this.UIElements = UIElements_old;
             } else if (uie instanceof UIEClickZone)
-                ((UIEClickZone) uie).clickMove(mouseX, mouseY, clickedMouseButton > 2 ? MouseButton.UNKNOWN : MouseButton.values()[clickedMouseButton], timeSinceLastClick, this);
+                ((UIEClickZone) uie).clickMove(mouseX, mouseY, mouseButton > 2 ? MouseButton.UNKNOWN : MouseButton.values()[clickedMouseButton], timeSinceLastClick, this);
         }
+        return true;
     }
 
     @Override

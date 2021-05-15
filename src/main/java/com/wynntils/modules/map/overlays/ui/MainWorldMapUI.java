@@ -46,8 +46,8 @@ public class MainWorldMapUI extends WorldMapUI {
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
 
         this.mapButtons.clear();
 
@@ -133,7 +133,7 @@ public class MainWorldMapUI extends WorldMapUI {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         // HeyZeer0: This detects if the user is holding the map key;
         if (!holdingMapKey && (System.currentTimeMillis() - creationTime >= 150) && isHoldingMapKey()) holdingMapKey = true;
 
@@ -157,7 +157,7 @@ public class MainWorldMapUI extends WorldMapUI {
 
         ScreenRenderer.endGL();
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
     }
 
     @Override

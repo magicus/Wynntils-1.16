@@ -34,7 +34,7 @@ public class UpdateAvailableScreen extends Screen {
     }
 
     @Override
-    public void initGui() {
+    public void init() {
         this.buttonList.add(new Button(0, this.width / 2 - 100, this.height / 4 + 84, 200, 20, "View changelog"));
         this.buttonList.add(new Button(1, this.width / 2 - 100, this.height / 4 + 108, 98, 20, "Update now"));
         this.buttonList.add(new Button(2, this.width / 2 + 2, this.height / 4 + 108, 98, 20, "Update at exit"));
@@ -43,7 +43,7 @@ public class UpdateAvailableScreen extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
         int yOffset = Math.min(this.height / 2, this.height / 4 + 80 - McIf.mc().font.FONT_HEIGHT * 2);
@@ -51,7 +51,7 @@ public class UpdateAvailableScreen extends Screen {
         drawCenteredString(McIf.mc().font, "Update now or when leaving Minecraft?", this.width/2, yOffset, 0xFFFFFFFF);
         drawCenteredString(McIf.mc().font, "(Updating now will exit Minecraft after downloading update)", this.width/2, yOffset + McIf.mc().font.FONT_HEIGHT + 2, 0xFFFFFFFF);
 
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
     }
 
     @Override

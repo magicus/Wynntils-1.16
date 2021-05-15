@@ -21,7 +21,7 @@ import com.wynntils.modules.questbook.enums.QuestBookPages;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.GuiPageButtonList;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.GuiTextField;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.glfw.GLFW;
@@ -49,7 +49,7 @@ public class QuestBookPage extends Screen {
     protected boolean acceptNext, acceptBack;
     protected int pages = 1;
     protected int selected;
-    protected GuiTextField textField = null;
+    protected TextFieldWidget textField = null;
 
     // Animation
     protected long lastTick;
@@ -83,7 +83,7 @@ public class QuestBookPage extends Screen {
      * Resets all basic information needed for various features on all pages
      */
     @Override
-    public void initGui() {
+    public void init() {
         if (open) {
             if (!showSearchBar) return;
 
@@ -101,7 +101,7 @@ public class QuestBookPage extends Screen {
         lastTick = McIf.getSystemTime();
 
         if (showSearchBar) {
-            textField = new GuiTextField(0, McIf.mc().font, width / 2 + 32, height / 2 - 97, 113, 23);
+            textField = new TextFieldWidget(0, McIf.mc().font, width / 2 + 32, height / 2 - 97, 113, 23);
             textField.setFocused(!QuestBookConfig.INSTANCE.searchBoxClickRequired);
             textField.setMaxStringLength(50);
             textField.setEnableBackgroundDrawing(false);
@@ -130,8 +130,8 @@ public class QuestBookPage extends Screen {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
+        super.render(matrix, mouseX, mouseY, partialTicks);
 
         int x = width / 2;
         int y = height / 2;

@@ -171,7 +171,7 @@ public class UIEColorWheel extends UIEClickZone {
         }
 
         @Override
-        public void initGui() {
+        public void init() {
             buttonList.add(applyButton = new Button(0, width/2 - 65, height/2 + 95, 50, 20, TextFormatting.GREEN + "Apply"));
             buttonList.add(cancelButton = new Button(1, (width/2) + 15, height/2 + 95, 50, 20, TextFormatting.RED + "Cancel"));
             buttonList.add(valueSlider = new GuiSlider(new GuiPageButtonList.GuiResponder() {
@@ -195,7 +195,7 @@ public class UIEColorWheel extends UIEClickZone {
             }
             setColor(toChange);
 
-            super.initGui();
+            super.init();
         }
 
         private void setColor(CustomColor c) {
@@ -284,9 +284,10 @@ public class UIEColorWheel extends UIEClickZone {
         }
 
         @Override
-        protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-            if (clickedMouseButton == 0 && changeColor(mouseX, mouseY, true)) return;
-            super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double d1, double d2) {
+            if (mouseButton == 0 && changeColor((int) mouseX, (int) mouseY, true)) return;
+            super.mouseDragged(mouseX, mouseY, mouseButton, d1, d2);
+            return true;
         }
 
         @Override
@@ -310,7 +311,7 @@ public class UIEColorWheel extends UIEClickZone {
         }
 
         @Override
-        public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
             drawDefaultBackground();
 
             beginGL(0, 0);
@@ -346,7 +347,7 @@ public class UIEColorWheel extends UIEClickZone {
                 drawRect(x + 3, y + 3, x + 17, y + 17, MinecraftChatColors.set.fromCode(i).toInt());
             }
 
-            super.drawScreen(mouseX, mouseY, partialTicks);
+            super.render(matrix, mouseX, mouseY, partialTicks);
         }
 
         private float getAlpha() {

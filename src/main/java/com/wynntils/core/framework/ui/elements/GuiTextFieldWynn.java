@@ -7,9 +7,9 @@ package com.wynntils.core.framework.ui.elements;
 import java.awt.Color;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.screen.GuiTextField;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 
-public class GuiTextFieldWynn extends GuiTextField {
+public class GuiTextFieldWynn extends TextFieldWidget {
 
     private static final Color TEXT_FIELD_COLOR_1 = new Color(87, 65, 51);
     private static final Color TEXT_FIELD_COLOR_2 = new Color(120, 90, 71);

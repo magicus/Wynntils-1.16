@@ -68,7 +68,7 @@ public class SpellData extends PlayerData {
 
         int level = get(CharacterData.class).getLevel();
         if (level <= 11) {
-            String subtitle = ReflectionFields.GuiIngame_displayedSubTitle.getValue(McIf.mc().ingameGUI);
+            String subtitle = ReflectionFields.IngameGui_displayedSubTitle.getValue(McIf.mc().gui);
             return parseSpellFromTitle(subtitle);
         }
 

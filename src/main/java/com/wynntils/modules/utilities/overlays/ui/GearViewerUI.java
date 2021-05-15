@@ -69,8 +69,8 @@ public class GearViewerUI extends FakeGuiContainer {
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
 
         // create item lore for armor pieces
         for (int i = 0; i < 4; i++) {
@@ -92,7 +92,7 @@ public class GearViewerUI extends FakeGuiContainer {
     }
 
     @Override
-    protected void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) { } // ignore all mouse clicks
+    protected void slotClicked(Slot slotIn, int slotId, int mouseButton, ClickType type) { } // ignore all mouse clicks
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
@@ -104,9 +104,9 @@ public class GearViewerUI extends FakeGuiContainer {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
         this.renderHoveredToolTip(mouseX, mouseY);
 
         // replace lore with advanced ids if enabled

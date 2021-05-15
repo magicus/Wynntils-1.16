@@ -61,7 +61,7 @@ public class WorldMapLabel extends WorldMapIcon {
         return color;
     }
 
-    public void drawScreen(int mouseX, int mouseY, float partialTicks, float blockScale, ScreenRenderer renderer) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks, float blockScale, ScreenRenderer renderer) {
         if (!shouldRender || renderer == null) return;
 
         renderer.drawString(label.getName(), axisX - label.getSizeX(), axisZ - label.getSizeZ(),

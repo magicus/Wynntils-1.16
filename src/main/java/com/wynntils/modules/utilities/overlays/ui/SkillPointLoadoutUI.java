@@ -52,8 +52,8 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
     }
 
     @Override
-    public void initGui() {
-        super.initGui();
+    public void init() {
+        super.init();
         inventory.clear();
 
         int i = 0;
@@ -94,7 +94,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
     }
 
     @Override
-    protected void handleMouseClick(Slot slotIn, int slotId, int mouseButton, ClickType type) {
+    protected void slotClicked(Slot slotIn, int slotId, int mouseButton, ClickType type) {
         if (slotIn == null || slotIn.getItem().isEmpty()) return;
         if (slotId >= UtilitiesConfig.INSTANCE.skillPointLoadouts.size()) return;
 
@@ -118,7 +118,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
                 McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
 
                 removeLoadout(name);
-                this.initGui();
+                this.init();
                 return;
             }
 
@@ -136,9 +136,9 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
         this.renderHoveredToolTip(mouseX, mouseY);
     }
 

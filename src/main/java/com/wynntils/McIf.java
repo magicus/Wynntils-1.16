@@ -4,11 +4,14 @@
 
 package com.wynntils;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
+
+import java.util.UUID;
 
 /**
  * The Wynntils Minecraft Interface (MC IF).
@@ -58,4 +61,13 @@ public class McIf {
     {
         return Util.getMillis();
     }
+
+    public static MatrixStack matrix() {
+        return new MatrixStack();
+    }
+
+    public static void sendMessage(ITextComponent msg) {
+        mc().gui.getChat().addMessage(msg);
+    }
+
 }

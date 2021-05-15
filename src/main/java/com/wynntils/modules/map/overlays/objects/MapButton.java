@@ -49,7 +49,7 @@ public class MapButton {
         return mouseX >= startX && mouseX <= endX && mouseY >= startY && mouseY <= endY;
     }
 
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         pushMatrix();
         {
             if (isEnabled.apply(null)) {

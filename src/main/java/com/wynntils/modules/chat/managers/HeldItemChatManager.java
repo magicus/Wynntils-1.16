@@ -193,7 +193,7 @@ public class HeldItemChatManager {
             ChatConfig.INSTANCE.saveSettings(ChatModule.getModule());
 
             ITextComponent message = new StringTextComponent("Enable §bMod options > Chat > Held Item Chat Messages§r to undo (or click this)");
-            McIf.player().sendMessage(TextAction.withStaticEvent(message, OnUnhideClick.class));
+            McIf.sendMessage(TextAction.withStaticEvent(message, OnUnhideClick.class));
         }
     }
 

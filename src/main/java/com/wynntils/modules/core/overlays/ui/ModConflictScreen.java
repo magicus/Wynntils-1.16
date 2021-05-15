@@ -20,12 +20,12 @@ public class ModConflictScreen extends CustomModLoadingErrorDisplayException {
 
 
     @Override
-    public void initGui(GuiErrorScreen errorScreen, FontRenderer font) {
+    public void init(GuiErrorScreen errorScreen, FontRenderer font) {
 
     }
 
     @Override
-    public void drawScreen(GuiErrorScreen errorScreen, FontRenderer font, int mouseRelX, int mouseRelY, float tickTime) {
+    public void render(MatrixStack matrix, GuiErrorScreen errorScreen, FontRenderer font, int mouseRelX, int mouseRelY, float tickTime) {
         errorScreen.drawDefaultBackground();
 
         int offset = (errorScreen.height/2) - (40 + 10*conflictMods.size());

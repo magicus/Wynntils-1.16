@@ -885,7 +885,7 @@ public class ChatManager {
 
         @Override
         public void run() {
-            McIf.player().sendMessage(chapterText, null);
+            McIf.sendMessage(chapterText, null);
         }
 
     }

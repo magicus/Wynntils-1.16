@@ -103,7 +103,7 @@ public class ItemScreenshotManager {
         ClipboardImage ci = new ClipboardImage(bi);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ci, null);
 
-        McIf.player().sendMessage(new StringTextComponent(TextFormatting.GREEN + "Copied " + stack.getDisplayName() + TextFormatting.GREEN + " to the clipboard!"));
+        McIf.sendMessage(new StringTextComponent(TextFormatting.GREEN + "Copied " + stack.getDisplayName() + TextFormatting.GREEN + " to the clipboard!"));
     }
 
     private static void removeItemLore(List<String> tooltip) {

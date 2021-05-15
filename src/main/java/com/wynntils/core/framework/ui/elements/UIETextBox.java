@@ -8,18 +8,18 @@ import com.wynntils.core.framework.enums.MouseButton;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.framework.rendering.SmartFontRenderer;
 import com.wynntils.core.framework.ui.UI;
-import net.minecraft.client.gui.screen.GuiTextField;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 
 import java.util.function.BiConsumer;
 
 public class UIETextBox extends UIEClickZone {
-    public GuiTextField textField;
+    public TextFieldWidget textField;
     public boolean textDisappearsOnNextClick;
     public BiConsumer<UI, String> onTextChanged;
 
     public UIETextBox(float anchorX, float anchorY, int offsetX, int offsetY, int width, boolean active, String text, boolean textDisappearsOnNextClick, BiConsumer<UI, String> onTextChanged) {
         super(anchorX, anchorY, offsetX, offsetY, width, SmartFontRenderer.CHAR_HEIGHT, active, null);
-        this.textField = new GuiTextField(this.getId(), ScreenRenderer.font, this.position.getDrawingX(), this.position.getDrawingY(), width, 20);
+        this.textField = new TextFieldWidget(this.getId(), ScreenRenderer.font, this.position.getDrawingX(), this.position.getDrawingY(), width, 20);
         this.textField.setText(text);
         this.textDisappearsOnNextClick = textDisappearsOnNextClick;
         this.onTextChanged = onTextChanged;

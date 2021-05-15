@@ -18,6 +18,7 @@ import com.wynntils.core.framework.settings.SettingsContainer;
 import com.wynntils.core.framework.ui.UI;
 import com.wynntils.core.framework.ui.elements.UIEButton;
 import com.wynntils.core.framework.ui.elements.UIEClickZone;
+import com.wynntils.core.utils.Utils;
 import net.minecraft.client.gui.screen.Screen;
 import org.lwjgl.glfw.GLFW;
 
@@ -182,13 +183,14 @@ public class OverlayPositionsUI extends UI {
     }
 
     @Override
-    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+    public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double d1, double d2) {
+        super.mouseDragged(mouseX, mouseY, mouseButton, d1, d2);
         for (OverlayButton button : registeredOverlaySettings) {
             if (button.isMouseButtonHeld()) {
-                button.clickMove(mouseX, mouseY, MouseButton.values()[clickedMouseButton], timeSinceLastClick, this);
+                button.clickMove((int) mouseX, (int) mouseY, MouseButton.values()[mouseButton], (long) d1, this);
             }
         }
+        return true;
     }
 
     @Override

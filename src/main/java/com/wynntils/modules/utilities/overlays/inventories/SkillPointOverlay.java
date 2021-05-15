@@ -351,7 +351,7 @@ public class SkillPointOverlay implements Listener {
             StringTextComponent text = new StringTextComponent("Not enough free skill points!");
             text.getStyle().setColor(TextFormatting.RED);
 
-            McIf.player().sendMessage(text);
+            McIf.sendMessage(text);
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_ANVIL_PLACE, 1f));
             return;
         }
