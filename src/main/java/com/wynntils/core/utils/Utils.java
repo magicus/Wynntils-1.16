@@ -188,9 +188,9 @@ public class Utils {
      */
     public static void removeFakeScoreboard(String name) {
         Scoreboard scoreboard = McIf.world().getScoreboard();
-        if (scoreboard.getTeam(name) == null) return;
+        if (scoreboard.getPlayerTeam(name) == null) return;
 
-        scoreboard.removeTeam(scoreboard.getTeam(name));
+        scoreboard.removeTeam(scoreboard.getPlayerTeam(name));
         if (previousTeam != null) scoreboard.addPlayerToTeam(McIf.player().getName(), previousTeam);
     }
 
