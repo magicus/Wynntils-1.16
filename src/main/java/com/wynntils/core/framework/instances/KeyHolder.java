@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.instances;
 
+import com.wynntils.McIf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
@@ -58,7 +59,7 @@ public class KeyHolder {
     }
 
     public boolean isKeyDown() {
-        return InputMappings.isKeyDown(Minecraft.getMinecraft().getWindow().getWindow(), getKey());
+        return InputMappings.isKeyDown(McIf.mc().getWindow().getWindow(), getKey());
     }
 
 }

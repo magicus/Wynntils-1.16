@@ -28,10 +28,11 @@ public class RemoteTexture extends Texture {
 
         try {
             BufferedImage img = ImageIO.read(url);
-            this.glID = TextureUtil.glGenTextures();
+            // FIXME: This class is not used so just skip the problematic code
+      //      this.glID = TextureUtil.glGenTextures();
             width = img.getWidth();
             height = img.getHeight();
-            TextureUtil.uploadTextureImageAllocate(glID, img, false, false);
+      //      TextureUtil.uploadTextureImageAllocate(glID, img, false, false);
             loaded = true;
             return ActionResult.SUCCESS;
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class RemoteTexture extends Texture {
     public ActionResult unload() {
         if (!loaded) return ActionResult.ISSUE;
 
-        TextureUtil.release(glID);
+   //     TextureUtil.release(glID);
         loaded = false;
         return ActionResult.SUCCESS;
     }
@@ -56,7 +57,7 @@ public class RemoteTexture extends Texture {
     public ActionResult bind() {
         if (!loaded) return ActionResult.ERROR;
 
-        GlStateManager.bind(glID);
+    //    GlStateManager.bind(glID);
         return ActionResult.SUCCESS;
     }
 

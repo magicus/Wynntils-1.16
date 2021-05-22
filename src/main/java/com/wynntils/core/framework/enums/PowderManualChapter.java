@@ -7,7 +7,7 @@ package com.wynntils.core.framework.enums;
 import net.minecraft.util.StringUtils;
 
 public enum PowderManualChapter {
-    
+
     ONE("                     §6Chapter 1 - The Basics\n\n" +
                 "    §7§oThere exist five varieties of magic powder, each corresponding to one of five different elements; §c✹ Fire§7§o, §b❉ Water§7§o, §e✦ Thunder§7§o, §2✤ Earth§7§o, and §f❋ Air§7§o.\n" +
                 "    §7§oIt is possible to augment items with these powders, if one is versed in the art of enchantment. Many offer this service for a price, as Powder Masters.\n" +
@@ -26,23 +26,23 @@ public enum PowderManualChapter {
                 "    §b§l❉ Water:  §7§oWater-imbued weapons will curse one's nearby enemies. This curse weakens armor, and turns them vulnerable to further attack. Water-augmented armors recycle used mana, transferring it into a short boost to Water-affiliated techniques, depending on how much mana was consumed.\n" +
                 "    §c§l✹ Fire:  §7§oFire-imbued weapons will generate a fan of flames that burn one's enemies and empower one's allies. Fire-augmented armors react to being struck, turning the impact of the blow, no matter how weak, into a temporary power boost to Fire-based attacks.\n" +
                 "    §f§l❋ Air:  §7§oAir-imbued weapons trap nearby enemies in a vortex of wind, and blow the victims away when struck. Air-augmented armors will, so long as they are kept close, leach energy from nearby foes to improve the strength of Air-based attacks.");
-    
+
     String chapterText;
-    
+
     PowderManualChapter(String text) {
         chapterText = text;
     }
-    
+
     public String getText() {
         return chapterText;
     }
-    
+
     public static boolean isPowderManualLine(String line) {
         PowderManualChapter[] chapters = PowderManualChapter.values();
         for (PowderManualChapter chapter : chapters) {
-            if (StringUtils.stripControlCodes(chapter.getText()).contains(line)) return true;
+            if (StringUtils.stripColor(chapter.getText()).contains(line)) return true;
         }
-        
+
         return false;
     }
 

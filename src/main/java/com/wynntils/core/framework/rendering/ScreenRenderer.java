@@ -9,6 +9,7 @@ import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.framework.rendering.textures.Texture;
 import com.wynntils.core.utils.StringUtils;
 import com.wynntils.modules.core.config.CoreDBConfig;
+import net.minecraft.client.AbstractOption;
 import net.minecraft.client.MainWindow;
 import com.wynntils.transition.GlStateManager;
 import com.wynntils.transition.RenderHelper;
@@ -64,9 +65,11 @@ public class ScreenRenderer {
 
         if (font == null) {
             font = new SmartFontRenderer();
-            font.onResourceManagerReload(McIf.mc().getResourceManager());
+            // FIXME: is this not needed anymore??
+           // font.onResourceManagerReload(McIf.mc().getResourceManager());
         }
-        font.setUnicodeFlag(CoreDBConfig.INSTANCE.useUnicode);
+        // FIXME: might need better way
+        AbstractOption.FORCE_UNICODE_FONT.set(McIf.mc().options, CoreDBConfig.INSTANCE.useUnicode ? "true" : "false");
         if (itemRenderer == null)
             itemRenderer = McIf.mc().getItemRenderer();
     }
@@ -343,8 +346,8 @@ public class ScreenRenderer {
         enableScissorTest();
 
         // Scissor test is in screen coordinates, so y is inverted and scale needs to be manually applied
-        int scale = screen.getScaleFactor();
-        glScissor((x + drawingOrigin.x) * scale, McIf.mc().displayHeight - (y + drawingOrigin.y + height) * scale, width * scale, height * scale);
+        int scale = (int) screen.getGuiScale();
+        glScissor((x + drawingOrigin.x) * scale, McIf.mc().getWindow().getHeight() - (y + drawingOrigin.y + height) * scale, width * scale, height * scale);
     }
 
     /**
@@ -362,8 +365,8 @@ public class ScreenRenderer {
         if (!rendering) return;
 
         enableScissorTest();
-        int scale = screen.getScaleFactor();
-        glScissor((x + drawingOrigin.x) * scale, 0, width * scale, McIf.mc().displayHeight);
+        int scale = (int) screen.getGuiScale();
+        glScissor((x + drawingOrigin.x) * scale, 0, width * scale, McIf.mc().getWindow().getHeight());
     }
 
     /**
@@ -374,8 +377,8 @@ public class ScreenRenderer {
         if (!rendering) return;
 
         enableScissorTest();
-        int scale = screen.getScaleFactor();
-        glScissor(0, McIf.mc().displayHeight - (y + drawingOrigin.y + height) * scale, McIf.mc().displayWidth, height * scale);
+        int scale = (int) screen.getGuiScale();
+        glScissor(0, McIf.mc().getWindow().getHeight() - (y + drawingOrigin.y + height) * scale, McIf.mc().getWindow().getWidth(), height * scale);
     }
 
     /**
@@ -463,7 +466,8 @@ public class ScreenRenderer {
             }
         }
 
-        return font.getCharWidth(text.charAt(0)) + SmartFontRenderer.CHAR_SPACING + width(text.substring(1));
+        // FIXME: this is perhaps not correct, and definitely not efficient
+        return font.getSplitter().stringWidth(String.valueOf(text.charAt(0))) + SmartFontRenderer.CHAR_SPACING + width(text.substring(1));
     }
 
     /** void drawRect
@@ -839,15 +843,16 @@ public class ScreenRenderer {
     private void drawItemStack(ItemStack is, int x, int y, boolean count, String text, boolean effects) {
         if (!rendering) return;
         RenderHelper.enableGUIStandardItemLighting();
-        itemRenderer.zLevel = 200.0F;
-        net.minecraft.client.gui.FontRenderer font = is.getItem().getFont(is);
-        if (font == null) font = font;
+        itemRenderer.blitOffset = 200.0F;
+        // FIXME: this is odd, and possibly broken
+   //     net.minecraft.client.gui.FontRenderer font = is.getItem().getFont(is);
+   //     if (font == null) font = font;
         if (effects)
-            itemRenderer.renderItemAndEffectIntoGUI(is, x + drawingOrigin.x, y + drawingOrigin.y);
+            itemRenderer.renderAndDecorateItem(is, x + drawingOrigin.x, y + drawingOrigin.y);
         else
-            itemRenderer.renderItemIntoGUI(is, x + drawingOrigin.x, y + drawingOrigin.y);
-        itemRenderer.renderItemOverlayIntoGUI(font, is, x + drawingOrigin.x, y + drawingOrigin.y, text.isEmpty() ? count ? Integer.toString(is.getCount()) : null : text);
-        itemRenderer.zLevel = 0.0F;
+            itemRenderer.renderGuiItem(is, x + drawingOrigin.x, y + drawingOrigin.y);
+        itemRenderer.renderGuiItemDecorations(font, is, x + drawingOrigin.x, y + drawingOrigin.y, text.isEmpty() ? count ? Integer.toString(is.getCount()) : null : text);
+        itemRenderer.blitOffset = 0.0F;
         RenderHelper.disableStandardItemLighting();
     }
 

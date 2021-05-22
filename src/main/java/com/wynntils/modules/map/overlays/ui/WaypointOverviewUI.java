@@ -16,7 +16,7 @@ import com.wynntils.modules.map.instances.WaypointProfile;
 import com.wynntils.modules.map.overlays.objects.MapWaypointIcon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.screen.GuiButtonImage;
+import net.minecraft.client.gui.widget.button.ImageButton;
 import net.minecraft.client.gui.screen.Screen;
 import com.wynntils.transition.GlStateManager;
 import net.minecraft.util.text.TextFormatting;
@@ -367,7 +367,7 @@ public class WaypointOverviewUI extends Screen {
                 MapWaypointIcon icon = MapWaypointIcon.getFree(WaypointProfile.WaypointType.values()[group]);
                 int texPosX = icon.getTexPosX();
                 int texPosZ = icon.getTexPosZ();
-                GuiButtonImage btn = new GuiButtonImageBetter(-(group + 1), buttonX, buttonY, icon.getTexSizeX() - texPosX, icon.getTexSizeZ() - texPosZ, texPosX, texPosZ, 0, icon.getTexture().resourceLocation);
+                ImageButton btn = new GuiButtonImageBetter(-(group + 1), buttonX, buttonY, icon.getTexSizeX() - texPosX, icon.getTexSizeZ() - texPosZ, texPosX, texPosZ, 0, icon.getTexture().resourceLocation);
                 groupBtns.add(btn);
                 if (this.group == group) {
                     btn.enabled = false;

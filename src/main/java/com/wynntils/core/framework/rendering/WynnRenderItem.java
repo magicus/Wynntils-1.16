@@ -22,7 +22,7 @@ public class WynnRenderItem extends ItemRenderer {
 
     public static void inject() {
         if (instance != null) throw new IllegalStateException("Wynntils item renderer has already been installed!");
-        instance = new WynnRenderItem(McIf.mc().getItemRenderer(), McIf.mc().renderEngine, McIf.mc().getItemColors());
+        instance = new WynnRenderItem(McIf.mc().getItemRenderer(), McIf.mc().textureManager, McIf.mc().getItemColors());
         // the resource manager reload listener for the item renderer merely invalidates the cache of the held item model mesher
         // since we're inheriting the one from the original item renderer and also not unregistering it as a reload listener, we don't need to register our own renderer as a listener
         ReflectionFields.Minecraft_renderItem.setValue(McIf.mc(), instance);
@@ -35,21 +35,22 @@ public class WynnRenderItem extends ItemRenderer {
 
     private static final int GUI_OVERLAY_WIDTH_THRESH = 16;
 
+    // TextureManager p_i46552_1_, ModelManager p_i46552_2_, ItemColors p_i46552_3_
     private WynnRenderItem(ItemRenderer parent, TextureManager texMan, ItemColors itemCols) {
-        super(texMan, parent.getItemModelMesher().getModelManager(), itemCols);
+        super(texMan, McIf.mc().getModelManager(), itemCols);
         ReflectionFields.RenderItem_itemModelMesher.setValue(this, ReflectionFields.RenderItem_itemModelMesher.getValue(parent));
     }
 
     @Override
-    public void renderItemOverlayIntoGUI(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, String text) {
+    public void renderGuiItemDecorations(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, String text) {
         RenderEvent.DrawItemOverlay event = new RenderEvent.DrawItemOverlay(stack, xPosition, yPosition, text);
         FrameworkManager.getEventBus().post(event);
         if (!event.isOverlayTextChanged()) {
-            super.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, text);
+            super.renderGuiItemDecorations(fr, stack, xPosition, yPosition, text);
             return;
         }
 
-        super.renderItemOverlayIntoGUI(fr, stack, xPosition, yPosition, "");
+        super.renderGuiItemDecorations(fr, stack, xPosition, yPosition, "");
         GlStateManager.disableLighting();
         GlStateManager.disableDepth();
         GlStateManager.disableBlend();
@@ -59,7 +60,7 @@ public class WynnRenderItem extends ItemRenderer {
         GlStateManager.translate(xPosition + 17f, yPosition + 9f, 0f);
         if (width > GUI_OVERLAY_WIDTH_THRESH) {
             float scaleRatio = GUI_OVERLAY_WIDTH_THRESH / (float)width;
-            GlStateManager.translate(0f, ScreenRenderer.font.FONT_HEIGHT * (1f - scaleRatio) / 2f, 0f);
+            GlStateManager.translate(0f, ScreenRenderer.font.lineHeight * (1f - scaleRatio) / 2f, 0f);
             GlStateManager.scale(scaleRatio, scaleRatio, 1f);
         }
 

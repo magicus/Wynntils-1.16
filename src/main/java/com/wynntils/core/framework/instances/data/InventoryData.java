@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.instances.data;
 
+import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.ClassType;
 import com.wynntils.core.framework.instances.containers.PlayerData;
 import com.wynntils.core.framework.instances.containers.UnprocessedAmount;
@@ -92,7 +93,7 @@ public class InventoryData extends PlayerData {
             ItemStack it = player.inventory.getItem(i);
             if (it.isEmpty()) continue;
 
-            Matcher nameMatcher = UNPROCESSED_NAME_REGEX.matcher(it.getDisplayName());
+            Matcher nameMatcher = UNPROCESSED_NAME_REGEX.matcher(McIf.toText(it.getDisplayName()));
             if (!nameMatcher.matches()) continue;
 
             ListNBT lore = ItemUtils.getLoreTag(it);
@@ -124,7 +125,7 @@ public class InventoryData extends PlayerData {
         int count = 0;
 
         for (ItemStack item : contents) {
-            if (!item.isEmpty() && item.hasCustomHoverName() && item.getDisplayName().contains("Potion of Healing")) {
+            if (!item.isEmpty() && item.hasCustomHoverName() && McIf.toText(item.getDisplayName()).contains("Potion of Healing")) {
                 count++;
             }
         }
@@ -144,7 +145,7 @@ public class InventoryData extends PlayerData {
         int count = 0;
 
         for (ItemStack item : contents) {
-            if (!item.isEmpty() && item.hasCustomHoverName() && item.getDisplayName().contains("Potion of Mana")) {
+            if (!item.isEmpty() && item.hasCustomHoverName() && McIf.toText(item.getDisplayName()).contains("Potion of Mana")) {
                 count++;
             }
         }
@@ -206,7 +207,7 @@ public class InventoryData extends PlayerData {
         ClassType currentClass = get(CharacterData.class).getCurrentClass();
 
         if (currentClass == ClassType.NONE || player.level == null) return -1;
-        int ticks = ((int) (player.level.getWorldTime() % 24000) + 24000) % 24000;
+        int ticks = ((int) (player.level.getGameTime() % 24000) + 24000) % 24000;
 
         return ((24000 - ticks) % 24000);
     }

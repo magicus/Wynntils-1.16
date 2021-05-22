@@ -8,6 +8,7 @@ import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.wynntils.WynntilsConflictContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.text.ITextComponent;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 
@@ -15,6 +16,10 @@ import java.io.IOException;
 
 public class GuiMovementScreen extends Screen {
     protected boolean allowMovement = true;
+
+    protected GuiMovementScreen(ITextComponent title) {
+        super(title);
+    }
 
     @Override
     public void handleInput() throws IOException {

@@ -5,9 +5,6 @@
 package com.wynntils.core.framework.rendering.instances;
 
 import com.wynntils.McIf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.MainWindow;
-import org.lwjgl.opengl.Display;
 
 public class WindowedResolution {
 
@@ -17,15 +14,15 @@ public class WindowedResolution {
     private float scaleFactor = 0f;
 
     public WindowedResolution(int minWidth, int minHeight) {
-        width = Display.getWidth();
-        height = Display.getHeight();
+        width =  McIf.mc().getWindow().getWidth();
+        height = McIf.mc().getWindow().getHeight();
 
         if (width < minWidth || height < minHeight) {
             scaleFactor = 1f;
             return;
         }
 
-        int minecraftScale = new MainWindow(McIf.mc()).getScaleFactor();
+        int minecraftScale = McIf.mc().getWindow().calculateScale(McIf.mc().options.guiScale, McIf.mc().isEnforceUnicode());
         while (minWidth * scaleFactor < width / 2f && minHeight * scaleFactor < height/2f)  {
             scaleFactor += 0.1f;
         }
