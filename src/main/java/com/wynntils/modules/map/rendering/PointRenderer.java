@@ -26,7 +26,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -128,10 +128,10 @@ public class PointRenderer {
                         end.y -= .24;
 
                         BlockPos startBlockPos = new BlockPos(start.x, start.y, start.z);
-                        Vec3d startVec = new Vec3d(start.x, start.y, start.z);
+                        Vector3d startVec = new Vector3d(start.x, start.y, start.z);
 
                         BlockPos endBlockPos = new BlockPos(end.x, end.y, end.z);
-                        Vec3d endVec = new Vec3d(end.x, end.y, end.z);
+                        Vector3d endVec = new Vector3d(end.x, end.y, end.z);
 
                         AxisAlignedBB startCollisionBox = world.getBlockState(startBlockPos).getCollisionBoundingBox(world, startBlockPos);
                         if (startCollisionBox != Block.NULL_AABB) {
@@ -222,15 +222,15 @@ public class PointRenderer {
         normal.cross(new Vector3d(direction.x, 0, direction.z), normal);
         normal.normalize();
 
-        Vec3d scaled = new Vec3d(normal.x, normal.y, normal.z).scale(width);
+        Vector3d scaled = new Vector3d(normal.x, normal.y, normal.z).scale(width);
 
         // we need 4 points for rendering
-        Vec3d startVec = new Vec3d(start.x, start.y, start.z);
-        Vec3d endVec = new Vec3d(end.x, end.y, end.z);
-        Vec3d p1 = startVec.add(scaled);
-        Vec3d p2 = startVec.subtract(scaled);
-        Vec3d p3 = endVec.add(scaled);
-        Vec3d p4 = endVec.subtract(scaled);
+        Vector3d startVec = new Vector3d(start.x, start.y, start.z);
+        Vector3d endVec = new Vector3d(end.x, end.y, end.z);
+        Vector3d p1 = startVec.add(scaled);
+        Vector3d p2 = startVec.subtract(scaled);
+        Vector3d p3 = endVec.add(scaled);
+        Vector3d p4 = endVec.subtract(scaled);
 
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder buffer = tess.getBuilder();

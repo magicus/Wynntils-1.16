@@ -100,7 +100,7 @@ public class MiniMapOverlay extends Overlay {
 
             // rotation axis
             transformationOrigin(mapSize/2, mapSize/2);
-            if (MapConfig.INSTANCE.followPlayerRotation) rotate(180 - MathHelper.fastFloor(McIf.player().rotationYaw));
+            if (MapConfig.INSTANCE.followPlayerRotation) rotate(180 - MathHelper.fastFloor(McIf.player().yRot));
 
             // map quad
             float extraSize = (extraFactor - 1f) * mapSize/2f;  // How many extra pixels multiplying by extraFactor added on each side
@@ -134,7 +134,7 @@ public class MiniMapOverlay extends Overlay {
                 // TODO this needs to scale in even numbers to avoid distortion!
                 final float sizeMultiplier = 0.8f * MapConfig.INSTANCE.minimapIconSizeMultiplier * (1 - (1 - scaleFactor) * (1 - scaleFactor));
 
-                final double rotationRadians = Math.toRadians(McIf.player().rotationYaw);
+                final double rotationRadians = Math.toRadians(McIf.player().yRot);
                 final float sinRotationRadians = (float) Math.sin(rotationRadians);
                 final float cosRotationRadians = (float) -Math.cos(rotationRadians);
 
@@ -169,7 +169,7 @@ public class MiniMapOverlay extends Overlay {
                             GlStateManager.pushMatrix();
                             Point drawingOrigin = MiniMapOverlay.drawingOrigin();
                             GlStateManager.translate(drawingOrigin.x + halfMapSize, drawingOrigin.y + halfMapSize, 0);
-                            GlStateManager.rotate(180 - McIf.player().rotationYaw, 0, 0, 1);
+                            GlStateManager.rotate(180 - McIf.player().yRot, 0, 0, 1);
                             GlStateManager.translate(-drawingOrigin.x - halfMapSize, -drawingOrigin.y - halfMapSize, 0);
                         } else {
                             float temp = dx * cosRotationRadians - dz * sinRotationRadians;
@@ -268,10 +268,10 @@ public class MiniMapOverlay extends Overlay {
             disableScissorTest();
             clearMask();
 
-            if (MapConfig.INSTANCE.followPlayerRotation) rotate(180 - MathHelper.fastFloor(McIf.player().rotationYaw));
+            if (MapConfig.INSTANCE.followPlayerRotation) rotate(180 - MathHelper.fastFloor(McIf.player().yRot));
 
             // cursor & cursor rotation
-            rotate(180 + MathHelper.fastFloor(McIf.player().rotationYaw));
+            rotate(180 + MathHelper.fastFloor(McIf.player().yRot));
 
             MapConfig.PointerType type = MapConfig.Textures.INSTANCE.pointerStyle;
 
@@ -304,12 +304,12 @@ public class MiniMapOverlay extends Overlay {
             if (MapConfig.INSTANCE.showCompass) {
                 if (MapConfig.INSTANCE.followPlayerRotation) {
                     float mapCentre = (float) mapSize / 2f;
-                    float yawRadians = (float) Math.toRadians(McIf.player().rotationYaw);
+                    float yawRadians = (float) Math.toRadians(McIf.player().yRot);
                     float northDX = mapCentre * MathHelper.sin(yawRadians);
                     float northDY = mapCentre * MathHelper.cos(yawRadians);
                     if (MapConfig.INSTANCE.mapFormat == MapConfig.MapFormat.SQUARE) {
                         // Scale by sec((offset from 90 degree angle)) to map to tangent from offset point
-                        float circleToSquareScale = MathHelper.cos((float) Math.toRadians((McIf.player().rotationYaw % 360f + 405f) % 90f - 45f));
+                        float circleToSquareScale = MathHelper.cos((float) Math.toRadians((McIf.player().yRot % 360f + 405f) % 90f - 45f));
                         northDX /= circleToSquareScale;
                         northDY /= circleToSquareScale;
                     }

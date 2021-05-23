@@ -84,7 +84,8 @@ public class ChatGUI extends ChatScreen {
         }
     }
 
-    protected void keyPressed(char typedChar, int keyCode) throws IOException {
+    @Override
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         if (input.getValue().isEmpty() && keyCode == GLFW.GLFW_KEY_TAB) {
             ChatOverlay.getChat().switchTabs(Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_SHIFT) ? -1 : +1);
             tabButtons.values().stream().forEach(ChatButton::unselect);
@@ -100,7 +101,7 @@ public class ChatGUI extends ChatScreen {
         }
         typedChar = output.b;
 
-        super.keyPressed(typedChar, keyCode);
+        return super.keyPressed(typedChar, keyCode, j);
     }
 
     @Override
@@ -119,7 +120,7 @@ public class ChatGUI extends ChatScreen {
         if (ChatConfig.INSTANCE.useBrackets) {
             languageButtons.values().forEach((button) -> button.visible = false);
         } else {
-            this.input.width = this.width - x * 12 - 4;
+            this.input.setWidth(this.width - x * 12 - 4);
         }
         languageButtons.get(ChatOverlay.getChat().getCurrentLanguage()).setSelected(true);
     }
@@ -128,7 +129,7 @@ public class ChatGUI extends ChatScreen {
     public void tick() {
         super.tick();
         for (Map.Entry<ChatTab, ChatButton> tabButton : tabButtons.entrySet()) {
-            tabButton.getValue().displayString = getDisplayName(tabButton.getKey());
+            tabButton.getValue().setMessage(getDisplayName(tabButton.getKey()));
         }
     }
 
@@ -208,7 +209,7 @@ public class ChatGUI extends ChatScreen {
                     renderer.drawRect(ChatGUI.unselected, 0, 0, this.width, this.height);
                 }
 
-                renderer.drawString(this.displayString, this.width / 2.0f + 1, 3, this.selected ? CommonColors.GREEN : CommonColors.WHITE, SmartFontRenderer.TextAlignment.MIDDLE, SmartFontRenderer.TextShadow.NONE);
+                renderer.drawString(McIf.toText(this.getMessage()), this.width / 2.0f + 1, 3, this.selected ? CommonColors.GREEN : CommonColors.WHITE, SmartFontRenderer.TextAlignment.MIDDLE, SmartFontRenderer.TextShadow.NONE);
                 ScreenRenderer.endGL();
             }
         }

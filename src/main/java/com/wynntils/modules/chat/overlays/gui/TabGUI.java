@@ -77,19 +77,19 @@ public class TabGUI extends Screen {
         nameTextField.setVisible(true);
         nameTextField.setEnabled(true);
         nameTextField.setEnableBackgroundDrawing(true);
-        nameTextField.setMaxStringLength(10);
+        nameTextField.setMaxLength(10);
 
         autoCommandField = new TextFieldWidget(3, McIf.mc().font, x - 12, y - 90, 80, 20);
         autoCommandField.setVisible(true);
         autoCommandField.setEnabled(true);
         autoCommandField.setEnableBackgroundDrawing(true);
-        autoCommandField.setMaxStringLength(10);
+        autoCommandField.setMaxLength(10);
 
         orderNbField = new TextFieldWidget(3, McIf.mc().font, x + 85, y - 90, 25, 20);
         orderNbField.setVisible(true);
         orderNbField.setEnabled(true);
         orderNbField.setEnableBackgroundDrawing(true);
-        orderNbField.setMaxStringLength(2);
+        orderNbField.setMaxLength(2);
 
         buttons.add(lowPriority = new CheckboxButton(3, x - 100, y + 22, "Low Priority", true));
 
@@ -110,7 +110,7 @@ public class TabGUI extends Screen {
         regexTextField.setVisible(false);
         regexTextField.setEnabled(true);
         regexTextField.setEnableBackgroundDrawing(true);
-        regexTextField.setMaxStringLength(400);
+        regexTextField.setMaxLength(400);
 
         if (tab != null) {
             nameTextField.setValue(tab.getName());
@@ -152,7 +152,7 @@ public class TabGUI extends Screen {
             }
             McIf.mc().setScreen(new ChatGUI());
         } else if (button == deleteButton) {
-            McIf.mc().setScreen(new GuiYesNo((result, cc) -> {
+            McIf.mc().setScreen(new ConfirmScreen((result, cc) -> {
                 if (result) {
                     int c = TabManager.deleteTab(id);
                     if (ChatOverlay.getChat().getCurrentTabId() == id) ChatOverlay.getChat().setCurrentTab(c);
@@ -163,11 +163,11 @@ public class TabGUI extends Screen {
             }, WHITE + (BOLD + "Do you really want to delete this chat tab?"), RED + "This action is irreversible!", 0));
         } else if (button == advancedButton) {
             boolean simple;
-            if (button.displayString.equals("Show Advanced Settings")) {
-                button.displayString = "Hide Advanced Settings";
+            if (button.getMessage().equals("Show Advanced Settings")) {
+                button.setMessage("Hide Advanced Settings");
                 simple = false;
             } else {
-                button.displayString = "Show Advanced Settings";
+                button.setMessage("Show Advanced Settings");
                 simple = true;
             }
             regexTextField.setVisible(!simple);
@@ -209,7 +209,7 @@ public class TabGUI extends Screen {
         if (mouseX >= lowPriority.x && mouseX < lowPriority.x + lowPriority.width && mouseY >= lowPriority.y && mouseY < lowPriority.y + lowPriority.height)
             drawHoveringText(Arrays.asList(GREEN + (BOLD + "Low priority"), GRAY + "If selected, messages", GRAY + "will attempt to match", GRAY + "with other tabs first.", "", GRAY + "This will also duplicate", GRAY + "messages across other", GRAY + "low priority tabs.", RED + "Optional"), mouseX, mouseY);
 
-        if (advancedButton.displayString.equals("Show Advanced Settings")) {
+        if (advancedButton.getMessage().equals("Show Advanced Settings")) {
             if (mouseX >= allRegex.x && mouseX < allRegex.x + allRegex.width && mouseY >= allRegex.y && mouseY < allRegex.y + allRegex.height) {
                 drawHoveringText(Arrays.asList(GREEN + (BOLD + "Message Type: All"), GRAY + "This will send all", GRAY + "messages, except those", GRAY + "deselected to this tab."), mouseX, mouseY);
             } else if (mouseX >= localRegex.x && mouseX < localRegex.x + localRegex.width && mouseY >= localRegex.y && mouseY < localRegex.y + localRegex.height) {
@@ -271,10 +271,10 @@ public class TabGUI extends Screen {
     }
 
     private Map<String, Boolean> regexSettingsCreator() {
-        if (advancedButton.displayString.equals("Hide Advanced Settings")) return null;
+        if (advancedButton.getMessage().equals("Hide Advanced Settings")) return null;
 
         Map<String, Boolean> r = new HashMap<>();
-        simpleRegexSettings.forEach(b-> r.put(b.displayString, b.isChecked()));
+        simpleRegexSettings.forEach(b-> r.put(b.getMessage(), b.isChecked()));
         return r;
     }
 
@@ -282,7 +282,7 @@ public class TabGUI extends Screen {
         if (tab == null || tab.getRegexSettings() == null) return;
         tab.getRegexSettings().forEach((k, v) -> {
             for (CheckboxButton cb: simpleRegexSettings) {
-                if (cb.displayString.equals(k)) {
+                if (cb.getMessage().equals(k)) {
                     cb.setIsChecked(v);
                 }
             }
@@ -290,7 +290,7 @@ public class TabGUI extends Screen {
     }
 
     private String regexCreator() {
-        if (advancedButton.displayString.equals("Hide Advanced Settings")) return "";
+        if (advancedButton.getMessage().equals("Hide Advanced Settings")) return "";
 
         Map<String, Boolean> regexSettings = regexSettingsCreator();
         List<String> result = new ArrayList<>();

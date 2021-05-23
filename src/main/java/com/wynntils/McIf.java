@@ -12,7 +12,6 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nullable;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
@@ -42,12 +41,18 @@ public class McIf {
      */
     public static String toText(ITextComponent msg) {
         // FIXME: Need better implementation!
+        if (msg == null) return "";
         return msg.toString();
     }
 
     public static String getTextWithoutFormattingCodes(@Nullable String text)
     {
         return text == null ? null : FORMATTING_CODE_PATTERN.matcher(text).replaceAll("");
+    }
+
+    public static String getTextWithoutFormattingCodes(@Nullable ITextComponent msg)
+    {
+        return getTextWithoutFormattingCodes(McIf.toText(msg));
     }
 
     public static Minecraft mc() {

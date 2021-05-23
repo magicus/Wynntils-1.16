@@ -4,6 +4,7 @@
 
 package com.wynntils.core.utils;
 
+import com.wynntils.McIf;
 import com.wynntils.core.utils.objects.IntRange;
 import com.wynntils.core.utils.reference.EmeraldSymbols;
 import com.wynntils.webapi.WebManager;

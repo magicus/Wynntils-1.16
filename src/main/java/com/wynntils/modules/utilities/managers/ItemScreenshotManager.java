@@ -49,7 +49,7 @@ public class ItemScreenshotManager {
         if (!(gui instanceof ContainerScreen)) return;
 
         Slot slot = ((ContainerScreen) gui).getSlotUnderMouse();
-        if (slot == null || !slot.getHasStack()) return;
+        if (slot == null || !slot.hasItem()) return;
         ItemStack stack = slot.getItem();
         if (!stack.hasCustomHoverName()) return;
 

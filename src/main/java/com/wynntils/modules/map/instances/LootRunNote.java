@@ -49,11 +49,11 @@ public class LootRunNote {
             return; // only draw nametag when close
 
         String[] lines = StringUtils.wrapTextBySize(note, 200);
-        int offsetY = -(fr.FONT_HEIGHT * lines.length) / 2;
+        int offsetY = -(fr.lineHeight * lines.length) / 2;
 
         for (String line : lines) {
             drawNametag(line, color, (float) (location.x - render.viewerPosX), (float) (location.y - render.viewerPosY + 2), (float) (location.z - render.viewerPosZ), offsetY, render.playerViewY, render.playerViewX, render.options.thirdPersonView == 2);
-            offsetY += fr.FONT_HEIGHT;
+            offsetY += fr.lineHeight;
         }
     }
 

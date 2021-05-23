@@ -62,7 +62,7 @@ public class WynnDataOverlay implements Listener {
         if (!(Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT))) return;
 
         Slot slot = e.getGui().getSlotUnderMouse();
-        if (slot == null || slot.inventory == null || !slot.getHasStack()) return;
+        if (slot == null || slot.inventory == null || !slot.hasItem()) return;
 
         ItemStack stack = slot.getItem();
         Utils.openUrl("https://www.wynndata.tk/i/" + Utils.encodeItemNameForUrl(stack));

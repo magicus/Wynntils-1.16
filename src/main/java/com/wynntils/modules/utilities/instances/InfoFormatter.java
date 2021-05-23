@@ -80,7 +80,7 @@ public class InfoFormatter {
 
         // The facing cardinal direction
         registerFormatter((input) ->
-                Utils.getPlayerDirection(McIf.player().rotationYaw),
+                Utils.getPlayerDirection(McIf.player().yRot),
                 "dir");
 
         // Frames per second

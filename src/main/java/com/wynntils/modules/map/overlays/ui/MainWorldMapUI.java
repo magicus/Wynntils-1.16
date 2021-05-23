@@ -215,7 +215,7 @@ public class MainWorldMapUI extends WorldMapUI {
 
     @Override
     protected void keyPressed(char typedChar, int keyCode) throws IOException {
-        if (!holdingMapKey && keyCode == MapModule.getModule().getMapKey().getKeyBinding().getKeyCode()) {
+        if (!holdingMapKey && keyCode == MapModule.getModule().getMapKey().getKeyBinding().getKey().getValue()) {
             McIf.mc().setScreen(null);
             return;
         }

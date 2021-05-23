@@ -128,7 +128,7 @@ public class GuildWorldMapUI extends WorldMapUI {
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(drawingOrigin.x + playerPositionX, drawingOrigin.y + playerPositionZ, 0);
-            GlStateManager.rotate(180 + MathHelper.fastFloor(McIf.player().rotationYaw), 0, 0, 1);
+            GlStateManager.rotate(180 + MathHelper.fastFloor(McIf.player().yRot), 0, 0, 1);
             GlStateManager.translate(-drawingOrigin.x - playerPositionX, -drawingOrigin.y - playerPositionZ, 0);
 
             MapConfig.PointerType type = MapConfig.Textures.INSTANCE.pointerStyle;
@@ -142,7 +142,7 @@ public class GuildWorldMapUI extends WorldMapUI {
         }
 
         if (showTradeRoutes) generateTradeRoutes();
-        territories.values().forEach(c -> c.drawScreen(mouseX, mouseY, partialTicks, showTerritory, resourceColors, !showOwners, showOwners));
+        territories.values().forEach(c -> c.render(mouseX, mouseY, partialTicks, showTerritory, resourceColors, !showOwners, showOwners));
         territories.values().forEach(c -> c.postDraw(mouseX, mouseY, partialTicks, width, height));
 
         clearMask();
@@ -212,7 +212,7 @@ public class GuildWorldMapUI extends WorldMapUI {
 
     @Override
     protected void keyPressed(char typedChar, int keyCode) throws IOException {
-        if (!holdingMapKey && keyCode == MapModule.getModule().getGuildMapKey().getKeyBinding().getKeyCode()) {
+        if (!holdingMapKey && keyCode == MapModule.getModule().getGuildMapKey().getKeyBinding().getKey().getValue()) {
             McIf.mc().setScreen(null);
             return;
         }

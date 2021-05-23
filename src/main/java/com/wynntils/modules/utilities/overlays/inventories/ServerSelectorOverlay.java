@@ -33,7 +33,7 @@ public class ServerSelectorOverlay implements Listener {
     @SubscribeEvent
     public void onDrawChest(GuiOverlapEvent.ChestOverlap.DrawScreen.Post e) {
         if (!Utils.isServerSelector(e.getGui())) return;
-        if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
+        if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().hasItem()) return;
 
         ItemStack stack = e.getGui().getSlotUnderMouse().getItem();
         CompoundNBT nbt = stack.getTag();
@@ -83,7 +83,7 @@ public class ServerSelectorOverlay implements Listener {
     @SubscribeEvent
     public void onSlotClicked(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (!Utils.isServerSelector(e.getGui())) return;
-        if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().getHasStack()) return;
+        if (e.getGui().getSlotUnderMouse() == null || !e.getGui().getSlotUnderMouse().hasItem()) return;
         ItemStack stack = e.getGui().getSlotUnderMouse().getItem();
         CompoundNBT nbt = stack.getTag();
         if (nbt.contains("wynntilsBlock")) {

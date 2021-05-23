@@ -43,7 +43,7 @@ public class UpdatingScreen extends Screen {
     }
 
     private void updateText() {
-        backButton.displayString = (failed || complete) ? "Back" : "Cancel";
+        backButton.setMessage((failed || complete) ? "Back" : "Cancel");
     }
 
     private void doUpdate(boolean restartNow) {
@@ -161,8 +161,8 @@ public class UpdatingScreen extends Screen {
         } else {
             int left = Math.max(this.width/2 - 100, 10);
             int right = Math.min(this.width/2 + 100, this.width - 10);
-            int top = this.height/2 - 2 - MathHelper.ceil(McIf.mc().font.FONT_HEIGHT / 2f);
-            int bottom = this.height/2 + 2 + MathHelper.floor(McIf.mc().font.FONT_HEIGHT / 2f);
+            int top = this.height/2 - 2 - MathHelper.ceil(McIf.mc().font.lineHeight / 2f);
+            int bottom = this.height/2 + 2 + MathHelper.floor(McIf.mc().font.lineHeight / 2f);
             drawRect(left - 1, top - 1, right + 1, bottom + 1, 0xFFC0C0C0);
             int progressPoint = MathHelper.clamp(MathHelper.floor(progress * (right - left) + left), left, right);
             drawRect(left, top, progressPoint, bottom, 0xFFCB3D35);
@@ -172,7 +172,7 @@ public class UpdatingScreen extends Screen {
             McIf.mc().font.drawString(label, (this.width - McIf.mc().font.width(label))/2, top + 3, 0xFF000000);
             int x = (this.width - McIf.mc().font.width(String.format("Downloading %s", DOTS[DOTS.length - 1]))) / 2;
             String title = String.format("Downloading %s", DOTS[((int) (System.currentTimeMillis() % (DOT_TIME * DOTS.length))) / DOT_TIME]);
-            drawString(McIf.mc().font, title, x, top - McIf.mc().font.FONT_HEIGHT - 2, 0xFFFFFFFF);
+            drawString(McIf.mc().font, title, x, top - McIf.mc().font.lineHeight - 2, 0xFFFFFFFF);
         }
 
         super.render(matrix, mouseX, mouseY, partialTicks);

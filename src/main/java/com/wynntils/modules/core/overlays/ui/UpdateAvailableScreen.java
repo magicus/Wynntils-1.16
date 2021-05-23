@@ -46,10 +46,10 @@ public class UpdateAvailableScreen extends Screen {
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
 
-        int yOffset = Math.min(this.height / 2, this.height / 4 + 80 - McIf.mc().font.FONT_HEIGHT * 2);
-        drawCenteredString(McIf.mc().font, text, this.width/2, yOffset - McIf.mc().font.FONT_HEIGHT - 2, 0xFFFFFFFF);
+        int yOffset = Math.min(this.height / 2, this.height / 4 + 80 - McIf.mc().font.lineHeight * 2);
+        drawCenteredString(McIf.mc().font, text, this.width/2, yOffset - McIf.mc().font.lineHeight - 2, 0xFFFFFFFF);
         drawCenteredString(McIf.mc().font, "Update now or when leaving Minecraft?", this.width/2, yOffset, 0xFFFFFFFF);
-        drawCenteredString(McIf.mc().font, "(Updating now will exit Minecraft after downloading update)", this.width/2, yOffset + McIf.mc().font.FONT_HEIGHT + 2, 0xFFFFFFFF);
+        drawCenteredString(McIf.mc().font, "(Updating now will exit Minecraft after downloading update)", this.width/2, yOffset + McIf.mc().font.lineHeight + 2, 0xFFFFFFFF);
 
         super.render(matrix, mouseX, mouseY, partialTicks);
     }

@@ -5,6 +5,7 @@
 package com.wynntils.modules.map.overlays.ui;
 
 import com.google.common.collect.Iterables;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.instances.GuiMovementScreen;
@@ -106,7 +107,7 @@ public class WorldMapUI extends GuiMovementScreen {
 
         // Opening SFX
         McIf.mc().getSoundManager().play(
-                SimpleSound.forUI(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f)
+                SimpleSound.forUI(SoundEvents.ARMOR_EQUIP_LEATHER, 1f)
         );
     }
 
@@ -308,7 +309,7 @@ public class WorldMapUI extends GuiMovementScreen {
                 needToReset[0] = true;
                 return;
             }
-            i.drawScreen(mouseX, mouseY, partialTicks, scale, renderer);
+            i.render(new MatrixStack(), mouseX, mouseY, partialTicks, scale, renderer);
         });
 
         if (needToReset[0]) resetAllIcons();
@@ -324,7 +325,7 @@ public class WorldMapUI extends GuiMovementScreen {
 
             pushMatrix();
             translate(drawingOrigin.x + playerPositionX, drawingOrigin.y + playerPositionZ, 0);
-            rotate(180 + MathHelper.fastFloor(McIf.player().rotationYaw), 0, 0, 1);
+            rotate(180 + MathHelper.fastFloor(McIf.player().yRot), 0, 0, 1);
             translate(-drawingOrigin.x - playerPositionX, -drawingOrigin.y - playerPositionZ, 0);
 
             MapConfig.PointerType type = MapConfig.Textures.INSTANCE.pointerStyle;
@@ -338,7 +339,7 @@ public class WorldMapUI extends GuiMovementScreen {
         }
 
         if (MapConfig.WorldMap.INSTANCE.keepTerritoryVisible || Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_CONTROL) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_CONTROL)) {
-            territories.values().forEach(c -> c.drawScreen(mouseX, mouseY, partialTicks,
+            territories.values().forEach(c -> c.render(new MatrixStack(), mouseX, mouseY, partialTicks,
                     MapConfig.WorldMap.INSTANCE.territoryArea, false, false, true));
         }
 
@@ -365,7 +366,7 @@ public class WorldMapUI extends GuiMovementScreen {
         if (mapButtons.isEmpty()) return;
 
         for (MapButton button : mapButtons) {
-            button.drawScreen(mouseX, mouseY, partialTicks);
+            button.render(new MatrixStack(), mouseX, mouseY, partialTicks);
         }
 
         // hover lore
@@ -373,7 +374,7 @@ public class WorldMapUI extends GuiMovementScreen {
             if (button.getType().isIgnoreAction()) continue;
             if (!button.isHovering(mouseX, mouseY)) continue;
 
-            drawHoveringText(button.getHoverLore(), mouseX, mouseY);
+            renderToolTip(button.getHoverLore(), mouseX, mouseY);
             return;
         }
     }
@@ -453,18 +454,18 @@ public class WorldMapUI extends GuiMovementScreen {
     }
 
     @Override
-    protected void keyPressed(char typedChar, int keyCode) throws IOException {
-        if (keyCode == KeyManager.getZoomInKey().getKeyBinding().getKeyCode()) {
+    public boolean keyPressed(int typedChar, int keyCode, int j)  {
+        if (keyCode == KeyManager.getZoomInKey().getKeyBinding().getKey().getValue()) {
             zoomBy(+2);
-            return;
+            return true;
         }
 
-        if (keyCode == KeyManager.getZoomOutKey().getKeyBinding().getKeyCode()) {
+        if (keyCode == KeyManager.getZoomOutKey().getKeyBinding().getKey().getValue()) {
             zoomBy(-2);
-            return;
+            return true;
         }
 
-        super.keyPressed(typedChar, keyCode);
+        return super.keyPressed(typedChar, keyCode, j);
     }
 
     @Override

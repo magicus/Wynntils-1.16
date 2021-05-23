@@ -110,7 +110,7 @@ public class ChatOverlay extends GuiNewChat {
             if (flag) {
                 // continuing chat render
                 if (chatSize > 0) {
-                    int k2 = McIf.mc().font.FONT_HEIGHT;
+                    int k2 = McIf.mc().font.lineHeight;
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
                     int l2 = chatSize * k2 + chatSize;
                     int i3 = l * k2 + l;
@@ -328,8 +328,8 @@ public class ChatOverlay extends GuiNewChat {
             if (j >= 0 && k >= 0) {
                 int l = Math.min(getLineCount(), getCurrentTab().getCurrentMessages().size());
 
-                if (j <= MathHelper.floor((float) getChatWidth() / getChatScale()) && k < McIf.mc().font.FONT_HEIGHT * l + l) {
-                    int i1 = k / McIf.mc().font.FONT_HEIGHT + scrollPos;
+                if (j <= MathHelper.floor((float) getChatWidth() / getChatScale()) && k < McIf.mc().font.lineHeight * l + l) {
+                    int i1 = k / McIf.mc().font.lineHeight + scrollPos;
 
                     if (i1 >= 0 && i1 < getCurrentTab().getCurrentMessages().size()) {
                         ChatLine chatline = getCurrentTab().getCurrentMessages().get(i1);

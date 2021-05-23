@@ -31,10 +31,10 @@ import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import com.wynntils.transition.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Items;
 import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
@@ -53,10 +53,10 @@ public class GearViewerUI extends FakeGuiContainer {
 
     private static final ResourceLocation INVENTORY_GUI_TEXTURE = new ResourceLocation("textures/gui/container/inventory.png");
 
-    private InventoryBasic inventory;
+    private Inventory inventory;
     private PlayerEntity player;
 
-    public GearViewerUI(InventoryBasic inventory, PlayerEntity player) {
+    public GearViewerUI(Inventory inventory, PlayerEntity player) {
         super(new ContainerGearViewer(inventory, McIf.player()));
         this.inventory = inventory;
 
@@ -99,7 +99,7 @@ public class GearViewerUI extends FakeGuiContainer {
         super.keyPressed(typedChar, keyCode);
 
         // allow item screenshotting in gear viewer
-        if (keyCode == KeyManager.getItemScreenshotKey().getKeyBinding().getKeyCode())
+        if (keyCode == KeyManager.getItemScreenshotKey().getKeyBinding().getKey().getValue())
             ItemScreenshotManager.takeScreenshot();
     }
 
@@ -110,7 +110,7 @@ public class GearViewerUI extends FakeGuiContainer {
         this.renderHoveredToolTip(mouseX, mouseY);
 
         // replace lore with advanced ids if enabled
-        if (this.getSlotUnderMouse() != null && this.getSlotUnderMouse().getHasStack())
+        if (this.getSlotUnderMouse() != null && this.getSlotUnderMouse().hasItem())
             ItemIdentificationOverlay.replaceLore(this.getSlotUnderMouse().getItem());
     }
 
@@ -337,7 +337,7 @@ public class GearViewerUI extends FakeGuiContainer {
         stack.setStackDisplayName(item.getTier().getTextColor() + item.getDisplayName());
     }
 
-    private void copyInventory(InventoryPlayer destination, InventoryPlayer source) {
+    private void copyInventory(PlayerInventory destination, PlayerInventory source) {
         // create deep copy of inventory
         for (int i = 0; i < source.getContainerSize(); i++) {
             destination.setInventorySlotContents(i, source.getItem(i).copy());
@@ -353,7 +353,7 @@ public class GearViewerUI extends FakeGuiContainer {
         PlayerEntity ep = (PlayerEntity) e;
         if (ep.getTeam() == null) return; // player model npc
 
-        McIf.mc().setScreen(new GearViewerUI(new InventoryBasic("", false, 5), ep));
+        McIf.mc().setScreen(new GearViewerUI(new Inventory("", false, 5), ep));
     }
 
 }

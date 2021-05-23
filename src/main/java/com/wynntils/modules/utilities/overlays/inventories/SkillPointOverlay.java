@@ -31,7 +31,7 @@ import com.wynntils.transition.RenderHelper;
 import net.minecraft.item.Items;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CClickWindowPacket;
@@ -189,17 +189,17 @@ public class SkillPointOverlay implements Listener {
     public void onSlotClicked(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (!Reference.onWorld || !Utils.isCharacterInfoPage(e.getGui())) return;
 
-        if (e.getSlot() == SAVE_SLOT) {
+        if (e.getSlotId() == SAVE_SLOT) {
             nameField = new GuiTextFieldWynn(200, McIf.mc().font, 8, 5, 130, 10);
             nameField.setFocused(true);
             nameField.setValue("Enter build name");
             Keyboard.enableRepeatEvents(true);
 
             e.setCanceled(true);
-        } else if (e.getSlot() == LOAD_SLOT) {
+        } else if (e.getSlotId() == LOAD_SLOT) {
             McIf.mc().setScreen(
                     new SkillPointLoadoutUI(this, McIf.mc().screen,
-                            new InventoryBasic("Skill Points Loadouts", false, 54))
+                            new Inventory("Skill Points Loadouts", false, 54))
             );
 
             e.setCanceled(true);
@@ -235,7 +235,7 @@ public class SkillPointOverlay implements Listener {
         // handle typing in text boxes
         if (nameField == null || !nameField.isFocused()) return;
 
-        if (e.getKeyCode() == GLFW.GLFW_KEY_RETURN) {
+        if (e.getKey().getValue() == GLFW.GLFW_KEY_RETURN) {
             String name = nameField.getValue();
             nameField = null;
 
@@ -243,12 +243,12 @@ public class SkillPointOverlay implements Listener {
             UtilitiesConfig.INSTANCE.skillPointLoadouts.put(name, getSkillPoints(e.getGui()));
             UtilitiesConfig.INSTANCE.saveSettings(UtilitiesModule.getModule());
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1f));
-        } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
+        } else if (e.getKey().getValue() == GLFW.GLFW_KEY_ESCAPE) {
             nameField = null;
             loadedBuild = null;
             buildPercentage = 0.0f;
         } else {
-            nameField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
+            nameField.textboxKeyTyped(e.getTypedChar(), e.getKey().getValue());
         }
 
         e.setCanceled(true);

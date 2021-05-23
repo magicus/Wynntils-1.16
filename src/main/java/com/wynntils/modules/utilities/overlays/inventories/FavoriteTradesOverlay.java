@@ -32,7 +32,7 @@ public class FavoriteTradesOverlay implements Listener {
     @SubscribeEvent
     public void onKeyPress(GuiOverlapEvent.ChestOverlap.KeyTyped e) {
         if (!Reference.onWorld || !McIf.getFormattedText(e.getGui().getLowerInv().getDisplayName()).contains("Marketplace")) return;
-        if (e.getKeyCode() != KeyManager.getFavoriteTradeKey().getKeyBinding().getKeyCode()) return;
+        if (e.getKey().getValue() != KeyManager.getFavoriteTradeKey().getKeyBinding().getKey().getValue()) return;
 
         if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory != e.getGui().getSlotUnderMouse().inventory) {
             toggleLockState(e.getGui().getSlotUnderMouse().getItem());

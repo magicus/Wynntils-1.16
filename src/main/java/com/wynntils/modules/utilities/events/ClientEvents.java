@@ -34,17 +34,17 @@ import com.wynntils.webapi.profiles.player.PlayerStatsProfile;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.GuiYesNo;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -125,8 +125,9 @@ public class ClientEvents implements Listener {
         if (!McIf.toText(e.getGui().getTitle()).contains("Select a Class")) return;
         if (!afkProtectionActivated) return;
 
-        InventoryBasic inv = (InventoryBasic) e.getGui().getLowerInv();
-        if (inv.getName().contains("AFK Protection activated")) return;
+
+        if (McIf.toText(e.getGui().getTitle()).contains("AFK Protection activated")) return;
+        Inventory inv = (Inventory) e.getGui().getLowerInv();
 
         inv.setCustomName("" + TextFormatting.DARK_RED + TextFormatting.BOLD + "AFK Protection activated");
     }
@@ -308,10 +309,10 @@ public class ClientEvents implements Listener {
 
         STitlePacket packet = e.getPacket();
         if (packet.getType() != STitlePacket.Type.SUBTITLE) return;
-        if (!McIf.getUnformattedText(packet.getMessage()).matches("^§a\\+\\d+ §7.+§a to pouch$")) return;
+        if (!McIf.getUnformattedText(packet.getText()).matches("^§a\\+\\d+ §7.+§a to pouch$")) return;
 
         e.setCanceled(true);
-        GameUpdateOverlay.queueMessage(McIf.getFormattedText(packet.getMessage()));
+        GameUpdateOverlay.queueMessage(McIf.getFormattedText(packet.getText()));
     }
 
     @SubscribeEvent
@@ -326,7 +327,7 @@ public class ClientEvents implements Listener {
             return;
         }
 
-        if (entity == McIf.player().getRidingEntity()) {
+        if (entity == McIf.player().getVehicle()) {
             lastHorseId = thisId;
             return;
         }
@@ -334,7 +335,7 @@ public class ClientEvents implements Listener {
         ClientPlayerEntity player = McIf.player();
         String entityName = Utils.getNameFromMetadata(e.getPacket().getUnpackedData());
         if (entityName == null ||  entityName.isEmpty() ||
-                !MountHorseManager.isPlayersHorse(entityName, player.getName())) return;
+                !MountHorseManager.isPlayersHorse(entityName, McIf.toText(player.getName()))) return;
 
         lastHorseId = thisId;
 
@@ -464,20 +465,20 @@ public class ClientEvents implements Listener {
     public void keyPressOnInventory(GuiOverlapEvent.InventoryOverlap.KeyTyped e) {
         if (!Reference.onWorld) return;
 
-        if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKeyCode()) {
-            if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKey().getValue()) {
+            if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().container) {
                 checkLockState(e.getGui().getSlotUnderMouse().getSlotIndex());
             }
 
             return;
         }
 
-        if (e.getKeyCode() == KeyManager.getItemScreenshotKey().getKeyBinding().getKeyCode()) {
+        if (e.getKeyCode() == KeyManager.getItemScreenshotKey().getKeyBinding().getKey().getValue()) {
             ItemScreenshotManager.takeScreenshot();
             return;
         }
 
-        if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().container) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return;
 
             e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), e.getKeyCode()));
@@ -489,7 +490,7 @@ public class ClientEvents implements Listener {
         if (!Reference.onWorld) return;
 
         if (UtilitiesConfig.INSTANCE.preventMythicChestClose) {
-            if (e.getKeyCode() == 1 || e.getKeyCode() == McIf.mc().options.keyBindInventory.getKeyCode()) {
+            if (e.getKeyCode() == 1 || e.getKeyCode() == McIf.mc().options.keyBindInventory.getKey().getValue()) {
                 IInventory inv = e.getGui().getLowerInv();
                 if (McIf.getUnformattedText(inv.getDisplayName()).contains("Loot Chest") ||
                         McIf.getUnformattedText(inv.getDisplayName()).contains("Daily Rewards") ||
@@ -497,14 +498,14 @@ public class ClientEvents implements Listener {
                     for (int i = 0; i < inv.getContainerSize(); i++) {
                         ItemStack stack = inv.getItem(i);
                         if (!stack.hasCustomHoverName() ||
-                            !stack.getDisplayName().startsWith(TextFormatting.DARK_PURPLE.toString()) ||
+                            !McIf.toText(stack.getDisplayName()).startsWith(TextFormatting.DARK_PURPLE.toString()) ||
                             !ItemUtils.getStringLore(stack).toLowerCase().contains("mythic")) continue;
 
                         StringTextComponent text = new StringTextComponent("You cannot close this loot chest while there is a mythic in it!");
                         text.getStyle().setColor(TextFormatting.RED);
 
                         McIf.sendMessage(text);
-                        McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_BASS, 1f));
+                        McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.NOTE_BLOCK_BASS, 1f));
                         e.setCanceled(true);
                         break;
                     }
@@ -513,20 +514,20 @@ public class ClientEvents implements Listener {
             }
         }
 
-        if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKeyCode()) {
-            if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKey().getValue()) {
+            if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().container) {
                 checkLockState(e.getGui().getSlotUnderMouse().getSlotIndex());
             }
 
             return;
         }
 
-        if (e.getKeyCode() == KeyManager.getItemScreenshotKey().getKeyBinding().getKeyCode()) {
+        if (e.getKeyCode() == KeyManager.getItemScreenshotKey().getKeyBinding().getKey().getValue()) {
             ItemScreenshotManager.takeScreenshot();
             return;
         }
 
-        if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().container) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return;
 
             e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), e.getKeyCode()));
@@ -537,20 +538,20 @@ public class ClientEvents implements Listener {
     public void keyPressOnHorse(GuiOverlapEvent.HorseOverlap.KeyTyped e) {
         if (!Reference.onWorld) return;
 
-        if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKeyCode()) {
-            if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getKeyCode() == KeyManager.getLockInventoryKey().getKeyBinding().getKey().getValue()) {
+            if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().container) {
                 checkLockState(e.getGui().getSlotUnderMouse().getSlotIndex());
             }
 
             return;
         }
 
-        if (e.getKeyCode() == KeyManager.getItemScreenshotKey().getKeyBinding().getKeyCode()) {
+        if (e.getKeyCode() == KeyManager.getItemScreenshotKey().getKeyBinding().getKey().getValue()) {
             ItemScreenshotManager.takeScreenshot();
             return;
         }
 
-        if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().inventory) {
+        if (e.getGui().getSlotUnderMouse() != null && McIf.player().inventory == e.getGui().getSlotUnderMouse().container) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return;
 
             e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), e.getKeyCode()));
@@ -563,25 +564,25 @@ public class ClientEvents implements Listener {
     public void clickOnInventory(GuiOverlapEvent.InventoryOverlap.HandleMouseClick e) {
         if(!Reference.onWorld) return;
 
-        if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getGui().getSlotUnderMouse() != null && e.getGui().getSlotUnderMouse().inventory == McIf.player().inventory) {
-            if (checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), McIf.mc().options.keyBindDrop.getKeyCode())) {
+        if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getGui().getSlotUnderMouse() != null && e.getGui().getSlotUnderMouse().container == McIf.player().inventory) {
+            if (checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), McIf.mc().options.keyBindDrop.getKey().getValue())) {
                 e.setCanceled(true);
                 return;
             }
         }
 
-        if (UtilitiesConfig.INSTANCE.shiftClickAccessories && e.getGui().isShiftKeyDown() && e.getGui().getSlotUnderMouse() != null && McIf.player().inventory.getItemStack().isEmpty() && e.getGui().getSlotUnderMouse().inventory == McIf.player().inventory) {
-            if (e.getSlot() >= 9 && e.getSlot() <= 12) { // taking off accessory
+        if (UtilitiesConfig.INSTANCE.shiftClickAccessories && e.getGui().isShiftKeyDown() && e.getGui().getSlotUnderMouse() != null && McIf.player().inventory.getCarried().isEmpty() && e.getGui().getSlotUnderMouse().container == McIf.player().inventory) {
+            if (e.getSlotId() >= 9 && e.getSlotId() <= 12) { // taking off accessory
                 // check if hotbar has open slot; if so, no action required
                 for (int i = 36; i < 45; i++) {
-                    if (!e.getGui().getMenu().getSlot(i).getHasStack()) return;
+                    if (!e.getGui().getMenu().getSlot(i).hasItem()) return;
                 }
 
                 // move accessory into inventory
                 // find first open slot
                 int openSlot = 0;
                 for (int i = 14; i < 36; i++) {
-                    if (!e.getGui().getMenu().getSlot(i).getHasStack()) {
+                    if (!e.getGui().getMenu().getSlot(i).hasItem()) {
                         openSlot = i;
                         break;
                     }
@@ -600,17 +601,17 @@ public class ClientEvents implements Listener {
                 int openSlot = 0;
                 switch (item) {
                     case RING:
-                        if (e.getGui().getMenu().getSlot(9).getHasStack() && e.getGui().getMenu().getSlot(9).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
+                        if (e.getGui().getMenu().getSlot(9).hasItem() && e.getGui().getMenu().getSlot(9).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 9; // first ring slot
-                        else if (e.getGui().getMenu().getSlot(10).getHasStack() && e.getGui().getMenu().getSlot(10).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
+                        else if (e.getGui().getMenu().getSlot(10).hasItem() && e.getGui().getMenu().getSlot(10).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 10; // second ring slot
                         break;
                     case BRACELET:
-                        if (e.getGui().getMenu().getSlot(11).getHasStack() && e.getGui().getMenu().getSlot(11).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
+                        if (e.getGui().getMenu().getSlot(11).hasItem() && e.getGui().getMenu().getSlot(11).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 11; // bracelet slot
                         break;
                     case NECKLACE:
-                        if (e.getGui().getMenu().getSlot(12).getHasStack() && e.getGui().getMenu().getSlot(12).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
+                        if (e.getGui().getMenu().getSlot(12).hasItem() && e.getGui().getMenu().getSlot(12).getItem().getItem().equals(Item.byBlock(Blocks.SNOW)))
                             openSlot = 12; // necklace slot
                         break;
                     default:
@@ -623,7 +624,7 @@ public class ClientEvents implements Listener {
             }
 
             // pick up accessory
-            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().getMenu().windowId, e.getSlot(), 0, ClickType.PICKUP, e.getSlotIn().getItem(), e.getGui().getMenu().getNextTransactionID(McIf.player().inventory));
+            CClickWindowPacket packet = new CClickWindowPacket(e.getGui().getMenu().containerId, e.getSlotId(), 0, ClickType.PICKUP, e.getSlotIn().getItem(), e.getGui().getMenu().getNextTransactionID(McIf.player().inventory));
             McIf.mc().getConnection().send(packet);
         }
     }
@@ -644,7 +645,7 @@ public class ClientEvents implements Listener {
         if (McIf.player().inventory.getItemStack().isEmpty()) return;
 
         // destination slot was filled in the meantime
-        if (gui.getMenu().getSlot(accessoryDestinationSlot).getHasStack() &&
+        if (gui.getMenu().getSlot(accessoryDestinationSlot).hasItem() &&
                 !gui.getMenu().getSlot(accessoryDestinationSlot).getItem().getItem().equals(Item.byBlock(Blocks.SNOW))) {
             accessoryDestinationSlot = -1;
             return;
@@ -660,18 +661,18 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void clickOnChest(GuiOverlapEvent.ChestOverlap.HandleMouseClick e) {
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getSlotIn() != null) {
-            if (e.getSlot() - e.getGui().getLowerInv().getContainerSize() >= 0 && e.getSlot() - e.getGui().getLowerInv().getContainerSize() < 27) {
-                e.setCanceled(checkDropState(e.getSlot() - e.getGui().getLowerInv().getContainerSize() + 9, McIf.mc().options.keyBindDrop.getKeyCode()));
+            if (e.getSlotId() - e.getGui().getLowerInv().getContainerSize() >= 0 && e.getSlotId() - e.getGui().getLowerInv().getContainerSize() < 27) {
+                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() + 9, McIf.mc().options.keyBindDrop.getKey().getValue()));
             } else {
-                e.setCanceled(checkDropState(e.getSlot() - e.getGui().getLowerInv().getContainerSize() - 27, McIf.mc().options.keyBindDrop.getKeyCode()));
+                e.setCanceled(checkDropState(e.getSlotId() - e.getGui().getLowerInv().getContainerSize() - 27, McIf.mc().options.keyBindDrop.getKey().getValue()));
             }
         }
 
         if (UtilitiesConfig.Bank.INSTANCE.addBankConfirmation && e.getSlotIn() != null) {
-            IInventory inventory = e.getSlotIn().inventory;
-            if (McIf.getUnformattedText(inventory.getDisplayName()).contains("Bank") && e.getSlotIn().getHasStack()) {
+            IInventory inventory = e.getSlotIn().container;
+            if (McIf.getUnformattedText(inventory.getDisplayName()).contains("Bank") && e.getSlotIn().hasItem()) {
                 ItemStack item = e.getSlotIn().getItem();
-                if (item.getDisplayName().contains(">" + TextFormatting.DARK_RED + ">" + TextFormatting.RED + ">" + TextFormatting.DARK_RED + ">" + TextFormatting.RED + ">")) {
+                if (McIf.toText(item.getDisplayName()).contains(">" + TextFormatting.DARK_RED + ">" + TextFormatting.RED + ">" + TextFormatting.DARK_RED + ">" + TextFormatting.RED + ">")) {
                     String lore = McIf.getTextWithoutFormattingCodes(ItemUtils.getStringLore(item));
                     String price = lore.substring(lore.indexOf(" Price: ") + 8, lore.length());
                     String priceDisplay;
@@ -695,11 +696,11 @@ public class ClientEvents implements Listener {
                     } else {
                         priceDisplay = price;
                     }
-                    String itemName = item.getDisplayName();
+                    String itemName = McIf.toText(item.getDisplayName());
                     String pageNumber = itemName.substring(9, itemName.indexOf(TextFormatting.RED + " >"));
                     ChestReplacer gui = e.getGui();
-                    CClickWindowPacket packet = new CClickWindowPacket(gui.getMenu().windowId, e.getSlot(), e.getMouseButton(), e.getType(), item, e.getGui().getMenu().getNextTransactionID(McIf.player().inventory));
-                    McIf.mc().setScreen(new GuiYesNo((result, parentButtonID) -> {
+                    CClickWindowPacket packet = new CClickWindowPacket(gui.getMenu().containerId, e.getSlotId(), e.getMouseButton(), e.getType(), item, e.getGui().getMenu().getNextTransactionID(McIf.player().inventory));
+                    McIf.mc().setScreen(new ConfirmScreen((result, parentButtonID) -> {
                         McIf.mc().setScreen(gui);
                         if (result) {
                             McIf.mc().getConnection().send(packet);
@@ -724,7 +725,7 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void clickOnHorse(GuiOverlapEvent.HorseOverlap.HandleMouseClick e) {
         if (UtilitiesConfig.INSTANCE.preventSlotClicking && e.getGui().getSlotUnderMouse() != null) {
-            e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), McIf.mc().options.keyBindDrop.getKeyCode()));
+            e.setCanceled(checkDropState(e.getGui().getSlotUnderMouse().getSlotIndex(), McIf.mc().options.keyBindDrop.getKey().getValue()));
         }
     }
 
@@ -743,13 +744,13 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void onConsumable(PacketEvent<SSetSlotPacket> e) {
-        if (!Reference.onWorld || e.getPacket().getWindowId() != 0) return;
+        if (!Reference.onWorld || e.getPacket().getContainerId() != 0) return;
 
         // the reason of the +36, is because in the client the hotbar is handled between 0-8
         // the hotbar in the packet starts in 36, counting from up to down
         if (e.getPacket().getSlot() != McIf.player().inventory.selected + 36) return;
 
-        InventoryPlayer inventory = McIf.player().inventory;
+        PlayerInventory inventory = McIf.player().inventory;
         ItemStack oldStack = inventory.getItem(e.getPacket().getSlot() - 36);
         ItemStack newStack = e.getPacket().getItem();
 
@@ -768,7 +769,7 @@ public class ClientEvents implements Listener {
 
         int newUses = 0;
         if (!newStack.isEmpty()) {
-            String newName = McIf.getTextWithoutFormattingCodes(StringUtils.normalizeBadString(newStack.getDisplayName()));
+            String newName = McIf.getTextWithoutFormattingCodes(StringUtils.normalizeBadString(McIf.toText(newStack.getDisplayName())));
             Matcher newMatcher = CRAFTED_USES.matcher(newName);
             if (newMatcher.matches()) {
                 newUses = Integer.parseInt(newMatcher.group(1));
@@ -793,7 +794,7 @@ public class ClientEvents implements Listener {
     private static boolean checkDropState(int slot, int key) {
         if (!Reference.onWorld) return false;
 
-        if (key == McIf.mc().options.keyBindDrop.getKeyCode()) {
+        if (key == McIf.mc().options.keyBindDrop.getKey().getValue()) {
             if (!UtilitiesConfig.INSTANCE.locked_slots.containsKey(PlayerInfo.get(CharacterData.class).getClassId())) return false;
 
             return UtilitiesConfig.INSTANCE.locked_slots.get(PlayerInfo.get(CharacterData.class).getClassId()).contains(slot);

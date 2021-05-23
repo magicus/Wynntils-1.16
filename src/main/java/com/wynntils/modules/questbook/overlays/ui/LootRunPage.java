@@ -64,7 +64,7 @@ public class LootRunPage extends QuestBookPage {
     }
 
     private void initBasicSearch() {
-        textField.setMaxStringLength(50);
+        textField.setMaxLength(50);
         initDefaultSearchBar();
     }
 

@@ -194,7 +194,7 @@ public class SettingsUI extends UI {
                 );
                 ScreenRenderer.resetScale();
                 if (setting.isSearched) {
-                    int y = (int) (setting.position.getDrawingY() + 4.5f + font.FONT_HEIGHT * 0.8f);
+                    int y = (int) (setting.position.getDrawingY() + 4.5f + font.lineHeight * 0.8f);
                     int x = setting.position.getDrawingX() + 43;
                     render.drawRect(CommonColors.BLACK, x, y, x + (int) (ScreenRenderer.font.width(name) * 0.8f) + 1, y + 1);
                 }
@@ -347,7 +347,7 @@ public class SettingsUI extends UI {
 
             if (isSearched) {
                 int x = (int) (this.position.getDrawingX()+(width - textWidth)/2f);
-                int y = (int) (this.position.getDrawingY()+height/2f-4f) + font.FONT_HEIGHT;
+                int y = (int) (this.position.getDrawingY()+height/2f-4f) + font.lineHeight;
                 drawRect(CommonColors.BLACK, x + 1, y + 1, x + textWidth + 1, y + 2);
                 drawRect(color, x, y, x + textWidth, y + 1);
             }
@@ -408,8 +408,8 @@ public class SettingsUI extends UI {
                     // ((UIETextBox) valueElement).textField.setEnableBackgroundDrawing(false);
                     Setting.Limitations.StringLimit limit = field.field.getAnnotation(Setting.Limitations.StringLimit.class);
                     if (limit != null)
-                        ((UIETextBox) valueElement).textField.setMaxStringLength(limit.maxLength());
-                    else ((UIETextBox) valueElement).textField.setMaxStringLength(120);
+                        ((UIETextBox) valueElement).textField.setMaxLength(limit.maxLength());
+                    else ((UIETextBox) valueElement).textField.setMaxLength(120);
                     // Set text again in case it was over default max length of 32
                     ((UIETextBox) valueElement).setValue(text);
                 } else if (type.isAssignableFrom(boolean.class)) {

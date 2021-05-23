@@ -19,7 +19,7 @@ import com.wynntils.modules.core.enums.UpdateStream;
 import com.wynntils.modules.questbook.configs.QuestBookConfig;
 import com.wynntils.modules.questbook.enums.QuestBookPages;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.GuiPageButtonList;
+import net.minecraft.client.gui.widget.button.ChangePageButton;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import com.wynntils.transition.GlStateManager;
@@ -103,10 +103,10 @@ public class QuestBookPage extends Screen {
         if (showSearchBar) {
             textField = new TextFieldWidget(0, McIf.mc().font, width / 2 + 32, height / 2 - 97, 113, 23);
             textField.setFocused(!QuestBookConfig.INSTANCE.searchBoxClickRequired);
-            textField.setMaxStringLength(50);
+            textField.setMaxLength(50);
             textField.setEnableBackgroundDrawing(false);
             textField.setCanLoseFocus(QuestBookConfig.INSTANCE.searchBoxClickRequired);
-            textField.setGuiResponder(new GuiPageButtonList.GuiResponder() {
+            textField.setGuiResponder(new ChangePageButton.GuiResponder() {
 
                 @Override
                 public void setEntryValue(int id, String value) {

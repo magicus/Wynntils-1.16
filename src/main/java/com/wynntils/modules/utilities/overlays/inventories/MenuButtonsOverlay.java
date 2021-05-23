@@ -84,9 +84,9 @@ public class MenuButtonsOverlay implements Listener {
             if (UtilitiesConfig.INSTANCE.addOptionsProfileButtons && b.id == 7) return true;
             if (b.id == 6) return true;
             if (b.id == 1) {
-                b.displayString = TextFormatting.RED + b.displayString;
+                b.getMessage() = TextFormatting.RED + b.getMessage();
             } else if (b.id == 12 || b.id == 0) {
-                b.displayString = TextFormatting.GRAY + b.displayString;
+                b.getMessage() = TextFormatting.GRAY + b.getMessage();
             }
             return false;
         });

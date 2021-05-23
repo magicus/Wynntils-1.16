@@ -20,7 +20,7 @@ import com.wynntils.transition.GlStateManager;
 import net.minecraft.item.Items;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.container.ClickType;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
@@ -39,10 +39,10 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
     private final SkillPointOverlay parent;
     private final Screen spMenu;
-    private final InventoryBasic inventory;
+    private final Inventory inventory;
     private final int inventoryRows;
 
-    public SkillPointLoadoutUI(SkillPointOverlay parent, Screen spMenu, InventoryBasic inventory) {
+    public SkillPointLoadoutUI(SkillPointOverlay parent, Screen spMenu, Inventory inventory) {
         super(new ContainerBuilds(inventory, McIf.player()));
         this.parent = parent;
         this.spMenu = spMenu;
@@ -130,7 +130,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
 
     @Override
     protected void keyPressed(char typedChar, int keyCode) {
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == McIf.mc().options.keyBindInventory.getKeyCode()) {
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == McIf.mc().options.keyBindInventory.getKey().getValue()) {
             McIf.mc().setScreen(spMenu);
         }
     }

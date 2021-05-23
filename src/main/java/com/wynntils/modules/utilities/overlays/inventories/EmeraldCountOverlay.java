@@ -189,7 +189,7 @@ public class EmeraldCountOverlay implements Listener {
             GlStateManager.disableLighting();
             GlStateManager.disableDepth();
             GlStateManager.disableBlend();
-            ScreenRenderer.font.drawStringWithShadow(text, -textWidth, -ScreenRenderer.font.FONT_HEIGHT, 0xFFFFFFFF);
+            ScreenRenderer.font.drawStringWithShadow(text, -textWidth, -ScreenRenderer.font.lineHeight, 0xFFFFFFFF);
             GlStateManager.enableDepth();
             GlStateManager.enableBlend();
         }

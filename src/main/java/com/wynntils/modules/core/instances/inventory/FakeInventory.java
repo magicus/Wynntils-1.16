@@ -211,7 +211,7 @@ public class FakeInventory {
         expectingResponse = false;
         lastAction = McIf.getSystemTime();
 
-        windowId = e.getPacket().getWindowId();
+        windowId = e.getPacket().getContainerId();
         windowTitle = McIf.getUnformattedText(e.getPacket().getWindowTitle());
         inventory = NonNullList.create();
 
@@ -221,7 +221,7 @@ public class FakeInventory {
     // detects item receiving
     @SubscribeEvent
     public void onItemsReceive(PacketEvent<SWindowItemsPacket> e) {
-        if (windowId != e.getPacket().getWindowId()) {
+        if (windowId != e.getPacket().getContainerId()) {
             close(InventoryResult.CLOSED_OVERLAP);
             return;
         }
@@ -240,7 +240,7 @@ public class FakeInventory {
     // confirm all server transactions
     @SubscribeEvent
     public void confirmAllTransactions(PacketEvent.Incoming<SConfirmTransactionPacket> e) {
-        if (windowId != e.getPacket().getWindowId()) {
+        if (windowId != e.getPacket().getContainerId()) {
             close(InventoryResult.CLOSED_OVERLAP);
             return;
         }

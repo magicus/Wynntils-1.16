@@ -34,7 +34,7 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.CClickWindowPacket;
@@ -266,7 +266,7 @@ public class BankOverlay implements Listener {
                 return;
             }
 
-            ((InventoryBasic) e.getGui().getLowerInv()).setCustomName("");
+            ((Inventory) e.getGui().getLowerInv()).setCustomName("");
             nameField = new GuiTextFieldWynn(200, McIf.mc().font, 8, 5, 120, 10);
             nameField.setFocused(true);
 
@@ -289,7 +289,7 @@ public class BankOverlay implements Listener {
         // handle typing in text boxes
         if (nameField != null && nameField.isFocused()) {
             e.setCanceled(true);
-            if (e.getKeyCode() == GLFW.GLFW_KEY_RETURN) {
+            if (e.getKey().getValue() == GLFW.GLFW_KEY_RETURN) {
                 String name = nameField.getValue();
                 nameField = null;
 
@@ -297,24 +297,24 @@ public class BankOverlay implements Listener {
                 UtilitiesConfig.Bank.INSTANCE.pageNames.put(page, name);
                 UtilitiesConfig.Bank.INSTANCE.saveSettings(UtilitiesModule.getModule());
                 updateName(e.getGui().getLowerInv());
-            } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
+            } else if (e.getKey().getValue() == GLFW.GLFW_KEY_ESCAPE) {
                 nameField = null;
                 updateName(e.getGui().getLowerInv());
             } else {
-                nameField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
+                nameField.textboxKeyTyped(e.getTypedChar(), e.getKey().getValue());
             }
         } else if (searchField != null && searchField.isFocused()) {
             e.setCanceled(true);
-            if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
+            if (e.getKey().getValue() == GLFW.GLFW_KEY_ESCAPE) {
                 searchField.setFocused(false);
-            } else if (e.getKeyCode() == GLFW.GLFW_KEY_RETURN && isSearching()) {
+            } else if (e.getKey().getValue() == GLFW.GLFW_KEY_RETURN && isSearching()) {
                 searching = 1;
                 destinationPage = page + 1;
                 gotoPage(e.getGui());
             } else {
-                searchField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
+                searchField.textboxKeyTyped(e.getTypedChar(), e.getKey().getValue());
             }
-        } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE || e.getKeyCode() == McIf.mc().options.keyBindInventory.getKeyCode()) { // bank was closed by player
+        } else if (e.getKey().getValue() == GLFW.GLFW_KEY_ESCAPE || e.getKey().getValue() == McIf.mc().options.keyBindInventory.getKey().getValue()) { // bank was closed by player
             destinationPage = 0;
             searchField = null;
             searching = 0;
@@ -339,7 +339,7 @@ public class BankOverlay implements Listener {
                 ? UtilitiesConfig.Bank.INSTANCE.pageNames.get(page) : TextFormatting.DARK_GRAY
                         + McIf.player().getName() + "'s" + TextFormatting.BLACK + " Bank";
 
-        ((InventoryBasic) bankGui).setCustomName(TextFormatting.BLACK + "[Pg. " + page + "] " + name);
+        ((Inventory) bankGui).setCustomName(TextFormatting.BLACK + "[Pg. " + page + "] " + name);
     }
 
     private void gotoPage(ChestReplacer bankGui) {

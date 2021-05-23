@@ -38,7 +38,7 @@ public class IngredientFilterOverlay implements Listener {
     public void render(MatrixStack matrix, GuiOverlapEvent.ChestOverlap.DrawScreen.Post e) {
         e.getButtonList().forEach(gb -> {
             if (gb.id == 11 && gb.isMouseOver()) {
-                e.getGui().drawHoveringText(professionArray.get(professionArray.indexOf(gb.displayString) + 1), e.getMouseX(), e.getMouseY());
+                e.getGui().drawHoveringText(professionArray.get(professionArray.indexOf(gb.getMessage()) + 1), e.getMouseX(), e.getMouseY());
             }
         });
     }
@@ -49,16 +49,16 @@ public class IngredientFilterOverlay implements Listener {
             if (gb.id == 11 && gb.isMouseOver()) {
                 char c;
                 if (e.getMouseButton() == 0) {
-                    c = professionArray.get((professionArray.indexOf(gb.displayString) + 2) % 18).charAt(0);
-                    gb.displayString = Character.toString(c);
-                    RarityColorOverlay.setProfessionFilter(gb.displayString);
+                    c = professionArray.get((professionArray.indexOf(gb.getMessage()) + 2) % 18).charAt(0);
+                    gb.setMessage(Character.toString(c));
+                    RarityColorOverlay.setProfessionFilter(gb.getMessage());
                 } else if (e.getMouseButton() == 1) {
-                    c = professionArray.get((professionArray.indexOf(gb.displayString) + 16) % 18).charAt(0);
-                    gb.displayString = Character.toString(c);
-                    RarityColorOverlay.setProfessionFilter(gb.displayString);
+                    c = professionArray.get((professionArray.indexOf(gb.getMessage()) + 16) % 18).charAt(0);
+                    gb.setMessage(Character.toString(c));
+                    RarityColorOverlay.setProfessionFilter(gb.getMessage());
                 } else if (e.getMouseButton() == 2) {
                     RarityColorOverlay.setProfessionFilter("-");
-                    gb.displayString = "-";
+                    gb.setMessage("-");
                 }
                 gb.playPressSound(McIf.mc().getSoundManager());
             }

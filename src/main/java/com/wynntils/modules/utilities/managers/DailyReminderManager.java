@@ -63,7 +63,7 @@ public class DailyReminderManager {
         if (!UtilitiesConfig.INSTANCE.dailyReminder || !Reference.onWorld) return;
 
         if (Utils.isCharacterInfoPage(e.getGui())) {
-            if (!((ContainerScreen) e.getGui()).getMenu().getSlot(22).getHasStack()) {
+            if (!((ContainerScreen) e.getGui()).getMenu().getSlot(22).hasItem()) {
                 UtilitiesConfig.Data.INSTANCE.dailyReminder = System.currentTimeMillis() + 86400000;
                 UtilitiesConfig.Data.INSTANCE.saveSettings(UtilitiesModule.getModule());
             }

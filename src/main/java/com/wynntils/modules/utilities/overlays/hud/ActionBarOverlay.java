@@ -56,7 +56,7 @@ public class ActionBarOverlay extends Overlay {
         String lCoord = TextFormatting.GRAY.toString() + blockPos.getX();
         String middleCoord;
         if (!OverlayConfig.INSTANCE.replaceDirection) {
-            middleCoord = TextFormatting.GREEN + Utils.getPlayerDirection(McIf.player().rotationYaw);
+            middleCoord = TextFormatting.GREEN + Utils.getPlayerDirection(McIf.player().yRot);
         } else {
             middleCoord = TextFormatting.GRAY.toString() + blockPos.getY();
         }

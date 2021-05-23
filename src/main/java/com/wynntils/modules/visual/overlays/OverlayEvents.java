@@ -39,7 +39,7 @@ public class OverlayEvents implements Listener {
     public void replaceCharacterMenuDraw(GuiOverlapEvent.ChestOverlap.DrawScreen.Pre e) {
         if (fakeCharacterSelector == null) return;
 
-        fakeCharacterSelector.drawScreen(e.getMouseX(), e.getMouseY(), e.getPartialTicks());
+        fakeCharacterSelector.render(e.getMouseX(), e.getMouseY(), e.getPartialTicks());
         e.setCanceled(true);
     }
 
@@ -70,7 +70,7 @@ public class OverlayEvents implements Listener {
     public void replaceKeyTyped(GuiOverlapEvent.ChestOverlap.KeyTyped e) {
         if (fakeCharacterSelector == null) return;
 
-        fakeCharacterSelector.keyPressed(e.getTypedChar(), e.getKeyCode());
+        fakeCharacterSelector.keyPressed(e.getTypedChar(), e.getKey().getValue());
         e.setCanceled(true);
     }
 

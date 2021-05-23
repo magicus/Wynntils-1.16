@@ -8,8 +8,8 @@ public class RenderHelper
 {
     /*
     private static final FloatBuffer COLOR_BUFFER = GLAllocation.createDirectFloatBuffer(4);
-    private static final Vec3d LIGHT0_POS = (new Vec3d(0.20000000298023224D, 1.0D, -0.699999988079071D)).normalize();
-    private static final Vec3d LIGHT1_POS = (new Vec3d(-0.20000000298023224D, 1.0D, 0.699999988079071D)).normalize();
+    private static final Vector3d LIGHT0_POS = (new Vector3d(0.20000000298023224D, 1.0D, -0.699999988079071D)).normalize();
+    private static final Vector3d LIGHT1_POS = (new Vector3d(-0.20000000298023224D, 1.0D, 0.699999988079071D)).normalize();
          */
 
     public static void disableStandardItemLighting()

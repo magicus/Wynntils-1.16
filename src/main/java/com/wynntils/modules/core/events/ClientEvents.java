@@ -53,7 +53,7 @@ import net.minecraft.network.play.server.*;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -238,8 +238,8 @@ public class ClientEvents implements Listener {
         // it ALWAYS have 4 blocks at it sides that we use to detect it
         if (bakeStatus.getType() == ProfessionType.WOODCUTTING) {
             Iterable<BlockPos> positions = BlockPos.getAllInBox(
-                    i.getPosition().subtract(new Vec3i(-5, -3, -5)),
-                    i.getPosition().subtract(new Vec3i(+5, +3, +5)));
+                    i.getPosition().subtract(new Vector3i(-5, -3, -5)),
+                    i.getPosition().subtract(new Vector3i(+5, +3, +5)));
 
             for (BlockPos position : positions) {
                 if (Utils.isAirBlock(i.level, position)) continue;
@@ -376,12 +376,12 @@ public class ClientEvents implements Listener {
 
         if (e.getMouseButton() != 0
             || e.getSlotIn() == null
-            || !e.getSlotIn().getHasStack()
+            || !e.getSlotIn().hasItem()
             || !e.getSlotIn().getItem().hasCustomHoverName()
             || !e.getSlotIn().getItem().getDisplayName().contains("[>] Select")) return;
 
 
-        get(CharacterData.class).setClassId(e.getSlot());
+        get(CharacterData.class).setClassId(e.getSlotId());
 
         String classLore = ItemUtils.getLore(e.getSlotIn().getItem()).get(1);
         String className = classLore.substring(classLore.indexOf(TextFormatting.WHITE.toString()) + 2);

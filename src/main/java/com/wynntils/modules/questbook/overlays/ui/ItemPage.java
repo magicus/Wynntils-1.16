@@ -77,7 +77,7 @@ public class ItemPage extends QuestBookPage {
     }
 
     private void initBasicSearch() {
-        textField.setMaxStringLength(50);
+        textField.setMaxLength(50);
         initDefaultSearchBar();
     }
 
@@ -88,7 +88,7 @@ public class ItemPage extends QuestBookPage {
     }
 
     private void initAdvancedSearch() {
-        textField.setMaxStringLength(ADV_SEARCH_MAX_LEN);
+        textField.setMaxLength(ADV_SEARCH_MAX_LEN);
         if (QuestBookConfig.INSTANCE.advItemSearchLongBar) {
             textField.x = width / 2 - 146;
             textField.y = height / 2 - 124;
@@ -221,7 +221,7 @@ public class ItemPage extends QuestBookPage {
                 String searchText = BasicSearchHandler.INSTANCE.inheritSearchState(searchState);
                 textField.setValue(searchText != null ? searchText : "");
             } else {
-                textField.setMaxStringLength(ADV_SEARCH_MAX_LEN);
+                textField.setMaxLength(ADV_SEARCH_MAX_LEN);
                 QuestBookConfig.INSTANCE.advancedItemSearch = true;
                 initAdvancedSearch();
                 textField.setValue(searchState != null ? searchState.toSearchString() : "");
