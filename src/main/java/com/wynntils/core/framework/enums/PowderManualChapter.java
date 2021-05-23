@@ -33,14 +33,14 @@ public enum PowderManualChapter {
         chapterText = text;
     }
 
-    public String getText() {
+    public String getValue() {
         return chapterText;
     }
 
     public static boolean isPowderManualLine(String line) {
         PowderManualChapter[] chapters = PowderManualChapter.values();
         for (PowderManualChapter chapter : chapters) {
-            if (StringUtils.stripColor(chapter.getText()).contains(line)) return true;
+            if (StringUtils.stripColor(chapter.getValue()).contains(line)) return true;
         }
 
         return false;

@@ -60,9 +60,9 @@ public class HorseReplacer extends HorseInventoryScreen  {
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode) throws IOException {
+    public void keyPressed(char typedChar, int keyCode) throws IOException {
         if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.HorseOverlap.KeyTyped(this, typedChar, keyCode)))
-            super.keyTyped(typedChar, keyCode);
+            super.keyPressed(typedChar, keyCode);
     }
 
     @Override
@@ -79,13 +79,13 @@ public class HorseReplacer extends HorseInventoryScreen  {
     }
 
     @Override
-    public void onGuiClosed() {
+    public void onClose() {
         FrameworkManager.getEventBus().post(new GuiOverlapEvent.HorseOverlap.GuiClosed(this));
-        super.onGuiClosed();
+        super.onClose();
     }
 
     public List<Button> getButtonList() {
-        return buttonList;
+        return buttons;
     }
 
 }

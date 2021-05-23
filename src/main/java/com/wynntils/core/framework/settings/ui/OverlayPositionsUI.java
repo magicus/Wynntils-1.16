@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.settings.ui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.FrameworkManager;
 import com.wynntils.core.framework.enums.MouseButton;
@@ -20,7 +21,6 @@ import com.wynntils.core.framework.ui.elements.UIEButton;
 import com.wynntils.core.framework.ui.elements.UIEClickZone;
 import com.wynntils.core.utils.Utils;
 import net.minecraft.client.gui.screen.Screen;
-import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class OverlayPositionsUI extends UI {
                 ex.printStackTrace();
             }
         }
-        onClose();
+        onCloseWynntils();
     }, 0, 0, 17, 45);
 
     public UIEButton applyButton = new UIEButton("Apply", Textures.UIs.button_a, 0.5f, 0.5f, -48, 0, -10, true, (ui, mouseButton) -> {
@@ -60,8 +60,8 @@ public class OverlayPositionsUI extends UI {
             if (!settingsContainer.getOverlaySettings().isReset()) {
                 // Convert offset -> anchor, then save
                 Overlay overlay = ((Overlay) settingsContainer.getOverlaySettings().getHolder());
-                overlay.position.anchorX = (float) (((overlay.position.anchorX * ScreenRenderer.screen.getScaledWidth_double()) + (double) overlay.position.offsetX) / ScreenRenderer.screen.getScaledWidth_double());
-                overlay.position.anchorY = (float) (((overlay.position.anchorY * ScreenRenderer.screen.getScaledHeight_double()) + (double) overlay.position.offsetY) / ScreenRenderer.screen.getScaledHeight_double());
+                overlay.position.anchorX = (float) (((overlay.position.anchorX * ScreenRenderer.screen.getGuiScaledWidth()) + (double) overlay.position.offsetX) / ScreenRenderer.screen.getGuiScaledWidth());
+                overlay.position.anchorY = (float) (((overlay.position.anchorY * ScreenRenderer.screen.getGuiScaledHeight()) + (double) overlay.position.offsetY) / ScreenRenderer.screen.getGuiScaledHeight());
                 overlay.position.offsetX = 0;
                 overlay.position.offsetY = 0;
             }
@@ -71,7 +71,7 @@ public class OverlayPositionsUI extends UI {
                 ex.printStackTrace();
             }
         }
-        onClose();
+        onCloseWynntils();
     }, 0, 0, 17, 45);
 
     public UIEButton resetButton = new UIEButton("Default", Textures.UIs.button_a, 0.5f, 0.5f, -22, 15, -10, true, (ui, mouseButton) -> {
@@ -110,7 +110,7 @@ public class OverlayPositionsUI extends UI {
     }
 
     @Override
-    public void onClose() {
+    public void onCloseWynntils() {
         McIf.mc().screen = null;
         McIf.mc().setScreen(parentScreen);
     }
@@ -122,7 +122,7 @@ public class OverlayPositionsUI extends UI {
 
     @Override
     public void onRenderPreUIE(ScreenRenderer render) {
-        drawDefaultBackground();
+        renderBackground(new MatrixStack());
 
         for (UIEClickZone zone : registeredOverlaySettings) {
             zone.render(mouseX, mouseY);
@@ -157,29 +157,31 @@ public class OverlayPositionsUI extends UI {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        boolean result = super.mouseClicked(mouseX, mouseY, mouseButton);
         if (toClick != null) {
             clickTime = System.currentTimeMillis();
             selected = null;
-            toClick.click(mouseX, mouseY, MouseButton.values()[mouseButton], this);
+            toClick.click((int) mouseX, (int) mouseY, MouseButton.values()[mouseButton], this);
         } else {
             selected = null;
         }
+        return result;
     }
 
     @Override
-    protected void mouseReleased(int mouseX, int mouseY, int state) {
-        super.mouseReleased(mouseX, mouseY, state);
+    public boolean mouseReleased(double mouseX, double mouseY, int state) {
+        boolean result = super.mouseReleased(mouseX, mouseY, state);
         for (OverlayButton button : registeredOverlaySettings) {
             if (button.isMouseButtonHeld()) {
-                button.release(mouseX, mouseY, MouseButton.values()[state], this);
+                button.release((int) mouseX, (int) mouseY, MouseButton.values()[state], this);
                 if (System.currentTimeMillis() - clickTime < 200) {
                     selected = button;
                 }
                 break;
             }
         }
+        return result;
     }
 
     @Override
@@ -194,7 +196,7 @@ public class OverlayPositionsUI extends UI {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         if (keyCode == 1) {
             for (OverlayButton settingsContainer : registeredOverlaySettings) {
                 try {
@@ -204,7 +206,7 @@ public class OverlayPositionsUI extends UI {
                 }
             }
         }
-        super.keyTyped(typedChar, keyCode);
+        boolean result = super.keyPressed(typedChar, keyCode, j);
         if (selected != null) {
             if (keyCode == 200) {
                 selected.position.offsetY -= 1;
@@ -223,6 +225,7 @@ public class OverlayPositionsUI extends UI {
         if (keyCode == 42) {
             shiftDown = true;
         }
+        return result;
     }
 
     private class OverlayButton extends UIEClickZone {

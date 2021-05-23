@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.ui.elements;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
@@ -71,7 +72,7 @@ public class GuiButtonImageBetter extends ImageButton {
     }
 
     @Override
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
         setColour(this.highlight && mouseX >= scaledStartX && mouseY >= scaledStartY && mouseX < scaledEndX && mouseY < scaledEndY, this.enabled);
 
         if (scaleFactor != 1f) {
@@ -80,7 +81,7 @@ public class GuiButtonImageBetter extends ImageButton {
             GlStateManager.scale(scaleFactor, scaleFactor, 1);
             GlStateManager.translate(scaleFromX, scaleFromY, 0);
         }
-        super.drawButton(minecraft, mouseX, mouseY, partialTicks);
+        super.renderButton(matrices, mouseX, mouseY, partialTicks);
         if (scaleFactor != 1f) {
             GlStateManager.popMatrix();
         }
@@ -91,10 +92,10 @@ public class GuiButtonImageBetter extends ImageButton {
     public static void setColour(boolean hovering, boolean enabled) {
         if (hovering) {
             highlightFixHovering.enabled = enabled;
-            highlightFixHovering.drawButton(McIf.mc(), Integer.MIN_VALUE, Integer.MIN_VALUE, 0);
+            highlightFixHovering.renderButton(new MatrixStack(), Integer.MIN_VALUE, Integer.MIN_VALUE, 0);
         } else {
             highlightFixNoHovering.enabled = enabled;
-            highlightFixNoHovering.drawButton(McIf.mc(), 0, 0, 0);
+            highlightFixNoHovering.renderButton(new MatrixStack(), 0, 0, 0);
         }
     }
 }

@@ -18,7 +18,7 @@ import com.wynntils.modules.chat.overlays.ChatOverlay;
 import com.wynntils.modules.chat.overlays.gui.ChatGUI;
 import com.wynntils.webapi.services.TranslationManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.GuiChat;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.event.ClientChatEvent;
@@ -32,7 +32,7 @@ public class ClientEvents implements Listener {
 
     @SubscribeEvent
     public void onGuiOpen(GuiOpenEvent e) {
-        if (e.getGui() instanceof GuiChat) {
+        if (e.getGui() instanceof ChatScreen) {
             if (e.getGui() instanceof ChatGUI) return;
             String defaultText = ReflectionFields.GuiChat_defaultInputFieldText.getValue(e.getGui());
 

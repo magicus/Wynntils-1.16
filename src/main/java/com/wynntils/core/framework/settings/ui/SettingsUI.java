@@ -21,14 +21,12 @@ import com.wynntils.core.framework.ui.UI;
 import com.wynntils.core.framework.ui.UIElement;
 import com.wynntils.core.framework.ui.elements.*;
 import com.wynntils.modules.core.config.CoreDBConfig;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
@@ -57,11 +55,11 @@ public class SettingsUI extends UI {
 
     public UIEButton cancelButton = new UIEButton("Cancel", Textures.UIs.button_a, 0.5f, 0.5f, -180, 85, -10, true, (ui, mouseButton) -> {
         changedSettings.forEach(c -> { try { registeredSettings.get(c).tryToLoad(); } catch (Exception e) { e.printStackTrace(); } });
-        onClose();
+        onCloseWynntils();
     }, 0, 0, 17, 45);
     public UIEButton applyButton = new UIEButton("Apply", Textures.UIs.button_a, 0.5f, 0.5f, -130, 85, -10, true, (ui, mouseButton) -> {
         changedSettings.forEach(c -> { try { registeredSettings.get(c).saveSettings(); } catch (Exception e) { e.printStackTrace(); } });
-        onClose();
+        onCloseWynntils();
     }, 0, 0, 17, 45);
     public UIETextBox searchField = new UIETextBox(0.5f, 0.5f, -90, 82, 85, true, "Search...", true, (ui, oldText) -> {
         updateSearchText();
@@ -106,13 +104,14 @@ public class SettingsUI extends UI {
         }
         holdersScrollbar.max += 160;
 
-        searchField.setText("");
+        searchField.setValue("");
         updateSearchText();
     }
 
     @Override
-    public void onClose() {
-        Keyboard.enableRepeatEvents(false);
+    public void onCloseWynntils() {
+        // FIXME: how do this in 1.16?
+      //  Keyboard.enableRepeatEvents(false);
 
         McIf.mc().screen = null;
         McIf.mc().setScreen(parentScreen);
@@ -267,7 +266,7 @@ public class SettingsUI extends UI {
     }
 
     private void updateSearchText() {
-        String newText = searchField.getText();
+        String newText = searchField.getValue();
         if (newText == null) newText = "";
         String[] words = StringUtils.split(newText);
         searchText = new ArrayList<>(words.length);
@@ -400,7 +399,7 @@ public class SettingsUI extends UI {
                     String text = ((String) value).replace("§", "&");
                     valueElement = new UIETextBox(0f, 0f, 0, 16, 170, true, text, false, (ui, oldString) -> {
                         try {
-                            registeredSettings.get(currentSettingsPath).setValueWithoutSaving(field.field, ((UIETextBox) valueElement).getText().replace("&", "§"));
+                            registeredSettings.get(currentSettingsPath).setValueWithoutSaving(field.field, ((UIETextBox) valueElement).getValue().replace("&", "§"));
                             changedSettings.add(currentSettingsPath);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -412,7 +411,7 @@ public class SettingsUI extends UI {
                         ((UIETextBox) valueElement).textField.setMaxStringLength(limit.maxLength());
                     else ((UIETextBox) valueElement).textField.setMaxStringLength(120);
                     // Set text again in case it was over default max length of 32
-                    ((UIETextBox) valueElement).setText(text);
+                    ((UIETextBox) valueElement).setValue(text);
                 } else if (type.isAssignableFrom(boolean.class)) {
                     valueElement = new UIEButton.Toggle(TextFormatting.GREEN + "Enabled", Textures.UIs.button_b, TextFormatting.RED + "Disabled", Textures.UIs.button_b, (boolean) value, 0f, 0f, 0, 15, -10, true, (ui, mouseButton) -> {
                         try {

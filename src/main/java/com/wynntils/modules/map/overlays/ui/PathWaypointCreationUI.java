@@ -20,7 +20,7 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.GuiLabel;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import com.wynntils.transition.GlStateManager;
-import net.minecraftforge.fml.client.config.GuiCheckBox;
+import net.minecraftforge.fml.client.config.CheckboxButton;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
@@ -34,12 +34,12 @@ public class PathWaypointCreationUI extends WorldMapUI {
 
     private GuiLabel nameFieldLabel;
     private TextFieldWidget nameField;
-    private GuiCheckBox hiddenBox;
-    private GuiCheckBox circularBox;
+    private CheckboxButton hiddenBox;
+    private CheckboxButton circularBox;
 
     private GuiLabel helpText;
-    private GuiCheckBox addToFirst;
-    private GuiCheckBox showIconsBox;
+    private CheckboxButton addToFirst;
+    private CheckboxButton showIconsBox;
 
     private UIEColorWheel colorWheel;
 
@@ -73,20 +73,20 @@ public class PathWaypointCreationUI extends WorldMapUI {
 
     @Override
     public void init() {
-        buttonList.clear();
+        buttons.clear();
 
         super.init();
 
-        buttonList.add(saveButton = new Button(1, 22, 23, 60, 18, "Save"));
-        buttonList.add(cancelButton = new Button(3, 22, 46, 60, 18, "Cancel"));
-        buttonList.add(resetButton = new Button(3, 22, 69, 60, 18, "Reset"));
-        buttonList.add(clearButton = new Button(4, 22, 92, 60, 18, "Clear"));
+        buttons.add(saveButton = new Button(1, 22, 23, 60, 18, "Save"));
+        buttons.add(cancelButton = new Button(3, 22, 46, 60, 18, "Cancel"));
+        buttons.add(resetButton = new Button(3, 22, 69, 60, 18, "Reset"));
+        buttons.add(clearButton = new Button(4, 22, 92, 60, 18, "Clear"));
 
         boolean returning = nameField != null;
-        String name = returning ? nameField.getText() : profile.name;
+        String name = returning ? nameField.getValue() : profile.name;
 
         nameField = new TextFieldWidget(0, McIf.mc().font, this.width - 183, 23, 160, 20);
-        nameField.setText(name);
+        nameField.setValue(name);
         nameFieldLabel = new GuiLabel(McIf.mc().font, 0, this.width - 218, 30, 40, 10, 0xFFFFFF);
         nameFieldLabel.addLine("Name");
 
@@ -95,15 +95,15 @@ public class PathWaypointCreationUI extends WorldMapUI {
             colorWheel.setColor(profile.getColor());
         }
 
-        buttonList.add(hiddenBox = new GuiCheckBox(5, this.width - 143,  72, "Hidden", hidden));  // TODO: check align
-        buttonList.add(circularBox = new GuiCheckBox(6, this.width - 83, 72, "Circular", profile.isCircular));
+        buttons.add(hiddenBox = new CheckboxButton(5, this.width - 143,  72, "Hidden", hidden));  // TODO: check align
+        buttons.add(circularBox = new CheckboxButton(6, this.width - 83, 72, "Circular", profile.isCircular));
 
         helpText = new GuiLabel(McIf.mc().font, 1, 22, this.height - 36, 120, 10, 0xFFFFFF);
         helpText.addLine("Shift + drag to pan");
         helpText.addLine("Right click to remove points");
 
-        buttonList.add(addToFirst = new GuiCheckBox(7, this.width - 100, this.height - 47, "Add to start", false));
-        buttonList.add(showIconsBox = new GuiCheckBox(8, this.width - 100, this.height - 34, "Show icons", true));
+        buttons.add(addToFirst = new CheckboxButton(7, this.width - 100, this.height - 47, "Add to start", false));
+        buttons.add(showIconsBox = new CheckboxButton(8, this.width - 100, this.height - 34, "Show icons", true));
 
     }
 
@@ -176,7 +176,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
     private boolean handleMouse(int mouseX, int mouseY, int mouseButton) {
         if (isShiftKeyDown() || nameField.isFocused()) return false;
 
-        for (Button button : buttonList) {
+        for (Button button : buttons) {
             if (button.isMouseOver()) {
                 return false;
             }
@@ -228,14 +228,14 @@ public class PathWaypointCreationUI extends WorldMapUI {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        if (handleMouse(mouseX, mouseY, mouseButton)) return;
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        if (handleMouse((int) mouseX, (int) mouseY, mouseButton)) return true;
 
         nameField.mouseClicked(mouseX, mouseY, mouseButton);
         MouseButton button = mouseButton == 0 ? MouseButton.LEFT : mouseButton == 1 ? MouseButton.RIGHT : mouseButton == 2 ? MouseButton.MIDDLE : MouseButton.UNKNOWN;
         colorWheel.click(mouseX, mouseY, button, null);
 
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
@@ -247,13 +247,13 @@ public class PathWaypointCreationUI extends WorldMapUI {
     }
 
     @Override
-    public void updateScreen() {
+    public void tick() {
         colorWheel.tick(0);
-        super.updateScreen();
+        super.tick();
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyPressed(char typedChar, int keyCode) throws IOException {
         if (keyCode == GLFW.GLFW_KEY_TAB) {
             Utils.tab(
                 Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1,
@@ -261,8 +261,8 @@ public class PathWaypointCreationUI extends WorldMapUI {
             );
             return;
         }
-        super.keyTyped(typedChar, keyCode);
-        colorWheel.keyTyped(typedChar, keyCode, null);
+        super.keyPressed(typedChar, keyCode);
+        colorWheel.keyPressed(typedChar, keyCode, null);
         nameField.textboxKeyTyped(typedChar, keyCode);
     }
 
@@ -312,7 +312,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
         if (btn == saveButton) {
             profile.isEnabled = !hiddenBox.isChecked();
             setCircular();
-            profile.name = nameField.getText();
+            profile.name = nameField.getValue();
             if (originalProfile != null) {
                 MapConfig.Waypoints.INSTANCE.pathWaypoints.set(MapConfig.Waypoints.INSTANCE.pathWaypoints.indexOf(originalProfile), profile);
             } else {

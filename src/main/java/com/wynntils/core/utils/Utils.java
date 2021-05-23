@@ -208,7 +208,7 @@ public class Utils {
 
         if (oldScreen == screen) return;
         if (oldScreen != null) {
-            oldScreen.onGuiClosed();
+            oldScreen.onClose();
         }
 
         McIf.mc().screen = screen;
@@ -385,7 +385,7 @@ public class Utils {
         TextFieldWidget selected = tabList.get(focusIndex);
         selected.setFocused(true);
         selected.setCursorPosition(0);
-        selected.setSelectionPos(selected.getText().length());
+        selected.setSelectionPos(selected.getValue().length());
     }
 
     public static String getNameFromMetadata(List <EntityDataManager.DataEntry<?>> dataManagerEntries) {

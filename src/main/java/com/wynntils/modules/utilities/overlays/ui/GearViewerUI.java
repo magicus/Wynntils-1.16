@@ -95,8 +95,8 @@ public class GearViewerUI extends FakeGuiContainer {
     protected void slotClicked(Slot slotIn, int slotId, int mouseButton, ClickType type) { } // ignore all mouse clicks
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        super.keyTyped(typedChar, keyCode);
+    protected void keyPressed(char typedChar, int keyCode) throws IOException {
+        super.keyPressed(typedChar, keyCode);
 
         // allow item screenshotting in gear viewer
         if (keyCode == KeyManager.getItemScreenshotKey().getKeyBinding().getKeyCode())

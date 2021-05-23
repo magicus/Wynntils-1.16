@@ -113,7 +113,7 @@ public class RichProfile {
                 boolean opened = closedAsByte == 0;
                 if (opened && McIf.mc().screen == null) {
                     McIf.mc().setScreen(new Screen() {
-                        public void onGuiClosed() {
+                        public void onClose() {
                             isBlankGuiOpen = false;
                         }
                     });

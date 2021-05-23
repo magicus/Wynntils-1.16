@@ -192,7 +192,7 @@ public class SkillPointOverlay implements Listener {
         if (e.getSlot() == SAVE_SLOT) {
             nameField = new GuiTextFieldWynn(200, McIf.mc().font, 8, 5, 130, 10);
             nameField.setFocused(true);
-            nameField.setText("Enter build name");
+            nameField.setValue("Enter build name");
             Keyboard.enableRepeatEvents(true);
 
             e.setCanceled(true);
@@ -236,7 +236,7 @@ public class SkillPointOverlay implements Listener {
         if (nameField == null || !nameField.isFocused()) return;
 
         if (e.getKeyCode() == GLFW.GLFW_KEY_RETURN) {
-            String name = nameField.getText();
+            String name = nameField.getValue();
             nameField = null;
 
             name = name.replaceAll("&([a-f0-9k-or])", "§$1");

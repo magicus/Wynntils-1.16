@@ -186,8 +186,8 @@ public class CharacterSelectorUI extends Screen {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        if (hoveredButton == -1) return;
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        if (hoveredButton == -1) return false;
 
         boolean isDoubleClick = (hoveredButton == lastButton) && (System.currentTimeMillis() - lastClick) <= 250;
         lastClick = System.currentTimeMillis();
@@ -201,9 +201,9 @@ public class CharacterSelectorUI extends Screen {
 
             if (isDoubleClick) { // double click pick
                 hoveredButton = 57;
-                mouseClicked(0, 0, mouseButton);
+                return mouseClicked(0, 0, mouseButton);
             }
-            return;
+            return false;
         }
 
         if (hoveredButton == 51 && createCharacterSlot != -1) { // create character
@@ -211,12 +211,12 @@ public class CharacterSelectorUI extends Screen {
         } else if (hoveredButton == 52) { // edit menu
             chest.slotClicked(chest.getMenu().getSlot(8), 8, 0, ClickType.PICKUP);
         } else if (hoveredButton == 53) { // delete character
-            if (selectedCharacter == -1) return;
+            if (selectedCharacter == -1) return false;
 
             CharacterProfile selected = availableCharacters.get(selectedCharacter);
             chest.slotClicked(chest.getMenu().getSlot(selected.getSlot()), selected.getSlot(), 1, ClickType.PICKUP);
         } else if (hoveredButton == 57) { // play button
-            if (selectedCharacter == -1) return;
+            if (selectedCharacter == -1) return false;
 
             CharacterProfile selected = availableCharacters.get(selectedCharacter);
             chest.slotClicked(chest.getMenu().getSlot(selected.getSlot()), selected.getSlot(), 0, ClickType.PICKUP);
@@ -225,6 +225,7 @@ public class CharacterSelectorUI extends Screen {
         } else if (hoveredButton == 59 && availableCharacters.size() > 7) {
             scrollPosition = (this.mouseY - 3) / 245f;
         }
+        return false;
     }
 
     @Override
@@ -236,7 +237,7 @@ public class CharacterSelectorUI extends Screen {
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode)  {
+    public void keyPressed(char typedChar, int keyCode)  {
         if (keyCode == GLFW.GLFW_KEY_RETURN) { // return select character
             hoveredButton = 57;
             mouseClicked(0, 0, 1);

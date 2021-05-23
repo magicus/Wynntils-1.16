@@ -125,7 +125,7 @@ public class QuestBookPage extends Screen {
     }
 
     @Override
-    public void onGuiClosed() {
+    public void onClose() {
         Keyboard.enableRepeatEvents(false);
     }
 
@@ -184,17 +184,18 @@ public class QuestBookPage extends Screen {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        if (!showSearchBar) return;
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        if (!showSearchBar) return false;
 
         textField.mouseClicked(mouseX, mouseY, mouseButton);
 
-        if (mouseButton != 1) return;
+        if (mouseButton != 1) return false;
         if (mouseX < textField.x || mouseX >= textField.x + textField.width) return;
         if (mouseY < textField.y || mouseY >= textField.y + textField.height) return;
 
-        textField.setText("");
+        textField.setValue("");
         searchUpdate("");
+        return true;
     }
 
     @Override
@@ -216,7 +217,7 @@ public class QuestBookPage extends Screen {
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode) throws IOException {
+    public void keyPressed(char typedChar, int keyCode) throws IOException {
         if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT || keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT || keyCode == GLFW.GLFW_KEY_LCONTROL || keyCode == GLFW.GLFW_KEY_RCONTROL) return;
         if (showSearchBar) {
             textField.textboxKeyTyped(typedChar, keyCode);
@@ -224,11 +225,11 @@ public class QuestBookPage extends Screen {
             refreshAccepts();
             updateSearch();
         }
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode);
     }
 
     @Override
-    public void updateScreen() {
+    public void tick() {
         if (showSearchBar) {
             textField.updateCursorCounter();
         }
@@ -279,7 +280,7 @@ public class QuestBookPage extends Screen {
 
     public void updateSearch() {
         if (showSearchBar && textField != null) {
-            searchUpdate(textField.getText());
+            searchUpdate(textField.getValue());
         }
     }
 

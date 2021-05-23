@@ -211,13 +211,13 @@ public class GuildWorldMapUI extends WorldMapUI {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyPressed(char typedChar, int keyCode) throws IOException {
         if (!holdingMapKey && keyCode == MapModule.getModule().getGuildMapKey().getKeyBinding().getKeyCode()) {
             McIf.mc().setScreen(null);
             return;
         }
 
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode);
     }
 
 }

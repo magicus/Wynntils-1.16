@@ -98,7 +98,7 @@ public class BankOverlay implements Listener {
         if (searchField == null && UtilitiesConfig.Bank.INSTANCE.showBankSearchBar) {
             int nameWidth = McIf.mc().font.width(McIf.getUnformattedText(e.getGui().getUpperInv().getDisplayName()));
             searchField = new GuiTextFieldWynn(201, McIf.mc().font, nameWidth + 13, 128, 157 - nameWidth, 10);
-            searchField.setText("Search...");
+            searchField.setValue("Search...");
         }
 
         textureLoaded = isTextureLoaded(COLUMN_ARROW);
@@ -271,7 +271,7 @@ public class BankOverlay implements Listener {
             nameField.setFocused(true);
 
             if (UtilitiesConfig.Bank.INSTANCE.pageNames.containsKey(page))
-                nameField.setText(UtilitiesConfig.Bank.INSTANCE.pageNames.get(page).replace("§", "&"));
+                nameField.setValue(UtilitiesConfig.Bank.INSTANCE.pageNames.get(page).replace("§", "&"));
 
             return;
         }
@@ -290,7 +290,7 @@ public class BankOverlay implements Listener {
         if (nameField != null && nameField.isFocused()) {
             e.setCanceled(true);
             if (e.getKeyCode() == GLFW.GLFW_KEY_RETURN) {
-                String name = nameField.getText();
+                String name = nameField.getValue();
                 nameField = null;
 
                 name = name.replaceAll("&([a-f0-9k-or])", "§$1");
@@ -392,7 +392,7 @@ public class BankOverlay implements Listener {
         searchedItems.clear();
         if (!isSearching()) return;
 
-        String searchText = searchField.getText().toLowerCase();
+        String searchText = searchField.getValue().toLowerCase();
         for (int i = 0; i < bankGui.getLowerInv().getContainerSize(); i++) {
             if (i % 9 > 6) continue; // ignore sidebar items
 
@@ -413,7 +413,7 @@ public class BankOverlay implements Listener {
     }
 
     private boolean isSearching() {
-        return (searchField != null && !searchField.getText().equals("Search...") && !searchField.getText().isEmpty());
+        return (searchField != null && !searchField.getValue().equals("Search...") && !searchField.getValue().isEmpty());
     }
 
     private boolean isTextureLoaded(ResourceLocation resourceLocation) {

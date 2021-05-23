@@ -74,16 +74,16 @@ public class WorldMapSettingsUI extends Screen {
             }
             String key = keys.get(i);
             Button button = new Button(i, x, y, 132, 16, key, key, maxPage, MapConfig.INSTANCE.iconTexture, enabledMapIcons.get(key), enabledMinimapIcons.get(key));
-            this.buttonList.add(button);
+            this.buttons.add(button);
             this.settingButtons.add(button);
         }
 
-        this.buttonList.add(textureButton = new Button(99, rightAlign + 120, this.height-65, 55, 18, MapConfig.INSTANCE.iconTexture.name()));
-        this.buttonList.add(new Button(100, this.width/2 - 71, this.height-40, 45, 18, "Cancel"));
-        this.buttonList.add(new Button(101, this.width/2 - 23, this.height-40, 45, 18, "Default"));
-        this.buttonList.add(new Button(102, this.width/2 + 25, this.height-40, 45, 18, "Save"));
-        this.buttonList.add(nextPageButton = new Button(103, this.width/2 + 2, this.height - 90, 20, 20, ">"));
-        this.buttonList.add(previousPageButton = new Button(104, this.width/2 - 22, this.height - 90, 20, 20, "<"));
+        this.buttons.add(textureButton = new Button(99, rightAlign + 120, this.height-65, 55, 18, MapConfig.INSTANCE.iconTexture.name()));
+        this.buttons.add(new Button(100, this.width/2 - 71, this.height-40, 45, 18, "Cancel"));
+        this.buttons.add(new Button(101, this.width/2 - 23, this.height-40, 45, 18, "Default"));
+        this.buttons.add(new Button(102, this.width/2 + 25, this.height-40, 45, 18, "Save"));
+        this.buttons.add(nextPageButton = new Button(103, this.width/2 + 2, this.height - 90, 20, 20, ">"));
+        this.buttons.add(previousPageButton = new Button(104, this.width/2 - 22, this.height - 90, 20, 20, "<"));
         nextPageButton.enabled = maxPage > 0;
         previousPageButton.enabled = false;
     }
@@ -91,7 +91,7 @@ public class WorldMapSettingsUI extends Screen {
     @Override
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        int topY = this.buttonList.get(0).y;
+        int topY = this.buttons.get(0).y;
         this.font.drawString(TextFormatting.WHITE + "Enable/Disable Map Icons", (this.width - 349) / 2, topY - 15, 0xffFFFFFF);
         this.font.drawString(TextFormatting.WHITE + "Map Icon Textures:", (this.width - 349) / 2, this.height-60, 0xffFFFFFF);
 
@@ -122,12 +122,12 @@ public class WorldMapSettingsUI extends Screen {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyPressed(char typedChar, int keyCode) throws IOException {
         if (keyCode == McIf.mc().options.keyBindInventory.getKeyCode() ||  // DEFAULT: E
                 keyCode == MapModule.getModule().getMapKey().getKeyBinding().getKeyCode()) {  // DEFAULT: M
             Utils.setScreen(new MainWorldMapUI());
         }
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode);
     }
 
     @Override
@@ -162,7 +162,7 @@ public class WorldMapSettingsUI extends Screen {
         } else if (button.id == 102) {
             MapConfig.INSTANCE.enabledMapIcons = MapConfig.resetMapIcons(false);
             MapConfig.INSTANCE.enabledMinimapIcons = MapConfig.resetMapIcons(true);
-            for (Button cb : this.buttonList) {
+            for (Button cb : this.buttons) {
                 if (cb instanceof Button) {
                     MapConfig.INSTANCE.enabledMapIcons.put(((Button) cb).key, ((Button) cb).onMainMap());
                     MapConfig.INSTANCE.enabledMinimapIcons.put(((Button) cb).key, ((Button) cb).onMinimap());
@@ -176,7 +176,7 @@ public class WorldMapSettingsUI extends Screen {
             this.enabledMapIcons = MapConfig.resetMapIcons(false);
             this.enabledMinimapIcons = MapConfig.resetMapIcons(true);
             page = 0;
-            for (Button b : this.buttonList) {
+            for (Button b : this.buttons) {
                 if (b instanceof Button) {
                     Button btn = (Button) b;
                     btn.updatePage(0);
@@ -291,7 +291,7 @@ public class WorldMapSettingsUI extends Screen {
         }
 
         @Override
-        public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
+        public void renderButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
             if (!visible) {
                 this.hovered = false;
                 return;

@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.ui.elements;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.core.framework.enums.MouseButton;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.framework.rendering.SmartFontRenderer;
@@ -20,7 +21,7 @@ public class UIETextBox extends UIEClickZone {
     public UIETextBox(float anchorX, float anchorY, int offsetX, int offsetY, int width, boolean active, String text, boolean textDisappearsOnNextClick, BiConsumer<UI, String> onTextChanged) {
         super(anchorX, anchorY, offsetX, offsetY, width, SmartFontRenderer.CHAR_HEIGHT, active, null);
         this.textField = new TextFieldWidget(this.getId(), ScreenRenderer.font, this.position.getDrawingX(), this.position.getDrawingY(), width, 20);
-        this.textField.setText(text);
+        this.textField.setValue(text);
         this.textDisappearsOnNextClick = textDisappearsOnNextClick;
         this.onTextChanged = onTextChanged;
     }
@@ -31,14 +32,16 @@ public class UIETextBox extends UIEClickZone {
 
         this.textField.x = this.position.getDrawingX();
         this.textField.y = this.position.getDrawingY();
-        this.textField.setEnabled(active);
-        this.textField.drawTextBox();
+        this.textField.setEditable(active);
+        float partialTicks = 0.0f; // not used by textField
+        this.textField.renderButton(new MatrixStack(), mouseX, mouseY, partialTicks);
     }
 
-    public void keyTyped(char c, int i, UI ui) {
-        String old = textField.getText();
-        this.textField.textboxKeyTyped(c, i);
+    public boolean keyPressed(int c, int i, int j, UI ui) {
+        String old = textField.getValue();
+        boolean result = this.textField.keyPressed(c, i, j);
         this.onTextChanged.accept(ui, old);
+        return result;
     }
 
     @Override
@@ -50,7 +53,7 @@ public class UIETextBox extends UIEClickZone {
     public void click(int mouseX, int mouseY, MouseButton button, UI ui) {
         this.textField.mouseClicked(mouseX, mouseY, button.ordinal());
         if (textDisappearsOnNextClick && (mouseX >= this.textField.x && mouseX < this.textField.x + this.textField.width && mouseY >= this.textField.y && mouseY < this.textField.y + this.textField.height) && button == MouseButton.LEFT) {
-            textField.setText("");
+            textField.setValue("");
             textDisappearsOnNextClick = false;
         }
     }
@@ -59,15 +62,15 @@ public class UIETextBox extends UIEClickZone {
         textField.setTextColor(color);
     }
 
-    public void setText(String textIn) {
-        textField.setText(textIn);
+    public void setValue(String textIn) {
+        textField.setValue(textIn);
     }
 
-    public String getText() {
-        return textField.getText();
+    public String getValue() {
+        return textField.getValue();
     }
 
     public void writeText(String textToWrite) {
-        textField.writeText(textToWrite);
+        textField.insertText(textToWrite);
     }
 }

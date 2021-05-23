@@ -337,7 +337,7 @@ public class ChatOverlay extends GuiNewChat {
 
                         for (ITextComponent itextcomponent : chatline.getMessage()) {
                             if (itextcomponent instanceof StringTextComponent) {
-                                j1 += McIf.mc().font.width(GuiUtilRenderComponents.removeTextColorsIfConfigured(((StringTextComponent) itextcomponent).getText(), false));
+                                j1 += McIf.mc().font.width(GuiUtilRenderComponents.removeTextColorsIfConfigured(((StringTextComponent) itextcomponent).getValue(), false));
 
                                 if (j1 > j) {
                                     return itextcomponent;
@@ -352,7 +352,7 @@ public class ChatOverlay extends GuiNewChat {
     }
 
     public boolean getChatOpen() {
-        return McIf.mc().screen instanceof GuiChat;
+        return McIf.mc().screen instanceof ChatScreen;
     }
 
     public void deleteChatLine(int id) {

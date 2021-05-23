@@ -35,11 +35,11 @@ public class UpdateAvailableScreen extends Screen {
 
     @Override
     public void init() {
-        this.buttonList.add(new Button(0, this.width / 2 - 100, this.height / 4 + 84, 200, 20, "View changelog"));
-        this.buttonList.add(new Button(1, this.width / 2 - 100, this.height / 4 + 108, 98, 20, "Update now"));
-        this.buttonList.add(new Button(2, this.width / 2 + 2, this.height / 4 + 108, 98, 20, "Update at exit"));
-        this.buttonList.add(new Button(3, this.width / 2 - 100, this.height / 4 + 132, 98, 20, "Ignore update"));
-        this.buttonList.add(new Button(4, this.width / 2 + 2, this.height / 4 + 132, 98, 20, "Cancel"));
+        this.buttons.add(new Button(0, this.width / 2 - 100, this.height / 4 + 84, 200, 20, "View changelog"));
+        this.buttons.add(new Button(1, this.width / 2 - 100, this.height / 4 + 108, 98, 20, "Update now"));
+        this.buttons.add(new Button(2, this.width / 2 + 2, this.height / 4 + 108, 98, 20, "Update at exit"));
+        this.buttons.add(new Button(3, this.width / 2 - 100, this.height / 4 + 132, 98, 20, "Ignore update"));
+        this.buttons.add(new Button(4, this.width / 2 + 2, this.height / 4 + 132, 98, 20, "Cancel"));
     }
 
     @Override

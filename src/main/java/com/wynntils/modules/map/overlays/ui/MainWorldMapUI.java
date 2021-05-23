@@ -161,37 +161,36 @@ public class MainWorldMapUI extends WorldMapUI {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         // Map buttons
         for (MapButton button : mapButtons) {
-            if (!button.isHovering(mouseX, mouseY)) continue;
+            if (!button.isHovering((int) mouseX, (int) mouseY)) continue;
             if (button.getType().isIgnoreAction()) continue;
 
-            button.mouseClicked(mouseX, mouseY, mouseButton);
-            return;
+            return button.mouseClicked(mouseX, mouseY, mouseButton);
         }
 
         if (mouseButton == 1) {
-            if (compassIcon.mouseOver(mouseX, mouseY)) {
+            if (compassIcon.mouseOver((int) mouseX, (int) mouseY)) {
                 CompassManager.reset();
                 resetCompassMapIcon();
-                return;
+                return true;
             }
             updateCenterPositionWithPlayerPosition();
-            return;
+            return true;
         } else if (mouseButton == 2) {
             // Set compass to middle clicked location
             MapProfile map = MapModule.getModule().getMainMap();
-            int worldX = getMouseWorldX(mouseX, map);
-            int worldZ = getMouseWorldZ(mouseY, map);
+            int worldX = getMouseWorldX((int) mouseX, map);
+            int worldZ = getMouseWorldZ((int) mouseY, map);
             CompassManager.setCompassLocation(new Location(worldX, 0, worldZ));
 
             resetCompassMapIcon();
-            return;
+            return true;
         }
 
         if (mouseButton == 0) {
-            if (compassIcon.mouseOver(mouseX, mouseY)) {
+            if (compassIcon.mouseOver((int) mouseX, (int) mouseY)) {
                 long currentTime = McIf.getSystemTime();
                 if (currentTime - lastClickTime < doubleClickTime) {
                     Location location = CompassManager.getCompassLocation();
@@ -199,11 +198,11 @@ public class MainWorldMapUI extends WorldMapUI {
                 } else {
                     lastClickTime = currentTime;
                 }
-                return;
+                return true;
             }
 
             forEachIcon(c -> {
-                if (c.mouseOver(mouseX, mouseY)) {
+                if (c.mouseOver((int) mouseX, (int) mouseY)) {
                     McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, 1f));
 
                     CompassManager.setCompassLocation(new Location(c.getInfo().getPosX(), 0, c.getInfo().getPosZ()));
@@ -211,16 +210,17 @@ public class MainWorldMapUI extends WorldMapUI {
                 }
             });
         }
+        return false;
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyPressed(char typedChar, int keyCode) throws IOException {
         if (!holdingMapKey && keyCode == MapModule.getModule().getMapKey().getKeyBinding().getKeyCode()) {
             McIf.mc().setScreen(null);
             return;
         }
 
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode);
     }
 
     private void handleShareButton(boolean leftClick) {

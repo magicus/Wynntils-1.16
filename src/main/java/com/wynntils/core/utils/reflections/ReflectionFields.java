@@ -5,7 +5,7 @@
 package com.wynntils.core.utils.reflections;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.GuiChat;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.IngameGui;
 import net.minecraft.client.gui.overlay.PlayerTabOverlayGui;
 import net.minecraft.client.gui.screen.Screen;
@@ -29,7 +29,7 @@ public enum ReflectionFields {
     Entity_CUSTOM_NAME_VISIBLE(Entity.class, "CUSTOM_NAME_VISIBLE", "field_184233_aA"),
     ItemFrameEntity_ITEM(ItemFrameEntity.class, "ITEM", "field_184525_c"),
     Event_phase(Event.class, "phase"),
-    GuiScreen_buttonList(Screen.class, "buttonList", "field_146292_n"),
+    GuiScreen_buttonList(Screen.class, "buttons", "field_146292_n"),
     HorseInventoryScreen_horseEntity(HorseInventoryScreen.class, "horseEntity", "field_147034_x"),
     HorseInventoryScreen_horseInventory(HorseInventoryScreen.class, "horseInventory", "field_147029_w"),
     IngameGui_persistantChatGUI(IngameGui.class, "persistantChatGUI", "field_73840_e"),
@@ -38,7 +38,7 @@ public enum ReflectionFields {
     IngameGui_displayedSubTitle(IngameGui.class, "displayedSubTitle", "field_175200_y"),
     // FIXME: protected final PlayerTabOverlayGui tabList;
     IngameGui_overlayPlayerList(IngameGui.class, "overlayPlayerList", "field_175196_v"),
-    GuiChat_defaultInputFieldText(GuiChat.class, "defaultInputFieldText", "field_146409_v"),
+    GuiChat_defaultInputFieldText(ChatScreen.class, "defaultInputFieldText", "field_146409_v"),
     PlayerTabOverlayGui_ENTRY_ORDERING(PlayerTabOverlayGui.class, "ENTRY_ORDERING", "field_175252_a"),
     Minecraft_resourcePackRepository(Minecraft.class, "resourcePackRepository", "field_110448_aq"),
     CClientSettingsPacket_chatVisibility(CClientSettingsPacket.class, "chatVisibility", "field_149529_c"),

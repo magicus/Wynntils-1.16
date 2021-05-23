@@ -4,11 +4,13 @@
 
 package com.wynntils.modules.chat.overlays.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.framework.rendering.SmartFontRenderer;
 import com.wynntils.core.framework.rendering.colors.CommonColors;
 import com.wynntils.core.framework.rendering.colors.CustomColor;
+import com.wynntils.core.utils.Utils;
 import com.wynntils.core.utils.objects.Pair;
 import com.wynntils.modules.chat.configs.ChatConfig;
 import com.wynntils.modules.chat.instances.ChatTab;
@@ -18,7 +20,7 @@ import com.wynntils.modules.chat.overlays.ChatOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.screen.GuiChat;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.GuiLabel;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
@@ -30,7 +32,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChatGUI extends GuiChat {
+public class ChatGUI extends ChatScreen {
 
     private static final ScreenRenderer renderer = new ScreenRenderer();
 
@@ -43,6 +45,7 @@ public class ChatGUI extends GuiChat {
     private Map<WynncraftLanguage, ChatButton> languageButtons = new HashMap<>();
 
     public ChatGUI() {
+        super("");
 
     }
 
@@ -50,9 +53,9 @@ public class ChatGUI extends GuiChat {
         super(defaultInputText);
     }
 
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         for (Map.Entry<ChatTab, ChatButton> tabButton : tabButtons.entrySet()) {
-            if (tabButton.getValue().isMouseOver()) {
+            if (tabButton.getValue().isMouseOver(mouseX, mouseY)) {
                 if (mouseButton == 1) {
                     McIf.mc().setScreen(new TabGUI(TabManager.getAvailableTabs().indexOf(tabButton.getKey())));
                 } else {
@@ -64,7 +67,7 @@ public class ChatGUI extends GuiChat {
             }
         }
 
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
@@ -81,23 +84,23 @@ public class ChatGUI extends GuiChat {
         }
     }
 
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if (inputField.getText().isEmpty() && keyCode == GLFW.GLFW_KEY_TAB) {
-            ChatOverlay.getChat().switchTabs(Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1);
+    protected void keyPressed(char typedChar, int keyCode) throws IOException {
+        if (input.getValue().isEmpty() && keyCode == GLFW.GLFW_KEY_TAB) {
+            ChatOverlay.getChat().switchTabs(Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_SHIFT) ? -1 : +1);
             tabButtons.values().stream().forEach(ChatButton::unselect);
             tabButtons.get(ChatOverlay.getChat().getCurrentTab()).setSelected(true);
         }
         boolean backspace = typedChar == '\u0008';
-        Pair<String, Character> output = ChatOverlay.getChat().getCurrentLanguage().replace(this.inputField.getText(), typedChar);
+        Pair<String, Character> output = ChatOverlay.getChat().getCurrentLanguage().replace(this.input.getValue(), typedChar);
         if (output.b != '\u0008' && backspace) {
             keyCode = 0; // no key code
         }
-        if (!output.a.equals(inputField.getText())) {
-            this.inputField.setText(output.a);
+        if (!output.a.equals(input.getValue())) {
+            this.input.setValue(output.a);
         }
         typedChar = output.b;
 
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode);
     }
 
     @Override
@@ -116,14 +119,14 @@ public class ChatGUI extends GuiChat {
         if (ChatConfig.INSTANCE.useBrackets) {
             languageButtons.values().forEach((button) -> button.visible = false);
         } else {
-            this.inputField.width = this.width - x * 12 - 4;
+            this.input.width = this.width - x * 12 - 4;
         }
         languageButtons.get(ChatOverlay.getChat().getCurrentLanguage()).setSelected(true);
     }
 
     @Override
-    public void updateScreen() {
-        super.updateScreen();
+    public void tick() {
+        super.tick();
         for (Map.Entry<ChatTab, ChatButton> tabButton : tabButtons.entrySet()) {
             tabButton.getValue().displayString = getDisplayName(tabButton.getKey());
         }
@@ -132,12 +135,12 @@ public class ChatGUI extends GuiChat {
     @Override
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         if (!ChatConfig.INSTANCE.useBrackets) {
-            drawRect(2, this.height - 14, this.inputField.width + 2, this.height - 2, Integer.MIN_VALUE);
-            this.inputField.drawTextBox();
+            drawRect(2, this.height - 14, this.input.getWidth() + 2, this.height - 2, Integer.MIN_VALUE);
+            this.input.render(matrix, mouseX, mouseY, partialTicks);
             ITextComponent itextcomponent = McIf.mc().gui.getChatGUI().getMessage(Mouse.getX(), Mouse.getY());
 
-            for (int i = 0; i < this.buttonList.size(); ++i) {
-                ((Button) this.buttonList.get(i)).drawButton(McIf.mc(), mouseX, mouseY, partialTicks);
+            for (int i = 0; i < this.buttons.size(); ++i) {
+                ((Button) this.buttons.get(i)).renderButton(matrix, mouseX, mouseY, partialTicks);
             }
 
             for (int j = 0; j < this.labelList.size(); ++j) {
@@ -195,7 +198,7 @@ public class ChatGUI extends GuiChat {
         }
 
         @Override
-        public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
+        public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
             if (this.visible) {
                 this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
                 ScreenRenderer.beginGL(this.x, this.y);

@@ -38,7 +38,7 @@ public class UpdatingScreen extends Screen {
 
     @Override
     public void init() {
-        this.buttonList.add(backButton = new Button(0, this.width / 2 - 100, this.height / 4 + 132, 200, 20, ""));
+        this.buttons.add(backButton = new Button(0, this.width / 2 - 100, this.height / 4 + 132, 200, 20, ""));
         updateText();
     }
 

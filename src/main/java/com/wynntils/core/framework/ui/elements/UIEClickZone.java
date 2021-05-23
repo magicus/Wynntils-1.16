@@ -50,6 +50,7 @@ public class UIEClickZone extends UIElement {
                 onClick.accept(ui, button);
         }
     }
+
     public void click(int mouseX, int mouseY, MouseButton button, UI ui) {
         hovering = mouseX >= position.getDrawingX() && mouseX <= position.getDrawingX()+width && mouseY >= position.getDrawingY() && mouseY <= position.getDrawingY()+height;
         if (active && hovering) {

@@ -70,7 +70,7 @@ public class OverlayEvents implements Listener {
     public void replaceKeyTyped(GuiOverlapEvent.ChestOverlap.KeyTyped e) {
         if (fakeCharacterSelector == null) return;
 
-        fakeCharacterSelector.keyTyped(e.getTypedChar(), e.getKeyCode());
+        fakeCharacterSelector.keyPressed(e.getTypedChar(), e.getKeyCode());
         e.setCanceled(true);
     }
 

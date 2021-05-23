@@ -10,6 +10,7 @@ import com.wynntils.core.framework.FrameworkManager;
 import com.wynntils.core.framework.rendering.WynnRenderItem;
 import com.wynntils.core.framework.rendering.textures.Mappings;
 import com.wynntils.core.framework.rendering.textures.Textures;
+import com.wynntils.core.framework.settings.ui.SettingsUI;
 import com.wynntils.modules.ModuleRegistry;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.core.enums.UpdateStream;
@@ -21,6 +22,8 @@ import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.SimpleReloadableResourceManager;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -66,6 +69,9 @@ public class ModCore {
         FrameworkManager.startModules();
 
         CoreManager.afterModules();
+
+        // New forge way of registering config screen factory
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> SettingsUI.getInstance(screen));
     }
 
     @Mod.EventHandler

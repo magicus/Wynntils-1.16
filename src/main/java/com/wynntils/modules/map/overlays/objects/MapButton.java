@@ -65,12 +65,13 @@ public class MapButton {
         popMatrix();
     }
 
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         McIf.mc().getSoundManager().play(
                 SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f)
         );
 
         onClick.accept(this, mouseButton);
+        return true;
     }
 
     public int getStartX() {

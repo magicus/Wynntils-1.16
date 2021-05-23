@@ -48,7 +48,7 @@ public class UIEColorWheel extends UIEClickZone {
         this.onAccept = onAccept;
 
         textBox = new UIETextBox(0, 0, 0, 16, 120, true, formatColourName(color), false, (ui, t) -> {
-            String text = textBox.getText().trim();
+            String text = textBox.getValue().trim();
             Matcher m;
             if (hexChecker.matcher(text).matches()) {
                 color = CustomColor.fromString(text.replace("#", ""), 1);
@@ -90,7 +90,7 @@ public class UIEColorWheel extends UIEClickZone {
     public void setColor(CustomColor color) {
         this.color = color;
 
-        textBox.setText(formatColourName(color));
+        textBox.setValue(formatColourName(color));
     }
 
     private String formatColourName(CustomColor color) {
@@ -114,8 +114,8 @@ public class UIEColorWheel extends UIEClickZone {
         if (hovering) McIf.mc().setScreen(new ColorPickerGUI());
     }
 
-    public void keyTyped(char c, int i, UI ui) {
-        textBox.keyTyped(c, i, ui);
+    public boolean keyPressed(int c, int i, int j, UI ui) {
+        return textBox.keyPressed(c, i, j, ui);
     }
 
     @Override
@@ -160,9 +160,9 @@ public class UIEColorWheel extends UIEClickZone {
                 McIf.mc().getSoundManager().play(SimpleSound.forUI(clickSound, 1f));
                 onAccept.accept(color);
                 if (colorText == null) {
-                    textBox.setText(formatColourName(color));
+                    textBox.setValue(formatColourName(color));
                 } else {
-                    textBox.setText(colorText);
+                    textBox.setValue(colorText);
                 }
             } else if (button == cancelButton) {
                 McIf.mc().setScreen(backGui);
@@ -172,9 +172,9 @@ public class UIEColorWheel extends UIEClickZone {
 
         @Override
         public void init() {
-            buttonList.add(applyButton = new Button(0, width/2 - 65, height/2 + 95, 50, 20, TextFormatting.GREEN + "Apply"));
-            buttonList.add(cancelButton = new Button(1, (width/2) + 15, height/2 + 95, 50, 20, TextFormatting.RED + "Cancel"));
-            buttonList.add(valueSlider = new GuiSlider(new GuiPageButtonList.GuiResponder() {
+            buttons.add(applyButton = new Button(0, width/2 - 65, height/2 + 95, 50, 20, TextFormatting.GREEN + "Apply"));
+            buttons.add(cancelButton = new Button(1, (width/2) + 15, height/2 + 95, 50, 20, TextFormatting.RED + "Cancel"));
+            buttons.add(valueSlider = new GuiSlider(new GuiPageButtonList.GuiResponder() {
                 @Override public void setEntryValue(int id, boolean value) {}
                 @Override public void setEntryValue(int id, String value) {}
                 @Override public void setEntryValue(int id, float value) {
@@ -184,7 +184,7 @@ public class UIEColorWheel extends UIEClickZone {
                 }
             }, 2, this.width/2 - (allowAlpha ? 155 : 75), this.height/2+71, "Brightness", 0, 1, toChange.toHSV()[2], (id, name, value) -> String.format("Brightness: %d%%", (int) (value * 100))));
             if (allowAlpha) {
-                buttonList.add(alphaSlider = new GuiSlider(new GuiPageButtonList.GuiResponder() {
+                buttons.add(alphaSlider = new GuiSlider(new GuiPageButtonList.GuiResponder() {
                     @Override public void setEntryValue(int id, boolean value) {}
                     @Override public void setEntryValue(int id, String value) {}
                     @Override public void setEntryValue(int id, float value) {
@@ -278,14 +278,14 @@ public class UIEColorWheel extends UIEClickZone {
         }
 
         @Override
-        protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-            if (mouseButton == 0 && changeColor(mouseX, mouseY, false)) return;
-            super.mouseClicked(mouseX, mouseY, mouseButton);
+        public boolean mouseClicked(int mouseX, int mouseY, int mouseButton) {
+            if (mouseButton == 0 && changeColor((int) mouseX, (int) mouseY, false)) return true;
+            return super.mouseClicked(mouseX, mouseY, mouseButton);
         }
 
         @Override
-        public boolean mouseDragged(double mouseX, double mouseY, int mouseButton, double d1, double d2) {
-            if (mouseButton == 0 && changeColor((int) mouseX, (int) mouseY, true)) return;
+        public boolean mouseDragged(int mouseX, int mouseY, int mouseButton, double d1, double d2) {
+            if (mouseButton == 0 && changeColor((int) mouseX, (int) mouseY, true)) return true;
             super.mouseDragged(mouseX, mouseY, mouseButton, d1, d2);
             return true;
         }

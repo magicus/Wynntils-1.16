@@ -59,21 +59,21 @@ public class WaypointOverviewUI extends Screen {
         waypoints = MapConfig.Waypoints.INSTANCE.waypoints;
 
         pageHeight = (this.height - 100) / 25;
-        this.buttonList.add(nextPageBtn = new Button(0, this.width/2 + 2, this.height - 45, 20, 20, ">"));
-        this.buttonList.add(previousPageBtn = new Button(1, this.width/2 - 22, this.height - 45, 20, 20, "<"));
-        this.buttonList.add(exitBtn = new Button(2, this.width - 40, 20, 20, 20, TextFormatting.RED + "X"));
+        this.buttons.add(nextPageBtn = new Button(0, this.width/2 + 2, this.height - 45, 20, 20, ">"));
+        this.buttons.add(previousPageBtn = new Button(1, this.width/2 - 22, this.height - 45, 20, 20, "<"));
+        this.buttons.add(exitBtn = new Button(2, this.width - 40, 20, 20, 20, TextFormatting.RED + "X"));
 
         groupWidth = Math.min(Math.max((this.width - 100) / 22, 2), ungroupedIndex + 1);
         int halfGroupPixelWidth = groupWidth * 11 + 2;
         previousGroupBtn = new Button(-(ungroupedIndex + 2), this.width / 2 - halfGroupPixelWidth - 22, 20, 18, 18, "<");
         nextGroupBtn = new Button(-(ungroupedIndex + 3), this.width / 2 + halfGroupPixelWidth + 4, 20, 18, 18, ">");
         if (groupWidth != ungroupedIndex + 1) {
-            this.buttonList.add(previousGroupBtn);
-            this.buttonList.add(nextGroupBtn);
+            this.buttons.add(previousGroupBtn);
+            this.buttons.add(nextGroupBtn);
         }
 
-        this.buttonList.add(exportBtn = new Button(8, this.width/2 + 26, this.height - 45, 50, 20, "EXPORT"));
-        this.buttonList.add(importBtn = new Button(9, this.width/2 - 76, this.height - 45, 50, 20, "IMPORT"));
+        this.buttons.add(exportBtn = new Button(8, this.width/2 + 26, this.height - 45, 50, 20, "EXPORT"));
+        this.buttons.add(importBtn = new Button(9, this.width/2 - 76, this.height - 45, 50, 20, "IMPORT"));
 
         onWaypointChange();
     }
@@ -343,7 +343,7 @@ public class WaypointOverviewUI extends Screen {
     }
 
     private void resetGroupButtons() {
-        buttonList.removeAll(groupBtns);
+        buttons.removeAll(groupBtns);
         groupBtns = new ArrayList<>();
         int buttonX = this.width / 2 - groupWidth * 11 + 2;
         final int buttonY = 20;
@@ -376,7 +376,7 @@ public class WaypointOverviewUI extends Screen {
             }
             buttonX += 22;
         }
-        this.buttonList.addAll(groupBtns);
+        this.buttons.addAll(groupBtns);
         if (nextGroupBtn.enabled) {
             while (group < ungroupedIndex && !enabledGroups[group]) ++group;
             if (group == ungroupedIndex) {
@@ -386,7 +386,7 @@ public class WaypointOverviewUI extends Screen {
     }
 
     private void setEditButtons() {
-        this.buttonList.removeAll(editButtons);
+        this.buttons.removeAll(editButtons);
         editButtons.clear();
         int groupShift = group == ungroupedIndex ? 20 : 0;
         for (int i = 0, lim = Math.min(pageHeight, getWaypoints().size() - pageHeight * page); i < lim; i++) {
@@ -399,7 +399,7 @@ public class WaypointOverviewUI extends Screen {
             editButtons.add(up);
             editButtons.add(down);
         }
-        this.buttonList.addAll(editButtons);
+        this.buttons.addAll(editButtons);
     }
 
     @Override

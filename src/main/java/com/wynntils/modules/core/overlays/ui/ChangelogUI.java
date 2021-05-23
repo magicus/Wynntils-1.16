@@ -167,7 +167,7 @@ public class ChangelogUI extends Screen {
     }
 
     @Override
-    protected void keyTyped(char charType, int keyCode) throws IOException {
+    protected void keyPressed(char charType, int keyCode) throws IOException {
         if (keyCode == 1) {  // ESC
             McIf.mc().setScreen(previousGui);
             if (McIf.mc().screen == null) McIf.mc().setIngameFocus();

@@ -79,29 +79,29 @@ public class WaypointCreationMenu extends UI {
     @Override public void onInit() { }
     @Override public void onTick() { }
     @Override public void onWindowUpdate() {
-        buttonList.clear();
+        buttons.clear();
 
         nameField = new TextFieldWidget(0, McIf.mc().font, this.width/2 - 80, this.height/2 - 70, 160, 20);
         xCoordField = new TextFieldWidget(1, McIf.mc().font, this.width/2 - 65, this.height/2 - 30, 40, 20);
         zCoordField = new TextFieldWidget(2, McIf.mc().font, this.width/2 - 5, this.height/2 - 30, 40, 20);
         yCoordField = new TextFieldWidget(3, McIf.mc().font, this.width/2 + 55, this.height/2 - 30, 25, 20);
-        buttonList.add(waypointTypeNext = new Button(97, this.width/2 - 40, this.height/2 + 10, 18, 18, ">"));
-        buttonList.add(waypointTypeBack = new Button(98, this.width/2 - 80, this.height/2 + 10, 18, 18, "<"));
+        buttons.add(waypointTypeNext = new Button(97, this.width/2 - 40, this.height/2 + 10, 18, 18, ">"));
+        buttons.add(waypointTypeBack = new Button(98, this.width/2 - 80, this.height/2 + 10, 18, 18, "<"));
 
         int visibilityButtonWidth = 100;
         int visibilityButtonHeight = this.height/2 + 40;
-        buttonList.add(defaultVisibilityButton = new Button(99, this.width/2 - 3 * visibilityButtonWidth / 2 - 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Default"));
-        buttonList.add(alwaysVisibleButton = new Button(100, this.width/2 - visibilityButtonWidth / 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Always Visible"));
-        buttonList.add(hiddenButton = new Button(101, this.width/2 + visibilityButtonWidth / 2 + 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Hidden"));
+        buttons.add(defaultVisibilityButton = new Button(99, this.width/2 - 3 * visibilityButtonWidth / 2 - 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Default"));
+        buttons.add(alwaysVisibleButton = new Button(100, this.width/2 - visibilityButtonWidth / 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Always Visible"));
+        buttons.add(hiddenButton = new Button(101, this.width/2 + visibilityButtonWidth / 2 + 2, visibilityButtonHeight, visibilityButtonWidth, 18, "Hidden"));
 
         int saveButtonHeight = this.height - 80 > visibilityButtonHeight + 20 ? this.height - 80 : this.height - 60;
-        buttonList.add(cancelButton = new Button(102, this.width/2 - 71, saveButtonHeight, 45, 18, "Cancel"));
-        buttonList.add(saveButton = new Button(103, this.width/2 + 25, saveButtonHeight, 45, 18, "Save"));
+        buttons.add(cancelButton = new Button(102, this.width/2 - 71, saveButtonHeight, 45, 18, "Cancel"));
+        buttons.add(saveButton = new Button(103, this.width/2 + 25, saveButtonHeight, 45, 18, "Save"));
         saveButton.enabled = false;
 
-        xCoordField.setText(Integer.toString(initialX));
-        zCoordField.setText(Integer.toString(initialZ));
-        yCoordField.setText(Integer.toString(McIf.player().getPosition().getY()));
+        xCoordField.setValue(Integer.toString(initialX));
+        zCoordField.setValue(Integer.toString(initialZ));
+        yCoordField.setValue(Integer.toString(McIf.player().getPosition().getY()));
 
         nameFieldLabel = new GuiLabel(McIf.mc().font, 0, this.width/2 - 80, this.height/2 - 81, 40, 10, 0xFFFFFF);
         nameFieldLabel.addLine("Waypoint Name:");
@@ -129,10 +129,10 @@ public class WaypointCreationMenu extends UI {
         if (wp == null) {
             setWpIcon(WaypointType.FLAG, 0, color);
         } else if (!returning) {
-            nameField.setText(wp.getName());
-            xCoordField.setText(Integer.toString((int) wp.getX()));
-            yCoordField.setText(Integer.toString((int) wp.getY()));
-            zCoordField.setText(Integer.toString((int) wp.getZ()));
+            nameField.setValue(wp.getName());
+            xCoordField.setValue(Integer.toString((int) wp.getX()));
+            yCoordField.setValue(Integer.toString((int) wp.getY()));
+            zCoordField.setValue(Integer.toString((int) wp.getZ()));
 
             setWpIcon(wp.getType(), wp.getZoomNeeded(), color);
         }
@@ -151,7 +151,7 @@ public class WaypointCreationMenu extends UI {
     }
 
     @Override
-    public void onClose() {
+    public void onCloseWynntils() {
         Keyboard.enableRepeatEvents(false);
     }
 
@@ -246,7 +246,7 @@ public class WaypointCreationMenu extends UI {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyPressed(char typedChar, int keyCode) throws IOException {
         if (keyCode == GLFW.GLFW_KEY_TAB) {
             Utils.tab(
                 Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1,
@@ -254,7 +254,7 @@ public class WaypointCreationMenu extends UI {
             );
             return;
         }
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode);
         nameField.textboxKeyTyped(typedChar, keyCode);
         xCoordField.textboxKeyTyped(typedChar, keyCode);
         yCoordField.textboxKeyTyped(typedChar, keyCode);
@@ -266,8 +266,8 @@ public class WaypointCreationMenu extends UI {
     protected void actionPerformed(Button button) {
         if (button == saveButton) {
             WaypointProfile newWp = new WaypointProfile(
-                    nameField.getText().trim(),
-                    Integer.parseInt(xCoordField.getText().trim()), Integer.parseInt(yCoordField.getText().trim()), Integer.parseInt(zCoordField.getText().trim()),
+                    nameField.getValue().trim(),
+                    Integer.parseInt(xCoordField.getValue().trim()), Integer.parseInt(yCoordField.getValue().trim()), Integer.parseInt(zCoordField.getValue().trim()),
                     getColor(), getWaypointType(), getZoomNeeded()
             );
             if (isUpdatingExisting) {
@@ -295,13 +295,13 @@ public class WaypointCreationMenu extends UI {
     }
 
     private void isAllValidInformation() {
-        boolean xValid = StringUtils.isValidInteger(xCoordField.getText().trim());
-        boolean yValid = StringUtils.isValidInteger(yCoordField.getText().trim());
-        boolean zValid = StringUtils.isValidInteger(zCoordField.getText().trim());
+        boolean xValid = StringUtils.isValidInteger(xCoordField.getValue().trim());
+        boolean yValid = StringUtils.isValidInteger(yCoordField.getValue().trim());
+        boolean zValid = StringUtils.isValidInteger(zCoordField.getValue().trim());
         xCoordField.setTextColor(xValid ? 0xFFFFFF : 0xFF6666);
         yCoordField.setTextColor(yValid ? 0xFFFFFF : 0xFF6666);
         zCoordField.setTextColor(zValid ? 0xFFFFFF : 0xFF6666);
-        saveButton.enabled = xValid && yValid && zValid && !nameField.getText().isEmpty() && getWaypointType() != null;
+        saveButton.enabled = xValid && yValid && zValid && !nameField.getValue().isEmpty() && getWaypointType() != null;
     }
 
     private static class WaypointCreationMenuState {
@@ -311,17 +311,17 @@ public class WaypointCreationMenu extends UI {
         String zCoordField;
 
         void putState(WaypointCreationMenu menu) {
-            nameField = menu.nameField.getText();
-            xCoordField = menu.xCoordField.getText();
-            yCoordField = menu.yCoordField.getText();
-            zCoordField = menu.zCoordField.getText();
+            nameField = menu.nameField.getValue();
+            xCoordField = menu.xCoordField.getValue();
+            yCoordField = menu.yCoordField.getValue();
+            zCoordField = menu.zCoordField.getValue();
         }
 
         void resetState(WaypointCreationMenu menu) {
-            menu.nameField.setText(nameField);
-            menu.xCoordField.setText(xCoordField);
-            menu.yCoordField.setText(yCoordField);
-            menu.zCoordField.setText(zCoordField);
+            menu.nameField.setValue(nameField);
+            menu.xCoordField.setValue(xCoordField);
+            menu.yCoordField.setValue(yCoordField);
+            menu.zCoordField.setValue(zCoordField);
         }
     }
 }

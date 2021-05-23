@@ -40,7 +40,7 @@ public class ChestReplacer extends ChestScreen {
     @Override
     public void init() {
         super.init();
-        FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.InitGui(this, this.buttonList));
+        FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.InitGui(this, this.buttons));
     }
 
     @Override
@@ -86,9 +86,9 @@ public class ChestReplacer extends ChestScreen {
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode) throws IOException {
+    public void keyPressed(char typedChar, int keyCode) throws IOException {
         if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.KeyTyped(this, typedChar, keyCode)))
-            super.keyTyped(typedChar, keyCode);
+            super.keyPressed(typedChar, keyCode);
     }
 
     @Override
@@ -105,18 +105,18 @@ public class ChestReplacer extends ChestScreen {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton)  {
         if (FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.MouseClicked(this, mouseX, mouseY, mouseButton))) return;
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
-    public void onGuiClosed() {
+    public void onClose() {
         FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.GuiClosed(this));
-        super.onGuiClosed();
+        super.onClose();
     }
 
     public List<Button> getButtonList() {
-        return this.buttonList;
+        return this.buttons;
     }
 }

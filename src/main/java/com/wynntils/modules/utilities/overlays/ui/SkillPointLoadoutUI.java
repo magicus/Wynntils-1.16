@@ -129,7 +129,7 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) {
+    protected void keyPressed(char typedChar, int keyCode) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == McIf.mc().options.keyBindInventory.getKeyCode()) {
             McIf.mc().setScreen(spMenu);
         }

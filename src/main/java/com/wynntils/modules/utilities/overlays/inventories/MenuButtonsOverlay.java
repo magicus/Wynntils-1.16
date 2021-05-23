@@ -34,34 +34,34 @@ public class MenuButtonsOverlay implements Listener {
         }
         if (numButtonRows == 0) return;
 
-        List<Button> buttonList = e.getButtonList();
+        List<Button> buttons = e.getButtonList();
         IngameMenuReplacer gui = e.getGui();
-        removeDefaultButtons(buttonList);
+        removeDefaultButtons(buttons);
 
         int yOffset = 72;
-        moveButtons(buttonList, gui);
+        moveButtons(buttons, gui);
 
         if (Reference.onWorld && UtilitiesConfig.INSTANCE.addClassHubButtons) {
-            addButtonPair(buttonList, gui, yOffset, 753, "Class selection",
+            addButtonPair(buttons, gui, yOffset, 753, "Class selection",
                     754, "Back to Hub");
             yOffset = 48;
         }
 
         if (UtilitiesConfig.INSTANCE.addOptionsProfileButtons) {
-            buttonList.add(new Button(756, gui.width / 2 + 2, gui.height / 4 + yOffset + -16, 98, 20, "Wynntils Menu"));
+            buttons.add(new Button(756, gui.width / 2 + 2, gui.height / 4 + yOffset + -16, 98, 20, "Wynntils Menu"));
         }
     }
 
-    private static void addButtonPair(List<Button> buttonList, IngameMenuReplacer gui, int yOffset, int buttonId1, String buttonText1, int buttonId2, String buttonText2) {
-        buttonList.add(new Button(buttonId1, gui.width / 2 - 100, gui.height / 4 + yOffset + -16, 98, 20, buttonText1));
-        buttonList.add(new Button(buttonId2, gui.width / 2 + 2, gui.height / 4 + yOffset + -16, 98, 20, buttonText2));
+    private static void addButtonPair(List<Button> buttons, IngameMenuReplacer gui, int yOffset, int buttonId1, String buttonText1, int buttonId2, String buttonText2) {
+        buttons.add(new Button(buttonId1, gui.width / 2 - 100, gui.height / 4 + yOffset + -16, 98, 20, buttonText1));
+        buttons.add(new Button(buttonId2, gui.width / 2 + 2, gui.height / 4 + yOffset + -16, 98, 20, buttonText2));
     }
 
     /**
      * Moves the www.wynncraft.com button to the right of the territory map button and when not showing the class selection and hub buttons moves the territory map and return to game buttons down and when not on beta moves the return to game button down
      */
-    private static void moveButtons(List<Button> buttonList, IngameMenuReplacer gui) {
-        for (Button button : buttonList) {
+    private static void moveButtons(List<Button> buttons, IngameMenuReplacer gui) {
+        for (Button button : buttons) {
             if (button.id == 7) {
                 button.y = gui.height / 4 + 48 - 16;
                 button.width = 98;
@@ -79,8 +79,8 @@ public class MenuButtonsOverlay implements Listener {
      * On Beta removes the Statistics button and the www.wynncraft.com button if the menu button is enabled and when not on beta removes the "Advancements", "Statistics" and "Open to LAN" buttons.
      * Also makes "Options..." and "Mod Options..." grey and "Disconnect" red.
      */
-    private static void removeDefaultButtons(List<Button> buttonList) {
-        buttonList.removeIf(b -> {
+    private static void removeDefaultButtons(List<Button> buttons) {
+        buttons.removeIf(b -> {
             if (UtilitiesConfig.INSTANCE.addOptionsProfileButtons && b.id == 7) return true;
             if (b.id == 6) return true;
             if (b.id == 1) {

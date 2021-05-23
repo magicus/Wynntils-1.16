@@ -136,14 +136,18 @@ public class MainPage extends QuestBookPage {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (selected > 0) {
             WynntilsSound.QUESTBOOK_PAGE.play();
             QuestBookPages.getPageBySlot(selected).open(false);
+            return true;
         } else if (selected == -1) {
             goBack();
+            return true;
         } else if (selected == -2) {
             goForward();
+            return true;
         }
+        return false;
     }
 }

@@ -430,7 +430,7 @@ public class WorldMapUI extends GuiMovementScreen {
     }
 
     @Override
-    public void onGuiClosed() {
+    public void onClose() {
         Keyboard.enableRepeatEvents(false);
     }
 
@@ -453,7 +453,7 @@ public class WorldMapUI extends GuiMovementScreen {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyPressed(char typedChar, int keyCode) throws IOException {
         if (keyCode == KeyManager.getZoomInKey().getKeyBinding().getKeyCode()) {
             zoomBy(+2);
             return;
@@ -464,25 +464,23 @@ public class WorldMapUI extends GuiMovementScreen {
             return;
         }
 
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode);
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         if (mapButtons.isEmpty()) {
-            super.mouseClicked(mouseX, mouseY, mouseButton);
-            return;
+            return super.mouseClicked(mouseX, mouseY, mouseButton);
         }
 
         for (MapButton button : mapButtons) {
-            if (!button.isHovering(mouseX, mouseY)) continue;
+            if (!button.isHovering((int) mouseX, (int) mouseY)) continue;
             if (button.getType().isIgnoreAction()) continue;
 
-            button.mouseClicked(mouseX, mouseY, mouseButton);
-            return;
+            return button.mouseClicked(mouseX, mouseY, mouseButton);
         }
 
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
 }

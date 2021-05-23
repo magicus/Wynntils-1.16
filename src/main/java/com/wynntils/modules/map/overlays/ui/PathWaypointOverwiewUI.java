@@ -41,10 +41,10 @@ public class PathWaypointOverwiewUI extends Screen {
 
         pageHeight = (this.height - 100) / 25;
         setEditButtons();
-        this.buttonList.add(newBtn = new Button(-1, this.width/2 - 20, this.height - 45, 40, 20, "NEW"));
-        this.buttonList.add(nextPageBtn = new Button(0, this.width/2 + 24, this.height - 45, 20, 20, ">"));
-        this.buttonList.add(previousPageBtn = new Button(1, this.width/2 - 44, this.height - 45, 20, 20, "<"));
-        this.buttonList.add(exitBtn = new Button(2, this.width - 40, 20, 20, 20, TextFormatting.RED + "X"));
+        this.buttons.add(newBtn = new Button(-1, this.width/2 - 20, this.height - 45, 40, 20, "NEW"));
+        this.buttons.add(nextPageBtn = new Button(0, this.width/2 + 24, this.height - 45, 20, 20, ">"));
+        this.buttons.add(previousPageBtn = new Button(1, this.width/2 - 44, this.height - 45, 20, 20, "<"));
+        this.buttons.add(exitBtn = new Button(2, this.width - 40, 20, 20, 20, TextFormatting.RED + "X"));
         checkAvailablePages();
     }
 
@@ -111,13 +111,13 @@ public class PathWaypointOverwiewUI extends Screen {
     }
 
     private void setEditButtons() {
-        this.buttonList.removeAll(editButtons);
+        this.buttons.removeAll(editButtons);
         editButtons.clear();
         for (int i = 0; i < Math.min(pageHeight, paths.size() - pageHeight * page); i++) {
             editButtons.add(new Button(3 + 10 * i, this.width/2 + 85, 50 + 25 * i, 40, 20,"Edit..."));
             editButtons.add(new Button(5 + 10 * i, this.width/2 + 130, 50 + 25 * i, 40, 20, "Delete"));
         }
-        this.buttonList.addAll(editButtons);
+        this.buttons.addAll(editButtons);
     }
 
     @Override

@@ -337,7 +337,7 @@ public class LootRunPage extends QuestBookPage {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         MainWindow res = new MainWindow(McIf.mc());
         int posX = ((res.getGuiScaledWidth() / 2) - mouseX);
         int posY = ((res.getGuiScaledHeight() / 2) - mouseY);
@@ -375,7 +375,7 @@ public class LootRunPage extends QuestBookPage {
                     }
                 }
 
-                return;
+                return true;
             } else if (mouseButton == 1 && isShiftKeyDown() && !isTracked) { //shift right click means delete
                 boolean result = LootRunManager.delete(selectedName);
                 if (result) {
@@ -384,12 +384,12 @@ public class LootRunPage extends QuestBookPage {
                     McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_IRONGOLEM_HURT, 1f));
                 }
 
-                return;
+                return true;
             } else if (mouseButton == 2) { //middle click means open up folder
                 File lootrunPath = new File(LootRunManager.STORAGE_FOLDER, selectedName + ".json");
                 String uri = lootrunPath.toURI().toString();
                 Utils.openUrl(uri);
-                return;
+                return true;
             }
         }
 
@@ -409,6 +409,6 @@ public class LootRunPage extends QuestBookPage {
             }
         }
 
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 }

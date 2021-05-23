@@ -288,7 +288,7 @@ public class DiscoveriesPage extends QuestBookPage {
                 String textToDisplay;
                 if (!(territory || world || secret || undiscoveredTerritory || undiscoveredWorld || undiscoveredSecret)) {
                     textToDisplay = "No filters enabled!\nTry refining your search.";
-                } else if (QuestManager.getCurrentDiscoveries().size() == 0 || textField.getText().equals("")) {
+                } else if (QuestManager.getCurrentDiscoveries().size() == 0 || textField.getValue().equals("")) {
                     textToDisplay = "Loading Discoveries...\nIf nothing appears soon, try pressing the reload button.";
                 } else {
                     textToDisplay = "No discoveries found!\nTry searching for something else.";
@@ -304,7 +304,7 @@ public class DiscoveriesPage extends QuestBookPage {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         MainWindow res = new MainWindow(McIf.mc());
         int posX = ((res.getGuiScaledWidth() / 2) - mouseX);
         int posY = ((res.getGuiScaledHeight() / 2) - mouseY);
@@ -364,44 +364,44 @@ public class DiscoveriesPage extends QuestBookPage {
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             territory = !territory;
             updateSearch();
-            return;
+            return true;
         } else if (posX >= 100 && posX <= 130 && posY >= -80 && posY <= -50) { // Undiscovered Territory
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             undiscoveredTerritory = !undiscoveredTerritory;
             updateSearch();
-            return;
+            return true;
         } else if (posX >= 65 && posX <= 95 && posY >= -45 && posY <= -15) { // Discovered World
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             world = !world;
             updateSearch();
-            return;
+            return true;
         } else if (posX >= 65 && posX <= 95 && posY >= -80 && posY <= -50) { // Undiscovered World
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             undiscoveredWorld = !undiscoveredWorld;
             updateSearch();
-            return;
+            return true;
         } else if (posX >= 30 && posX <= 60 && posY >= -45 && posY <= -15) { // Discovered Secret
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             secret = !secret;
             updateSearch();
-            return;
+            return true;
         } else if (posX >= 30 && posX <= 60 && posY >= -80 && posY <= -50) { // Undiscovered Secret
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             undiscoveredSecret = !undiscoveredSecret;
             updateSearch();
-            return;
+            return true;
         } else if (posX >= -157 && posX <= -147 && posY >= 89 && posY <= 99) { // Update Button
             McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
             QuestManager.updateAnalysis(EnumSet.of(AnalysePosition.DISCOVERIES, AnalysePosition.SECRET_DISCOVERIES), true, true);
-            return;
+            return true;
         }
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode) throws IOException {
+    public void keyPressed(char typedChar, int keyCode) throws IOException {
         overDiscovery = null;
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode);
     }
 
     @Override

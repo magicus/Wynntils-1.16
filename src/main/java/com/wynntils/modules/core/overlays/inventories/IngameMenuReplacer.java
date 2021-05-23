@@ -18,7 +18,7 @@ public class IngameMenuReplacer extends IngameMenuScreen {
     public void init() {
         super.init();
 
-        FrameworkManager.getEventBus().post(new GuiOverlapEvent.IngameMenuOverlap.InitGui(this, buttonList));
+        FrameworkManager.getEventBus().post(new GuiOverlapEvent.IngameMenuOverlap.InitGui(this, buttons));
     }
 
     @Override
@@ -36,10 +36,11 @@ public class IngameMenuReplacer extends IngameMenuScreen {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
+        boolean result = super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        FrameworkManager.getEventBus().post(new GuiOverlapEvent.IngameMenuOverlap.MouseClicked(this, mouseX, mouseY, mouseButton));
+        FrameworkManager.getEventBus().post(new GuiOverlapEvent.IngameMenuOverlap.MouseClicked(this, (int) mouseX, (int) mouseY, mouseButton));
+        return result;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class IngameMenuReplacer extends IngameMenuScreen {
     }
 
     public List<Button> getButtonList() {
-        return buttonList;
+        return buttons;
     }
 
 }

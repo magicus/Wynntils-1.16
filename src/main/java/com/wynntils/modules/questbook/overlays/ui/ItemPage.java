@@ -68,7 +68,7 @@ public class ItemPage extends QuestBookPage {
         if (QuestBookConfig.INSTANCE.advancedItemSearch) {
             initAdvancedSearch();
             if (oldSearchState != null) {
-                textField.setText(oldSearchState.toSearchString());
+                textField.setValue(oldSearchState.toSearchString());
                 updateSearch();
             }
             return;
@@ -205,7 +205,7 @@ public class ItemPage extends QuestBookPage {
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public boolean mouseClicked(double mouseX, double mouseY, int mouseButton)  {
         MainWindow res = new MainWindow(McIf.mc());
         int posX = ((res.getGuiScaledWidth() / 2) - mouseX);
         int posY = ((res.getGuiScaledHeight() / 2) - mouseY);
@@ -219,20 +219,20 @@ public class ItemPage extends QuestBookPage {
                 QuestBookConfig.INSTANCE.advancedItemSearch = false;
                 initBasicSearch();
                 String searchText = BasicSearchHandler.INSTANCE.inheritSearchState(searchState);
-                textField.setText(searchText != null ? searchText : "");
+                textField.setValue(searchText != null ? searchText : "");
             } else {
                 textField.setMaxStringLength(ADV_SEARCH_MAX_LEN);
                 QuestBookConfig.INSTANCE.advancedItemSearch = true;
                 initAdvancedSearch();
-                textField.setText(searchState != null ? searchState.toSearchString() : "");
+                textField.setValue(searchState != null ? searchState.toSearchString() : "");
             }
             QuestBookConfig.INSTANCE.saveSettings(QuestBookModule.getModule());
             updateSearch();
-            return;
+            return true;
         }
         if (getSearchHandler().handleClick(mouseX, mouseY, mouseButton, selected)) { // delegate rest of click behaviour to search handler
             updateSearch();
-            return;
+            return true;
         }
 
         if (selected < 0) { // an item in the guide is hovered
@@ -241,10 +241,10 @@ public class ItemPage extends QuestBookPage {
             int selectedIndex = -(selected + 1);
             if (selectedIndex >= itemSearch.size()) return;
             Utils.openUrl("https://www.wynndata.tk/i/" + Utils.encodeUrl(itemSearch.get(selectedIndex).getDisplayName()));
-            return;
+            return true;
         }
 
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+        return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override

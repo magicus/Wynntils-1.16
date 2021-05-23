@@ -59,9 +59,9 @@ public class InventoryReplacer extends InventoryScreen {
     }
 
     @Override
-    public void keyTyped(char typedChar, int keyCode) throws IOException {
+    public void keyPressed(char typedChar, int keyCode) throws IOException {
         if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.InventoryOverlap.KeyTyped(this, typedChar, keyCode)))
-            super.keyTyped(typedChar, keyCode);
+            super.keyPressed(typedChar, keyCode);
     }
 
     @Override
@@ -89,12 +89,12 @@ public class InventoryReplacer extends InventoryScreen {
     }
 
     @Override
-    public void onGuiClosed() {
+    public void onClose() {
         FrameworkManager.getEventBus().post(new GuiOverlapEvent.InventoryOverlap.GuiClosed(this));
-        super.onGuiClosed();
+        super.onClose();
     }
 
     public List<Button> getButtonList() {
-        return buttonList;
+        return buttons;
     }
 }

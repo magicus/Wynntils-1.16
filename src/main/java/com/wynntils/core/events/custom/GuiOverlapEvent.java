@@ -456,16 +456,16 @@ public class GuiOverlapEvent<T extends AbstractGui> extends Event {
 
         public static class InitGui extends ChestOverlap {
 
-            List<Button> buttonList;
+            List<Button> buttons;
 
-            public InitGui(ChestReplacer guiChest, List<Button> buttonList) {
+            public InitGui(ChestReplacer guiChest, List<Button> buttons) {
                 super(guiChest);
-                this.buttonList = buttonList;
+                this.buttons = buttons;
             }
 
             @Override
             public List<Button> getButtonList() {
-                return buttonList;
+                return buttons;
             }
 
         }
@@ -755,17 +755,17 @@ public class GuiOverlapEvent<T extends AbstractGui> extends Event {
 
         public static class InitGui extends IngameMenuOverlap {
 
-            List<Button> buttonList;
+            List<Button> buttons;
 
-            public InitGui(IngameMenuReplacer ingameMenuReplacer, List<Button> buttonList) {
+            public InitGui(IngameMenuReplacer ingameMenuReplacer, List<Button> buttons) {
                 super(ingameMenuReplacer);
 
-                this.buttonList = buttonList;
+                this.buttons = buttons;
             }
 
             @Override
             public List<Button> getButtonList() {
-                return buttonList;
+                return buttons;
             }
 
         }

@@ -36,7 +36,7 @@ public class MainMenuButtons {
 
     private static boolean alreadyLoaded = false;
 
-    public static void addButtons(MainMenuScreen to, List<Button> buttonList, boolean resize) {
+    public static void addButtons(MainMenuScreen to, List<Button> buttons, boolean resize) {
         if (!CoreDBConfig.INSTANCE.addMainMenuButton) return;
 
         if (lastButton == null || !resize) {
@@ -47,7 +47,7 @@ public class MainMenuButtons {
             WebManager.checkForUpdates();
             UpdateOverlay.reset();
 
-            buttonList.add(lastButton);
+            buttons.add(lastButton);
 
             // little pling when finished loading
             if (!alreadyLoaded) {
@@ -58,10 +58,10 @@ public class MainMenuButtons {
         }
 
         lastButton.x = to.width / 2 + 104; lastButton.y = to.height / 4 + 48 + 24;
-        buttonList.add(lastButton);
+        buttons.add(lastButton);
     }
 
-    public static void actionPerformed(MainMenuScreen on, Button button, List<Button> buttonList) {
+    public static void actionPerformed(MainMenuScreen on, Button button, List<Button> buttons) {
         if (button.id == WYNNCRAFT_BUTTON_ID) {
             clickedWynncraftButton(((WynncraftButton) button).serverIcon.getServer(), on);
         }
@@ -96,10 +96,10 @@ public class MainMenuButtons {
         }
 
         @Override
-        public void drawButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
+        public void renderButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
             if (!visible) return;
 
-            super.drawButton(minecraft, mouseX, mouseY, partialTicks);
+            super.renderButton(minecraft, mouseX, mouseY, partialTicks);
 
             ServerIcon.ping();
             ResourceLocation icon = serverIcon.getServerIcon();
