@@ -123,7 +123,7 @@ public class BankOverlay implements Listener {
         if (!UtilitiesConfig.Bank.INSTANCE.showQuickAccessIcons) return;
 
         // quick access icons
-        for (int GearViewi = 0; i < QA_BUTTONS; i++) {
+        for (int i = 0; i < QA_BUTTONS; i++) {
             Slot s = e.getGui().getMenu().getSlot(QA_SLOTS[i]);
 
             s.set(new ItemStack(Blocks.SNOW));
