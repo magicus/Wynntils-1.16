@@ -8,18 +8,21 @@ import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screen.ConnectingScreen;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.MultiplayerScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
+import net.minecraft.client.resources.LegacyResourcePackWrapper;
+import net.minecraft.client.resources.LegacyResourcePackWrapperV4;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.resources.ResourcePackList;
-import net.minecraft.realms.RealmsBridge;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraft.resources.*;
+import net.minecraft.resources.data.PackMetadataSection;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 public class ServerUtils {
 
@@ -44,7 +47,7 @@ public class ServerUtils {
      */
     public static void connect(Screen backGui, ServerData serverData, boolean unloadCurrentServerResourcePack) {
         disconnect(false, unloadCurrentServerResourcePack);
-        FMLClientHandler.instance().connectToServer(backGui, serverData);
+        McIf.mc().setScreen(new ConnectingScreen(backGui, McIf.mc(), serverData));
     }
 
     public static void disconnect() {
@@ -70,7 +73,7 @@ public class ServerUtils {
 
         world.disconnect();
         if (unloadServerPack) {
-            McIf.mc().loadWorld(null);
+            McIf.mc().loadLevel(null);
         } else {
             loadWorldWithoutUnloadingServerResourcePack(null);
         }
@@ -81,7 +84,7 @@ public class ServerUtils {
         } else if (realms) {
             // Should not be possible because Wynntils will
             // never be running on the latest version of Minecraft
-            new RealmsBridge().switchToRealms(new MainMenuScreen());
+//            new RealmsBridge().switchToRealms(new MainMenuScreen());
         } else {
             McIf.mc().setScreen(new MultiplayerScreen(new MainMenuScreen()));
         }
@@ -93,19 +96,51 @@ public class ServerUtils {
 
     private static class FakeResourcePackRepositoryHolder {
         // Will only be created by classloader when used
-        static final ResourcePackList instance = new ResourcePackList(McIf.mc().getResourcePackRepository().getDirResourcepacks(), null, null, null, McIf.mc().options) {
+        //       this.resourcePackRepository = new ;
+        static final ResourcePackList instance = new ResourcePackList(ServerUtils::createClientPackAdapter, McIf.mc().getClientPackSource(), new FolderPackFinder(McIf.mc().getResourcePackDirectory(), IPackNameDecorator.DEFAULT)) {
             @Override
-            public void clearResourcePack() {
+            public void close() {
                 // Don't
             }
         };
     }
 
+    ///// FIXME: BEGIN HACK. This should be replaced with Mixin access
+
+    private static ResourcePackInfo createClientPackAdapter(String p_228011_0_, boolean p_228011_1_, Supplier<IResourcePack> p_228011_2_, IResourcePack p_228011_3_, PackMetadataSection p_228011_4_, ResourcePackInfo.Priority p_228011_5_, IPackNameDecorator p_228011_6_) {
+        int i = p_228011_4_.getPackFormat();
+        Supplier<IResourcePack> supplier = p_228011_2_;
+        if (i <= 3) {
+            supplier = adaptV3(p_228011_2_);
+        }
+
+        if (i <= 4) {
+            supplier = adaptV4(supplier);
+        }
+
+        return new ResourcePackInfo(p_228011_0_, p_228011_1_, supplier, p_228011_3_, p_228011_4_, p_228011_5_, p_228011_6_, p_228011_3_.isHidden());
+    }
+
+    private static Supplier<IResourcePack> adaptV3(Supplier<IResourcePack> p_228021_0_) {
+        return () -> {
+            return new LegacyResourcePackWrapper(p_228021_0_.get(), LegacyResourcePackWrapper.V3);
+        };
+    }
+
+    private static Supplier<IResourcePack> adaptV4(Supplier<IResourcePack> p_228022_0_) {
+        return () -> {
+            return new LegacyResourcePackWrapperV4(p_228022_0_.get());
+        };
+    }
+
+    ///// END HACK
+
     public static synchronized void loadWorldWithoutUnloadingServerResourcePack(ClientWorld world, String loadingMessage) {
         ResourcePackList original = McIf.mc().getResourcePackRepository();
 
         ReflectionFields.Minecraft_resourcePackRepository.setValue(McIf.mc(), FakeResourcePackRepositoryHolder.instance);
-        McIf.mc().loadWorld(world, loadingMessage);
+        // FIXME: note that world is always null!
+        McIf.mc().loadLevel(loadingMessage);
         ReflectionFields.Minecraft_resourcePackRepository.setValue(McIf.mc(), original);
     }
 

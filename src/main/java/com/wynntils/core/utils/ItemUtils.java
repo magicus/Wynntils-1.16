@@ -18,6 +18,8 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.StringNBT;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.ArrayList;
@@ -87,7 +89,7 @@ public class ItemUtils {
 
     /**
      * Same as {@link #getLore(ItemStack)}, but after calling
-     * {@link TextFormatting#getTextWithoutFormattingCodes(String) getTextWithoutFormattingCodes} on each lore line
+     * {@link McIf#getTextWithoutFormattingCodes(String) getTextWithoutFormattingCodes} on each lore line
      *
      * @return A List containing all item lore without formatting codes
      */
@@ -122,7 +124,8 @@ public class ItemUtils {
         for (Entry<ItemType, String[]> e : WebManager.getMaterialTypes().entrySet()) {
             for (String id : e.getValue()) {
                 if (id.matches("[A-Za-z_:]+")) {
-                    if (Item.getByNameOrId(id).equals(item.getItem())) return e.getKey();
+                    // FIXME: not sure this is correct
+                    if (Registry.ITEM.get(new ResourceLocation(id)).equals(item.getItem())) return e.getKey();
                 } else {
                     int damageValue = 0;
 

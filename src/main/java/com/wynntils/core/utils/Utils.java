@@ -7,12 +7,10 @@ package com.wynntils.core.utils;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.wynntils.McIf;
 import com.wynntils.core.utils.reflections.ReflectionFields;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.chat.NarratorChatListener;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.MainWindow;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -30,7 +28,6 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.Toolkit;
@@ -59,7 +56,7 @@ public class Utils {
     private static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder().setNameFormat("wynntils-utilities-%d").build());
     private static Random random = new Random();
 
-    private static String previousTeam = null;
+    private static ScorePlayerTeam previousTeam = null;
 
     /**
      * Runs a runnable after the determined time
@@ -147,7 +144,7 @@ public class Utils {
      */
     public static boolean isCharacterInfoPage(Screen gui) {
         if (!(gui instanceof ContainerScreen)) return false;
-        Matcher m = CHAR_INFO_PAGE_TITLE.matcher(((ContainerScreen)gui).getMenu().getSlot(0).container.getName());
+        Matcher m = CHAR_INFO_PAGE_TITLE.matcher(McIf.toText(gui.getTitle()));
         return m.find();
     }
 
@@ -156,7 +153,7 @@ public class Utils {
      */
     public static boolean isServerSelector(Screen gui) {
         if (!(gui instanceof ContainerScreen)) return false;
-        Matcher m = SERVER_SELECTOR_TITLE.matcher(((ContainerScreen) gui).getMenu().getSlot(0).container.getName());
+        Matcher m = SERVER_SELECTOR_TITLE.matcher(McIf.toText(gui.getTitle()));
         return m.find();
     }
 
@@ -172,12 +169,12 @@ public class Utils {
         if (scoreboard.getPlayerTeam(name) != null) return scoreboard.getPlayerTeam(name);
 
         String player = McIf.toText(McIf.player().getName());
-        if (scoreboard.getPlayersTeam(player) != null) previousTeam = scoreboard.getPlayersTeam(player).getName();
+        if (scoreboard.getPlayersTeam(player) != null) previousTeam = scoreboard.getPlayersTeam(player);
 
         ScorePlayerTeam team = scoreboard.addPlayerTeam(name);
         team.setCollisionRule(rule);
 
-        scoreboard.addPlayerToTeam(player, name);
+        scoreboard.addPlayerToTeam(player, team);
         return team;
     }
 
@@ -190,8 +187,8 @@ public class Utils {
         Scoreboard scoreboard = McIf.world().getScoreboard();
         if (scoreboard.getPlayerTeam(name) == null) return;
 
-        scoreboard.removeTeam(scoreboard.getPlayerTeam(name));
-        if (previousTeam != null) scoreboard.addPlayerToTeam(McIf.player().getName(), previousTeam);
+        scoreboard.removePlayerTeam(scoreboard.getPlayerTeam(name));
+        if (previousTeam != null) scoreboard.addPlayerToTeam(McIf.toText(McIf.player().getName()), previousTeam);
     }
 
     /**
@@ -208,22 +205,17 @@ public class Utils {
 
         if (oldScreen == screen) return;
         if (oldScreen != null) {
-            oldScreen.onClose();
+            oldScreen.removed();
         }
 
         McIf.mc().screen = screen;
 
         if (screen != null) {
-            McIf.mc().setIngameNotInFocus();
-
-            MainWindow scaledresolution = new MainWindow(McIf.mc());
-            int i = scaledresolution.getGuiScaledWidth();
-            int j = scaledresolution.getGuiScaledHeight();
-            screen.setWorldAndResolution(McIf.mc(), i, j);
-            McIf.mc().skipRenderWorld = false;
+            screen.init(McIf.mc(), McIf.mc().getWindow().getGuiScaledWidth(), McIf.mc().getWindow().getGuiScaledHeight());
+            McIf.mc().noRender = false;
+            NarratorChatListener.INSTANCE.sayNow(screen.getNarrationMessage());
         } else {
-            McIf.mc().getSoundManager().resumeSounds();
-            McIf.mc().setIngameFocus();
+            McIf.mc().getSoundManager().resume();
         }
     }
 
@@ -268,7 +260,7 @@ public class Utils {
         final Pattern PERCENTAGE_PATTERN = Pattern.compile(" +\\[[0-9]+%\\]");
         final Pattern INGREDIENT_PATTERN = Pattern.compile(" +\\[✫+\\]");
 
-        String name = stack.getDisplayName();
+        String name = McIf.toText(stack.getDisplayName());
         name = McIf.getTextWithoutFormattingCodes(name);
         name = PERCENTAGE_PATTERN.matcher(name).replaceAll("");
         name = INGREDIENT_PATTERN.matcher(name).replaceAll("");
@@ -295,31 +287,33 @@ public class Utils {
      */
     public static void openUrl(String url) {
         try {
-            if (Util.getOSType() == Util.EnumOS.WINDOWS) {
+            if (Util.getPlatform() == Util.OS.WINDOWS) {
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
-            } else if (Util.getOSType() == Util.EnumOS.OSX) {
+            } else if (Util.getPlatform() == Util.OS.OSX) {
                 Runtime.getRuntime().exec("open " + url);
                 // Keys can get "stuck" in LWJGL on macOS when the Minecraft window loses focus.
                 // Reset keyboard to solve this.
-                Keyboard.destroy();
-                Keyboard.create();
+                // FIXME: hopefully fixed...
+         //       Keyboard.destroy();
+         //       Keyboard.create();
             } else {
                 Runtime.getRuntime().exec("xdg-open " + url);
             }
             return;
-        } catch (IOException | LWJGLException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         Utils.copyToClipboard(url);
         StringTextComponent text = new StringTextComponent("Error opening link, it has been copied to your clipboard\n");
-        text.getStyle().setColor(TextFormatting.DARK_RED);
+        text.setStyle(text.getStyle().withColor(TextFormatting.DARK_RED));
 
+        // FIXME: can be expressed more elegantly
         StringTextComponent urlComponent = new StringTextComponent(url);
-        urlComponent.getStyle().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
-        urlComponent.getStyle().setColor(TextFormatting.DARK_AQUA);
-        urlComponent.getStyle().setUnderlined(true);
-        text.appendSibling(urlComponent);
+        urlComponent.setStyle(urlComponent.getStyle().withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url)));
+        urlComponent.setStyle(urlComponent.getStyle().withColor(TextFormatting.DARK_AQUA));
+        urlComponent.setStyle(urlComponent.getStyle().withUnderlined(true));
+        text.append(urlComponent);
 
         McIf.sendMessage(text);
     }
@@ -376,23 +370,23 @@ public class Utils {
             if (field.isFocused()) {
                 focusIndex = i;
                 field.setCursorPosition(0);
-                field.setSelectionPos(0);
-                field.setFocused(false);
+                field.setHighlightPos(0);
+                field.setFocus(false);
                 break;
             }
         }
         focusIndex = focusIndex == -1 ? 0 : Math.floorMod(focusIndex + amount, tabList.size());
         TextFieldWidget selected = tabList.get(focusIndex);
-        selected.setFocused(true);
+        selected.setFocus(true);
         selected.setCursorPosition(0);
-        selected.setSelectionPos(selected.getValue().length());
+        selected.setHighlightPos(selected.getValue().length());
     }
 
     public static String getNameFromMetadata(List <EntityDataManager.DataEntry<?>> dataManagerEntries) {
         assert NAME_KEY != null;
         if (dataManagerEntries != null) {
             for (EntityDataManager.DataEntry<?> entry : dataManagerEntries) {
-                if (NAME_KEY.equals(entry.getKey())) {
+                if (NAME_KEY.equals(entry.getAccessor())) {
                     return (String) entry.getValue();
                 }
             }
@@ -404,7 +398,7 @@ public class Utils {
         assert NAME_VISIBLE_KEY != null;
         if (dataManagerEntries != null) {
             for (EntityDataManager.DataEntry<?> entry : dataManagerEntries) {
-                if (NAME_VISIBLE_KEY.equals(entry.getKey())) {
+                if (NAME_VISIBLE_KEY.equals(entry.getAccessor())) {
                     return (Boolean) entry.getValue();
                 }
             }
@@ -417,7 +411,7 @@ public class Utils {
         assert ITEM_KEY != null;
         if (dataManagerEntries != null) {
             for (EntityDataManager.DataEntry<?> entry : dataManagerEntries) {
-                if (ITEM_KEY.equals(entry.getKey())) {
+                if (ITEM_KEY.equals(entry.getAccessor())) {
                     return (ItemStack) entry.getValue();
                 }
             }
@@ -433,7 +427,7 @@ public class Utils {
 
     public static boolean isAirBlock(World world, BlockPos pos)
     {
-        return world.getBlockState(pos).getBlock().isAir(world.getBlockState(pos), this, pos);
+        return world.getBlockState(pos).getBlock().isAir(world.getBlockState(pos), McIf.world(), pos);
     }
 
     // Alias if using already imported org.apache.commons.lang3.StringUtils

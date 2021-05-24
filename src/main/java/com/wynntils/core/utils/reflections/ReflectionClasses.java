@@ -4,8 +4,6 @@
 
 package com.wynntils.core.utils.reflections;
 
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -15,8 +13,13 @@ public enum ReflectionClasses {
 
     public final Class<?> clazz;
 
-    ReflectionClasses(String... names) {
-        this.clazz = ReflectionHelper.getClass(ReflectionClasses.class.getClassLoader(), names);
+    ReflectionClasses(String name) {
+    // FIXME: assume non obf names
+        try {
+            this.clazz = (Class<? super Object>) Class.forName(name, false, ReflectionClasses.class.getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Object construct() {

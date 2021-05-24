@@ -5,7 +5,7 @@
 package com.wynntils.core.utils.reflections;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,7 +19,8 @@ public enum ReflectionMethods {
     final Method method;
 
     ReflectionMethods(Class<?> holdingClass, String deobf, String obf, Class<?>... parameterTypes) {
-        this.method = ReflectionHelper.findMethod(holdingClass, deobf, obf, parameterTypes);
+        // FIXME: this only works for SRG names! Not in dev mode
+        this.method = ObfuscationReflectionHelper.findMethod(holdingClass, obf, parameterTypes);
     }
 
     public Object invoke(Object obj, Object... parameters) {
