@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.visual.overlays.ui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.CharacterGameMode;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
@@ -237,17 +238,17 @@ public class CharacterSelectorUI extends Screen {
     }
 
     @Override
-    public void keyPressed(char typedChar, int keyCode)  {
-        if (keyCode == GLFW.GLFW_KEY_RETURN) { // return select character
+    public boolean keyPressed(int typedChar, int keyCode, int j)  {
+        if (keyCode == GLFW.GLFW_KEY_ENTER) { // return select character
             hoveredButton = 57;
             mouseClicked(0, 0, 1);
-            return;
+            return true;
         }
 
         // character picker
-        if (keyCode <= 1 || keyCode > 10) return; // key offset from num 1~9
+        if (keyCode <= 1 || keyCode > 10) return false; // key offset from num 1~9
         int characterPosition = keyCode - 2;
-        if (availableCharacters.size() <= characterPosition) return;
+        if (availableCharacters.size() <= characterPosition) return false;
         hoveredButton = characterPosition;
 
         // double click detection
@@ -258,11 +259,12 @@ public class CharacterSelectorUI extends Screen {
         if (isDoubleClick) { // pick the class
             hoveredButton = 57;
             mouseClicked(0, 0, 1);
-            return;
+            return true;
         }
 
         // character picking
         selectedCharacter = characterPosition;
+        return true;
     }
 
     @Override
@@ -289,11 +291,11 @@ public class CharacterSelectorUI extends Screen {
     private void updateItems() {
         if (receivedItems) return;
 
-        for (Slot s : chest.getMenu().getMenu()) {
+        for (Slot s : chest.getMenu().slots) {
             ItemStack stack = s.getItem();
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
 
-            String displayName = stack.getDisplayName();
+            String displayName = McIf.toText(stack.getDisplayName());
             if (displayName.contains("Create a new character")) {
                 createCharacterSlot = s.slotNumber;
                 receivedItems = true;

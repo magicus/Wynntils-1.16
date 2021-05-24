@@ -378,7 +378,7 @@ public class ClientEvents implements Listener {
             || e.getSlotIn() == null
             || !e.getSlotIn().hasItem()
             || !e.getSlotIn().getItem().hasCustomHoverName()
-            || !e.getSlotIn().getItem().getDisplayName().contains("[>] Select")) return;
+            || !McIf.toText(e.getSlotIn().getItem().getDisplayName()).contains("[>] Select")) return;
 
 
         get(CharacterData.class).setClassId(e.getSlotId());

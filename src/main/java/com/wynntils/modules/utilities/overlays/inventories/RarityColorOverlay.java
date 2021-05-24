@@ -63,7 +63,7 @@ public class RarityColorOverlay implements Listener {
     public void onPlayerInventory(GuiOverlapEvent.InventoryOverlap.DrawGuiContainerBackgroundLayer e) {
         ContainerScreen guiContainer = e.getGui();
 
-        for (Slot s : guiContainer.getMenu().getMenu()) {
+        for (Slot s : guiContainer.getMenu().slots) {
             if (!UtilitiesConfig.Items.INSTANCE.accesoryHighlight && s.slotNumber >= 9 && s.slotNumber <= 12)
                 continue;
             if (!UtilitiesConfig.Items.INSTANCE.hotbarHighlight && s.slotNumber >= 36 && s.slotNumber <= 41)
@@ -80,7 +80,7 @@ public class RarityColorOverlay implements Listener {
     public static void drawChest(ContainerScreen guiContainer, IInventory lowerInv, IInventory upperInv, boolean emeraldsUpperInv, boolean emeraldsLowerInv) {
         int playerInvSlotNumber = 0;
 
-        for (Slot s : guiContainer.getMenu().getMenu()) {
+        for (Slot s : guiContainer.getMenu().slots) {
             if (s.inventory.getDisplayName().equals(McIf.player().inventory.getDisplayName())) {
                 playerInvSlotNumber++;
                 if (playerInvSlotNumber <= 4 && playerInvSlotNumber >= 1 && !UtilitiesConfig.Items.INSTANCE.accesoryHighlight)

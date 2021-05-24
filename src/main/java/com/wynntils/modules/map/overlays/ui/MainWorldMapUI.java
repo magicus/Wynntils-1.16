@@ -5,6 +5,7 @@
 package com.wynntils.modules.map.overlays.ui;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
 import com.wynntils.core.utils.Utils;
@@ -214,13 +215,13 @@ public class MainWorldMapUI extends WorldMapUI {
     }
 
     @Override
-    protected void keyPressed(char typedChar, int keyCode) throws IOException {
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         if (!holdingMapKey && keyCode == MapModule.getModule().getMapKey().getKeyBinding().getKey().getValue()) {
             McIf.mc().setScreen(null);
-            return;
+            return true;
         }
 
-        super.keyPressed(typedChar, keyCode);
+        return super.keyPressed(typedChar, keyCode, j);
     }
 
     private void handleShareButton(boolean leftClick) {

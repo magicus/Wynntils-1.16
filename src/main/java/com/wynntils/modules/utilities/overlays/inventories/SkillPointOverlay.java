@@ -169,7 +169,7 @@ public class SkillPointOverlay implements Listener {
     public void onChestGui(GuiOverlapEvent.ChestOverlap.HoveredToolTip.Pre e) {
         if (!Reference.onWorld || !Utils.isCharacterInfoPage(e.getGui())) return;
 
-        for (Slot s : e.getGui().getMenu().getMenu()) {
+        for (Slot s : e.getGui().getMenu().slots) {
             String name = McIf.getTextWithoutFormattingCodes(s.getItem().getDisplayName());
             SkillPoint skillPoint = SkillPoint.findSkillPoint(name);
             if (skillPoint == null) continue;
@@ -235,20 +235,20 @@ public class SkillPointOverlay implements Listener {
         // handle typing in text boxes
         if (nameField == null || !nameField.isFocused()) return;
 
-        if (e.getKey().getValue() == GLFW.GLFW_KEY_RETURN) {
+        if (e.getKeyCode() == GLFW.GLFW_KEY_ENTER) {
             String name = nameField.getValue();
             nameField = null;
 
             name = name.replaceAll("&([a-f0-9k-or])", "§$1");
             UtilitiesConfig.INSTANCE.skillPointLoadouts.put(name, getSkillPoints(e.getGui()));
             UtilitiesConfig.INSTANCE.saveSettings(UtilitiesModule.getModule());
-            McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.BLOCK_NOTE_PLING, 1f));
-        } else if (e.getKey().getValue() == GLFW.GLFW_KEY_ESCAPE) {
+            McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.NOTE_BLOCK_PLING, 1f));
+        } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
             nameField = null;
             loadedBuild = null;
             buildPercentage = 0.0f;
         } else {
-            nameField.textboxKeyTyped(e.getTypedChar(), e.getKey().getValue());
+            nameField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
         }
 
         e.setCanceled(true);
@@ -381,13 +381,13 @@ public class SkillPointOverlay implements Listener {
                     gui.getMenu().getNextTransactionID(McIf.player().inventory));
 
             McIf.mc().getSoundManager().play(
-                    SimpleSound.forUI(SoundEvents.ENTITY_ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));
+                    SimpleSound.forUI(SoundEvents.ITEM_PICKUP, 0.3f + (1.2f * buildPercentage)));
 
             McIf.mc().getConnection().send(packet);
             return; // can only click once at a time
         }
 
-        McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.ENTITY_PLAYER_LEVELUP, 1f));
+        McIf.mc().getSoundManager().play(SimpleSound.forUI(SoundEvents.PLAYER_LEVELUP, 1f));
         loadedBuild = null; // we've fully loaded the build if we reach this point
         buildPercentage = 0.0f;
     }

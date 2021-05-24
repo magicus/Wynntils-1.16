@@ -60,7 +60,7 @@ public enum ToggleSetting {
             // show message is false when the option was already on the value status
             if (!showMessage) return;
 
-            McIf.sendMessage(getToggleText(value), null);
+            McIf.sendMessage(getToggleText(value));
         }, TOGGLE_MESSAGE_PATTERN);
 
         response.setCancel(true);

@@ -8,6 +8,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.FrameworkManager;
 import net.minecraft.client.gui.screen.inventory.ChestScreen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.IInventory;
@@ -86,9 +87,10 @@ public class ChestReplacer extends ChestScreen {
     }
 
     @Override
-    public void keyPressed(char typedChar, int keyCode) throws IOException {
-        if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.KeyTyped(this, typedChar, keyCode)))
-            super.keyPressed(typedChar, keyCode);
+    public boolean keyPressed(int typedChar, int keyCode, int j)  {
+        if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.ChestOverlap.KeyTyped(this, (char) typedChar, keyCode)))
+            return super.keyPressed(typedChar, keyCode, j);
+        return false;
     }
 
     @Override
@@ -116,7 +118,7 @@ public class ChestReplacer extends ChestScreen {
         super.onClose();
     }
 
-    public List<Button> getButtonList() {
+    public List<Widget> getButtonList() {
         return this.buttons;
     }
 }

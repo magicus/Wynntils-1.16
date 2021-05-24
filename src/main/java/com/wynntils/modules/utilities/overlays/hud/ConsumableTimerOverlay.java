@@ -60,7 +60,7 @@ public class ConsumableTimerOverlay extends Overlay {
         if (stack.getItem() != Items.DIAMOND_AXE && stack.getItem() != Items.POTION && stack.getItem() != Items.SPLASH_POTION) return; // foods and scrolls have DIAMOND_AXE as their items
 
         // vanilla potions needs a special verification, they DON'T start with dark aqua
-        if (!stack.getDisplayName().startsWith(DARK_AQUA.toString())) {
+        if (!McIf.toText(stack.getDisplayName()).startsWith(DARK_AQUA.toString())) {
             String displayName = McIf.getTextWithoutFormattingCodes(stack.getDisplayName());
             SkillPoint sp = SkillPoint.findSkillPoint(displayName);
 

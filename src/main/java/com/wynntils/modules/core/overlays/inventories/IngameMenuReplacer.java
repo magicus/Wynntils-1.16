@@ -4,8 +4,10 @@
 
 package com.wynntils.modules.core.overlays.inventories;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.FrameworkManager;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.IngameMenuScreen;
 
@@ -29,6 +31,7 @@ public class IngameMenuReplacer extends IngameMenuScreen {
         super.actionPerformed(btn);
     }
 
+    @Override
     public void render(MatrixStack matrix, int mouseX, int mouseY, float partialTicks) {
         super.render(matrix, mouseX, mouseY, partialTicks);
 
@@ -48,7 +51,7 @@ public class IngameMenuReplacer extends IngameMenuScreen {
         super.drawHoveringText(text, x, y);
     }
 
-    public List<Button> getButtonList() {
+    public List<Widget> getButtonList() {
         return buttons;
     }
 

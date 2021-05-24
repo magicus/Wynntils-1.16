@@ -115,8 +115,8 @@ public class ClientEvents implements Listener {
         for (int i = 0; i < size; i++) {
             ItemStack stack = e.getPacket().getItems().get(i);
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue;
-            if (!stack.getDisplayName().contains(TextFormatting.DARK_PURPLE.toString())) continue;
-            if (!stack.getDisplayName().contains("Unidentified")) continue;
+            if (!McIf.toText(stack.getDisplayName()).contains(TextFormatting.DARK_PURPLE.toString())) continue;
+            if (!McIf.toText(stack.getDisplayName()).contains("Unidentified")) continue;
 
             SoundTrackManager.findTrack(WebManager.getMusicLocations().getEntryTrack("mythicFound"),
                     true, false, false, false, true, false);

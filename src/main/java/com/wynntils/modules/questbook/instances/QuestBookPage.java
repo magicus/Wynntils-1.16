@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.questbook.instances;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.enums.wynntils.WynntilsSound;
@@ -217,15 +218,15 @@ public class QuestBookPage extends Screen {
     }
 
     @Override
-    public void keyPressed(char typedChar, int keyCode) throws IOException {
-        if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT || keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT || keyCode == GLFW.GLFW_KEY_LCONTROL || keyCode == GLFW.GLFW_KEY_RCONTROL) return;
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
+        if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT || keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT || keyCode == GLFW.GLFW_KEY_LEFT_CONTROL || keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) return false;
         if (showSearchBar) {
             textField.textboxKeyTyped(typedChar, keyCode);
             currentPage = 1;
             refreshAccepts();
             updateSearch();
         }
-        super.keyPressed(typedChar, keyCode);
+        return super.keyPressed(typedChar, keyCode, j);
     }
 
     @Override

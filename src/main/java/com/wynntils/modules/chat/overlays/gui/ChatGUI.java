@@ -53,6 +53,7 @@ public class ChatGUI extends ChatScreen {
         super(defaultInputText);
     }
 
+    @Override
     public boolean mouseClicked(double mouseX, double mouseY, int mouseButton) {
         for (Map.Entry<ChatTab, ChatButton> tabButton : tabButtons.entrySet()) {
             if (tabButton.getValue().isMouseOver(mouseX, mouseY)) {

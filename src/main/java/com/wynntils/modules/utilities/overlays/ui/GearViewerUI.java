@@ -8,6 +8,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.enums.ClassType;
@@ -95,12 +96,14 @@ public class GearViewerUI extends FakeGuiContainer {
     protected void slotClicked(Slot slotIn, int slotId, int mouseButton, ClickType type) { } // ignore all mouse clicks
 
     @Override
-    protected void keyPressed(char typedChar, int keyCode) throws IOException {
-        super.keyPressed(typedChar, keyCode);
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
+        boolean result = super.keyPressed(typedChar, keyCode);
 
         // allow item screenshotting in gear viewer
         if (keyCode == KeyManager.getItemScreenshotKey().getKeyBinding().getKey().getValue())
             ItemScreenshotManager.takeScreenshot();
+
+        return result;
     }
 
     @Override

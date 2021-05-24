@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.chat.overlays.gui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.modules.chat.instances.ChatTab;
 import com.wynntils.modules.chat.managers.TabManager;
@@ -247,13 +248,14 @@ public class TabGUI extends Screen {
     }
 
     @Override
-    protected void keyPressed(char typedChar, int keyCode) throws IOException {
-        super.keyPressed(typedChar, keyCode);
+    public boolean keyPressed(int typedChar, int keyCode, int j {
+        boolean result = super.keyPressed(typedChar, keyCode, j);
 
-        nameTextField.textboxKeyTyped(typedChar, keyCode);
-        autoCommandField.textboxKeyTyped(typedChar, keyCode);
-        orderNbField.textboxKeyTyped(typedChar, keyCode);
-        if (regexTextField.textboxKeyTyped(typedChar, keyCode)) checkIfRegexIsValid();
+        nameTextField.keyPressed(typedChar, keyCode, j);
+        autoCommandField.keyPressed(typedChar, keyCode, j);
+        orderNbField.keyPressed(typedChar, keyCode, j);
+        if (regexTextField.keyPressed(typedChar, keyCode, j)) checkIfRegexIsValid();
+        return result;
     }
 
     boolean regexValid = false;

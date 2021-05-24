@@ -35,7 +35,7 @@ public class IngredientFilterOverlay implements Listener {
     }
 
     @SubscribeEvent
-    public void render(MatrixStack matrix, GuiOverlapEvent.ChestOverlap.DrawScreen.Post e) {
+    public void renderPost(GuiOverlapEvent.ChestOverlap.DrawScreen.Post e) {
         e.getButtonList().forEach(gb -> {
             if (gb.id == 11 && gb.isMouseOver()) {
                 e.getGui().drawHoveringText(professionArray.get(professionArray.indexOf(gb.getMessage()) + 1), e.getMouseX(), e.getMouseY());

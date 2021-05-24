@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.utilities.overlays.ui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.SkillPoint;
 import com.wynntils.core.framework.instances.PlayerInfo;
@@ -129,9 +130,10 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
     }
 
     @Override
-    protected void keyPressed(char typedChar, int keyCode) {
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == McIf.mc().options.keyBindInventory.getKey().getValue()) {
             McIf.mc().setScreen(spMenu);
+            return true;
         }
     }
 

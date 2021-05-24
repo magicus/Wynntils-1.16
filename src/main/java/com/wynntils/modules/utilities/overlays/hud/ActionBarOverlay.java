@@ -115,7 +115,7 @@ public class ActionBarOverlay extends Overlay {
 
         if (highlightTicks > 0 && !highlightItem.isEmpty()) {
 
-            String s = highlightItem.getDisplayName();
+            String s = McIf.toText(highlightItem.getDisplayName());
 
             if (highlightItem.hasCustomHoverName()) {
                 s = TextFormatting.ITALIC + s;

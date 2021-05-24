@@ -16,7 +16,6 @@ import com.wynntils.core.utils.StringUtils;
 import com.wynntils.modules.core.config.CoreDBConfig;
 import com.wynntils.modules.core.enums.UpdateStream;
 import com.wynntils.webapi.WebManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.input.Mouse;
@@ -167,11 +166,13 @@ public class ChangelogUI extends Screen {
     }
 
     @Override
-    protected void keyPressed(char charType, int keyCode) throws IOException {
+    public boolean keyPressed(int charType, int keyCode, int j) {
         if (keyCode == 1) {  // ESC
             McIf.mc().setScreen(previousGui);
             if (McIf.mc().screen == null) McIf.mc().setIngameFocus();
+            return true;
         }
+        return false;
     }
 
 }

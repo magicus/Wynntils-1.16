@@ -333,9 +333,9 @@ public class QuestsPage extends QuestBookPage {
     }
 
     @Override
-    public void keyPressed(char typedChar, int keyCode) throws IOException {
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         overQuest = null;
-        super.keyPressed(typedChar, keyCode);
+        return super.keyPressed(typedChar, keyCode, j);
     }
 
     @Override

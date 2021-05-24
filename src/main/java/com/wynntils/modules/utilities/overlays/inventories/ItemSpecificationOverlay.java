@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.enums.SkillPoint;
@@ -36,12 +37,12 @@ public class ItemSpecificationOverlay implements Listener {
     private void renderOverlay(ContainerScreen gui) {
         if (!Reference.onWorld) return;
 
-        for (Slot s : gui.getMenu().getMenu()) {
+        for (Slot s : gui.getMenu().slots) {
             ItemStack stack = s.getItem();
             if (stack.isEmpty() || !stack.hasCustomHoverName()) continue; // display name also checks for tag compound
 
             List<String> lore = ItemUtils.getLore(stack);
-            String name = StringUtils.normalizeBadString(stack.getDisplayName());
+            String name = StringUtils.normalizeBadString(McIf.toText(stack.getDisplayName()));
 
             // name and lore fixing
             stack.setStackDisplayName(name);

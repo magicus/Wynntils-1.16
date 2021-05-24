@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.map.overlays.ui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.MouseButton;
 import com.wynntils.core.framework.rendering.ScreenRenderer;
@@ -233,7 +234,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
 
         nameField.mouseClicked(mouseX, mouseY, mouseButton);
         MouseButton button = mouseButton == 0 ? MouseButton.LEFT : mouseButton == 1 ? MouseButton.RIGHT : mouseButton == 2 ? MouseButton.MIDDLE : MouseButton.UNKNOWN;
-        colorWheel.click(mouseX, mouseY, button, null);
+        colorWheel.click((int) mouseX, (int) mouseY, button, null);
 
         return super.mouseClicked(mouseX, mouseY, mouseButton);
     }
@@ -253,17 +254,18 @@ public class PathWaypointCreationUI extends WorldMapUI {
     }
 
     @Override
-    protected void keyPressed(char typedChar, int keyCode) throws IOException {
+    public boolean keyPressed(int typedChar, int keyCode, int j {
         if (keyCode == GLFW.GLFW_KEY_TAB) {
             Utils.tab(
-                Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1,
+                Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_SHIFT) ? -1 : +1,
                 nameField, colorWheel.textBox.textField
             );
-            return;
+            return true;
         }
-        super.keyPressed(typedChar, keyCode);
-        colorWheel.keyPressed(typedChar, keyCode, null);
-        nameField.textboxKeyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode, j);
+        colorWheel.keyPressed(typedChar, keyCode, j, null);
+        nameField.keyPressed(typedChar, keyCode, j);
+        return true;
     }
 
     @Override

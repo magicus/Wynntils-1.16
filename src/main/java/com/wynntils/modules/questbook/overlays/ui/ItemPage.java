@@ -5,6 +5,7 @@
 package com.wynntils.modules.questbook.overlays.ui;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.enums.SortDirection;
 import com.wynntils.core.framework.enums.wynntils.WynntilsSound;
@@ -230,7 +231,7 @@ public class ItemPage extends QuestBookPage {
             updateSearch();
             return true;
         }
-        if (getSearchHandler().handleClick(mouseX, mouseY, mouseButton, selected)) { // delegate rest of click behaviour to search handler
+        if (getSearchHandler().handleClick((int) mouseX, (int) mouseY, mouseButton, selected)) { // delegate rest of click behaviour to search handler
             updateSearch();
             return true;
         }
@@ -239,7 +240,7 @@ public class ItemPage extends QuestBookPage {
             if (mouseButton != 1 || !(Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_SHIFT))) return;
 
             int selectedIndex = -(selected + 1);
-            if (selectedIndex >= itemSearch.size()) return;
+            if (selectedIndex >= itemSearch.size()) return false;
             Utils.openUrl("https://www.wynndata.tk/i/" + Utils.encodeUrl(itemSearch.get(selectedIndex).getDisplayName()));
             return true;
         }

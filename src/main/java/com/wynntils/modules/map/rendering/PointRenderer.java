@@ -26,7 +26,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
@@ -128,10 +127,10 @@ public class PointRenderer {
                         end.y -= .24;
 
                         BlockPos startBlockPos = new BlockPos(start.x, start.y, start.z);
-                        Vector3d startVec = new Vector3d(start.x, start.y, start.z);
+                        net.minecraft.util.math.vector.Vector3d startVec = new net.minecraft.util.math.vector.Vector3d(start.x, start.y, start.z);
 
                         BlockPos endBlockPos = new BlockPos(end.x, end.y, end.z);
-                        Vector3d endVec = new Vector3d(end.x, end.y, end.z);
+                        net.minecraft.util.math.vector.Vector3d endVec = new net.minecraft.util.math.vector.Vector3d(end.x, end.y, end.z);
 
                         AxisAlignedBB startCollisionBox = world.getBlockState(startBlockPos).getCollisionBoundingBox(world, startBlockPos);
                         if (startCollisionBox != Block.NULL_AABB) {
@@ -222,15 +221,15 @@ public class PointRenderer {
         normal.cross(new Vector3d(direction.x, 0, direction.z), normal);
         normal.normalize();
 
-        Vector3d scaled = new Vector3d(normal.x, normal.y, normal.z).scale(width);
+        net.minecraft.util.math.vector.Vector3d scaled = new net.minecraft.util.math.vector.Vector3d(normal.x, normal.y, normal.z).scale(width);
 
         // we need 4 points for rendering
-        Vector3d startVec = new Vector3d(start.x, start.y, start.z);
-        Vector3d endVec = new Vector3d(end.x, end.y, end.z);
-        Vector3d p1 = startVec.add(scaled);
-        Vector3d p2 = startVec.subtract(scaled);
-        Vector3d p3 = endVec.add(scaled);
-        Vector3d p4 = endVec.subtract(scaled);
+        net.minecraft.util.math.vector.Vector3d startVec = new net.minecraft.util.math.vector.Vector3d(start.x, start.y, start.z);
+        net.minecraft.util.math.vector.Vector3d endVec = new net.minecraft.util.math.vector.Vector3d(end.x, end.y, end.z);
+        net.minecraft.util.math.vector.Vector3d p1 = startVec.add(scaled);
+        net.minecraft.util.math.vector.Vector3d p2 = startVec.subtract(scaled);
+        net.minecraft.util.math.vector.Vector3d p3 = endVec.add(scaled);
+        net.minecraft.util.math.vector.Vector3d p4 = endVec.subtract(scaled);
 
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder buffer = tess.getBuilder();

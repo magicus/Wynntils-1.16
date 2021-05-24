@@ -4,10 +4,12 @@
 
 package com.wynntils.modules.core.overlays.inventories;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.FrameworkManager;
 import com.wynntils.modules.questbook.enums.QuestBookPages;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import com.wynntils.transition.GlStateManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -59,9 +61,10 @@ public class InventoryReplacer extends InventoryScreen {
     }
 
     @Override
-    public void keyPressed(char typedChar, int keyCode) throws IOException {
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         if (!FrameworkManager.getEventBus().post(new GuiOverlapEvent.InventoryOverlap.KeyTyped(this, typedChar, keyCode)))
-            super.keyPressed(typedChar, keyCode);
+            return super.keyPressed(typedChar, keyCode, j);
+        return false;
     }
 
     @Override
@@ -94,7 +97,7 @@ public class InventoryReplacer extends InventoryScreen {
         super.onClose();
     }
 
-    public List<Button> getButtonList() {
+    public List<Widget> getButtonList() {
         return buttons;
     }
 }

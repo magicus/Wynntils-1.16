@@ -123,8 +123,7 @@ public class ClientEvents implements Listener {
     @SubscribeEvent
     public void classDialog(GuiOverlapEvent.ChestOverlap.DrawGuiContainerBackgroundLayer e) {
         if (!McIf.toText(e.getGui().getTitle()).contains("Select a Class")) return;
-        if (!afkProtectionActivated) return;
-
+        if (!afkProtectionActivated) return
 
         if (McIf.toText(e.getGui().getTitle()).contains("AFK Protection activated")) return;
         Inventory inv = (Inventory) e.getGui().getLowerInv();

@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.visual.overlays;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.events.custom.GuiOverlapEvent;
 import com.wynntils.core.framework.interfaces.Listener;
@@ -39,7 +40,7 @@ public class OverlayEvents implements Listener {
     public void replaceCharacterMenuDraw(GuiOverlapEvent.ChestOverlap.DrawScreen.Pre e) {
         if (fakeCharacterSelector == null) return;
 
-        fakeCharacterSelector.render(e.getMouseX(), e.getMouseY(), e.getPartialTicks());
+        fakeCharacterSelector.render(new MatrixStack(), e.getMouseX(), e.getMouseY(), e.getPartialTicks());
         e.setCanceled(true);
     }
 
@@ -70,7 +71,7 @@ public class OverlayEvents implements Listener {
     public void replaceKeyTyped(GuiOverlapEvent.ChestOverlap.KeyTyped e) {
         if (fakeCharacterSelector == null) return;
 
-        fakeCharacterSelector.keyPressed(e.getTypedChar(), e.getKey().getValue());
+        fakeCharacterSelector.keyPressed(e.getTypedChar(), e.getKeyCode(), 0);
         e.setCanceled(true);
     }
 

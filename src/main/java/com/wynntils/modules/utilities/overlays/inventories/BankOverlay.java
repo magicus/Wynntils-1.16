@@ -111,7 +111,7 @@ public class BankOverlay implements Listener {
         if (!inBank) return;
 
         // searched item highlight
-        for (Slot s : e.getGui().getMenu().getMenu()) {
+        for (Slot s : e.getGui().getMenu().slots) {
             if (s.getItem().isEmpty() || !s.getItem().hasCustomHoverName()) continue;
             if (!searchedItems.contains(s.getItem())) continue;
 
@@ -289,7 +289,7 @@ public class BankOverlay implements Listener {
         // handle typing in text boxes
         if (nameField != null && nameField.isFocused()) {
             e.setCanceled(true);
-            if (e.getKey().getValue() == GLFW.GLFW_KEY_RETURN) {
+            if (e.getKeyCode() == GLFW.GLFW_KEY_ENTER) {
                 String name = nameField.getValue();
                 nameField = null;
 
@@ -297,24 +297,24 @@ public class BankOverlay implements Listener {
                 UtilitiesConfig.Bank.INSTANCE.pageNames.put(page, name);
                 UtilitiesConfig.Bank.INSTANCE.saveSettings(UtilitiesModule.getModule());
                 updateName(e.getGui().getLowerInv());
-            } else if (e.getKey().getValue() == GLFW.GLFW_KEY_ESCAPE) {
+            } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
                 nameField = null;
                 updateName(e.getGui().getLowerInv());
             } else {
-                nameField.textboxKeyTyped(e.getTypedChar(), e.getKey().getValue());
+                nameField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
             }
         } else if (searchField != null && searchField.isFocused()) {
             e.setCanceled(true);
-            if (e.getKey().getValue() == GLFW.GLFW_KEY_ESCAPE) {
+            if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE) {
                 searchField.setFocused(false);
-            } else if (e.getKey().getValue() == GLFW.GLFW_KEY_RETURN && isSearching()) {
+            } else if (e.getKeyCode() == GLFW.GLFW_KEY_ENTER && isSearching()) {
                 searching = 1;
                 destinationPage = page + 1;
                 gotoPage(e.getGui());
             } else {
-                searchField.textboxKeyTyped(e.getTypedChar(), e.getKey().getValue());
+                searchField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
             }
-        } else if (e.getKey().getValue() == GLFW.GLFW_KEY_ESCAPE || e.getKey().getValue() == McIf.mc().options.keyBindInventory.getKey().getValue()) { // bank was closed by player
+        } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE || e.getKeyCode() == McIf.mc().options.keyBindInventory.getKey().getValue()) { // bank was closed by player
             destinationPage = 0;
             searchField = null;
             searching = 0;

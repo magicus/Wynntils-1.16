@@ -868,13 +868,13 @@ public class ChatManager {
             String text;
             switch (chapter) {
                 case 1:
-                    text = PowderManualChapter.ONE.getValue();
+                    text = PowderManualChapter.ONE.getText();
                     break;
                 case 2:
-                    text = PowderManualChapter.TWO.getValue();
+                    text = PowderManualChapter.TWO.getText();
                     break;
                 case 3:
-                    text = PowderManualChapter.THREE.getValue();
+                    text = PowderManualChapter.THREE.getText();
                     break;
                 default: text = "";
             }
