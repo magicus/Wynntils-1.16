@@ -10,7 +10,6 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 
@@ -21,12 +20,14 @@ public class GuiMovementScreen extends Screen {
         super(StringTextComponent.EMPTY);
     }
 
-    @Override
+   // @Override
     public void handleInput() throws IOException {
         if (!allowMovement) {
-            super.handleInput();
+         //   super.handleInput();
             return;
         }
+        // FIXME: Should probably hijack keyPresse() instead
+        /*
         if (Mouse.isCreated()) {
             while (Mouse.next()) {
                 this.handleMouseInput();
@@ -47,6 +48,8 @@ public class GuiMovementScreen extends Screen {
                 this.handleKeyboardInput();
             }
         }
+
+         */
     }
 
 }

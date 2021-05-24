@@ -12,11 +12,9 @@ import com.wynntils.core.framework.interfaces.Listener;
 import com.wynntils.core.framework.overlays.Overlay;
 import com.wynntils.core.framework.settings.instances.SettingsHolder;
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommand;
-import net.minecraftforge.client.ClientCommandHandler;
+import com.wynntils.transition.ICommand;
+import com.wynntils.transition.ClientCommandHandler;
 import net.minecraftforge.client.settings.IKeyConflictContext;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
 public abstract class Module {
@@ -26,14 +24,12 @@ public abstract class Module {
     /**
      * Called when the module is enabled
      * this occurs at the FMLPreInitializationEvent startup sequence.
-     * @see FMLPreInitializationEvent
      */
     public abstract void onEnable();
 
     /**
      * Called after all modules were enabled
      * this occurs at the FMLPostInitializationEvent startup sequence
-     * @see FMLPostInitializationEvent
      */
     public void postEnable() {
 

@@ -4,6 +4,7 @@
 
 package com.wynntils.modules.core.instances;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.rendering.textures.Textures;
@@ -97,15 +98,15 @@ public class MainMenuButtons {
         }
 
         @Override
-        public void renderButton(Minecraft minecraft, int mouseX, int mouseY, float partialTicks) {
+        public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
             if (!visible) return;
 
-            super.renderButton(minecraft, mouseX, mouseY, partialTicks);
+            super.renderButton(matrices, mouseX, mouseY, partialTicks);
 
             ServerIcon.ping();
             ResourceLocation icon = serverIcon.getServerIcon();
             if (icon == null) icon = ServerIcon.UNKNOWN_SERVER;
-            minecraft.getTextureManager().bind(icon);
+            McIf.mc().getTextureManager().bind(icon);
 
             boolean hasUpdate = hasUpdate();
 
@@ -114,7 +115,7 @@ public class MainMenuButtons {
             GlStateManager.translate(x + 2, y + 2, 0);
             GlStateManager.scale(0.5f, 0.5f, 0);
             GlStateManager.enableBlend();
-            drawModalRectWithCustomSizedTexture(0, 0, 0.0F, 0.0F, 32, 32, 32.0F, 32.0F);
+            blit(matrices, 0, 0, 0.0F, 0.0F, 32, 32, 32.0F, 32.0F);
             if (!hasUpdate) {
                 GlStateManager.disableBlend();
             }
@@ -124,7 +125,7 @@ public class MainMenuButtons {
             if (hasUpdate) {
                 Textures.UIs.main_menu.bind();
                 // When not provided with the texture size vanilla automatically assumes both the height and width are 256
-                drawTexturedModalRect(x, y, 0, 0, 20, 20);
+                blit(matrices, x, y, 0, 0, 20, 20);
             }
 
             GlStateManager.disableBlend();

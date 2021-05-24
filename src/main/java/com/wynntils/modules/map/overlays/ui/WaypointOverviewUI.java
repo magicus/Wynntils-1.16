@@ -367,7 +367,13 @@ public class WaypointOverviewUI extends Screen {
                 MapWaypointIcon icon = MapWaypointIcon.getFree(WaypointProfile.WaypointType.values()[group]);
                 int texPosX = icon.getTexPosX();
                 int texPosZ = icon.getTexPosZ();
-                ImageButton btn = new GuiButtonImageBetter(-(group + 1), buttonX, buttonY, icon.getTexSizeX() - texPosX, icon.getTexSizeZ() - texPosZ, texPosX, texPosZ, 0, icon.getTexture().resourceLocation);
+                int thisGroupId = -(group + 1);
+                // FIXME: very hacky!!!
+                ImageButton btn = new GuiButtonImageBetter(buttonX, buttonY, icon.getTexSizeX() - texPosX, icon.getTexSizeZ() - texPosZ, texPosX, texPosZ, 0, icon.getTexture().resourceLocation, (x) -> {
+                    actionPerformed(new Button(0,0,0,0,null,null) {
+                        public int id = thisGroupId;
+                    });
+                });
                 groupBtns.add(btn);
                 if (this.group == group) {
                     btn.enabled = false;

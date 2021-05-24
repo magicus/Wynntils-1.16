@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import org.lwjgl.glfw.GLFW;
 
@@ -137,7 +138,7 @@ public class BankOverlay implements Listener {
                     GlStateManager.disableLighting();
                 }
 
-                Screen.drawModalRectWithCustomSizedTexture((int) ((e.getGui().getGuiLeft() + s.xPos - 8) / 1.1f) - 1, (int) ((e.getGui().getGuiTop() + s.yPos - 8) / 1.1f) - 1, 0, 0, 32, 32, 32, 32);
+                Screen.blit(new MatrixStack(), (int) ((e.getGui().getGuiLeft() + s.xPos - 8) / 1.1f) - 1, (int) ((e.getGui().getGuiTop() + s.yPos - 8) / 1.1f) - 1, 0, 0, 32, 32, 32, 32);
             }
             GlStateManager.popMatrix();
         }

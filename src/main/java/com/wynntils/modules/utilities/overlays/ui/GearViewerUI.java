@@ -123,10 +123,11 @@ public class GearViewerUI extends FakeGuiContainer {
         McIf.mc().getTextureManager().bind(INVENTORY_GUI_TEXTURE);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(i, j, 0, 0, 96, 83);
-        this.drawTexturedModalRect(i + 96, j, 169, 0, 7, 15);
-        this.drawTexturedModalRect(i + 96, j + 15, 169, 91, 7, 75);
-        this.drawTexturedModalRect(i, j + 83, 0, 159, 96, 7);
+        MatrixStack matrices = new MatrixStack();
+        this.blit(matrices, i, j, 0, 0, 96, 83);
+        this.blit(matrices, i + 96, j, 169, 0, 7, 15);
+        this.blit(matrices, i + 96, j + 15, 169, 91, 7, 75);
+        this.blit(matrices, i, j + 83, 0, 159, 96, 7);
         InventoryScreen.drawEntityOnScreen(this.guiLeft + 51, this.guiTop + 75, 30, 0, 0, player);
     }
 

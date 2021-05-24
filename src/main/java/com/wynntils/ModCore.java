@@ -32,13 +32,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-@Mod(
-        name = Reference.NAME,
-        modid = Reference.MOD_ID,
-        acceptedMinecraftVersions = "[" + Reference.MINECRAFT_VERSIONS + "]",
-        guiFactory = "com.wynntils.core.framework.settings.ui.ModConfigFactory",
-        clientSideOnly = true
-)
 public class ModCore {
 
     public static File jarFile = null;

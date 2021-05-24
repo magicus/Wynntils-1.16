@@ -155,8 +155,8 @@ public class SkillPointLoadoutUI extends FakeGuiContainer {
         McIf.mc().getTextureManager().bind(CHEST_GUI_TEXTURE);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.inventoryRows * 18 + 17);
-        this.drawTexturedModalRect(i, j + this.inventoryRows * 18 + 17, 0, 213, this.xSize, 9);
+        this.blit(new MatrixStack(), i, j, 0, 0, this.xSize, this.inventoryRows * 18 + 17);
+        this.blit(new MatrixStack(), i, j + this.inventoryRows * 18 + 17, 0, 213, this.xSize, 9);
     }
 
     private static SkillPointAllocation getLoadout(String name) {

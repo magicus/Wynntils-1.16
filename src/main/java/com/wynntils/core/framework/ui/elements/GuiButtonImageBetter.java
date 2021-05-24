@@ -18,8 +18,9 @@ import net.minecraft.util.math.MathHelper;
  * and can also be scaled
  */
 public class GuiButtonImageBetter extends ImageButton {
-    private static final Button highlightFixHovering = new Button(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, "");
-    private static final Button highlightFixNoHovering = new Button(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, 0, 0, "");
+    //    public Button(int x, int y, int w, int h, ITextComponent msg, Button.IPressable p_i232255_6_) {
+    private static final Button highlightFixHovering = new Button(Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, McIf.toTextComponent(""), ignored -> {});
+    private static final Button highlightFixNoHovering = new Button(Integer.MIN_VALUE, Integer.MIN_VALUE, 0, 0, McIf.toTextComponent(""), ignored -> {});
 
     private float scaleFactor;
     private float scaleFromX;
@@ -30,14 +31,20 @@ public class GuiButtonImageBetter extends ImageButton {
     private int scaledEndY;
     private boolean highlight;
 
-    public GuiButtonImageBetter(int buttonId, int x, int y, int width, int height, int textureOffsetX, int textureOffsetY, int hoverImageYOffset, ResourceLocation resource) {
-        super(buttonId, x, y, width, height, textureOffsetX, textureOffsetY, hoverImageYOffset, resource);
+    /*
+       public ImageButton(int p_i244513_1_, int p_i244513_2_, int p_i244513_3_, int p_i244513_4_, int p_i244513_5_, int p_i244513_6_, int p_i244513_7_, ResourceLocation p_i244513_8_, int p_i244513_9_, int p_i244513_10_, Button.IPressable p_i244513_11_, Button.ITooltip p_i244513_12_, ITextComponent p_i244513_13_) {
+      super(p_i244513_1_, p_i244513_2_, p_i244513_3_, p_i244513_4_, p_i244513_13_, p_i244513_11_, p_i244513_12_);
+      this.textureWidth = p_i244513_9_;
+      this.textureHeight = p_i244513_10_;
+      this.xTexStart = p_i244513_5_;
+      this.yTexStart = p_i244513_6_;
+      this.yDiffTex = p_i244513_7_;
+      this.resourceLocation = p_i244513_8_;
+     */
+    public GuiButtonImageBetter(int x, int y, int width, int height, int textureOffsetX, int textureOffsetY, int hoverImageYOffset, ResourceLocation resource, Button.IPressable pressable) {
+        super(x, y, width, height, textureOffsetX, textureOffsetY, hoverImageYOffset, resource, null);
         setScaleFactor(1, width / 2f, height / 2f);
         highlight = true;
-    }
-
-    public GuiButtonImageBetter(int buttonId, int x, int y, int width, int height, int textureOffsetX, int textureOffsetY, ResourceLocation resource) {
-        this(buttonId, x, y, width, height, textureOffsetX, textureOffsetY, 0, resource);
     }
 
     public GuiButtonImageBetter setScaleFactor(float scaleFactor, float originX, float originY) {
@@ -73,7 +80,7 @@ public class GuiButtonImageBetter extends ImageButton {
 
     @Override
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
-        setColour(this.highlight && mouseX >= scaledStartX && mouseY >= scaledStartY && mouseX < scaledEndX && mouseY < scaledEndY, this.enabled);
+        setColour(this.highlight && mouseX >= scaledStartX && mouseY >= scaledStartY && mouseX < scaledEndX && mouseY < scaledEndY, this.active);
 
         if (scaleFactor != 1f) {
             GlStateManager.pushMatrix();
@@ -89,12 +96,12 @@ public class GuiButtonImageBetter extends ImageButton {
         setColour(false, true);
     }
 
-    public static void setColour(boolean hovering, boolean enabled) {
+    public static void setColour(boolean hovering, boolean active) {
         if (hovering) {
-            highlightFixHovering.enabled = enabled;
+            highlightFixHovering.active = active;
             highlightFixHovering.renderButton(new MatrixStack(), Integer.MIN_VALUE, Integer.MIN_VALUE, 0);
         } else {
-            highlightFixNoHovering.enabled = enabled;
+            highlightFixNoHovering.active = active;
             highlightFixNoHovering.renderButton(new MatrixStack(), 0, 0, 0);
         }
     }

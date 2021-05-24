@@ -23,7 +23,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang3.text.WordUtils;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -154,7 +153,8 @@ public class UIEColorWheel extends UIEClickZone {
             toChange = new CustomColor(color);
         }
 
-        @Override
+        // FIXME
+        //@Override
         protected void actionPerformed(Button button) {
             if (button == applyButton) {
                 color = toChange;
@@ -172,6 +172,9 @@ public class UIEColorWheel extends UIEClickZone {
                 McIf.mc().getSoundManager().play(SimpleSound.forUI(clickSound, 1f));
             }
         }
+
+        // FIXME: at this point, I couldn't be bothered
+        /*
 
         @Override
         public void init() {
@@ -356,6 +359,6 @@ public class UIEColorWheel extends UIEClickZone {
         private float getAlpha() {
             return allowAlpha ? alphaSlider.getSliderValue() : 1;
         }
-
+*/
     }
 }

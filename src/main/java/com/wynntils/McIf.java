@@ -10,6 +10,8 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.StringTextComponent;
 
 import javax.annotation.Nullable;
 import java.util.regex.Pattern;
@@ -43,6 +45,14 @@ public class McIf {
         // FIXME: Need better implementation!
         if (msg == null) return "";
         return msg.toString();
+    }
+
+    public static ITextProperties toTextProperties(String string) {
+        return ITextProperties.of(string);
+    }
+
+    public static ITextComponent toTextComponent(String string) {
+        return new StringTextComponent(string);
     }
 
     public static String getTextWithoutFormattingCodes(@Nullable String text)

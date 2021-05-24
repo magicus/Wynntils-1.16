@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.rendering;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.rendering.colors.CustomColor;
 import com.wynntils.core.framework.rendering.textures.Texture;
@@ -405,7 +406,9 @@ public class ScreenRenderer {
      */
     public float drawString(String text, float x, float y, CustomColor color, SmartFontRenderer.TextAlignment alignment, SmartFontRenderer.TextShadow shadow) {
         if (!rendering) return -1f;
-        float f = font.drawString(text, drawingOrigin.x + x, drawingOrigin.y + y, color, alignment, shadow);
+        // FIXME: ugly hack for now
+        // float f = font.drawString(text, drawingOrigin.x + x, drawingOrigin.y + y, color, alignment, shadow);
+        int f = font.draw(new MatrixStack(), text, drawingOrigin.x + x, drawingOrigin.y + y, color.toInt());
         GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         return f;
     }

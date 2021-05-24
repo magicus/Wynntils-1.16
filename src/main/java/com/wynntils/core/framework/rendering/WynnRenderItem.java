@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.rendering;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.core.events.custom.RenderEvent;
 import com.wynntils.core.framework.FrameworkManager;
@@ -11,7 +12,9 @@ import com.wynntils.core.utils.reflections.ReflectionFields;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import com.wynntils.transition.GlStateManager;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.ItemRenderer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.item.ItemStack;
@@ -41,6 +44,8 @@ public class WynnRenderItem extends ItemRenderer {
         ReflectionFields.RenderItem_itemModelMesher.setValue(this, ReflectionFields.RenderItem_itemModelMesher.getValue(parent));
     }
 
+    // FIXME: supporting our smart fonts require a lot of work and rewriting...
+    /*
     @Override
     public void renderGuiItemDecorations(FontRenderer fr, ItemStack stack, int xPosition, int yPosition, String text) {
         RenderEvent.DrawItemOverlay event = new RenderEvent.DrawItemOverlay(stack, xPosition, yPosition, text);
@@ -51,26 +56,14 @@ public class WynnRenderItem extends ItemRenderer {
         }
 
         super.renderGuiItemDecorations(fr, stack, xPosition, yPosition, "");
-        GlStateManager.disableLighting();
-        GlStateManager.disableDepth();
-        GlStateManager.disableBlend();
-        GlStateManager.pushMatrix();
 
-        int width = ScreenRenderer.font.width(event.getOverlayText());
-        GlStateManager.translate(xPosition + 17f, yPosition + 9f, 0f);
-        if (width > GUI_OVERLAY_WIDTH_THRESH) {
-            float scaleRatio = GUI_OVERLAY_WIDTH_THRESH / (float)width;
-            GlStateManager.translate(0f, ScreenRenderer.font.lineHeight * (1f - scaleRatio) / 2f, 0f);
-            GlStateManager.scale(scaleRatio, scaleRatio, 1f);
-        }
-
-        ScreenRenderer.font.drawString(event.getOverlayText(), 0, 0, event.getOverlayTextColor(),
-                SmartFontRenderer.TextAlignment.RIGHT_LEFT, SmartFontRenderer.TextShadow.NORMAL);
-
-        GlStateManager.popMatrix();
-        GlStateManager.enableLighting();
-        GlStateManager.enableDepth();
-        GlStateManager.enableBlend();
+        MatrixStack matrixstack = new MatrixStack();
+        matrixstack.translate(0.0D, 0.0D, (double)(this.blitOffset + 200.0F));
+        IRenderTypeBuffer.Impl irendertypebuffer$impl = IRenderTypeBuffer.immediate(Tessellator.getInstance().getBuilder());
+        ScreenRenderer.font.drawInBatch(text, (float)(xPosition + 19 - 2 - fr.width(text)), (float)(yPosition + 6 + 3), 16777215, true, matrixstack.last().pose(), irendertypebuffer$impl, false, 0, 15728880);
+        irendertypebuffer$impl.endBatch();
     }
+
+     */
 
 }

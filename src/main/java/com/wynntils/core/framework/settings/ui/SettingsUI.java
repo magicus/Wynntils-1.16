@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.settings.ui;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.wynntils.McIf;
 import com.wynntils.Reference;
 import com.wynntils.core.framework.FrameworkManager;
@@ -21,17 +22,20 @@ import com.wynntils.core.framework.ui.UI;
 import com.wynntils.core.framework.ui.UIElement;
 import com.wynntils.core.framework.ui.elements.*;
 import com.wynntils.modules.core.config.CoreDBConfig;
+import net.java.games.input.Keyboard;
 import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraftforge.fml.client.config.GuiUtils;
+import net.minecraftforge.fml.client.gui.GuiUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SettingsUI extends UI {
     private static final SettingsUI INSTANCE = new SettingsUI();
@@ -122,8 +126,10 @@ public class SettingsUI extends UI {
 
     }
 
-    @Override
+    //@Override
     public void handleMouseInput() throws IOException {
+        // FIXME: ignore scrollbar for now
+        /*
         super.handleMouseInput();
         if (settingsScrollbar.active) {
             float i = Mouse.getEventDWheel() * CoreDBConfig.INSTANCE.scrollDirection.getScrollDirection();
@@ -144,11 +150,13 @@ public class SettingsUI extends UI {
                 }
             }
         }
+
+         */
     }
 
     @Override
     public void onRenderPreUIE(ScreenRenderer render) {
-        drawDefaultBackground();
+        renderBackground(new MatrixStack());
         CommonUIFeatures.drawBook();
         CommonUIFeatures.drawScrollArea();
 
@@ -223,15 +231,17 @@ public class SettingsUI extends UI {
         settings.elements.forEach(setting -> {
             if (setting.visible && mouseX >= screenWidth/2+5 && mouseX < screenWidth/2+185 && mouseY > screenHeight/2-100 && mouseY < screenHeight/2+100 && mouseY >= setting.position.getDrawingY() && mouseY < setting.position.getDrawingY() + settingHeight) {
                 List<String> lines = Arrays.asList(((SettingElement) setting).field.info.description().split("_nl"));
-//                GuiUtils.drawHoveringText(lines, setting.position.getDrawingX()-10, screenHeight/2-100, 0, screenHeight, 170, render.font);
-                GuiUtils.drawHoveringText(lines, mouseX, mouseY, 0, screenHeight, 170, ScreenRenderer.font);
+                List<ITextProperties> textLines = lines.stream().map(McIf::toTextProperties).collect(Collectors.toList());
+                //                GuiUtils.drawHoveringText(lines, setting.position.getDrawingX()-10, screenHeight/2-100, 0, screenHeight, 170, render.font);
+                GuiUtils.drawHoveringText(new MatrixStack(), textLines, mouseX, mouseY, 0, screenHeight, 170, ScreenRenderer.font);
             }
         });
     }
 
     @Override
     public void onWindowUpdate() {
-        Keyboard.enableRepeatEvents(true);
+        // FIXME: can we skip this?
+        //        Keyboard.enableRepeatEvents(true);
     }
 
     public void setCurrentSettingsPath(String path) {
@@ -405,7 +415,7 @@ public class SettingsUI extends UI {
                             e.printStackTrace();
                         }
                     });
-                    // ((UIETextBox) valueElement).textField.setEnableBackgroundDrawing(false);
+                    ((UIETextBox) valueElement).textField.setBordered(false);
                     Setting.Limitations.StringLimit limit = field.field.getAnnotation(Setting.Limitations.StringLimit.class);
                     if (limit != null)
                         ((UIETextBox) valueElement).textField.setMaxLength(limit.maxLength());

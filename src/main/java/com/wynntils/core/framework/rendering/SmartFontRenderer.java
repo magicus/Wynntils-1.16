@@ -4,6 +4,7 @@
 
 package com.wynntils.core.framework.rendering;
 
+import com.google.common.collect.Lists;
 import com.wynntils.McIf;
 import com.wynntils.core.framework.rendering.colors.CommonColors;
 import com.wynntils.core.framework.rendering.colors.CustomColor;
@@ -12,11 +13,21 @@ import com.wynntils.core.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import com.wynntils.transition.GlStateManager;
+import net.minecraft.client.gui.fonts.Font;
+import net.minecraft.client.gui.fonts.FontResourceManager;
+import net.minecraft.client.gui.fonts.providers.DefaultGlyphProvider;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.GameSettings;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextProcessing;
 
 import java.awt.Color;
+import java.util.function.Function;
 
 public class SmartFontRenderer extends FontRenderer {
 
@@ -27,14 +38,69 @@ public class SmartFontRenderer extends FontRenderer {
     // Array of 16 CustomColors where minecraftColors[0xX] is the colour for §X
     private static final int[] minecraftColors = MinecraftChatColors.set.asInts();
 
-    // TODO document
-    public SmartFontRenderer(GameSettings gameSettingsIn, ResourceLocation location, TextureManager textureManagerIn, boolean unicode) {
-        super(gameSettingsIn, location, textureManagerIn, unicode);
+    private static Function<ResourceLocation, Font> createFontMap() {
+        // FIXME: this is possibly over-complicated. Maybe we can just have our lambda
+        // return our font regardless of resourceLocation
+        TextureManager tm = McIf.mc().getTextureManager();
+        Font missingFontSet = Util.make(new Font(tm, FontResourceManager.MISSING_FONT), (p_238550_0_) -> {
+            p_238550_0_.reload(Lists.newArrayList(new DefaultGlyphProvider()));
+        });
+
+        ResourceLocation resourceLocation = new ResourceLocation("textures/font/ascii.png");
+        Font f = new Font(McIf.mc().getTextureManager(), resourceLocation);
+
+        Function<ResourceLocation, Font> fontMap = loc -> loc.equals(resourceLocation) ? f : missingFontSet;
+
+        return fontMap;
     }
 
     public SmartFontRenderer() {
-        super(McIf.mc().options, new ResourceLocation("textures/font/ascii.png"), McIf.mc().getTextureManager(), false);
+        super(createFontMap());
     }
+
+    // FIXME: starting to reimplement functionality for 1.16...
+    /*
+    @Override
+    public int drawInBatch(String s, float x, float y, int color, boolean p_228079_5_, Matrix4f p_228079_6_, IRenderTypeBuffer p_228079_7_, boolean p_228079_8_, int p_228079_9_, int p_228079_10_) {
+        return this.drawInBatch(s, x, y, color, p_228079_5_, p_228079_6_, p_228079_7_, p_228079_8_, p_228079_9_, p_228079_10_, this.isBidirectional());
+    }
+
+    public int drawInBatch(String p_238411_1_, float p_238411_2_, float p_238411_3_, int p_238411_4_, boolean p_238411_5_, Matrix4f p_238411_6_, IRenderTypeBuffer p_238411_7_, boolean p_238411_8_, int p_238411_9_, int p_238411_10_, boolean p_238411_11_) {
+        return this.drawInternal(p_238411_1_, p_238411_2_, p_238411_3_, p_238411_4_, p_238411_5_, p_238411_6_, p_238411_7_, p_238411_8_, p_238411_9_, p_238411_10_, p_238411_11_);
+    }
+
+    private int drawInternal(String p_238423_1_, float p_238423_2_, float p_238423_3_, int p_238423_4_, boolean p_238423_5_, Matrix4f p_238423_6_, IRenderTypeBuffer p_238423_7_, boolean p_238423_8_, int p_238423_9_, int p_238423_10_, boolean p_238423_11_) {
+        if (p_238423_11_) {
+            p_238423_1_ = this.bidirectionalShaping(p_238423_1_);
+        }
+
+        p_238423_4_ = adjustColor(p_238423_4_);
+        Matrix4f matrix4f = p_238423_6_.copy();
+        if (p_238423_5_) {
+            this.renderText(p_238423_1_, p_238423_2_, p_238423_3_, p_238423_4_, true, p_238423_6_, p_238423_7_, p_238423_8_, p_238423_9_, p_238423_10_);
+            matrix4f.translate(SHADOW_OFFSET);
+        }
+
+        p_238423_2_ = this.renderText(p_238423_1_, p_238423_2_, p_238423_3_, p_238423_4_, false, matrix4f, p_238423_7_, p_238423_8_, p_238423_9_, p_238423_10_);
+        return (int)p_238423_2_ + (p_238423_5_ ? 1 : 0);
+    }
+
+    private static int adjustColor(int p_238403_0_) {
+        return (p_238403_0_ & -67108864) == 0 ? p_238403_0_ | -16777216 : p_238403_0_;
+    }
+
+    private static final Vector3f SHADOW_OFFSET = new Vector3f(0.0F, 0.0F, 0.03F);
+
+    private float renderText(String p_228081_1_, float p_228081_2_, float p_228081_3_, int p_228081_4_, boolean p_228081_5_, Matrix4f p_228081_6_, IRenderTypeBuffer p_228081_7_, boolean p_228081_8_, int p_228081_9_, int p_228081_10_) {
+        FontRenderer.CharacterRenderer fontrenderer$characterrenderer = new FontRenderer.CharacterRenderer(p_228081_7_, p_228081_2_, p_228081_3_, p_228081_4_, p_228081_5_, p_228081_6_, p_228081_8_, p_228081_10_);
+        TextProcessing.iterateFormatted(p_228081_1_, Style.EMPTY, fontrenderer$characterrenderer);
+        return fontrenderer$characterrenderer.finish(p_228081_9_, p_228081_2_);
+    }
+*/
+
+    // FIXME: disable the old for now
+
+    /*
 
     public float drawString(String text, float x, float y, CustomColor customColor, TextAlignment alignment, TextShadow shadow) {
         if (text == null) return 0f;
@@ -270,6 +336,9 @@ public class SmartFontRenderer extends FontRenderer {
         }
     }
 
+
+     */
+
     public enum TextAlignment {
         LEFT_RIGHT, MIDDLE, RIGHT_LEFT
     }
@@ -277,5 +346,4 @@ public class SmartFontRenderer extends FontRenderer {
     public enum TextShadow {
         NONE, NORMAL, OUTLINE
     }
-
 }

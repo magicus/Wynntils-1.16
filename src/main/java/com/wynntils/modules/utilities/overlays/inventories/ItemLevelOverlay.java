@@ -32,7 +32,7 @@ public class ItemLevelOverlay implements Listener {
 
         ItemStack stack = event.getItem();
         Item item = stack.getItem();
-        String name = stack.getDisplayName();
+        String name = McIf.toText(stack.getDisplayName());
 
         // powder tier
         if (item == Items.DYE || item == Items.GUNPOWDER || item == Items.CLAY_BALL || item == Items.SUGAR) {

@@ -33,7 +33,6 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 import java.util.List;
 import java.util.UUID;
@@ -70,7 +69,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onServerJoin(FMLNetworkEvent.ClientConnectedToServerEvent e) {
+    public void onServerJoin(ClientPlayerNetworkEvent.LoggedInEvent e) {
         setLoadingStatusMsg("Connected...");
         Reference.setUserWorld(null);
 
@@ -78,7 +77,7 @@ public class ClientEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onServerLeave(FMLNetworkEvent.ClientDisconnectionFromServerEvent e) {
+    public void onServerLeave(ClientPlayerNetworkEvent.LoggedOutEvent e) {
         if (Reference.onServer) {
             if (Reference.onWorld) {
                 Reference.setUserWorld(null);
