@@ -123,7 +123,7 @@ public class BankOverlay implements Listener {
         if (!UtilitiesConfig.Bank.INSTANCE.showQuickAccessIcons) return;
 
         // quick access icons
-        for (int i = 0; i < QA_BUTTONS; i++) {
+        for (int GearViewi = 0; i < QA_BUTTONS; i++) {
             Slot s = e.getGui().getMenu().getSlot(QA_SLOTS[i]);
 
             s.set(new ItemStack(Blocks.SNOW));
@@ -301,7 +301,7 @@ public class BankOverlay implements Listener {
                 nameField = null;
                 updateName(e.getGui().getLowerInv());
             } else {
-                nameField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
+                nameField.keyPressed(e.getTypedChar(), e.getKeyCode(), 0);
             }
         } else if (searchField != null && searchField.isFocused()) {
             e.setCanceled(true);
@@ -312,7 +312,7 @@ public class BankOverlay implements Listener {
                 destinationPage = page + 1;
                 gotoPage(e.getGui());
             } else {
-                searchField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
+                searchField.keyPressed(e.getTypedChar(), e.getKeyCode(), 0);
             }
         } else if (e.getKeyCode() == GLFW.GLFW_KEY_ESCAPE || e.getKeyCode() == McIf.mc().options.keyBindInventory.getKey().getValue()) { // bank was closed by player
             destinationPage = 0;

@@ -221,7 +221,7 @@ public class QuestBookPage extends Screen {
     public boolean keyPressed(int typedChar, int keyCode, int j) {
         if (keyCode == GLFW.GLFW_KEY_LEFT_SHIFT || keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT || keyCode == GLFW.GLFW_KEY_LEFT_CONTROL || keyCode == GLFW.GLFW_KEY_RIGHT_CONTROL) return false;
         if (showSearchBar) {
-            textField.textboxKeyTyped(typedChar, keyCode);
+            textField.keyPressed(typedChar, keyCode, j);
             currentPage = 1;
             refreshAccepts();
             updateSearch();

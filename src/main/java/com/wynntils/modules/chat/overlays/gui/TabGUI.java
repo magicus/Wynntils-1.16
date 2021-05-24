@@ -248,7 +248,7 @@ public class TabGUI extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int typedChar, int keyCode, int j {
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         boolean result = super.keyPressed(typedChar, keyCode, j);
 
         nameTextField.keyPressed(typedChar, keyCode, j);

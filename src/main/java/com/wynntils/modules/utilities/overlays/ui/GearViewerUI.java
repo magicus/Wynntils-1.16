@@ -97,7 +97,7 @@ public class GearViewerUI extends FakeGuiContainer {
 
     @Override
     public boolean keyPressed(int typedChar, int keyCode, int j) {
-        boolean result = super.keyPressed(typedChar, keyCode);
+        boolean result = super.keyPressed(typedChar, keyCode, j);
 
         // allow item screenshotting in gear viewer
         if (keyCode == KeyManager.getItemScreenshotKey().getKeyBinding().getKey().getValue())

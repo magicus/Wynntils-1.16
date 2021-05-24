@@ -246,20 +246,21 @@ public class WaypointCreationMenu extends UI {
     }
 
     @Override
-    protected void keyPressed(char typedChar, int keyCode) throws IOException {
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         if (keyCode == GLFW.GLFW_KEY_TAB) {
             Utils.tab(
-                Utils.isKeyDown(GLFW.GLFW_KEY_LSHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RSHIFT) ? -1 : +1,
+                Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_SHIFT) ? -1 : +1,
                 nameField, xCoordField, zCoordField, yCoordField, colorWheel.textBox.textField
             );
-            return;
+            return true;
         }
-        super.keyPressed(typedChar, keyCode);
-        nameField.textboxKeyTyped(typedChar, keyCode);
-        xCoordField.textboxKeyTyped(typedChar, keyCode);
-        yCoordField.textboxKeyTyped(typedChar, keyCode);
-        zCoordField.textboxKeyTyped(typedChar, keyCode);
+        boolean result = super.keyPressed(typedChar, keyCode, j);
+        nameField.keyPressed(typedChar, keyCode, j);
+        xCoordField.keyPressed(typedChar, keyCode, j);
+        yCoordField.keyPressed(typedChar, keyCode, j);
+        zCoordField.keyPressed(typedChar, keyCode, j);
         isAllValidInformation();
+        return result;
     }
 
     @Override

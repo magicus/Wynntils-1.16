@@ -248,7 +248,7 @@ public class SkillPointOverlay implements Listener {
             loadedBuild = null;
             buildPercentage = 0.0f;
         } else {
-            nameField.textboxKeyTyped(e.getTypedChar(), e.getKeyCode());
+            nameField.keyPressed(e.getTypedChar(), e.getKeyCode(), j);
         }
 
         e.setCanceled(true);

@@ -254,7 +254,7 @@ public class PathWaypointCreationUI extends WorldMapUI {
     }
 
     @Override
-    public boolean keyPressed(int typedChar, int keyCode, int j {
+    public boolean keyPressed(int typedChar, int keyCode, int j) {
         if (keyCode == GLFW.GLFW_KEY_TAB) {
             Utils.tab(
                 Utils.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT) || Utils.isKeyDown(GLFW.GLFW_KEY_RIGHT_SHIFT) ? -1 : +1,
