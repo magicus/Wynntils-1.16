@@ -15,6 +15,7 @@ import com.wynntils.modules.utilities.instances.ServerIcon;
 import com.wynntils.webapi.WebManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SimpleSound;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.MainMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -36,7 +37,7 @@ public class MainMenuButtons {
 
     private static boolean alreadyLoaded = false;
 
-    public static void addButtons(MainMenuScreen to, List<Button> buttons, boolean resize) {
+    public static void addButtons(MainMenuScreen to, List<Widget> buttons, boolean resize) {
         if (!CoreDBConfig.INSTANCE.addMainMenuButton) return;
 
         if (lastButton == null || !resize) {

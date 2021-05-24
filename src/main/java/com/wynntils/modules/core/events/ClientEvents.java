@@ -337,7 +337,7 @@ public class ClientEvents implements Listener {
 
         if (gui instanceof MainMenuScreen) {
             boolean resize = lastScreen != null && lastScreen instanceof MainMenuScreen;
-            MainMenuButtons.addButtons((MainMenuScreen) gui, e.getButtonList(), resize);
+            MainMenuButtons.addButtons((MainMenuScreen) gui, e.getWidgetList(), resize);
         }
 
         lastScreen = gui;
